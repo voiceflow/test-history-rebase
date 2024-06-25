@@ -1,6 +1,6 @@
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 
-import { BaseSystemMessageProps } from '@/components/SystemMessage/types';
+import type { BaseSystemMessageProps } from '@/components/SystemMessage/types';
 
 export interface VoicePromptProps extends BaseSystemMessageProps {
   message: Platform.Common.Voice.Models.Prompt.Model;

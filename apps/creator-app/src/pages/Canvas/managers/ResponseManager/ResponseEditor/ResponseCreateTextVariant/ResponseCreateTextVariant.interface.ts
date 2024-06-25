@@ -1,6 +1,6 @@
-import { TextResponseVariantCreate } from '@voiceflow/dtos';
+import type { TextResponseVariantCreate } from '@voiceflow/dtos';
 
-import { IResponseTextVariantLayout } from '@/components/Response/ResponseTextVariantLayout/ResponseTextVariantLayout.interface';
+import type { IResponseTextVariantLayout } from '@/components/Response/ResponseTextVariantLayout/ResponseTextVariantLayout.interface';
 
 export interface IResponseEditTextVariant
   extends Omit<

@@ -30,7 +30,9 @@ export class ThreadLoguxController {
     @Payload() { data, context }: Actions.Thread.CreateOne.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.Thread.CreateOne.Response> {
-    return this.service.createManyAndBroadcast([data], { auth, context }).then(([thread]) => ({ data: this.serializer.nullable(thread), context }));
+    return this.service
+      .createManyAndBroadcast([data], { auth, context })
+      .then(([thread]) => ({ data: this.serializer.nullable(thread), context }));
   }
 
   @Action.Async(Actions.Thread.CreateMany)
@@ -43,7 +45,9 @@ export class ThreadLoguxController {
     @Payload() { data, context }: Actions.Thread.CreateMany.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.Thread.CreateMany.Response> {
-    return this.service.createManyAndBroadcast(data, { auth, context }).then((threads) => ({ data: this.serializer.iterable(threads), context }));
+    return this.service
+      .createManyAndBroadcast(data, { auth, context })
+      .then((threads) => ({ data: this.serializer.iterable(threads), context }));
   }
 
   @Action(Actions.Thread.PatchOne)

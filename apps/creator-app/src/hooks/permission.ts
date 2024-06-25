@@ -1,4 +1,4 @@
-import { PlanType } from '@voiceflow/internal';
+import type { PlanType } from '@voiceflow/internal';
 import { toast } from '@voiceflow/ui';
 import React from 'react';
 
@@ -9,9 +9,11 @@ import {
   TRIAL_EXPIRED_PERMISSION_DEFAULT_WARN_MESSAGE,
 } from '@/constants/permissions';
 import { VirtualRole } from '@/constants/roles';
-import { getPermission, PermissionConfig } from '@/utils/permission';
+import type { PermissionConfig } from '@/utils/permission';
+import { getPermission } from '@/utils/permission';
 
-import { Identity, useIdentity } from './identity';
+import type { Identity } from './identity';
+import { useIdentity } from './identity';
 
 export const getIdentityPermission = <P extends Permission>(identity: Identity, permission?: P | null) => ({
   ...identity,

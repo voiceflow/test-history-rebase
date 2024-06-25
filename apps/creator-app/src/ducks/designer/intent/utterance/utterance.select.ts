@@ -12,7 +12,8 @@ import { STATE_KEY } from './utterance.state';
 
 const root = createSubSelector(intentRoot, STATE_KEY);
 
-export const { hasOneByID, hasAllByIDs, oneByID, getOneByID, allByIDs, getAllByIDs, all, map, count, isEmpty } = createDesignerCRUDSelectors(root);
+export const { hasOneByID, hasAllByIDs, oneByID, getOneByID, allByIDs, getAllByIDs, all, map, count, isEmpty } =
+  createDesignerCRUDSelectors(root);
 
 export const allByIntentID = createSelector(all, intentIDParamSelector, (utterances, intentID) =>
   !intentID ? [] : sortCreatableCMSResources(utterances.filter((utterance) => utterance.intentID === intentID))
@@ -31,6 +32,9 @@ export const entityIDsByIntentID = createSelector(allByIntentID, (utterances) =>
   Utils.array.unique(utterances.flatMap(({ text }) => getMarkupEntityIDs(text)))
 );
 
-export const entityIDsByIntentIDs = createSelector(intentIDsParamSelector, getAllByIntentID, (intentIDs, getIntentUtterances) =>
-  intentIDs.flatMap((intentID) => getIntentUtterances({ intentID }).flatMap(({ text }) => getMarkupEntityIDs(text)))
+export const entityIDsByIntentIDs = createSelector(
+  intentIDsParamSelector,
+  getAllByIntentID,
+  (intentIDs, getIntentUtterances) =>
+    intentIDs.flatMap((intentID) => getIntentUtterances({ intentID }).flatMap(({ text }) => getMarkupEntityIDs(text)))
 );

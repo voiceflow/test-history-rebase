@@ -1,5 +1,6 @@
-import { Nullable } from '@voiceflow/common';
-import { Box, Dropdown, MenuTypes } from '@voiceflow/ui';
+import type { Nullable } from '@voiceflow/common';
+import type { MenuTypes } from '@voiceflow/ui';
+import { Box, Dropdown } from '@voiceflow/ui';
 import React from 'react';
 
 import * as S from './styles';
@@ -12,7 +13,13 @@ interface LogoButtonProps {
   withBorder?: boolean;
 }
 
-const LogoButton: React.FC<LogoButtonProps> = ({ options, expandable = true, noMargins = false, withBorder = true, style }) => {
+const LogoButton: React.FC<LogoButtonProps> = ({
+  options,
+  expandable = true,
+  noMargins = false,
+  withBorder = true,
+  style,
+}) => {
   return (
     <Box.Flex mr={noMargins ? 0 : 16} height="100%" style={style}>
       <Dropdown options={options} offset={{ offset: [16, 6] }} menuWidth={240} maxVisibleItems={options.length}>

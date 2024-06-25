@@ -1,6 +1,7 @@
-import * as Models from '@realtime-sdk/models';
+import type * as Models from '@realtime-sdk/models';
 
-import { NestResource, NestResourceOptions } from '../../nest';
+import type { NestResourceOptions } from '../../nest';
+import { NestResource } from '../../nest';
 
 export class Provider extends NestResource {
   constructor(options: NestResourceOptions) {

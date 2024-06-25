@@ -1,5 +1,5 @@
-import { NodeData } from '@realtime-sdk/models';
-import { BaseNode } from '@voiceflow/base-types';
+import type { NodeData } from '@realtime-sdk/models';
+import type { BaseNode } from '@voiceflow/base-types';
 
 import { createBlockAdapter, nextOnlyOutPortsAdapter, nextOnlyOutPortsAdapterV2 } from '../utils';
 

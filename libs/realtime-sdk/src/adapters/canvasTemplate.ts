@@ -1,5 +1,5 @@
-import { CanvasTemplate } from '@realtime-sdk/models';
-import { BaseModels } from '@voiceflow/base-types';
+import type { CanvasTemplate } from '@realtime-sdk/models';
+import type { BaseModels } from '@voiceflow/base-types';
 import { createMultiAdapter } from 'bidirectional-adapter';
 
 const canvasTemplateAdapter = createMultiAdapter<BaseModels.Version.CanvasTemplate, CanvasTemplate>(

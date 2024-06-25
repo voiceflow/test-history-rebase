@@ -1,4 +1,4 @@
-import { Invoice } from '@voiceflow/dtos';
+import type { Invoice } from '@voiceflow/dtos';
 import { toast } from '@voiceflow/ui';
 import React from 'react';
 

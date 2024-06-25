@@ -39,14 +39,23 @@ export const KnowledgeBasePreviewQuestion = manager.create(
       const storeSettings = useSelector(Designer.KnowledgeBase.selectors.settings);
 
       const [initialSettings] = React.useState(storeSettings ?? DEFAULT_SETTINGS);
-      const [settings, setSettings] = useEnvironmentSessionStorageState('kb-preview-settings', storeSettings ?? DEFAULT_SETTINGS);
+      const [settings, setSettings] = useEnvironmentSessionStorageState(
+        'kb-preview-settings',
+        storeSettings ?? DEFAULT_SETTINGS
+      );
       const [question, setQuestion] = React.useState<string>('');
-      const [response, setResponse] = React.useState<{ output: string; chunks?: { source: { name: string }; content: string }[] } | null>(null);
+      const [response, setResponse] = React.useState<{
+        output: string;
+        chunks?: { source: { name: string }; content: string }[];
+      } | null>(null);
       const [hasResponse, setHasResponse] = React.useState(false);
       const [questionError, setQuestionError] = React.useState<string>('');
       const [previousQuestion, setPreviousQuestion] = useEnvironmentSessionStorageState('kb-preview-last-question', '');
 
-      const displayableSources = React.useMemo(() => response?.chunks?.filter((chunk) => chunk.source), [response?.chunks]);
+      const displayableSources = React.useMemo(
+        () => response?.chunks?.filter((chunk) => chunk.source),
+        [response?.chunks]
+      );
 
       const handleSourceClick = (sourceName: string) => {
         const documentID = getOneByName(sourceName)?.id;
@@ -81,7 +90,8 @@ export const KnowledgeBasePreviewQuestion = manager.create(
             } else if (error?.response?.status === 402) {
               notify.short.error(
                 <>
-                  Out of tokens. <Link variant="secondary" href={REQUEST_MORE_TOKENS_LINK} label="Request more tokens." />
+                  Out of tokens.{' '}
+                  <Link variant="secondary" href={REQUEST_MORE_TOKENS_LINK} label="Request more tokens." />
                 </>,
                 { isClosable: false }
               );

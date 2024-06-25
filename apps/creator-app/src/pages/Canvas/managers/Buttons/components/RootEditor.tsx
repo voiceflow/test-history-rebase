@@ -1,5 +1,5 @@
-import { BaseNode } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { BaseNode } from '@voiceflow/base-types';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, createDividerMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 
@@ -22,7 +22,10 @@ const RootEditor: React.FC = () => {
 
   const [isDragging, toggleDragging] = useToggle(false);
 
-  const onUpdateButtons = React.useCallback((buttons: BaseNode.Buttons.Button[]) => editor.onChange({ buttons }), [editor.onChange]);
+  const onUpdateButtons = React.useCallback(
+    (buttons: BaseNode.Buttons.Button[]) => editor.onChange({ buttons }),
+    [editor.onChange]
+  );
 
   const mapManager = useMapManager(editor.data.buttons, onUpdateButtons, {
     ...dynamicPortsSync,
@@ -76,7 +79,12 @@ const RootEditor: React.FC = () => {
         <DraggableList
           type={ITEM_DRAG_TYPE}
           onEndDrag={toggleDragging}
-          itemProps={{ editor, latestCreatedKey: mapManager.latestCreatedKey, canAddIntent, itemCount: mapManager.size }}
+          itemProps={{
+            editor,
+            latestCreatedKey: mapManager.latestCreatedKey,
+            canAddIntent,
+            itemCount: mapManager.size,
+          }}
           mapManager={mapManager}
           onStartDrag={toggleDragging}
           itemComponent={DraggableItem}

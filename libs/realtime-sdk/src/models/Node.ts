@@ -1,8 +1,8 @@
-import { BlockType } from '@realtime-sdk/constants';
-import { BaseModels } from '@voiceflow/base-types';
+import type { BlockType } from '@realtime-sdk/constants';
+import type { BaseModels } from '@voiceflow/base-types';
 
-import { Port } from './Port';
-import { PartialModel } from './Utility';
+import type { Port } from './Port';
+import type { PartialModel } from './Utility';
 
 export type BuiltInPortRecord<T = string> = { [key in BaseModels.PortType]?: T };
 
@@ -21,10 +21,8 @@ export type NodePorts<O extends BuiltInPortRecord = BuiltInPortRecord> = NodePor
 
 export type PortDescriptor = Omit<PartialModel<Port>, 'nodeID'>;
 
-export type PortsDescriptor<O extends BuiltInPortRecord<PortDescriptor> = BuiltInPortRecord<PortDescriptor>> = NodePortSchema<
-  Omit<PartialModel<Port>, 'nodeID'>,
-  O
->;
+export type PortsDescriptor<O extends BuiltInPortRecord<PortDescriptor> = BuiltInPortRecord<PortDescriptor>> =
+  NodePortSchema<Omit<PartialModel<Port>, 'nodeID'>, O>;
 
 export interface Node<O extends BuiltInPortRecord = BuiltInPortRecord> {
   id: string;

@@ -2,7 +2,8 @@ import { Utils } from '@voiceflow/common';
 import { compose } from '@voiceflow/ui';
 import React from 'react';
 
-import UncontrolledSection, { UncontrolledSectionProps } from '@/components/Section/components/UncontrolledSection';
+import type { UncontrolledSectionProps } from '@/components/Section/components/UncontrolledSection';
+import UncontrolledSection from '@/components/Section/components/UncontrolledSection';
 import { withNamespace } from '@/hocs/withNamespace';
 import { useSectionState } from '@/pages/Canvas/hooks/section';
 
@@ -11,7 +12,10 @@ type EditorSectionProps = Omit<UncontrolledSectionProps, 'isCollapsed' | 'toggle
   onContextMenu?: React.MouseEventHandler;
 };
 
-const EditorSection: React.ForwardRefRenderFunction<HTMLDivElement, EditorSectionProps> = ({ initialOpen = false, ...props }, ref) => {
+const EditorSection: React.ForwardRefRenderFunction<HTMLDivElement, EditorSectionProps> = (
+  { initialOpen = false, ...props },
+  ref
+) => {
   const isCollapsible = !!props.collapseVariant;
   const initialState = React.useRef(initialOpen);
 
@@ -20,9 +24,15 @@ const EditorSection: React.ForwardRefRenderFunction<HTMLDivElement, EditorSectio
     defaultValue: { isOpen: initialState.current },
   });
 
-  const toggleCollapsed = React.useCallback(() => setSectionState({ isOpen: !sectionState.isOpen }), [sectionState.isOpen, setSectionState]);
+  const toggleCollapsed = React.useCallback(
+    () => setSectionState({ isOpen: !sectionState.isOpen }),
+    [sectionState.isOpen, setSectionState]
+  );
 
-  const collapseProps = isCollapsible && { isCollapsed: !sectionState.isOpen, toggle: props.disabled ? Utils.functional.noop : toggleCollapsed };
+  const collapseProps = isCollapsible && {
+    isCollapsed: !sectionState.isOpen,
+    toggle: props.disabled ? Utils.functional.noop : toggleCollapsed,
+  };
 
   return <UncontrolledSection {...collapseProps} {...props} ref={ref} />;
 };

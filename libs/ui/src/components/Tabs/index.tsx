@@ -1,7 +1,8 @@
 import React from 'react';
 
 import * as S from './styles';
-import Tab, { TabReactElement, TabValue } from './Tab';
+import type { TabReactElement, TabValue } from './Tab';
+import Tab from './Tab';
 
 export interface TabsProps<V extends TabValue> {
   value?: V;

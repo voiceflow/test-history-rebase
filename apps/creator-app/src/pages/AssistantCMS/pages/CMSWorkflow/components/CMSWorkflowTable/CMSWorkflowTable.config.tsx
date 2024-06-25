@@ -15,7 +15,7 @@ import {
   withFolderSort,
   withOptionalSort,
 } from '../../../../contexts/CMSManager/CMSManager.util';
-import { CMSWorkflowSortContext } from '../../CMSWorkflow.interface';
+import type { CMSWorkflowSortContext } from '../../CMSWorkflow.interface';
 import { WorkflowTableColumn } from './CMSWorkflowTable.constant';
 import { CMSWorkflowTableTriggersCell } from './CMSWorkflowTableTriggersCell.component';
 

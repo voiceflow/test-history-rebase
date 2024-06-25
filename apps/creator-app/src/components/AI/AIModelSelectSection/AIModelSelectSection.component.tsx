@@ -5,7 +5,7 @@ import { SectionHeaderTitleWithLearnTooltip } from '@/components/Section/Section
 import { onOpenURLInANewTabFactory } from '@/utils/window';
 
 import { AIModelSelect } from '../AIModelSelect/AIModelSelect.component';
-import { IAIModelSelectSection } from './AIModelSelectSection.interface';
+import type { IAIModelSelectSection } from './AIModelSelectSection.interface';
 
 export const AIModelSelectSection: React.FC<IAIModelSelectSection> = ({ learnMoreURL, ...props }) => (
   <Box direction="column">
@@ -13,7 +13,11 @@ export const AIModelSelectSection: React.FC<IAIModelSelectSection> = ({ learnMor
       variant="active"
       contentProps={{ pr: 24 }}
       title={(className) => (
-        <SectionHeaderTitleWithLearnTooltip title="AI model" className={className} onLearnClick={onOpenURLInANewTabFactory(learnMoreURL)}>
+        <SectionHeaderTitleWithLearnTooltip
+          title="AI model"
+          className={className}
+          onLearnClick={onOpenURLInANewTabFactory(learnMoreURL)}
+        >
           The large language model (LLM) your agent will use to fetch and compile data.
         </SectionHeaderTitleWithLearnTooltip>
       )}

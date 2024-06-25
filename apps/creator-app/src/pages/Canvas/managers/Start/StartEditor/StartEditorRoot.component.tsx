@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Editor, Scroll, SquareButton } from '@voiceflow/ui-next';
 import React from 'react';
 

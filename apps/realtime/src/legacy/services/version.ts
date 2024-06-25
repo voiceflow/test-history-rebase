@@ -1,12 +1,15 @@
-import { BaseModels, BaseVersion } from '@voiceflow/base-types';
+import type { BaseVersion } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config/backend';
-import { Optional } from 'utility-types';
+import type { Optional } from 'utility-types';
 
 import { AbstractControl } from '../control';
 import type { DiagramPatchData } from './diagram';
 import AccessCache from './utils/accessCache';
 
-export type VersionPatchData = Partial<Omit<BaseVersion.Version, VersionService['models']['version']['READ_ONLY_KEYS'][number]>>;
+export type VersionPatchData = Partial<
+  Omit<BaseVersion.Version, VersionService['models']['version']['READ_ONLY_KEYS'][number]>
+>;
 
 class VersionService extends AbstractControl {
   public access = new AccessCache('version', this.clients, this.services);
@@ -19,7 +22,9 @@ class VersionService extends AbstractControl {
     const { components } = await this.models.version.findByID(versionID, ['components']);
 
     const componentIDs =
-      components?.filter(({ type }) => type === BaseModels.Version.FolderItemType.DIAGRAM).map((component) => component.sourceID) ?? [];
+      components
+        ?.filter(({ type }) => type === BaseModels.Version.FolderItemType.DIAGRAM)
+        .map((component) => component.sourceID) ?? [];
 
     return this.services.diagram.getNamesByIDs(versionID, componentIDs);
   }
@@ -39,7 +44,11 @@ class VersionService extends AbstractControl {
   }
 
   // TODO: remove with new backup system
-  public async snapshot(creatorID: number, versionID: string, options: { manualSave?: boolean; name?: string; autoSaveFromRestore?: boolean } = {}) {
+  public async snapshot(
+    creatorID: number,
+    versionID: string,
+    options: { manualSave?: boolean; name?: string; autoSaveFromRestore?: boolean } = {}
+  ) {
     const client = await this.services.creator.client.getByUserID(creatorID);
     await client.version.snapshot(versionID, options);
   }
@@ -49,7 +58,9 @@ class VersionService extends AbstractControl {
     version: VersionPatchData,
     diagrams: [diagramID: string, diagramPatch: DiagramPatchData][]
   ): Promise<void> {
-    await Promise.all(diagrams.map(([diagramID, diagramPatch]) => this.services.diagram.patch(versionID, diagramID, diagramPatch)));
+    await Promise.all(
+      diagrams.map(([diagramID, diagramPatch]) => this.services.diagram.patch(versionID, diagramID, diagramPatch))
+    );
 
     await this.patch(versionID, version);
   }
@@ -62,7 +73,10 @@ class VersionService extends AbstractControl {
     await this.models.version.updatePlatformData(versionID, platformData);
   }
 
-  public async patchDefaultStepColors(versionID: string, defaultStepColors: BaseModels.Version.DefaultStepColors): Promise<void> {
+  public async patchDefaultStepColors(
+    versionID: string,
+    defaultStepColors: BaseModels.Version.DefaultStepColors
+  ): Promise<void> {
     await this.models.version.updateDefaultStepColors(versionID, defaultStepColors);
   }
 
@@ -123,7 +137,10 @@ class VersionService extends AbstractControl {
     const { platformData } = await this.get(versionID);
 
     const dbSession = projectConfig.adapters.version.session.simple.toDB(
-      { ...projectConfig.adapters.version.session.simple.fromDB(platformData.settings.session, { defaultVoice }), ...session },
+      {
+        ...projectConfig.adapters.version.session.simple.fromDB(platformData.settings.session, { defaultVoice }),
+        ...session,
+      },
       { defaultVoice }
     );
 

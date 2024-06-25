@@ -1,9 +1,10 @@
 import { FlexCenter } from '@ui/components/Flex';
-import { LoadCircle, LoaderProps } from '@ui/components/Loader';
+import type { LoaderProps } from '@ui/components/Loader';
+import { LoadCircle } from '@ui/components/Loader';
 import SvgIcon from '@ui/components/SvgIcon';
 import { css, styled, transition } from '@ui/styles';
 import { fontResetStyle } from '@ui/styles/bootstrap';
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 
 import { UploadMode } from './constants';
 
@@ -52,7 +53,8 @@ interface ContainerProps {
 }
 
 export const Container = styled(FlexCenter)<ContainerProps>`
-  height: ${({ height, theme, isImage }) => height || (isImage ? theme.components.imageUpload.height : theme.components.audioPlayer.height)}px;
+  height: ${({ height, theme, isImage }) =>
+    height || (isImage ? theme.components.imageUpload.height : theme.components.audioPlayer.height)}px;
   border: 1px dashed #d4d9e6;
   border-radius: 5px;
   padding: 0 16px;

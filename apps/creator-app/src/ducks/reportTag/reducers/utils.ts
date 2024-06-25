@@ -1,5 +1,5 @@
 import { createReducerFactory } from '@/ducks/utils';
 
-import { ReportTagState } from '../types';
+import type { ReportTagState } from '../types';
 
 export const createReducer = createReducerFactory<ReportTagState>();

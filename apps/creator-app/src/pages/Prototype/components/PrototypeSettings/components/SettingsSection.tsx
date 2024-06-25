@@ -1,7 +1,8 @@
 import { Box, Toggle } from '@voiceflow/ui';
 import React from 'react';
 
-import { SectionProps, UncontrolledSection } from '@/components/Section';
+import type { SectionProps } from '@/components/Section';
+import { UncontrolledSection } from '@/components/Section';
 import THEME from '@/styles/theme';
 
 interface SettingsSectionProps extends SectionProps {

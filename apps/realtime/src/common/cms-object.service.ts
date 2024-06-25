@@ -10,7 +10,10 @@ export abstract class CMSObjectService<Orm extends CMSObjectORM<any, any>> exten
     return this.orm.createOneForUser(userID, data);
   }
 
-  createManyForUser(userID: number, data: Omit<CreateData<ORMDiscriminatorEntity<Orm>>, 'createdByID' | 'updatedByID'>[]) {
+  createManyForUser(
+    userID: number,
+    data: Omit<CreateData<ORMDiscriminatorEntity<Orm>>, 'createdByID' | 'updatedByID'>[]
+  ) {
     return this.orm.createManyForUser(userID, data);
   }
 

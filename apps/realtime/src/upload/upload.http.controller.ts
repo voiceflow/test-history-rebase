@@ -22,7 +22,9 @@ export class UploadHTTPController {
 
   @Post('image')
   @Authorize.Permissions([Permission.SELF_USER_UPDATE])
-  @ApiBody({ schema: { type: 'object', required: ['image'], properties: { image: { type: 'string', format: 'binary' } } } })
+  @ApiBody({
+    schema: { type: 'object', required: ['image'], properties: { image: { type: 'string', format: 'binary' } } },
+  })
   @ApiConsumes('multipart/form-data')
   @ZodApiResponse({ status: HttpStatus.CREATED, schema: UploadResponse })
   @UseInterceptors(FileInterceptor('image', { fileType: UploadType.IMAGE }))
@@ -35,7 +37,11 @@ export class UploadHTTPController {
   @Post(':projectID/image')
   @Authorize.Permissions([Permission.PROJECT_UPDATE])
   @ApiBody({
-    schema: { type: 'object', required: ['image'], properties: { image: { type: 'string', format: 'binary' }, clientID: { type: 'string' } } },
+    schema: {
+      type: 'object',
+      required: ['image'],
+      properties: { image: { type: 'string', format: 'binary' }, clientID: { type: 'string' } },
+    },
   })
   @ApiConsumes('multipart/form-data')
   @ZodApiResponse({ status: HttpStatus.CREATED, schema: UploadAssistantImageResponse })

@@ -9,5 +9,7 @@ import type { ICMSEntityTableClassifierCell } from './CMSEntityTableClassifierCe
 export const CMSEntityTableClassifierCell: React.FC<ICMSEntityTableClassifierCell> = ({ classifier }) => {
   const entityClassifiersMap = useAtomValue(entityClassifiersMapAtom);
 
-  return <CMSTableCellTextTooltip label={classifier ? entityClassifiersMap[classifier]?.label ?? 'Custom' : 'Custom'} />;
+  return (
+    <CMSTableCellTextTooltip label={classifier ? entityClassifiersMap[classifier]?.label ?? 'Custom' : 'Custom'} />
+  );
 };

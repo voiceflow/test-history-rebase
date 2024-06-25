@@ -1,4 +1,4 @@
-import { HSLShades } from '@/constants';
+import type { HSLShades } from '@/constants';
 import { css, styled, transition } from '@/hocs/styled';
 import { NODE_MERGE_TARGET_CLASSNAME } from '@/pages/Canvas/constants';
 

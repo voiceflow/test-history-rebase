@@ -62,7 +62,11 @@ class SpeedDetection {
 
         this.pendingPromise = null;
 
-        this.logger.debug('Connection speed: %s Mbps, Type: %s, Effective Type: %s', [mBPs.toFixed(2), connectionType, connectionEffectiveType]);
+        this.logger.debug('Connection speed: %s Mbps, Type: %s, Effective Type: %s', [
+          mBPs.toFixed(2),
+          connectionType,
+          connectionEffectiveType,
+        ]);
 
         resolve({
           bPs,

@@ -1,5 +1,5 @@
-import { AnyRecord } from '@voiceflow/common';
-import { Logger } from '@voiceflow/logger';
+import type { AnyRecord } from '@voiceflow/common';
+import type { Logger } from '@voiceflow/logger';
 
 export interface BaseClientOptions<C extends AnyRecord = AnyRecord> {
   config: C;

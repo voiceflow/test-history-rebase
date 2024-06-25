@@ -4,7 +4,7 @@ import React from 'react';
 import { Modal } from '@/components/Modal';
 
 import manager from '../../manager';
-import { IConformV2Modal } from './ConfirmV2.interface';
+import type { IConformV2Modal } from './ConfirmV2.interface';
 
 export const ConfirmV2Modal = manager.create<IConformV2Modal>(
   'ConfirmV2',
@@ -62,7 +62,12 @@ export const ConfirmV2Modal = manager.create<IConformV2Modal>(
 
           <Modal.Footer>
             {cancelButtonLabel !== null && (
-              <Modal.Footer.Button label={cancelButtonLabel} variant={cancelButtonVariant} onClick={api.onClose} disabled={closePrevented} />
+              <Modal.Footer.Button
+                label={cancelButtonLabel}
+                variant={cancelButtonVariant}
+                onClick={api.onClose}
+                disabled={closePrevented}
+              />
             )}
 
             <Modal.Footer.Button

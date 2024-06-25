@@ -1,16 +1,19 @@
+/* eslint-disable no-empty-function */
+/* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable dot-notation, @typescript-eslint/ban-ts-comment */
 
 import './utils/mockAudio';
 
 import { BaseNode } from '@voiceflow/base-types';
-import { BaseRequest, RequestType } from '@voiceflow/dtos';
+import type { BaseRequest } from '@voiceflow/dtos';
+import { RequestType } from '@voiceflow/dtos';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
-import { SpyInstance } from 'vitest';
+import type { SpyInstance } from 'vitest';
 
 import { createSuite } from '@/../test/_suite';
 import { BlockType } from '@/constants';
 import { SpeakTraceAudioType } from '@/constants/prototype';
-import { Trace } from '@/models';
+import type { Trace } from '@/models';
 import type Engine from '@/pages/Canvas/engine';
 import AudioController from '@/pages/Prototype/PrototypeTool/Audio';
 import MessageController from '@/pages/Prototype/PrototypeTool/Message';
@@ -25,7 +28,8 @@ const MESSAGE = 'message';
 const BLOCK_ID = 'block-id';
 const STEP_ID = 'step-id';
 
-const traceFactory = <T extends BaseNode.Utils.TraceType>(type: T, payload: unknown): Trace => ({ id: ID, type, payload } as any);
+const traceFactory = <T extends BaseNode.Utils.TraceType>(type: T, payload: unknown): Trace =>
+  ({ id: ID, type, payload }) as any;
 
 enum TraceMethods {
   END = 'processEndTrace',
@@ -113,17 +117,24 @@ const suite = createSuite(() => ({
   },
 
   emulateAudioError: (controller: TraceController) =>
-    (controller['audio']['play'] as any as SpyInstance).mockImplementation(async (_: any, { onError }: { onError: Function }) => onError()),
+    (controller['audio']['play'] as any as SpyInstance).mockImplementation(
+      async (_: any, { onError }: { onError: Function }) => onError()
+    ),
 
   emulateAudioPause: (controller: TraceController, audio: any) =>
-    (controller['audio']['play'] as any as SpyInstance).mockImplementation(async (_: any, { onStop }: { onStop: Function }) => onStop(audio)),
+    (controller['audio']['play'] as any as SpyInstance).mockImplementation(
+      async (_: any, { onStop }: { onStop: Function }) => onStop(audio)
+    ),
 
-  emulateAudioReject: (controller: TraceController) => (controller['audio']['play'] as any as SpyInstance).mockReturnValue(Promise.reject()),
+  emulateAudioReject: (controller: TraceController) =>
+    (controller['audio']['play'] as any as SpyInstance).mockReturnValue(Promise.reject()),
 
   emulateFetchContext(controller: TraceController, ...data: any[]) {
     let fetchContextDataCallCount = 0;
 
-    return (controller['props']['fetchContext'] as any as SpyInstance).mockImplementation(() => data[fetchContextDataCallCount++]);
+    return (controller['props']['fetchContext'] as any as SpyInstance).mockImplementation(
+      () => data[fetchContextDataCallCount++]
+    );
   },
 
   expectSetTimeout: (controller: TraceController) => expect(controller['timeout']['delay']),
@@ -132,8 +143,11 @@ const suite = createSuite(() => ({
 
   expectAudioStop: (controller: TraceController) => expect(controller['audio']['stop']),
 
-  expectMessage: <T extends Exclude<keyof MessageController, 'trackStartTime'>>(controller: TraceController, method: T, data: any) =>
-    expect(controller['message'][method]).toBeCalledWith(data),
+  expectMessage: <T extends Exclude<keyof MessageController, 'trackStartTime'>>(
+    controller: TraceController,
+    method: T,
+    data: any
+  ) => expect(controller['message'][method]).toBeCalledWith(data),
 
   expectUpdateStatus: (controller: TraceController) => expect(controller['props']['updateStatus']),
 
@@ -152,7 +166,11 @@ const suite = createSuite(() => ({
 
   expectProcessTrace: (controller: TraceController) => expect(controller['processTrace']),
 
-  expectProcessSingleTrace(controller: TraceController, methodName?: TraceMethods, { onlyMessage = false }: { onlyMessage?: boolean } = {}) {
+  expectProcessSingleTrace(
+    controller: TraceController,
+    methodName?: TraceMethods,
+    { onlyMessage = false }: { onlyMessage?: boolean } = {}
+  ) {
     Object.values(TraceMethods)
       .filter((method) => method !== methodName)
       .forEach((method) => {
@@ -213,7 +231,9 @@ suite(
       });
 
       it('should process block trace', async () => {
-        const controller = createController({ context: { trace: [traceFactory(BaseNode.Utils.TraceType.BLOCK, { blockID: BLOCK_ID })] } });
+        const controller = createController({
+          context: { trace: [traceFactory(BaseNode.Utils.TraceType.BLOCK, { blockID: BLOCK_ID })] },
+        });
 
         await controller.next();
 
@@ -366,7 +386,11 @@ suite(
 
         const next = vi.spyOn(controller, 'next');
 
-        const streamTrace = traceFactory(BaseNode.Utils.TraceType.STREAM, { src: SRC, action: BaseNode.Stream.TraceStreamAction.PLAY, token: '1' });
+        const streamTrace = traceFactory(BaseNode.Utils.TraceType.STREAM, {
+          src: SRC,
+          action: BaseNode.Stream.TraceStreamAction.PLAY,
+          token: '1',
+        });
         emulateFetchContext(controller, {
           trace: [streamTrace],
         });
@@ -389,7 +413,11 @@ suite(
       it('should process stream pause', async () => {
         const controller = createController();
 
-        const streamTrace = traceFactory(BaseNode.Utils.TraceType.STREAM, { src: SRC, action: BaseNode.Stream.TraceStreamAction.PAUSE, token: '1' });
+        const streamTrace = traceFactory(BaseNode.Utils.TraceType.STREAM, {
+          src: SRC,
+          action: BaseNode.Stream.TraceStreamAction.PAUSE,
+          token: '1',
+        });
         emulateFetchContext(controller, {
           trace: [streamTrace],
         });
@@ -415,7 +443,13 @@ suite(
         const controller = createController();
 
         emulateFetchContext(controller, {
-          trace: [traceFactory(BaseNode.Utils.TraceType.STREAM, { src: SRC, action: BaseNode.Stream.TraceStreamAction.PLAY, token: '1' })],
+          trace: [
+            traceFactory(BaseNode.Utils.TraceType.STREAM, {
+              src: SRC,
+              action: BaseNode.Stream.TraceStreamAction.PLAY,
+              token: '1',
+            }),
+          ],
         });
 
         emulateAudioPause(controller, { currentTime: 10 });
@@ -429,7 +463,13 @@ suite(
         const controller = createController();
 
         emulateFetchContext(controller, {
-          trace: [traceFactory(BaseNode.Utils.TraceType.STREAM, { src: SRC, action: BaseNode.Stream.TraceStreamAction.PLAY, token: '1' })],
+          trace: [
+            traceFactory(BaseNode.Utils.TraceType.STREAM, {
+              src: SRC,
+              action: BaseNode.Stream.TraceStreamAction.PLAY,
+              token: '1',
+            }),
+          ],
         });
         emulateAudioError(controller);
 
@@ -445,7 +485,13 @@ suite(
         const next = vi.spyOn(controller, 'next');
 
         emulateFetchContext(controller, {
-          trace: [traceFactory(BaseNode.Utils.TraceType.STREAM, { src: SRC, action: BaseNode.Stream.TraceStreamAction.PLAY, token: '1' })],
+          trace: [
+            traceFactory(BaseNode.Utils.TraceType.STREAM, {
+              src: SRC,
+              action: BaseNode.Stream.TraceStreamAction.PLAY,
+              token: '1',
+            }),
+          ],
         });
         emulateAudioReject(controller);
 
@@ -499,12 +545,18 @@ suite(
                 message: MESSAGE,
                 choices: [],
               }),
-              traceFactory(BaseNode.Utils.TraceType.STREAM, { src: SRC, action: BaseNode.Stream.TraceStreamAction.PLAY, token: '1' }),
+              traceFactory(BaseNode.Utils.TraceType.STREAM, {
+                src: SRC,
+                action: BaseNode.Stream.TraceStreamAction.PLAY,
+                token: '1',
+              }),
             ],
           },
           {
             trace: [
-              traceFactory(BaseNode.Utils.TraceType.CHOICE, { buttons: [{ name: 'name_1' }, { name: 'name_2' }, { name: 'name_3' }] }),
+              traceFactory(BaseNode.Utils.TraceType.CHOICE, {
+                buttons: [{ name: 'name_1' }, { name: 'name_2' }, { name: 'name_3' }],
+              }),
               traceFactory(BaseNode.Utils.TraceType.FLOW, { diagramID: 'diagramID' }),
               traceFactory(BaseNode.Utils.TraceType.END, {}),
             ],
@@ -556,13 +608,19 @@ suite(
           choices: [],
         });
 
-        const audioTrace = traceFactory(BaseNode.Utils.TraceType.STREAM, { src: SRC, action: BaseNode.Stream.TraceStreamAction.PLAY, token: '1' });
+        const audioTrace = traceFactory(BaseNode.Utils.TraceType.STREAM, {
+          src: SRC,
+          action: BaseNode.Stream.TraceStreamAction.PLAY,
+          token: '1',
+        });
 
         controller['trace'] = [
           traceFactory(BaseNode.Utils.TraceType.BLOCK, { blockID: BLOCK_ID }),
           speakTrace,
           audioTrace,
-          traceFactory(BaseNode.Utils.TraceType.CHOICE, { choices: [{ name: 'name_1' }, { name: 'name_2' }, { name: 'name_3' }] }),
+          traceFactory(BaseNode.Utils.TraceType.CHOICE, {
+            choices: [{ name: 'name_1' }, { name: 'name_2' }, { name: 'name_3' }],
+          }),
           traceFactory(BaseNode.Utils.TraceType.FLOW, { diagramID: 'diagramID' }),
           traceFactory(BaseNode.Utils.TraceType.END, {}),
         ];

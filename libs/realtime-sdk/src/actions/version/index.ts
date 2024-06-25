@@ -6,11 +6,11 @@ import {
   SESSION_KEY,
   SETTINGS_KEY,
 } from '@realtime-sdk/constants';
-import { PrototypeSettings } from '@realtime-sdk/models';
-import { BaseProjectPayload, BaseVersionPayload } from '@realtime-sdk/types';
-import { BaseModels } from '@voiceflow/base-types';
+import type { PrototypeSettings } from '@realtime-sdk/models';
+import type { BaseProjectPayload, BaseVersionPayload } from '@realtime-sdk/types';
+import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config/backend';
+import type * as Platform from '@voiceflow/platform-config/backend';
 
 import { createCRUDActions } from '../utils';
 import { versionType } from './utils';

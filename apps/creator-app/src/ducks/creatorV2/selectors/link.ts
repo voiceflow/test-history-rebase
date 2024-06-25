@@ -15,28 +15,34 @@ export const linkByIDSelector = createSelector([creatorStateSelector, idParamSel
   linkID ? Normal.getOne(links, linkID) : null
 );
 
-export const linksByIDsSelector = createSelector([creatorStateSelector, idsParamSelector], ({ links }, linkIDs) => Normal.getMany(links, linkIDs));
+export const linksByIDsSelector = createSelector([creatorStateSelector, idsParamSelector], ({ links }, linkIDs) =>
+  Normal.getMany(links, linkIDs)
+);
 
-export const linkIDsByNodeIDSelector = createSelector([creatorStateSelector, idParamSelector], ({ linkIDsByNodeID }, nodeID) =>
-  nodeID ? linkIDsByNodeID[nodeID] ?? [] : []
+export const linkIDsByNodeIDSelector = createSelector(
+  [creatorStateSelector, idParamSelector],
+  ({ linkIDsByNodeID }, nodeID) => (nodeID ? linkIDsByNodeID[nodeID] ?? [] : [])
 );
 
 export const hasLinksByNodeIDSelector = createSelector([linkIDsByNodeIDSelector], (linkIDs) => !!linkIDs.length);
 
-export const linksByNodeIDSelector = createSelector([creatorStateSelector, linkIDsByNodeIDSelector], ({ links }, linkIDs) =>
-  Normal.getMany(links, linkIDs)
+export const linksByNodeIDSelector = createSelector(
+  [creatorStateSelector, linkIDsByNodeIDSelector],
+  ({ links }, linkIDs) => Normal.getMany(links, linkIDs)
 );
 
-export const linkIDsByPortIDSelector = createSelector([creatorStateSelector, idParamSelector], ({ linkIDsByPortID }, portID) =>
-  portID ? linkIDsByPortID[portID] ?? [] : []
+export const linkIDsByPortIDSelector = createSelector(
+  [creatorStateSelector, idParamSelector],
+  ({ linkIDsByPortID }, portID) => (portID ? linkIDsByPortID[portID] ?? [] : [])
 );
 
 export const getLinkIDsByPortIDSelector = createCurriedSelector(linkIDsByPortIDSelector);
 
 export const hasLinksByPortIDSelector = createSelector([linkIDsByPortIDSelector], (linkIDs) => !!linkIDs.length);
 
-export const linksByPortIDSelector = createSelector([creatorStateSelector, linkIDsByPortIDSelector], ({ links }, linkIDs) =>
-  Normal.getMany(links, linkIDs)
+export const linksByPortIDSelector = createSelector(
+  [creatorStateSelector, linkIDsByPortIDSelector],
+  ({ links }, linkIDs) => Normal.getMany(links, linkIDs)
 );
 
 export const getLinksByPortIDSelector = createCurriedSelector(linksByPortIDSelector);

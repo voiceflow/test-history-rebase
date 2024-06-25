@@ -1,7 +1,8 @@
 import { Input } from '@voiceflow/ui';
 import React from 'react';
 
-export interface EmailInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'value' | 'children'> {
+export interface EmailInputProps
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'value' | 'children'> {
   value: string;
   error?: boolean;
   onChange: (value: string) => void;

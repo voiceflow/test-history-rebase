@@ -1,14 +1,16 @@
-import { BaseButton } from '@voiceflow/base-types';
-import { Nullable } from '@voiceflow/common';
+import type { BaseButton } from '@voiceflow/base-types';
+import type { Nullable } from '@voiceflow/common';
 import { Box, Flex, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import { PrototypeLayout, PrototypeStatus } from '@/constants/prototype';
+import type { PrototypeStatus } from '@/constants/prototype';
+import { PrototypeLayout } from '@/constants/prototype';
 import { useTheme } from '@/hooks';
 import { useCanASR } from '@/hooks/speech-recognition.hook';
 import { ChatDisplay } from '@/pages/Prototype/components';
 import { ASRSpeechBar, UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
-import { Interaction, Message, OnInteraction, PMStatus } from '@/pages/Prototype/types';
+import type { Interaction, Message, OnInteraction } from '@/pages/Prototype/types';
+import { PMStatus } from '@/pages/Prototype/types';
 
 import {
   ActionButtons,

@@ -3,12 +3,14 @@ import { toast } from '@ui/components/Toast';
 import React from 'react';
 
 import { UPLOAD_ERROR } from '../../constants';
-import { UploadFileType } from '../../Context';
-import { RootDropAreaProps, ValueRendererProps } from '../../types';
-import { SingleUploadConfig, useUpload } from '../../useUpload';
+import type { UploadFileType } from '../../Context';
+import type { RootDropAreaProps, ValueRendererProps } from '../../types';
+import type { SingleUploadConfig } from '../../useUpload';
+import { useUpload } from '../../useUpload';
 import { hasVariables } from '../../utils';
 import Drop from '../Drop/index';
-import LinkInput, { InputRenderer } from '../LinkInput';
+import type { InputRenderer } from '../LinkInput';
+import LinkInput from '../LinkInput';
 import * as S from './styles';
 
 enum TabType {
@@ -68,7 +70,13 @@ const UploadBase: React.FC<UploadBaseProps & SingleUploadConfig> = ({
   const valueHasVariable = value ? hasVariables(value) : false;
   const hasDisplayableValue = !!value && !valueHasVariable;
   const [activeTab, setActiveTab] = React.useState(valueHasVariable ? TabType.LINK : TabType.UPLOAD);
-  const { onDropAccepted, onDropRejected, isLoading, error, setError } = useUpload({ fileType, endpoint, validate, update: onChange, onError });
+  const { onDropAccepted, onDropRejected, isLoading, error, setError } = useUpload({
+    fileType,
+    endpoint,
+    validate,
+    update: onChange,
+    onError,
+  });
 
   const shouldDisplayDropArea = activeTab === TabType.UPLOAD || hasDisplayableValue;
 
@@ -85,7 +93,13 @@ const UploadBase: React.FC<UploadBaseProps & SingleUploadConfig> = ({
       )}
 
       {activeTab === TabType.LINK && !onlyUpload && (
-        <LinkInput value={value} renderInput={renderInput} placeholder={linkInputPlaceholder!} onChangeText={onChange} validate={validateLink} />
+        <LinkInput
+          value={value}
+          renderInput={renderInput}
+          placeholder={linkInputPlaceholder!}
+          onChangeText={onChange}
+          validate={validateLink}
+        />
       )}
 
       {shouldDisplayDropArea && (

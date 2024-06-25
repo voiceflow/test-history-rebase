@@ -1,10 +1,10 @@
-import { Normalized, Nullish } from '@voiceflow/common';
-import { Base } from '@voiceflow/platform-config';
+import type { Normalized, Nullish } from '@voiceflow/common';
+import type { Base } from '@voiceflow/platform-config';
 
-import { SlateEditableProps, SlatePluginType, SlateVariableItem } from '@/components/SlateEditable';
+import type { SlateEditableProps, SlatePluginType, SlateVariableItem } from '@/components/SlateEditable';
 
-import { ToolbarIcons } from '../types';
-import { SlateBaseInputProps } from './SlateBaseInput';
+import type { ToolbarIcons } from '../types';
+import type { SlateBaseInputProps } from './SlateBaseInput';
 
 export type { SlateValue } from '@/components/SlateEditable';
 

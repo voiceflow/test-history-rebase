@@ -13,7 +13,9 @@ export const ComponentEditorDescription: React.FC<ComponentEditorDescriptionProp
       showDivider
       header={
         <CollapsibleHeader label="Description">
-          {({ isOpen, headerChildrenStyles }) => <CollapsibleHeaderButton headerChildrenStyles={headerChildrenStyles} isOpen={isOpen} />}
+          {({ isOpen, headerChildrenStyles }) => (
+            <CollapsibleHeaderButton headerChildrenStyles={headerChildrenStyles} isOpen={isOpen} />
+          )}
         </CollapsibleHeader>
       }
     >

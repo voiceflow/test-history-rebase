@@ -1,8 +1,8 @@
-import { Normalized, WithRequired } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { Overwrite } from 'utility-types';
+import type { Normalized, WithRequired } from '@voiceflow/common';
+import type * as Realtime from '@voiceflow/realtime-sdk';
+import type { Overwrite } from 'utility-types';
 
-import { Point } from '@/types';
+import type { Point } from '@/types';
 
 export type NodeDescriptor = Overwrite<Realtime.Node, { ports: Realtime.PortsDescriptor }>;
 

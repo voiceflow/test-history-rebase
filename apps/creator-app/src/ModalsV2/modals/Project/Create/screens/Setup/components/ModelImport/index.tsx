@@ -5,7 +5,7 @@ import React from 'react';
 import * as NLU from '@/config/nlu';
 import { NLUImportOrigin } from '@/constants';
 import { useNLUImport } from '@/hooks/nlu';
-import { NLUImportModel } from '@/models';
+import type { NLUImportModel } from '@/models';
 
 import * as S from './styles';
 

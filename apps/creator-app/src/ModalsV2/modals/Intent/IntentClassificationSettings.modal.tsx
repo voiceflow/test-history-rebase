@@ -102,7 +102,8 @@ export const IntentClassificationSettingsModal = modalsManager.create(
                             label="Natural language understanding (NLU)"
                             onLearnClick={onOpenURLInANewTabFactory(NLU_INTENT_CLASSIFICATION_LEARN_MORE)}
                           >
-                            Use Voiceflow’s natural language understanding model to classify users intentions and select which intent to trigger.
+                            Use Voiceflow’s natural language understanding model to classify users intentions and select
+                            which intent to trigger.
                           </RadioGroupLabelWithTooltip>
                         ) as any,
                       },

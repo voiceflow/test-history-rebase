@@ -1,11 +1,15 @@
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
-import { ConnectedStep } from '@/pages/Canvas/managers/types';
+import type { ConnectedStep } from '@/pages/Canvas/managers/types';
 
-const AISetStep: ConnectedStep<Realtime.NodeData.AISet, Realtime.NodeData.AISetBuiltInPorts> = ({ ports, data, palette }) => {
+const AISetStep: ConnectedStep<Realtime.NodeData.AISet, Realtime.NodeData.AISetBuiltInPorts> = ({
+  ports,
+  data,
+  palette,
+}) => {
   const nextPortID = ports.out.builtIn[BaseModels.PortType.NEXT];
 
   return (

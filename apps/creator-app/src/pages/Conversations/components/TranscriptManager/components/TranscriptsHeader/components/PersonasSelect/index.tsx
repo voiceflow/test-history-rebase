@@ -16,7 +16,10 @@ const PersonasSelect: React.FC<PersonasSelectProps> = ({ onChange, value, disabl
   const personas = useSelector(VariableState.allVariableStatesSelector);
   const options = React.useMemo(() => personas?.map((persona) => persona.id), [personas]);
 
-  const personasMap = React.useMemo(() => Object.fromEntries(personas?.map((persona) => [persona.id, persona])), [personas]);
+  const personasMap = React.useMemo(
+    () => Object.fromEntries(personas?.map((persona) => [persona.id, persona])),
+    [personas]
+  );
   const isSearchable = options?.length >= 5;
 
   return (

@@ -4,7 +4,7 @@ import React from 'react';
 import { useDropLagFix } from '@/hooks/dnd.hook';
 import { Identifier } from '@/styles/constants';
 
-import { IEditorV3 } from './EditorV3.interface';
+import type { IEditorV3 } from './EditorV3.interface';
 
 export const EditorV3: React.FC<IEditorV3> = ({ header, dropLagAccept }) => {
   const dropLagFixRef = useDropLagFix(dropLagAccept ?? []);

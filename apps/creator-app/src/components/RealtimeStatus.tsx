@@ -1,5 +1,6 @@
 import { datadogRum } from '@datadog/browser-rum';
-import { ChannelDeniedError, status as loguxStatus } from '@logux/client';
+import type { ChannelDeniedError } from '@logux/client';
+import { status as loguxStatus } from '@logux/client';
 import { useDebouncedCallback, useThrottledCallback } from '@voiceflow/ui';
 import { Link, notify } from '@voiceflow/ui-next';
 import React from 'react';

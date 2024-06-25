@@ -1,6 +1,7 @@
 import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
-import { components, ControlProps, InputProps, MenuProps } from 'react-select';
+import type { ControlProps, InputProps, MenuProps } from 'react-select';
+import { components } from 'react-select';
 
 import { styled } from '@/hocs/styled';
 
@@ -29,4 +30,8 @@ const NothingFound = styled.div`
 export const Input: React.FC<InputProps<any>> = ({ onBlur, ...props }) => <components.Input {...props} />;
 
 export const Menu: React.FC<MenuProps<any, false>> = ({ children, ...props }) =>
-  props.options.length ? <components.Menu {...props}>{children}</components.Menu> : <NothingFound>Nothing found</NothingFound>;
+  props.options.length ? (
+    <components.Menu {...props}>{children}</components.Menu>
+  ) : (
+    <NothingFound>Nothing found</NothingFound>
+  );

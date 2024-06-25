@@ -2,7 +2,7 @@
 
 import { Utils } from '@voiceflow/common';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 /**
  * this migration adds domains and migrates topics to the domain

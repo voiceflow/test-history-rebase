@@ -1,8 +1,10 @@
 export const DOCS_BASE_LINK = 'https://docs.voiceflow.com/#/';
 
 // bulk import
-export const BULK_IMPORT_SLOTS = 'https://docs.voiceflow.com/#/platform/interaction-model/model-manager?id=bulk-import-slots';
-export const BULK_IMPORT_UTTERANCES = 'https://docs.voiceflow.com/#/features/bulk-import-utterances?id=bulk-import-utterances';
+export const BULK_IMPORT_SLOTS =
+  'https://docs.voiceflow.com/#/platform/interaction-model/model-manager?id=bulk-import-slots';
+export const BULK_IMPORT_UTTERANCES =
+  'https://docs.voiceflow.com/#/features/bulk-import-utterances?id=bulk-import-utterances';
 
 // export
 export const MODEL_EXPORT = 'https://www.voiceflow.com/docs/nlu-management-nlu-data-import-export#toc-1';
@@ -15,7 +17,8 @@ export const CANVAS_CONTROLS = 'https://voiceflow.zendesk.com/hc/en-us/articles/
 export const LINK_TYPE = 'https://voiceflow.zendesk.com/hc/en-us/articles/6140797719565-The-Canvas ';
 
 // channels
-export const CHANNEL_DIFFERENCES = 'https://docs.voiceflow.com/#/platform/project-creation/project-creation?id=differences-between-channels';
+export const CHANNEL_DIFFERENCES =
+  'https://docs.voiceflow.com/#/platform/project-creation/project-creation?id=differences-between-channels';
 // TODO: this document no longer exists
 export const GOOGLE_ACTIONS = 'https://docs.voiceflow.com/#/platform/steps/channel-steps/google-steps';
 export const DIALOGFLOW_ACTIONS = 'https://docs.voiceflow.com/#/platform/steps/channel-steps/dialogflow-steps';
@@ -27,7 +30,8 @@ export const ACCOUNT_LINKING_STEP = 'https://www.voiceflow.com/docs/designing-ch
 export const ALEXA_DIRECTIVE_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/9178889682957-Directive-Steps';
 export const GOOGLE_DIRECTIVE_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/9178889682957-Directive-Steps';
 export const DISPLAY_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/6141573631885-Display-Step-Alexa-Only-';
-export const CUSTOM_RESPOSE = 'https://voiceflow.zendesk.com/hc/en-us/articles/9176403290253-Custom-Response-Step-Dialogflow-';
+export const CUSTOM_RESPOSE =
+  'https://voiceflow.zendesk.com/hc/en-us/articles/9176403290253-Custom-Response-Step-Dialogflow-';
 
 // TODO: we don't have a dedicated pages for these anymore
 export const REMINDER_STEP = 'https://www.voiceflow.com/docs/designing-channel-specific-steps#toc-1';
@@ -38,7 +42,8 @@ export const INTENTS_VIDEO = 'https://www.youtube.com/embed/vuEmXn-lGK0';
 
 // test & prototype
 export const PROTOTYPING = 'https://voiceflow.zendesk.com/hc/en-us/articles/6195171858061-Introduction-to-Transcripts';
-export const ASSISTANT_TRAINING = 'https://docs.voiceflow.com/#/platform/testing/testing?id=train-the-voiceflow-assistant';
+export const ASSISTANT_TRAINING =
+  'https://docs.voiceflow.com/#/platform/testing/testing?id=train-the-voiceflow-assistant';
 export const TEST_TOOL = 'https://learn.voiceflow.com/hc/en-us/articles/9203698793357-Test-Tool';
 
 // publishing
@@ -72,7 +77,8 @@ export const CARD_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/614161
 export const CAROUSEL_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/9176043863309-Carousel-Step';
 export const IMAGE_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/9175900419853-Image-Step';
 export const SPEAK_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/6141291821453-Speak-Step';
-export const STREAM_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/6141616211725-Stream-Step-Alexa-Google-only-';
+export const STREAM_STEP =
+  'https://voiceflow.zendesk.com/hc/en-us/articles/6141616211725-Stream-Step-Alexa-Google-only-';
 export const TEXT_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/6141316622861-Text-Step';
 
 export const BUTTONS_STEP = 'https://voiceflow.zendesk.com/hc/en-us/articles/6156015991949-Buttons-Step';
@@ -103,9 +109,12 @@ export const MVP_CUSTOM_BLOCK_EXAMPLES = 'https://github.com/voiceflow/custom-bl
 // nlp import
 export const NLP_IMPORT_ALEXA = 'https://voiceflow.zendesk.com/hc/en-us/articles/10827996837773';
 export const NLP_IMPORT_LEX_V1 = 'https://voiceflow.zendesk.com/hc/en-us/articles/10827936879629';
-export const NLP_IMPORT_DIALOGFLOW_CX = 'https://voiceflow.zendesk.com/hc/en-us/articles/9481517869325-Dialogflow-CX-Imports-Exports';
-export const NLP_IMPORT_DIALOGFLOW_ES = 'https://voiceflow.zendesk.com/hc/en-us/articles/9499645120781-Dialogflow-ES-Imports-Exports';
-export const NLP_IMPORT_WATSON = 'https://voiceflow.zendesk.com/hc/en-us/articles/9497124882189-IBM-Watson-Imports-Exports';
+export const NLP_IMPORT_DIALOGFLOW_CX =
+  'https://voiceflow.zendesk.com/hc/en-us/articles/9481517869325-Dialogflow-CX-Imports-Exports';
+export const NLP_IMPORT_DIALOGFLOW_ES =
+  'https://voiceflow.zendesk.com/hc/en-us/articles/9499645120781-Dialogflow-ES-Imports-Exports';
+export const NLP_IMPORT_WATSON =
+  'https://voiceflow.zendesk.com/hc/en-us/articles/9497124882189-IBM-Watson-Imports-Exports';
 export const NLP_IMPORT_LUIS = 'https://voiceflow.zendesk.com/hc/en-us/articles/10827676794125';
 export const NLP_IMPORT_NUANCE_MIX = 'https://voiceflow.zendesk.com/hc/en-us/articles/10827898199181';
 export const NLP_IMPORT_RASA2 = 'https://voiceflow.zendesk.com/hc/en-us/articles/10827794283021';

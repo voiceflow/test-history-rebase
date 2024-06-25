@@ -1,5 +1,6 @@
 import { css, styled, transition } from '@ui/styles';
-import { space, SpaceProps } from 'styled-system';
+import type { SpaceProps } from 'styled-system';
+import { space } from 'styled-system';
 
 export interface ContainerProps extends SpaceProps {
   small?: boolean;
@@ -46,7 +47,7 @@ export const Container = styled.div<ContainerProps>`
   font-weight: 600;
   text-transform: uppercase;
   user-select: none;
-  border-radius: ${({ squareRadius }) => (squareRadius ? '8px' : `100%`)};
+  border-radius: ${({ squareRadius }) => (squareRadius ? '8px' : '100%')};
   flex-shrink: 0;
   cursor: default;
 

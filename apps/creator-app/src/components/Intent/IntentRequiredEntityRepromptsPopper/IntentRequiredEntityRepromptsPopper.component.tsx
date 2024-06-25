@@ -1,5 +1,6 @@
 import { useDndContext } from '@dnd-kit/core';
-import { ResponseVariantType, TextResponseVariant } from '@voiceflow/dtos';
+import type { TextResponseVariant } from '@voiceflow/dtos';
+import { ResponseVariantType } from '@voiceflow/dtos';
 import { tid } from '@voiceflow/style';
 import {
   Box,

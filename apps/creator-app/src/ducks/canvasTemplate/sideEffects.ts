@@ -4,10 +4,18 @@ import { toast } from '@voiceflow/ui';
 
 import { waitAsync } from '@/ducks/utils';
 import { getActiveVersionContext } from '@/ducks/versionV2/utils';
-import { Thunk } from '@/store/types';
+import type { Thunk } from '@/store/types';
 
 export const createCanvasTemplate =
-  ({ name, color, nodeIDs }: { name: string; color: string | null; nodeIDs: string[] }): Thunk<Realtime.CanvasTemplate> =>
+  ({
+    name,
+    color,
+    nodeIDs,
+  }: {
+    name: string;
+    color: string | null;
+    nodeIDs: string[];
+  }): Thunk<Realtime.CanvasTemplate> =>
   async (dispatch, getState) => {
     const state = getState();
 
@@ -27,7 +35,9 @@ export const createCanvasTemplate =
 export const updateCanvasTemplate =
   (canvasTemplateID: string, data: Realtime.canvasTemplate.PatchCanvasTemplatePayload): Thunk =>
   async (dispatch, getState) => {
-    await dispatch.sync(Realtime.canvasTemplate.crud.patch({ ...getActiveVersionContext(getState()), key: canvasTemplateID, value: data }));
+    await dispatch.sync(
+      Realtime.canvasTemplate.crud.patch({ ...getActiveVersionContext(getState()), key: canvasTemplateID, value: data })
+    );
   };
 
 export const deleteCanvasTemplate =
@@ -35,5 +45,7 @@ export const deleteCanvasTemplate =
   async (dispatch, getState) => {
     const state = getState();
 
-    await dispatch.sync(Realtime.canvasTemplate.crud.remove({ ...getActiveVersionContext(state), key: canvasTemplateID }));
+    await dispatch.sync(
+      Realtime.canvasTemplate.crud.remove({ ...getActiveVersionContext(state), key: canvasTemplateID })
+    );
   };

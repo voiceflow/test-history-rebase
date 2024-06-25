@@ -10,9 +10,19 @@ interface ActionsMenuItemProps {
   popperContainerRef?: React.Ref<HTMLDivElement>;
 }
 
-const ActionsMenuItem: React.FC<ActionsMenuItemProps> = ({ parentPath, sourcePortID, parentParams, popperContainerRef }) => (
+const ActionsMenuItem: React.FC<ActionsMenuItemProps> = ({
+  parentPath,
+  sourcePortID,
+  parentParams,
+  popperContainerRef,
+}) => (
   <MenuItem label="Actions">
-    <ActionsSubMenu ref={popperContainerRef} parentPath={parentPath} sourcePortID={sourcePortID} parentParams={parentParams} />
+    <ActionsSubMenu
+      ref={popperContainerRef}
+      parentPath={parentPath}
+      sourcePortID={sourcePortID}
+      parentParams={parentParams}
+    />
   </MenuItem>
 );
 

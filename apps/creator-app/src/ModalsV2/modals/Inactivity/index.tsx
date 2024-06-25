@@ -20,29 +20,33 @@ export interface InactivityModalProps {
   onActive: VoidFunction;
 }
 
-const Inactivity = manager.create<InactivityModalProps>('Inactivity', () => ({ api, type, opened, hidden, animated, onActive }) => {
-  const goToDashboard = useDispatch(Router.goToDashboard);
+const Inactivity = manager.create<InactivityModalProps>(
+  'Inactivity',
+  () =>
+    ({ api, type, opened, hidden, animated, onActive }) => {
+      const goToDashboard = useDispatch(Router.goToDashboard);
 
-  return (
-    <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
-      <Modal.Header>INACTIVITY</Modal.Header>
-      <Modal.Body>
-        <S.BodyContainer>
-          <SvgIcon size={100} icon="globe" />
-          <div>
-            Your session is about to expire due to inactivity. You will be returned to the dashboard in
-            <Countdown onComplete={goToDashboard} date={Date.now() + TIMER_COUNT} renderer={countdownRenderer} />
-          </div>
-        </S.BodyContainer>
-      </Modal.Body>
+      return (
+        <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove}>
+          <Modal.Header>INACTIVITY</Modal.Header>
+          <Modal.Body>
+            <S.BodyContainer>
+              <SvgIcon size={100} icon="globe" />
+              <div>
+                Your session is about to expire due to inactivity. You will be returned to the dashboard in
+                <Countdown onComplete={goToDashboard} date={Date.now() + TIMER_COUNT} renderer={countdownRenderer} />
+              </div>
+            </S.BodyContainer>
+          </Modal.Body>
 
-      <Modal.Footer>
-        <Button variant={ButtonVariant.TERTIARY} onClick={onActive}>
-          Dismiss
-        </Button>
-      </Modal.Footer>
-    </Modal>
-  );
-});
+          <Modal.Footer>
+            <Button variant={ButtonVariant.TERTIARY} onClick={onActive}>
+              Dismiss
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      );
+    }
+);
 
 export default Inactivity;

@@ -14,7 +14,10 @@ export interface IAIPromptSettingsTemperatureSlider {
   onValueChange: (value: number) => void;
 }
 
-export const AIPromptSettingsTemperatureSlider: React.FC<IAIPromptSettingsTemperatureSlider> = ({ value, onValueChange }) => (
+export const AIPromptSettingsTemperatureSlider: React.FC<IAIPromptSettingsTemperatureSlider> = ({
+  value,
+  onValueChange,
+}) => (
   <SectionV2.Content pb={0}>
     <TippyTooltip
       delay={250}

@@ -8,7 +8,12 @@ import { useInputFocus } from '@/hooks/input.hook';
 import { buttonStyle, inputStyle } from './MediaLibraryImageUploadURLSection.css';
 import type { IMediaLibraryImageUploadURLSection } from './MediaLibraryImageUploadURLSection.interface';
 
-export const MediaLibraryImageUploadURLSection: React.FC<IMediaLibraryImageUploadURLSection> = ({ error, imageUrl, isLoading, onUrlSubmit }) => {
+export const MediaLibraryImageUploadURLSection: React.FC<IMediaLibraryImageUploadURLSection> = ({
+  error,
+  imageUrl,
+  isLoading,
+  onUrlSubmit,
+}) => {
   const focus = useInputFocus();
   const [value, setValue] = useState(() => imageUrl ?? markupFactory());
   const [isEmpty, setEmpty] = useState(() => isMarkupEmpty(value));

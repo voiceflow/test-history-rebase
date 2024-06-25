@@ -9,5 +9,10 @@ import type { IIntentEditAutomaticRepromptSection } from './IntentEditAutomaticR
 export const IntentEditAutomaticRepromptSection: React.FC<IIntentEditAutomaticRepromptSection> = ({ intent }) => {
   const patchIntent = useDispatch(Designer.Intent.effect.patchOne, intent.id);
 
-  return <IntentAutomaticRepromptSection value={intent.automaticReprompt} onValueChange={(value) => patchIntent({ automaticReprompt: value })} />;
+  return (
+    <IntentAutomaticRepromptSection
+      value={intent.automaticReprompt}
+      onValueChange={(value) => patchIntent({ automaticReprompt: value })}
+    />
+  );
 };

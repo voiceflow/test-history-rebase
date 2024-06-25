@@ -6,7 +6,15 @@ import * as Prototype from '@/ducks/prototype';
 import { currentTranscriptSelector } from '@/ducks/transcript';
 import { ClassName } from '@/styles/constants';
 
-import { AvatarContainer, ContextSubtext, ContextTitle, DefaultUserContainer, LetterContainer, StyledLogo, StyledUser } from './components';
+import {
+  AvatarContainer,
+  ContextSubtext,
+  ContextTitle,
+  DefaultUserContainer,
+  LetterContainer,
+  StyledLogo,
+  StyledUser,
+} from './components';
 
 const TranscriptContext: React.FC = () => {
   const { device, os, browser, name, image } = useSelector(currentTranscriptSelector) ?? {};
@@ -51,7 +59,9 @@ const TranscriptContext: React.FC = () => {
         {image ? renderUserContainer() : <StyledUser icon="userConversation" size={48} color="#EDEDED" />}
       </Box.FlexApart>
 
-      <ContextTitle className={ClassName.TRANSCRIPT_USER_NAME}>Conversation between your agent and {name || 'a test user'}</ContextTitle>
+      <ContextTitle className={ClassName.TRANSCRIPT_USER_NAME}>
+        Conversation between your agent and {name || 'a test user'}
+      </ContextTitle>
 
       <ContextSubtext className={ClassName.TRANSCRIPT_CONTEXT_META}>{transcriptContextMeta}</ContextSubtext>
     </>

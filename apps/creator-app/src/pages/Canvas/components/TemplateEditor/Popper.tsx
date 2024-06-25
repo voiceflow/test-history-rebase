@@ -1,7 +1,9 @@
-import { Popper, PopperTypes } from '@voiceflow/ui';
+import type { PopperTypes } from '@voiceflow/ui';
+import { Popper } from '@voiceflow/ui';
 import React from 'react';
 
-import TemplatePopperEditor, { TemplateEditorProps } from '.';
+import type { TemplateEditorProps } from '.';
+import TemplatePopperEditor from '.';
 
 export interface CanvasTemplateEditorPopperProps extends TemplateEditorProps {
   isOpen: boolean;

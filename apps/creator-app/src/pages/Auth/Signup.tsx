@@ -1,5 +1,6 @@
 import React from 'react';
-import { Redirect, RouteComponentProps } from 'react-router-dom';
+import type { RouteComponentProps } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import SeoHelmet from '@/components/SeoHelmet';
 import { IS_PRIVATE_CLOUD } from '@/config';

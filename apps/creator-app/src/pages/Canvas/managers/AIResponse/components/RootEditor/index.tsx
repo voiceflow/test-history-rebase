@@ -1,5 +1,5 @@
 import { BaseModels, BaseUtils } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, Input, SectionV2, SvgIcon, ThemeColor, TippyTooltip, toast, Toggle } from '@voiceflow/ui';
 import React from 'react';
 
@@ -79,7 +79,12 @@ const Editor: React.FC = () => {
           {!!actions.length && <EditorV2.FooterActionsButton actions={actions} />}
 
           {editor.data.mode !== BaseUtils.ai.PROMPT_MODE.MEMORY && (
-            <Button variant={Button.Variant.PRIMARY} disabled={!hasContent || isLoading} onClick={onPreview} width={127}>
+            <Button
+              variant={Button.Variant.PRIMARY}
+              disabled={!hasContent || isLoading}
+              onClick={onPreview}
+              width={127}
+            >
               {isLoading ? (
                 <SvgIcon icon="arrowSpin" spin />
               ) : (
@@ -104,7 +109,12 @@ const Editor: React.FC = () => {
             headerProps={{ bottomUnit: 1.5 }}
             contentProps={{ bottomOffset: 2.5 }}
           >
-            <RadioGroup isFlat options={AI.SOURCE_OPTIONS} checked={source} onChange={(source) => editor.onChange({ source })} />
+            <RadioGroup
+              isFlat
+              options={AI.SOURCE_OPTIONS}
+              checked={source}
+              onChange={(source) => editor.onChange({ source })}
+            />
           </SectionV2.SimpleContentSection>
 
           <SectionV2.Divider inset />

@@ -1,4 +1,5 @@
-import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
+import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { BadRequestException } from '@voiceflow/exception';
 import type { Observable } from 'rxjs';
 
@@ -12,7 +13,7 @@ export class PayloadSizeLimitInterceptor implements NestInterceptor {
     const maxSizeInBytes = 10 * 1024 * 1024; // 10 MB
 
     if (bodySizeInBytes > maxSizeInBytes) {
-      throw new BadRequestException(`Request body size exceeds the limit: 10 MB`);
+      throw new BadRequestException('Request body size exceeds the limit: 10 MB');
     }
 
     return next.handle();

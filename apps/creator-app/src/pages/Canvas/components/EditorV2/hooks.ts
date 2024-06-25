@@ -1,11 +1,11 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { OptionsMenuOption, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import type * as Realtime from '@voiceflow/realtime-sdk';
+import type { OptionsMenuOption, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
 
-import { NodeEditorV2Props } from '../../managers/types';
+import type { NodeEditorV2Props } from '../../managers/types';
 import { EditorSidebarContext } from '../EditorSidebarV2';
 import { EditorParentMatchContext } from './context';
 

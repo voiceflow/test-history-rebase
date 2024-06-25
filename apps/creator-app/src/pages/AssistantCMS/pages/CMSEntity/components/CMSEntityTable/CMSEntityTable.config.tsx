@@ -9,8 +9,13 @@ import { CMSTableCellTextTooltip } from '../../../../components/CMSTableCellText
 import { CMSTableMemberCell } from '../../../../components/CMSTableMemberCell/CMSTableMemberCell.component';
 import { CMSTableNameCell } from '../../../../components/CMSTableNameCell/CMSTableNameCell.component';
 import type { CMSEntity, CMSFolder } from '../../../../contexts/CMSManager/CMSManager.interface';
-import { localeCompareSort, updatedAtSort, withFieldLocaleCompareSort, withFolderSort } from '../../../../contexts/CMSManager/CMSManager.util';
-import { CMSEntitySortContext } from '../../CMSEntity.interface';
+import {
+  localeCompareSort,
+  updatedAtSort,
+  withFieldLocaleCompareSort,
+  withFolderSort,
+} from '../../../../contexts/CMSManager/CMSManager.util';
+import type { CMSEntitySortContext } from '../../CMSEntity.interface';
 import { EntityTableColumn } from './CMSEntityTable.constant';
 import { CMSEntityTableClassifierCell } from './CMSEntityTableClassifierCell/CMSEntityTableClassifierCell.component';
 
@@ -47,7 +52,9 @@ export const CMS_ENTITY_TABLE_CONFIG: TableConfig<EntityTableColumn, CMSFolder |
       cell: ({ item }) => (
         <Table.Cell.GroupEmpty
           item={item}
-          label={(item) => (item.description ? <CMSTableCellTextTooltip label={item.description} /> : <Table.Cell.Empty />)}
+          label={(item) =>
+            item.description ? <CMSTableCellTextTooltip label={item.description} /> : <Table.Cell.Empty />
+          }
         />
       ),
     },
@@ -62,14 +69,24 @@ export const CMS_ENTITY_TABLE_CONFIG: TableConfig<EntityTableColumn, CMSFolder |
         )
       ),
 
-      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={({ classifier }) => <CMSEntityTableClassifierCell classifier={classifier} />} />,
+      cell: ({ item }) => (
+        <Table.Cell.GroupEmpty
+          item={item}
+          label={({ classifier }) => <CMSEntityTableClassifierCell classifier={classifier} />}
+        />
+      ),
     },
 
     [EntityTableColumn.LAST_EDITOR]: {
       type: EntityTableColumn.LAST_EDITOR,
       name: 'Last editor',
 
-      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={({ updatedByID }) => <CMSTableMemberCell creatorID={updatedByID} />} />,
+      cell: ({ item }) => (
+        <Table.Cell.GroupEmpty
+          item={item}
+          label={({ updatedByID }) => <CMSTableMemberCell creatorID={updatedByID} />}
+        />
+      ),
     },
 
     [EntityTableColumn.UPDATED]: {
@@ -77,7 +94,12 @@ export const CMS_ENTITY_TABLE_CONFIG: TableConfig<EntityTableColumn, CMSFolder |
       name: 'Updated',
       sorter: withFolderSort(updatedAtSort),
 
-      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={({ updatedAt }) => <CMSTableCellFromNowTooltip updatedAt={updatedAt} />} />,
+      cell: ({ item }) => (
+        <Table.Cell.GroupEmpty
+          item={item}
+          label={({ updatedAt }) => <CMSTableCellFromNowTooltip updatedAt={updatedAt} />}
+        />
+      ),
     },
   },
 };

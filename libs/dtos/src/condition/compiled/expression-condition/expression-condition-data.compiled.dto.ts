@@ -4,7 +4,7 @@ import { CompiledConditionAssertionDTO } from '@/condition/condition-assertion/c
 
 export const CompiledExpressionConditionDataDTO = z.object({
   matchAll: z.boolean(),
-  assertions: z.array(CompiledConditionAssertionDTO)
+  assertions: z.array(CompiledConditionAssertionDTO),
 });
 
 export type CompiledExpressionConditionData = z.infer<typeof CompiledExpressionConditionDataDTO>;

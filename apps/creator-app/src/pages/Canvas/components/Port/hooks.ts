@@ -6,7 +6,7 @@ import { EngineContext, PortEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { useEditingMode } from '@/pages/Project/hooks';
 
-import { InternalPortInstance } from './types';
+import type { InternalPortInstance } from './types';
 
 export const usePortInstance = <T extends HTMLElement>() => {
   const ref = React.useRef<T | null>(null);

@@ -1,4 +1,5 @@
-import { Box, SvgIconTypes } from '@voiceflow/ui';
+import type { SvgIconTypes } from '@voiceflow/ui';
+import { Box } from '@voiceflow/ui';
 import React from 'react';
 
 import { AddButton } from './components';
@@ -17,7 +18,18 @@ export interface ItemProps {
   testID?: string;
 }
 
-const Item: React.FC<ItemProps> = ({ icon, className, title, isActive = false, disabled = false, clickable, onClick, children, style, testID }) => (
+const Item: React.FC<ItemProps> = ({
+  icon,
+  className,
+  title,
+  isActive = false,
+  disabled = false,
+  clickable,
+  onClick,
+  children,
+  style,
+  testID,
+}) => (
   <S.Container
     className={className}
     active={isActive}

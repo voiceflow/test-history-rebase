@@ -10,7 +10,7 @@ export interface UTMCookieType {
     utm_medium?: string;
     utm_source?: string;
     utm_term?: string;
-  }
+  };
 }
 export const STEPS_BY_FLOW = {
   [OnboardingType.join]: [StepID.JOIN_WORKSPACE],

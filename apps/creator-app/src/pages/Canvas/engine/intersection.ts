@@ -1,7 +1,7 @@
-import { CanvasAPI } from '@/components/Canvas';
+import type { CanvasAPI } from '@/components/Canvas';
 import type { EmptyViewportSnackbarRef } from '@/pages/Canvas/components/EmptyViewportSnackbar';
 
-import NodeEntity from './entities/nodeEntity';
+import type NodeEntity from './entities/nodeEntity';
 import { EngineConsumer } from './utils';
 
 // can't use interface here due to TS generics issue (extends Record<string, unknown> doesn't work with interfaces)

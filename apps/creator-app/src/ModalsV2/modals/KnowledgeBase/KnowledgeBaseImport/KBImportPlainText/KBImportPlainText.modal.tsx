@@ -83,7 +83,13 @@ export const KBImportPlainText = manager.create(
           </Scroll>
 
           <Modal.Footer>
-            <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.onClose} disabled={closePrevented} testID={tid(TEST_ID, 'cancel')} />
+            <Modal.Footer.Button
+              label="Cancel"
+              variant="secondary"
+              onClick={api.onClose}
+              disabled={closePrevented}
+              testID={tid(TEST_ID, 'cancel')}
+            />
 
             <Modal.Footer.Button
               className={submitButtonStyles}

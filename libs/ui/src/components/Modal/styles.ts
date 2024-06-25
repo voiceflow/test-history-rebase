@@ -1,7 +1,7 @@
 import Box from '@ui/components/Box';
 import { css, keyframes, styled, units } from '@ui/styles';
 import { ANIMATION_SPEED } from '@ui/styles/constants';
-import { TransitionStatus } from 'react-transition-group';
+import type { TransitionStatus } from 'react-transition-group';
 
 export interface ContainerProps {
   status: TransitionStatus;
@@ -32,8 +32,13 @@ export const Container = styled.section<ContainerProps>`
   background: #fff;
   z-index: ${({ theme }) => theme.zIndex.modal};
   pointer-events: all;
-  box-shadow: rgb(19 33 68 / 4%) 0px 12px 24px, rgb(19 33 68 / 4%) 0px 8px 12px, rgb(19 33 68 / 2%) 0px 4px 4px, rgb(19 33 68 / 1%) 0px 2px 2px,
-    rgb(19 33 68 / 1%) 0px 1px 1px, rgb(17 49 96 / 3%) 0px 0px 0px;
+  box-shadow:
+    rgb(19 33 68 / 4%) 0px 12px 24px,
+    rgb(19 33 68 / 4%) 0px 8px 12px,
+    rgb(19 33 68 / 2%) 0px 4px 4px,
+    rgb(19 33 68 / 1%) 0px 2px 2px,
+    rgb(19 33 68 / 1%) 0px 1px 1px,
+    rgb(17 49 96 / 3%) 0px 0px 0px;
 
   ${({ centered, maxWidth = 500, minHeight, maxHeight, fullScreen, verticalMargin = 28 }) =>
     fullScreen
@@ -96,7 +101,9 @@ export const Container = styled.section<ContainerProps>`
         return css`
           transform: translateY(-15px);
           opacity: 0;
-          transition: opacity ${ANIMATION_SPEED}s ease-out, transform ${ANIMATION_SPEED}s ease-out;
+          transition:
+            opacity ${ANIMATION_SPEED}s ease-out,
+            transform ${ANIMATION_SPEED}s ease-out;
         `;
       case 'exited':
         return css`

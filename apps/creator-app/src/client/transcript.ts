@@ -25,12 +25,17 @@ const transcriptClient = {
   find: (projectID: string, queryParams?: string) =>
     apiV2.get<Transcript[]>(`${TRANSCRIPT_PATH}/${projectID}?${queryParams ?? ''}`).then(transcriptAdapter.mapFromDB),
 
-  patchTranscript: (projectID: string, transcriptID: string, data: { notes?: string; tags?: TagType; unread?: boolean }) =>
-    apiV2.patch<Transcript>(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}`, { data }),
+  patchTranscript: (
+    projectID: string,
+    transcriptID: string,
+    data: { notes?: string; tags?: TagType; unread?: boolean }
+  ) => apiV2.patch<Transcript>(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}`, { data }),
 
-  deleteTranscript: (projectID: string, transcriptID: string) => apiV2.delete(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}`),
+  deleteTranscript: (projectID: string, transcriptID: string) =>
+    apiV2.delete(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}`),
 
-  createTranscript: (data: Partial<Transcript> & { versionID: string | null }) => apiV2.put<{ _id: string }>(TRANSCRIPT_PATH, { ...data }),
+  createTranscript: (data: Partial<Transcript> & { versionID: string | null }) =>
+    apiV2.put<{ _id: string }>(TRANSCRIPT_PATH, { ...data }),
 
   getTranscriptDialog: (projectID: string, transcriptID: string) =>
     apiV2.get<AnyTranscriptMessage[]>(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}`).then((dialogs) =>
@@ -38,7 +43,11 @@ const transcriptClient = {
         .filter(
           (message, i) =>
             !i ||
-            !(dialogs[i - 1].type === BaseNode.Utils.TraceType.GOTO && message.format === FormatType.Request && isIntentRequest(message.payload))
+            !(
+              dialogs[i - 1].type === BaseNode.Utils.TraceType.GOTO &&
+              message.format === FormatType.Request &&
+              isIntentRequest(message.payload)
+            )
         )
         .map(dialogAdapter.fromDB)
         .filter((message): message is Message => Boolean(message))
@@ -48,7 +57,9 @@ const transcriptClient = {
     apiV2.get<boolean>(`${TRANSCRIPT_PATH}/${projectID}/hasUnreadTranscripts`).then((response) => response),
 
   exportTranscript: (projectID: string, transcriptID: string, params: { format: TranscriptExportFormat }) =>
-    apiV2.get<Blob>(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}/export?${new URLSearchParams(params).toString()}`).then((response) => response),
+    apiV2
+      .get<Blob>(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}/export?${new URLSearchParams(params).toString()}`)
+      .then((response) => response),
 
   setInteractUtteranceAddedTo: (transcriptID: string, projectID: string, intentID: string, turnID: string) =>
     apiV2.put(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}/${ADDED_UTTERANCES_PATH}`, {
@@ -56,7 +67,13 @@ const transcriptClient = {
       turnID,
     }),
 
-  setTurnUtteranceAddedTo: (transcriptID: string, projectID: string, turnID: string, intentID: string, utterancesCount: number) =>
+  setTurnUtteranceAddedTo: (
+    transcriptID: string,
+    projectID: string,
+    turnID: string,
+    intentID: string,
+    utterancesCount: number
+  ) =>
     apiV2.put(`${TRANSCRIPT_PATH}/${projectID}/${transcriptID}/${UTTERANCE_ANNOTATION}`, {
       turnID,
       intentID,

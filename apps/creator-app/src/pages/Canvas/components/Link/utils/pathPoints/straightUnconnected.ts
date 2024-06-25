@@ -1,8 +1,8 @@
-import { PathPoints } from '@/types';
+import type { PathPoints } from '@/types';
 
 import { STRAIGHT_PATH_OFFSET } from '../../constants';
 import { createPoint } from '../helpers';
-import { LinkedRects } from '../types';
+import type { LinkedRects } from '../types';
 import {
   getSourceStartLeftX,
   getSourceStartLeftY,
@@ -15,8 +15,14 @@ import {
   isTargetEndLeftXToRightOfSourceStartLeftWithoutStraightOffset,
   isTargetEndLeftXToRightOfSourceStartRightXWithStraightOffset,
 } from './helpers';
-import { getLeftStraightLinePoints, getLeftZLikePoints, getRightStraightLinePoints, getRightZLikePoints, isStraightLine } from './straightHelpers';
-import { GetPathPointsOptions } from './types';
+import {
+  getLeftStraightLinePoints,
+  getLeftZLikePoints,
+  getRightStraightLinePoints,
+  getRightZLikePoints,
+  isStraightLine,
+} from './straightHelpers';
+import type { GetPathPointsOptions } from './types';
 
 /**
  * returns points for J-like right path

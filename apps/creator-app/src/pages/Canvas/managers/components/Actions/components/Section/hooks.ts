@@ -1,5 +1,5 @@
-import { EmptyObject } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { EmptyObject } from '@voiceflow/common';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { useTrackingEvents } from '@/hooks';
@@ -16,9 +16,18 @@ interface ActionsOptions {
 export const useActions = ({ editor, portID }: ActionsOptions) => {
   const [trackingEvents] = useTrackingEvents();
 
-  const { options, targetNode, hasURLStep, lastCreatedStepID, hasNavigationStep, targetNodeIsActions, targetNodeSteps } = useActionsOptions({
+  const {
+    options,
+    targetNode,
+    hasURLStep,
+    lastCreatedStepID,
+    hasNavigationStep,
+    targetNodeIsActions,
+    targetNodeSteps,
+  } = useActionsOptions({
     sourcePortID: portID,
-    goToActions: ({ sourcePortID, actionNodeID }) => editor.goToNested({ path: PATH, params: { sourcePortID, actionNodeID } }),
+    goToActions: ({ sourcePortID, actionNodeID }) =>
+      editor.goToNested({ path: PATH, params: { sourcePortID, actionNodeID } }),
   });
 
   const onRemove = async (_: number, item: Realtime.NodeData<EmptyObject>) => {

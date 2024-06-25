@@ -1,5 +1,5 @@
 import { datadogRum } from '@datadog/browser-rum';
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import { SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
@@ -108,7 +108,14 @@ const Speaker: React.FC<SpeakerProps> = ({ voice, platform, getSSMLToPlay }) => 
   return (
     <TippyTooltip content={playing ? 'Stop' : 'Play'} placement="top" offset={[0, 0]}>
       <SpeakerWrapper isPlaying={playing}>
-        <SvgIcon className={ClassName.SSML_PLAY_AUDIO} onClick={onSpeak} color="#6E849A" icon={icon} size={loading ? 14 : 16} spin={loading} />
+        <SvgIcon
+          className={ClassName.SSML_PLAY_AUDIO}
+          onClick={onSpeak}
+          color="#6E849A"
+          icon={icon}
+          size={loading ? 14 : 16}
+          spin={loading}
+        />
       </SpeakerWrapper>
     </TippyTooltip>
   );

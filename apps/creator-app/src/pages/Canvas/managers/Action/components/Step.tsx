@@ -1,11 +1,11 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Popper, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import { HSLShades } from '@/constants';
+import type { HSLShades } from '@/constants';
 import { useSyncedLookup } from '@/hooks';
 import Step, { Item, Section, StepButton, SuccessItem } from '@/pages/Canvas/components/Step';
-import { ConnectedStep } from '@/pages/Canvas/managers/types';
+import type { ConnectedStep } from '@/pages/Canvas/managers/types';
 
 import StepPreview from './StepPreview';
 
@@ -26,7 +26,10 @@ const ConnectedActionStep: ConnectedStep<Realtime.NodeData.Trace> = ({ ports, da
   const pathsByPortID = useSyncedLookup(ports.out.dynamic, data.paths);
 
   const paths = React.useMemo(
-    () => ports.out.dynamic.filter((portID) => pathsByPortID[portID]).map<Path>((portID) => ({ ...pathsByPortID[portID], portID })),
+    () =>
+      ports.out.dynamic
+        .filter((portID) => pathsByPortID[portID])
+        .map<Path>((portID) => ({ ...pathsByPortID[portID], portID })),
     [pathsByPortID, ports.out.dynamic, data.paths]
   );
 
@@ -43,9 +46,13 @@ const ConnectedActionStep: ConnectedStep<Realtime.NodeData.Trace> = ({ ports, da
             !!data.body && (
               <Popper
                 placement="right-start"
-                renderContent={({ onClose }) => <StepPreview data={data} onClose={onClose} onOpenEditor={() => engine.setActive(data.nodeID)} />}
+                renderContent={({ onClose }) => (
+                  <StepPreview data={data} onClose={onClose} onOpenEditor={() => engine.setActive(data.nodeID)} />
+                )}
               >
-                {({ onToggle, ref, isOpened }) => <StepButton ref={ref} onClick={stopPropagation(onToggle)} icon="preview" isActive={isOpened} />}
+                {({ onToggle, ref, isOpened }) => (
+                  <StepButton ref={ref} onClick={stopPropagation(onToggle)} icon="preview" isActive={isOpened} />
+                )}
               </Popper>
             )
           }
@@ -57,7 +64,15 @@ const ConnectedActionStep: ConnectedStep<Realtime.NodeData.Trace> = ({ ports, da
           {paths.map((path) => {
             const Container = path.isDefault ? SuccessItem : Item;
 
-            return <Container key={path.portID} label={path.label} placeholder="Enter path name" portID={path.portID} multilineLabel />;
+            return (
+              <Container
+                key={path.portID}
+                label={path.label}
+                placeholder="Enter path name"
+                portID={path.portID}
+                multilineLabel
+              />
+            );
           })}
         </Section>
       )}

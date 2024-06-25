@@ -28,7 +28,9 @@ interface HoverAPI {
   hoverHandlers: Record<HoverEventHandler, () => void>;
 }
 
-export const useHover = ({ onStart, onEnd, onMove, cleanupOnOverride = true }: HoverOptions = { onStart: () => true }): HoverAPI => {
+export const useHover = (
+  { onStart, onEnd, onMove, cleanupOnOverride = true }: HoverOptions = { onStart: () => true }
+): HoverAPI => {
   const onHoverEnd = React.useRef<(() => void) | null>(null);
   const [isHovered, setHovering] = React.useState(false);
   const [isOverridden, enableOverride, disableOverride] = useEnableDisable();
@@ -81,7 +83,10 @@ export const useHover = ({ onStart, onEnd, onMove, cleanupOnOverride = true }: H
 
   const wrapElement = React.useCallback((el: JSX.Element) => <HoverProvider value={api}>{el}</HoverProvider>, [api]);
 
-  const hoverHandlers = React.useMemo(() => ({ onMouseEnter, onMouseLeave, onMouseMove: onMove ? onMouseMove : undefined }), []);
+  const hoverHandlers = React.useMemo(
+    () => ({ onMouseEnter, onMouseLeave, onMouseMove: onMove ? onMouseMove : undefined }),
+    []
+  );
 
   return {
     isHovered: !isOverridden && isHovered,

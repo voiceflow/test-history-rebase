@@ -3,7 +3,7 @@ import React from 'react';
 
 import { useEnableDisable, useRAF } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { MergeLayerAPI } from '@/pages/Canvas/types';
+import type { MergeLayerAPI } from '@/pages/Canvas/types';
 import MouseMovement from '@/utils/mouseMovement';
 
 export const useMergeLayerAPI = <T extends HTMLElement>(previewRef: React.RefObject<T>) => {

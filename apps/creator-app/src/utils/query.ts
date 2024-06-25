@@ -1,6 +1,6 @@
 import { parseQuery } from '@voiceflow/ui';
 
-import { Query } from '@/models';
+import type { Query } from '@/models';
 
 export { stringifyQuery as stringify } from '@voiceflow/ui';
 

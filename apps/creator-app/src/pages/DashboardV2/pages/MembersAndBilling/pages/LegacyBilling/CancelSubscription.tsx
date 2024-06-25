@@ -3,7 +3,7 @@ import React from 'react';
 
 import Page from '@/components/Page';
 import * as ModalsV2 from '@/ModalsV2';
-import { PlanSubscription } from '@/models';
+import type { PlanSubscription } from '@/models';
 
 interface CancelSubscriptionProps {
   planSubscription: PlanSubscription | null;
@@ -23,7 +23,9 @@ const CancelSubscription: React.FC<CancelSubscriptionProps> = ({ planSubscriptio
           <Box.FlexApart>
             <div>
               <Page.Section.Title>Cancel Subscription</Page.Section.Title>
-              <Page.Section.Description>Pro features will be available until the end of the current billing cycle.</Page.Section.Description>
+              <Page.Section.Description>
+                Pro features will be available until the end of the current billing cycle.
+              </Page.Section.Description>
             </div>
 
             <TippyTooltip

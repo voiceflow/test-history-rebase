@@ -9,7 +9,7 @@ import * as Organization from '@/ducks/organization';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch, useGetPlanLimitedConfig, useOnAddSeats, useSelector } from '@/hooks';
 import { useGetConditionalLimit } from '@/hooks/planLimitV3';
-import { VoidInternalProps } from '@/ModalsV2/types';
+import type { VoidInternalProps } from '@/ModalsV2/types';
 import { isEditorUserRole } from '@/utils/role';
 
 import { useDedupeInvites, useInviteLink } from '../hooks';

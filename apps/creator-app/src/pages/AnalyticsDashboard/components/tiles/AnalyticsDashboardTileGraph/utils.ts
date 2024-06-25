@@ -1,7 +1,7 @@
 import { AreaChart } from '@voiceflow/ui';
 
 import { PeriodFilterOption } from '../../../constants';
-import { GraphResult } from '../../../types';
+import type { GraphResult } from '../../../types';
 
 type AreaChartFormatter = typeof AreaChart.MonthlyDateFormatter;
 

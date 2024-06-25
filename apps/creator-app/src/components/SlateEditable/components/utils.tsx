@@ -1,11 +1,14 @@
-import { preventDefault, SvgIconTypes, System } from '@voiceflow/ui';
+import type { SvgIconTypes, System } from '@voiceflow/ui';
+import { preventDefault } from '@voiceflow/ui';
 import React from 'react';
-import { Editor } from 'slate';
-import { PickByValue } from 'utility-types';
+import type { Editor } from 'slate';
+import type { PickByValue } from 'utility-types';
 
-import { ElementProperty, Hotkey, TextProperty } from '../constants';
+import type { ElementProperty, TextProperty } from '../constants';
+import { Hotkey } from '../constants';
 import { useSlateEditor } from '../contexts';
-import { EditorAPI, Element, Text } from '../editor';
+import type { Element, Text } from '../editor';
+import { EditorAPI } from '../editor';
 import { useEditorHotkey } from '../hooks';
 import IconButton from './IconButton';
 
@@ -32,7 +35,8 @@ interface CreateTextPropertyButtonOptions<P extends TextProperty> extends Create
   removable?: boolean;
 }
 
-interface CreateToggleTextPropertyButtonOptions<P extends BooleanTextPropertyKey> extends CreatePropertyButtonBaseOptions {
+interface CreateToggleTextPropertyButtonOptions<P extends BooleanTextPropertyKey>
+  extends CreatePropertyButtonBaseOptions {
   property: P;
 }
 
@@ -58,7 +62,8 @@ const createButton =
       }
     });
 
-    if (Component) return <Component icon={icon} active={active} onMouseDown={preventDefault(() => onAction(editor, active))} />;
+    if (Component)
+      return <Component icon={icon} active={active} onMouseDown={preventDefault(() => onAction(editor, active))} />;
 
     return <IconButton icon={icon} active={active} onMouseDown={preventDefault(() => onAction(editor, active))} />;
   };

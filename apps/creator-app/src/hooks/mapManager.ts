@@ -1,5 +1,7 @@
-import { Eventual, Utils } from '@voiceflow/common';
-import { ArrayItem, useCachedValue, useCreateConst, useForceUpdate, usePersistFunction } from '@voiceflow/ui';
+import type { Eventual } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import type { ArrayItem } from '@voiceflow/ui';
+import { useCachedValue, useCreateConst, useForceUpdate, usePersistFunction } from '@voiceflow/ui';
 import type { DebouncedFunc } from 'lodash';
 import _debounce from 'lodash/debounce';
 import moize from 'moize';

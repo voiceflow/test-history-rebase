@@ -1,7 +1,7 @@
 import { Slider } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { INLUConfidenceSlider } from './NLUConfidenceSlider.interface';
+import type { INLUConfidenceSlider } from './NLUConfidenceSlider.interface';
 
 export const NLUConfidenceSlider: React.FC<INLUConfidenceSlider> = ({
   value,

@@ -1,28 +1,38 @@
 import { css, styled } from '@ui/styles';
-import * as CSS from 'csstype';
+import type * as CSS from 'csstype';
+import type {
+  BordersProps,
+  BoxShadowProps,
+  ColorProps,
+  FlexboxProps,
+  LayoutProps,
+  PositionProps,
+  SpaceProps,
+  TextShadowProps,
+  TypographyProps,
+} from 'styled-system';
 import {
   border,
   borderRadius,
-  BordersProps,
   boxShadow,
-  BoxShadowProps,
   color,
-  ColorProps,
   flexbox,
-  FlexboxProps,
   layout,
-  LayoutProps,
   position,
-  PositionProps,
   space,
-  SpaceProps,
   textShadow,
-  TextShadowProps,
   typography,
-  TypographyProps,
 } from 'styled-system';
 
-import { flexApartStyles, flexAroundStyles, flexCenterStyles, flexColumnStyles, flexEndStyles, flexStartStyles, flexStyles } from '../Flex';
+import {
+  flexApartStyles,
+  flexAroundStyles,
+  flexCenterStyles,
+  flexColumnStyles,
+  flexEndStyles,
+  flexStartStyles,
+  flexStyles,
+} from '../Flex';
 
 export type BoxProps = ColorProps &
   LayoutProps &

@@ -1,10 +1,11 @@
-import { SvgIcon, SvgIconTypes, useLinkedState } from '@voiceflow/ui';
+import type { SvgIconTypes } from '@voiceflow/ui';
+import { SvgIcon, useLinkedState } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
-import { EditableTextAPI } from '@/components/EditableText';
+import type { EditableTextAPI } from '@/components/EditableText';
 import { PortEntityProvider } from '@/pages/Canvas/contexts';
-import { ChipAPI } from '@/pages/Canvas/types';
+import type { ChipAPI } from '@/pages/Canvas/types';
 import { ClassName } from '@/styles/constants';
 
 import PlayButton from '../PlayButton';

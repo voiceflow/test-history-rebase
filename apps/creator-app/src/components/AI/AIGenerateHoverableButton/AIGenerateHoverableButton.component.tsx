@@ -16,5 +16,12 @@ export const AIGenerateHoverableButton: React.FC<IAIGenerateHoverableButton> = (
     onClick: () => onGenerate({ quantity }),
   }));
 
-  return <AIGenerateBaseButton {...props} onClick={() => onGenerate({ quantity: quantities[0] })} options={options} hoverOpen />;
+  return (
+    <AIGenerateBaseButton
+      {...props}
+      onClick={() => onGenerate({ quantity: quantities[0] })}
+      options={options}
+      hoverOpen
+    />
+  );
 };

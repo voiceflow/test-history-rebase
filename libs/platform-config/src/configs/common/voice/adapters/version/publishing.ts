@@ -1,9 +1,9 @@
 import * as Base from '@platform-config/configs/base';
 import { Config as ConfigUtils } from '@platform-config/configs/utils';
-import { BaseVersion } from '@voiceflow/base-types';
-import { SimpleAdapter, SmartSimpleAdapter } from 'bidirectional-adapter';
+import type { BaseVersion } from '@voiceflow/base-types';
+import type { SimpleAdapter, SmartSimpleAdapter } from 'bidirectional-adapter';
 
-import * as Models from '../../models';
+import type * as Models from '../../models';
 
 export type FromAndToDBOptions = Base.Adapters.Version.Publishing.FromAndToDBOptions;
 

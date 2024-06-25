@@ -4,7 +4,7 @@ import React from 'react';
 import AceEditor, { ACE_EDITOR_COLORS, ACE_EDITOR_OPTIONS_V2 } from '@/components/AceEditor';
 
 import { RAW_ACE_EDITOR_COLORS } from '../constants';
-import { Response } from '../types';
+import type { Response } from '../types';
 import ResponseMetadata from './ResponseMetadata';
 
 interface ResponseBodyProps {

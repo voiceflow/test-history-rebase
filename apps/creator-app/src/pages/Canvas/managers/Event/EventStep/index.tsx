@@ -1,10 +1,10 @@
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { HSLShades } from '@/constants';
+import type { HSLShades } from '@/constants';
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
-import { ConnectedStep } from '@/pages/Canvas/managers/types';
+import type { ConnectedStep } from '@/pages/Canvas/managers/types';
 
 import { NODE_CONFIG } from '../constants';
 
@@ -23,8 +23,17 @@ export const EventStep: React.FC<IntentStepProps> = ({ nodeID, nextPortID, label
   </Step>
 );
 
-const ConnectedEventStep: ConnectedStep<Realtime.NodeData.Event, Realtime.NodeData.EventBuiltInPorts> = ({ ports, data, palette }) => (
-  <EventStep nodeID={data.nodeID} nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]} label={data.requestName} palette={palette} />
+const ConnectedEventStep: ConnectedStep<Realtime.NodeData.Event, Realtime.NodeData.EventBuiltInPorts> = ({
+  ports,
+  data,
+  palette,
+}) => (
+  <EventStep
+    nodeID={data.nodeID}
+    nextPortID={ports.out.builtIn[BaseModels.PortType.NEXT]}
+    label={data.requestName}
+    palette={palette}
+  />
 );
 
 export default ConnectedEventStep;

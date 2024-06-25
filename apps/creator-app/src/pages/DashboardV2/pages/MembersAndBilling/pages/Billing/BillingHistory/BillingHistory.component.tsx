@@ -1,4 +1,4 @@
-import { Invoice } from '@voiceflow/dtos';
+import type { Invoice } from '@voiceflow/dtos';
 import { Box, SectionV2 } from '@voiceflow/ui';
 import { Link } from '@voiceflow/ui-next';
 import React from 'react';
@@ -47,7 +47,11 @@ const BillingHistory: React.FC<BillingHistoryProps> = ({ data, loadMore, status,
       </React.Fragment>
     ))}
 
-    {hasMore && <S.LoadMoreButton onClick={loadMore}>{status === Status.LOADING_MORE ? 'Loading...' : 'View More'}</S.LoadMoreButton>}
+    {hasMore && (
+      <S.LoadMoreButton onClick={loadMore}>
+        {status === Status.LOADING_MORE ? 'Loading...' : 'View More'}
+      </S.LoadMoreButton>
+    )}
   </Page.Section>
 );
 

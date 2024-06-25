@@ -1,4 +1,5 @@
-import { SmartReducerAPi, useSmartReducerV2 } from '@voiceflow/ui';
+import type { SmartReducerAPi } from '@voiceflow/ui';
+import { useSmartReducerV2 } from '@voiceflow/ui';
 import React from 'react';
 
 interface HotkeysReducerState {

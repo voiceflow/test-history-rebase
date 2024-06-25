@@ -1,9 +1,9 @@
 import { BaseNode } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { DataConfigurableInterface } from '../constants';
-import { BaseLogicType, LogicUnitDataType } from '../types';
+import type { BaseLogicType, LogicUnitDataType } from '../types';
 import ConditionExpression from './ConditionExpression';
 import ConditionLogicGroup from './ConditionLogicGroup';
 import LogicUnit from './LogicUnit';

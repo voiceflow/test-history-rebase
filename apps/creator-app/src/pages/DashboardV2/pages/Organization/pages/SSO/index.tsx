@@ -97,7 +97,12 @@ const OrganizationSSO: React.FC = () => {
 
   return (
     <>
-      {state.id && <VoiceflowFields entityID="https://voiceflow.com" acsURL={`${AUTH_API_ENDPOINT}/v1/sso/saml2/${state.id}/authenticate`} />}
+      {state.id && (
+        <VoiceflowFields
+          entityID="https://voiceflow.com"
+          acsURL={`${AUTH_API_ENDPOINT}/v1/sso/saml2/${state.id}/authenticate`}
+        />
+      )}
 
       <Page.Section>
         <EntityURLField value={state.issuer} onChange={stateAPI.issuer.set} />

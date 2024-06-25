@@ -1,8 +1,8 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
 import { CMS_FUNCTIONS_LEARN_MORE } from '@/constants/link.constant';
 
-import { NodeManagerConfigV3 } from '../types';
+import type { NodeManagerConfigV3 } from '../types';
 import { FunctionEditor } from './FunctionEditor/Function.editor';
 import { NODE_CONFIG } from './FunctionManager.constants';
 import { FunctionStep } from './FunctionStep/Function.step';

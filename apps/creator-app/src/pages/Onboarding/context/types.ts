@@ -1,10 +1,10 @@
-import { SmartReducerAPi } from '@voiceflow/ui';
+import type { SmartReducerAPi } from '@voiceflow/ui';
 
-import { Query } from '@/models';
+import type { Query } from '@/models';
 
-import { OnboardingType } from '../onboardingType.enum';
-import { StepID } from '../stepID.enum';
-import { STEPS_BY_FLOW } from './constants';
+import type { OnboardingType } from '../onboardingType.enum';
+import type { StepID } from '../stepID.enum';
+import type { STEPS_BY_FLOW } from './constants';
 
 export interface PersonalizeWorkspaceMeta {
   useCase: string;

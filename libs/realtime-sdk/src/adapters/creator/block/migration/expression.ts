@@ -1,16 +1,30 @@
-import { ExpressionData as NodeDataExpressionData } from '@realtime-sdk/models';
-import { ADVANCE_LOGIC_TYPES, expressionfyV2, getHighestDepth, hasAdvanceChildExpression } from '@realtime-sdk/utils/expression';
+import type { ExpressionData as NodeDataExpressionData } from '@realtime-sdk/models';
+import {
+  ADVANCE_LOGIC_TYPES,
+  expressionfyV2,
+  getHighestDepth,
+  hasAdvanceChildExpression,
+} from '@realtime-sdk/utils/expression';
 import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 
-const LogicGroupConditionType = new Set<string>([BaseNode.Utils.ExpressionTypeV2.AND, BaseNode.Utils.ExpressionTypeV2.OR]);
+const LogicGroupConditionType = new Set<string>([
+  BaseNode.Utils.ExpressionTypeV2.AND,
+  BaseNode.Utils.ExpressionTypeV2.OR,
+]);
 
 // identifies the logicInterface for older IF data
-export const getLogicInterface = (expression: BaseNode.Utils.Expression, hasParent = false): BaseNode.Utils.ConditionsLogicInterface => {
+export const getLogicInterface = (
+  expression: BaseNode.Utils.Expression,
+  hasParent = false
+): BaseNode.Utils.ConditionsLogicInterface => {
   const valueIsArray = Array.isArray(expression.value);
 
-  if (!valueIsArray && (expression.type === BaseNode.Utils.ExpressionType.VALUE || ADVANCE_LOGIC_TYPES.includes(expression.type))) {
+  if (
+    !valueIsArray &&
+    (expression.type === BaseNode.Utils.ExpressionType.VALUE || ADVANCE_LOGIC_TYPES.includes(expression.type))
+  ) {
     return BaseNode.Utils.ConditionsLogicInterface.EXPRESSION;
   }
 
@@ -21,14 +35,22 @@ export const getLogicInterface = (expression: BaseNode.Utils.Expression, hasPare
      * 3. Inner logic should NOT be of type advance, not, minus, plus, divide, multiply
      * 4. Base condition of logic group can only be AND or OR
      */
-    if (!hasParent && getHighestDepth(expression) === 2 && !hasAdvanceChildExpression(expression) && LogicGroupConditionType.has(expression.type)) {
+    if (
+      !hasParent &&
+      getHighestDepth(expression) === 2 &&
+      !hasAdvanceChildExpression(expression) &&
+      LogicGroupConditionType.has(expression.type)
+    ) {
       return BaseNode.Utils.ConditionsLogicInterface.LOGIC_GROUP;
     }
 
     if (getHighestDepth(expression) < 2 || hasParent) {
-      const isVariable = (expression.value as BaseNode.Utils.ExpressionTuple)[0].type === BaseNode.Utils.ExpressionType.VARIABLE;
+      const isVariable =
+        (expression.value as BaseNode.Utils.ExpressionTuple)[0].type === BaseNode.Utils.ExpressionType.VARIABLE;
 
-      return isVariable ? BaseNode.Utils.ConditionsLogicInterface.VARIABLE : BaseNode.Utils.ConditionsLogicInterface.VALUE;
+      return isVariable
+        ? BaseNode.Utils.ConditionsLogicInterface.VARIABLE
+        : BaseNode.Utils.ConditionsLogicInterface.VALUE;
     }
   }
 
@@ -82,7 +104,10 @@ export const sanitizeExpression = (
         }),
       } as BaseNode.Utils.LogicGroupData;
     default:
-      return { type: BaseNode.Utils.ExpressionTypeV2.ADVANCE, value: expressionfyV2(expression) } as BaseNode.Utils.ExpressionV2;
+      return {
+        type: BaseNode.Utils.ExpressionTypeV2.ADVANCE,
+        value: expressionfyV2(expression),
+      } as BaseNode.Utils.ExpressionV2;
   }
 };
 

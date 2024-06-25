@@ -5,7 +5,14 @@ import type { ReactEditor } from 'slate-react';
 
 import type { PluginsEditor, PluginsRange, PluginsText } from './plugins';
 
-export type { Color, Element, ElementType, LinkElement, Text, VariableElement } from '@voiceflow/base-types/build/esm/text';
+export type {
+  Color,
+  Element,
+  ElementType,
+  LinkElement,
+  Text,
+  VariableElement,
+} from '@voiceflow/base-types/build/esm/text';
 
 export interface Editor extends BaseEditor, ReactEditor, HistoryEditor, PluginsEditor {}
 

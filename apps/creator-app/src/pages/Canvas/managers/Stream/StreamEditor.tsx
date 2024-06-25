@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Checkbox, ErrorMessageWithDivider } from '@voiceflow/ui';
 import React from 'react';
 
@@ -10,14 +10,19 @@ import VariablesInput from '@/components/VariablesInput';
 import * as History from '@/ducks/history';
 import { useActiveProjectPlatform, useDispatch, useEnableDisable } from '@/hooks';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
-import { NodeEditor } from '@/pages/Canvas/managers/types';
+import type { NodeEditor } from '@/pages/Canvas/managers/types';
 import { containsVariable, isHTTPsURL } from '@/utils/string.util';
 
 import { HelpMessage, HelpTooltip, VisualsForm } from './components';
 
 const isValidURL = (url: string): boolean => isHTTPsURL(url) || containsVariable(url);
 
-const StreamEditor: NodeEditor<Realtime.NodeData.Stream, Realtime.NodeData.StreamBuiltInPorts> = ({ data, node, engine, onChange }) => {
+const StreamEditor: NodeEditor<Realtime.NodeData.Stream, Realtime.NodeData.StreamBuiltInPorts> = ({
+  data,
+  node,
+  engine,
+  onChange,
+}) => {
   const platform = useActiveProjectPlatform();
 
   const [invalidAudio, setValidAudio, setInvalidAudio] = useEnableDisable(false);
@@ -60,10 +65,18 @@ const StreamEditor: NodeEditor<Realtime.NodeData.Stream, Realtime.NodeData.Strea
     <Content
       footer={() => (
         <Controls
-          tutorial={{ content: <HelpTooltip />, blockType: data.type, helpTitle: 'Need Help?', helpMessage: <HelpMessage /> }}
+          tutorial={{
+            content: <HelpTooltip />,
+            blockType: data.type,
+            helpTitle: 'Need Help?',
+            helpMessage: <HelpMessage />,
+          }}
           {...(isAlexa && {
             menu: (
-              <OverflowMenu options={[{ label: hasPause ? 'Remove Custom Pause' : 'Add Custom Pause', onClick: togglePause }]} placement="auto" />
+              <OverflowMenu
+                options={[{ label: hasPause ? 'Remove Custom Pause' : 'Add Custom Pause', onClick: togglePause }]}
+                placement="auto"
+              />
             ),
           })}
         />

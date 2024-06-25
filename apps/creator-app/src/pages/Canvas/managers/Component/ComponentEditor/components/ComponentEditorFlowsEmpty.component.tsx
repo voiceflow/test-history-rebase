@@ -1,4 +1,4 @@
-import { Flow } from '@voiceflow/dtos';
+import type { Flow } from '@voiceflow/dtos';
 import { Box, Button, EmptyPage } from '@voiceflow/ui-next';
 import React from 'react';
 

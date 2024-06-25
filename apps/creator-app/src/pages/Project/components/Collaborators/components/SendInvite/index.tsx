@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
-import { ProjectUserRole, UserRole } from '@voiceflow/dtos';
+import type { ProjectUserRole } from '@voiceflow/dtos';
+import { UserRole } from '@voiceflow/dtos';
 import { Flex, Input, Select, toast, useEnableDisable } from '@voiceflow/ui';
 import React from 'react';
 

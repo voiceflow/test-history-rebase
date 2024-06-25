@@ -1,9 +1,9 @@
 import { BarChart, Box, SectionV2, Switch } from '@voiceflow/ui';
-import { BaseProps } from '@voiceflow/ui-next';
+import type { BaseProps } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { QueryState } from '../../../constants';
-import { BarChartResult, QueryResult } from '../../../types';
+import type { BarChartResult, QueryResult } from '../../../types';
 import AnalyticsDashboardChartEmpty from '../AnalyticsDashboardTileEmpty';
 
 interface AnalyticsDashboardChartBarProps extends BaseProps {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ItemProps } from '../types';
+import type { ItemProps } from '../types';
 import Item from './StepItem';
 
 export type ElseStepV2ItemProps = Omit<ItemProps, 'icon' | 'portColor' | 'iconColor' | 'labelVariant'>;

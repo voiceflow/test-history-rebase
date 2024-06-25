@@ -1,13 +1,13 @@
 import { BaseModels } from '@voiceflow/base-types';
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { HSLShades } from '@/constants';
+import type { HSLShades } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
 import { ActiveDiagramNormalizedEntitiesAndVariablesContext } from '@/pages/Canvas/contexts';
-import { ConnectedStep } from '@/pages/Canvas/managers/types';
+import type { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { transformVariablesToReadable } from '@/utils/slot';
 
 import { NODE_CONFIG } from '../constants';
@@ -23,7 +23,16 @@ export interface StreamStepProps {
   palette: HSLShades;
 }
 
-export const StreamStep: React.FC<StreamStepProps> = ({ audio, platform, customPause, nodeID, nextPortID, pausePortID, previousPortID, palette }) => {
+export const StreamStep: React.FC<StreamStepProps> = ({
+  audio,
+  platform,
+  customPause,
+  nodeID,
+  nextPortID,
+  pausePortID,
+  previousPortID,
+  palette,
+}) => {
   const isGoogle = Realtime.Utils.typeGuards.isGooglePlatform(platform);
 
   return (
@@ -52,7 +61,12 @@ export const StreamStep: React.FC<StreamStepProps> = ({ audio, platform, customP
   );
 };
 
-const ConnectedStreamStep: ConnectedStep<Realtime.NodeData.Stream, Realtime.NodeData.StreamBuiltInPorts> = ({ ports, data, platform, palette }) => {
+const ConnectedStreamStep: ConnectedStep<Realtime.NodeData.Stream, Realtime.NodeData.StreamBuiltInPorts> = ({
+  ports,
+  data,
+  platform,
+  palette,
+}) => {
   const entitiesAndVariables = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext)!;
 
   return (

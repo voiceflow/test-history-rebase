@@ -1,4 +1,4 @@
-import { Action } from 'typescript-fsa';
+import type { Action } from 'typescript-fsa';
 
 // allows us to group actions that are not purely atomic
 export interface Transaction {

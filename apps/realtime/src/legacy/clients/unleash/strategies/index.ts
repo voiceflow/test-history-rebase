@@ -1,5 +1,5 @@
 import NotWithWorkspaceIdStrategy from './notWithWorkspaceId';
-import Strategy from './strategy';
+import type Strategy from './strategy';
 import WithOrganizationIdStrategy from './withOrganizationId';
 import WithWorkspaceCreatedAfter from './withWorkspaceCreatedAfter';
 import WithWorkspaceIdStrategy from './withWorkspaceId';

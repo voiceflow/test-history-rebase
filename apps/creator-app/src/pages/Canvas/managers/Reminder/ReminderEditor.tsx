@@ -1,15 +1,18 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
 import Section from '@/components/Section';
 import { Content, Controls, FormControl } from '@/pages/Canvas/components/Editor';
-import { NodeEditor } from '@/pages/Canvas/managers/types';
+import type { NodeEditor } from '@/pages/Canvas/managers/types';
 
 import { HelpMessage, HelpTooltip } from './components';
 import { REMINDER_ROUTES } from './constants';
 
-const ReminderEditor: NodeEditor<Realtime.NodeData.Reminder, Realtime.NodeData.ReminderBuiltInPorts> = ({ data, onChange }) => {
+const ReminderEditor: NodeEditor<Realtime.NodeData.Reminder, Realtime.NodeData.ReminderBuiltInPorts> = ({
+  data,
+  onChange,
+}) => {
   const { reminderType, name } = data;
   const ReminderComponent = REMINDER_ROUTES.find((reminder) => reminder.id === reminderType)!.component;
 

@@ -4,8 +4,14 @@ import { LimitType } from '@/constants/limits';
 import * as Tracking from '@/ducks/tracking';
 import { getLegacyUpgradeModalProps } from '@/utils/upgrade';
 
-import { PlanLimit, UpgradeModalStaticLimit } from './types';
-import { applyEnterpriseLimits, applyPersonalLimits, applyProLimits, applyStarterLimits, applyTeamLimits } from './utils';
+import type { PlanLimit, UpgradeModalStaticLimit } from './types';
+import {
+  applyEnterpriseLimits,
+  applyPersonalLimits,
+  applyProLimits,
+  applyStarterLimits,
+  applyTeamLimits,
+} from './utils';
 
 const DEFAULT_MODAL = {
   title: 'Need more knowledge base documents?',
@@ -18,7 +24,7 @@ const STARTER_PERSONAL_LIMIT = {
   upgradeModal: () => ({
     ...DEFAULT_MODAL,
     ...getLegacyUpgradeModalProps(PlanType.PRO, Tracking.UpgradePrompt.KB_DOCUMENTS),
-    description: `Upgrade to the pro plan to unlock more documents.`,
+    description: 'Upgrade to the pro plan to unlock more documents.',
   }),
 } satisfies UpgradeModalStaticLimit;
 

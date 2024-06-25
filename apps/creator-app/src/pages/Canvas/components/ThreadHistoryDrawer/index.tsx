@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
+import type { CustomScrollbarsTypes } from '@voiceflow/ui';
 import {
   CustomScrollbars,
-  CustomScrollbarsTypes,
   Dropdown,
   preventDefault,
   stopImmediatePropagation,

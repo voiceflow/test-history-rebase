@@ -1,8 +1,11 @@
 import React from 'react';
 
-import Container, { ContainerProps } from './Container';
-import Content, { ContentProps } from './Content';
-import Header, { HeaderProps } from './Header';
+import type { ContainerProps } from './Container';
+import Container from './Container';
+import type { ContentProps } from './Content';
+import Content from './Content';
+import type { HeaderProps } from './Header';
+import Header from './Header';
 import Sticky from './Sticky';
 
 export interface ActionListSectionProps extends ContainerProps {
@@ -13,7 +16,15 @@ export interface ActionListSectionProps extends ContainerProps {
   contentProps?: ContentProps;
 }
 
-const ActionListSection: React.FC<ActionListSectionProps> = ({ title, children, action, sticky, headerProps, contentProps, ...containerProps }) => (
+const ActionListSection: React.FC<ActionListSectionProps> = ({
+  title,
+  children,
+  action,
+  sticky,
+  headerProps,
+  contentProps,
+  ...containerProps
+}) => (
   <Sticky disabled={!sticky}>
     {({ sticked }) => (
       <Container {...containerProps}>

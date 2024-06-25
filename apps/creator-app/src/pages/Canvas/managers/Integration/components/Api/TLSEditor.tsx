@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { SectionV2, UploadV2 } from '@voiceflow/ui';
 import React from 'react';
 

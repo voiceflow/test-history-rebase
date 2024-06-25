@@ -1,6 +1,6 @@
 import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { Types } from '@platform-config/utils';
-import React from 'react';
+import type React from 'react';
 
 import { ConnectButton } from '../components';
 

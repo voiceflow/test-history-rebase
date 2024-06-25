@@ -1,3 +1,4 @@
+// eslint-disable-next-line you-dont-need-lodash-underscore/is-function
 import _isFunction from 'lodash/isFunction';
 import React from 'react';
 
@@ -15,9 +16,16 @@ export type EditorContentProps = React.ComponentProps<typeof ContentContainer> &
   hideFooter?: boolean;
 };
 
-const isScrollToArgs = (args: [ScrollToOptions] | [number, number]): args is [ScrollToOptions] => typeof args[0] === 'object';
+const isScrollToArgs = (args: [ScrollToOptions] | [number, number]): args is [ScrollToOptions] =>
+  typeof args[0] === 'object';
 
-const EditorContent: React.FC<EditorContentProps> = ({ footer, children, hideFooter, fillHeight = false, ...props }) => {
+const EditorContent: React.FC<EditorContentProps> = ({
+  footer,
+  children,
+  hideFooter,
+  fillHeight = false,
+  ...props
+}) => {
   const containerRef = React.useRef<HTMLDivElement>();
 
   const scrollTo = React.useCallback(

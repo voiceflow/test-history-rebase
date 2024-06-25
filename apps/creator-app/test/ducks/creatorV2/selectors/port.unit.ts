@@ -44,7 +44,10 @@ suite(CreatorV2, INITIAL_STATE)('Ducks | Creator V2 - port selectors', ({ descri
           ports: normalize([PORT, fooPort, barPort]),
         });
 
-        const ports = select((state) => CreatorV2.allPortsByIDsSelector(state, { ids: [fooPort.id, barPort.id] }), rootState);
+        const ports = select(
+          (state) => CreatorV2.allPortsByIDsSelector(state, { ids: [fooPort.id, barPort.id] }),
+          rootState
+        );
 
         expect(ports).toEqual([fooPort, barPort]);
       });
@@ -60,7 +63,9 @@ suite(CreatorV2, INITIAL_STATE)('Ducks | Creator V2 - port selectors', ({ descri
       });
 
       it('select empty ports if unrecognized node ID', () => {
-        expect(select((state) => CreatorV2.portsByNodeIDSelector(state, { id: 'foo' }))).toEqual(Realtime.Utils.port.createEmptyNodePorts());
+        expect(select((state) => CreatorV2.portsByNodeIDSelector(state, { id: 'foo' }))).toEqual(
+          Realtime.Utils.port.createEmptyNodePorts()
+        );
       });
     });
   });

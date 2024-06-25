@@ -4,7 +4,11 @@ import { generatePath } from 'react-router-dom';
 import NavLink from '@/components/NavLink';
 import Page from '@/components/Page';
 import * as Sessions from '@/ducks/session';
-import { useOrganizationMembersPagePath, useOrganizationSettingsPagePath, useOrganizationSSOPagePath } from '@/hooks/organization';
+import {
+  useOrganizationMembersPagePath,
+  useOrganizationSettingsPagePath,
+  useOrganizationSSOPagePath,
+} from '@/hooks/organization';
 import { useSelector } from '@/hooks/redux';
 
 import { WorkspaceSelector } from '../../../components';

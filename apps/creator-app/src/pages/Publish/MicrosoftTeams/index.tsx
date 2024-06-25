@@ -17,7 +17,11 @@ const MicrosoftTeams: React.FC = () => {
 
   const projectID = useSelector(Session.activeProjectIDSelector)!;
 
-  const { secretsStore, updateSecret, submitSecrets } = useSecretsManager(projectID, { secrets }, Platform.Constants.PlatformType.MICROSOFT_TEAMS);
+  const { secretsStore, updateSecret, submitSecrets } = useSecretsManager(
+    projectID,
+    { secrets },
+    Platform.Constants.PlatformType.MICROSOFT_TEAMS
+  );
 
   return (
     <Settings.PageContent>

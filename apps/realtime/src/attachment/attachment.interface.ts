@@ -1,5 +1,10 @@
 import type { AttachmentType } from '@voiceflow/dtos';
-import type { CardAttachmentObject, CardAttachmentORM, MediaAttachmentObject, MediaAttachmentORM } from '@voiceflow/orm-designer';
+import type {
+  CardAttachmentObject,
+  CardAttachmentORM,
+  MediaAttachmentObject,
+  MediaAttachmentORM,
+} from '@voiceflow/orm-designer';
 
 import type { CMSCreateForUserData, CMSPatchData } from '@/common/types';
 

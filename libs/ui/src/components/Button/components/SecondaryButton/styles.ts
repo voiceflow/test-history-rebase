@@ -1,4 +1,5 @@
-import ButtonContainer, { ButtonContainerProps } from '@ui/components/Button/components/ButtonContainer';
+import type { ButtonContainerProps } from '@ui/components/Button/components/ButtonContainer';
+import ButtonContainer from '@ui/components/Button/components/ButtonContainer';
 import { backgrounds, colors, css, styled, ThemeColor, transition } from '@ui/styles';
 
 export interface SecondaryButtonIconProps {

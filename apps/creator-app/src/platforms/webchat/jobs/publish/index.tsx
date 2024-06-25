@@ -29,8 +29,9 @@ const Webchat: React.FC = () => {
       const { versionName } = await publishNewVersionModal.open({
         message: (
           <>
-            Publish this version to production and use it with your <System.Link.Anchor href={WEBCHAT_LEARN_MORE}>Web Chat</System.Link.Anchor>.
-            Publishing activates your agent wherever the widget is installed.
+            Publish this version to production and use it with your{' '}
+            <System.Link.Anchor href={WEBCHAT_LEARN_MORE}>Web Chat</System.Link.Anchor>. Publishing activates your agent
+            wherever the widget is installed.
           </>
         ),
       });

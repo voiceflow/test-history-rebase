@@ -1,6 +1,7 @@
-import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import { AnyRecord } from '@voiceflow/common';
-import { Diagram } from '@voiceflow/dtos';
+import type { BaseModels } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
+import type { AnyRecord } from '@voiceflow/common';
+import type { Diagram } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 const sharedNodeMapper = (

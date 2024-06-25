@@ -9,9 +9,9 @@ const EditorInfoPopup: React.FC<{ platform: Platform.Constants.PlatformType }> =
     case Platform.Constants.PlatformType.ALEXA:
       return (
         <Tooltip.Paragraph>
-          The directive step will allow you to send customized directives for Alexa features that Voiceflow might not have a block for yet, or even
-          emulate the behavior of an existing block with more details. Any valid JSON will be included in the <b>directives</b> array in the response
-          sent back to Alexa.
+          The directive step will allow you to send customized directives for Alexa features that Voiceflow might not
+          have a block for yet, or even emulate the behavior of an existing block with more details. Any valid JSON will
+          be included in the <b>directives</b> array in the response sent back to Alexa.
           <br />
           <br />
           For more information, visit our
@@ -21,9 +21,9 @@ const EditorInfoPopup: React.FC<{ platform: Platform.Constants.PlatformType }> =
     case Platform.Constants.PlatformType.GOOGLE:
       return (
         <Tooltip.Paragraph>
-          The directive step will allow you to send customized directives for Google features that Voiceflow might not have a block for yet, or even
-          emulate the behavior of an existing block with more details. Any valid JSON will be included in the <b>prompt</b> object in the response
-          sent back to Google.
+          The directive step will allow you to send customized directives for Google features that Voiceflow might not
+          have a block for yet, or even emulate the behavior of an existing block with more details. Any valid JSON will
+          be included in the <b>prompt</b> object in the response sent back to Google.
           <br />
           <br />
           For more information, visit our

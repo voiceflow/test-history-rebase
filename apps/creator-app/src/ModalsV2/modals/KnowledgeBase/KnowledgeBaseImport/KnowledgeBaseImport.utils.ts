@@ -27,7 +27,13 @@ export const sanitizeURLsWithDataFormatting = (
   name: string;
   type: BaseModels.Project.KnowledgeBaseDocumentType.URL;
   refreshRate: BaseModels.Project.KnowledgeBaseDocumentRefreshRate;
-}[] => sanitizeURLs(urls.split('\n')).map((url) => ({ url, name: url, type: BaseModels.Project.KnowledgeBaseDocumentType.URL, refreshRate }));
+}[] =>
+  sanitizeURLs(urls.split('\n')).map((url) => ({
+    url,
+    name: url,
+    type: BaseModels.Project.KnowledgeBaseDocumentType.URL,
+    refreshRate,
+  }));
 
 export const filterWhitespace = (urls: string): string =>
   urls
@@ -55,7 +61,9 @@ export const urlRegexValidator = validatorFactory(
 
     return filteredUrls
       .map((url, index) =>
-        filteredUrls.length === 0 || index === filteredUrls.length - 1 ? `"${url}" is not a valid URL.` : `"${url}" is not a valid URL,`
+        filteredUrls.length === 0 || index === filteredUrls.length - 1
+          ? `"${url}" is not a valid URL.`
+          : `"${url}" is not a valid URL,`
       )
       .slice(0, 5)
       .join('\n');
@@ -70,11 +78,17 @@ export const useDocumentLimitError = (enableClose: VoidFunction) => {
 
   return (error: any) => {
     if (error.response.status === 406 && planConfig) {
-      notify.long.warning(`Document limit (${planConfig.limit}) reached for your current subscription. Please upgrade to continue.`, {
-        pauseOnHover: true,
-        bodyClassName: 'vfui',
-        actionButtonProps: { label: 'Upgrade', onClick: () => upgradeModal.openVoid(planConfig.upgradeModal({ limit: planConfig.limit })) },
-      });
+      notify.long.warning(
+        `Document limit (${planConfig.limit}) reached for your current subscription. Please upgrade to continue.`,
+        {
+          pauseOnHover: true,
+          bodyClassName: 'vfui',
+          actionButtonProps: {
+            label: 'Upgrade',
+            onClick: () => upgradeModal.openVoid(planConfig.upgradeModal({ limit: planConfig.limit })),
+          },
+        }
+      );
     } else {
       notify.short.error('Failed to import data sources');
     }

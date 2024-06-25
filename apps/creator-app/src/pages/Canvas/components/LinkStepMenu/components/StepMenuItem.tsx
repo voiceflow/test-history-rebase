@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TopStepItem } from '@/pages/Project/components/StepMenu/constants';
+import type { TopStepItem } from '@/pages/Project/components/StepMenu/constants';
 
 import MenuItem from './MenuItem';
 import StepSubMenu from './StepSubMenu';

@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import type * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import { AbstractControl } from '@/legacy/control';
 
@@ -19,7 +19,11 @@ class BillingService extends AbstractControl {
     }
   }
 
-  public async getQuotaByName(creatorID: number, workspaceID: string, quotaName: string): Promise<Realtime.Quota | null> {
+  public async getQuotaByName(
+    creatorID: number,
+    workspaceID: string,
+    quotaName: string
+  ): Promise<Realtime.Quota | null> {
     const client = await this.services.voiceflow.client.getByUserID(creatorID);
     return client.billing.quota.getQuotaByName(workspaceID, quotaName);
   }

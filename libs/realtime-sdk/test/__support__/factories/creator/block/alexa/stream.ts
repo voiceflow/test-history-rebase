@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
-import { NodeData } from '@realtime-sdk/models';
-import { AlexaNode } from '@voiceflow/alexa-types';
+import type { NodeData } from '@realtime-sdk/models';
+import type { AlexaNode } from '@voiceflow/alexa-types';
 import { define } from 'cooky-cutter';
 
 export const StreamStepData = define<AlexaNode.Stream.StepData>({

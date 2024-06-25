@@ -7,7 +7,18 @@ import SelectInputOption from './SelectInputOption';
 import SelectInputOptionWrapper from './SelectInputOptionWrapper';
 import SelectInputOptionWrapperAbsolute from './SelectInputOptionWrapperAbsolute';
 
-const SelectOption = ({ tag, value, option, isFocused, onAddTag, onEnterPress, optionsPath, searchLabel, getOptionLabel, getOptionValue }) => {
+const SelectOption = ({
+  tag,
+  value,
+  option,
+  isFocused,
+  onAddTag,
+  onEnterPress,
+  optionsPath,
+  searchLabel,
+  getOptionLabel,
+  getOptionValue,
+}) => {
   const inputRef = React.useRef();
   const [val, setVal] = React.useState(value);
   const tagInputAttribute = tag?.attributes?.[option.inputAttribute];

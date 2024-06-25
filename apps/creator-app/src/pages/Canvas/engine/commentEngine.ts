@@ -1,5 +1,5 @@
-import { Nullish } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { Nullish } from '@voiceflow/common';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { createMatchSelector } from 'connected-react-router';
 
@@ -11,11 +11,12 @@ import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import * as UI from '@/ducks/ui';
 import { waitAsync } from '@/ducks/utils';
-import { CommentDraftValue, NewCommentAPI } from '@/pages/Canvas/types';
-import { Pair, Point } from '@/types';
-import { Coords } from '@/utils/geometry';
+import type { CommentDraftValue, NewCommentAPI } from '@/pages/Canvas/types';
+import type { Pair, Point } from '@/types';
+import type { Coords } from '@/utils/geometry';
 
-import { EngineConsumer, getNodeCandidates, NodeCandidate } from './utils';
+import type { NodeCandidate } from './utils';
+import { EngineConsumer, getNodeCandidates } from './utils';
 
 class CommentEngine extends EngineConsumer<{ newComment: NewCommentAPI }> {
   log = this.engine.log.child('comment');

@@ -1,29 +1,28 @@
 import compositeRef from '@seznam/compose-react-refs';
-import { Nullable, Utils } from '@voiceflow/common';
-import { ContextMenuProps, useCache, useContextApi, usePersistFunction } from '@voiceflow/ui';
+import type { Nullable } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import type { ContextMenuProps } from '@voiceflow/ui';
+import { useCache, useContextApi, usePersistFunction } from '@voiceflow/ui';
 import _throttle from 'lodash/throttle';
 import React from 'react';
-import { DragSourceMonitor, useDrop } from 'react-dnd';
+import type { DragSourceMonitor } from 'react-dnd';
+import { useDrop } from 'react-dnd';
 
 import { HOVER_THROTTLE_TIMEOUT } from '@/constants';
-import { MapManagedFactoryAPI, MapManagedSimpleAPI } from '@/hooks';
-import { DragPreviewOptions } from '@/hooks/dnd.hook';
+import type { MapManagedFactoryAPI, MapManagedSimpleAPI } from '@/hooks';
+import type { DragPreviewOptions } from '@/hooks/dnd.hook';
 
-import {
+import type {
   ContextMenuOption,
-  DeleteComponent,
   DeleteComponentProps,
-  DnDItem,
-  DragPreview,
   DragPreviewComponentProps,
-  DropDelete,
   ItemComponentHandlers,
   ItemComponentProps,
-  ListContainer,
   MappedItemComponentHandlers,
 } from './components';
+import { DeleteComponent, DnDItem, DragPreview, DropDelete, ListContainer } from './components';
 import { ChildrenContextProvider, useChildrenContext } from './context';
-import { BaseItemData, DnDHandlers, DnDItem as DnDInternalItem } from './types';
+import type { BaseItemData, DnDHandlers, DnDItem as DnDInternalItem } from './types';
 
 export { DeleteComponent, useChildrenContext as useDraggableListChildrenContext };
 export type {

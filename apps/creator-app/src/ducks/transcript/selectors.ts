@@ -20,8 +20,14 @@ export const currentTranscriptIDSelector = createSelector([pathnameSelector], (p
   return match?.params.transcriptID ?? null;
 });
 
-export const currentTranscriptSelector = createSelector([mapTranscriptsSelector, currentTranscriptIDSelector], (transcripts, transcriptID) => {
-  return transcriptID ? transcripts[transcriptID] : null;
-});
+export const currentTranscriptSelector = createSelector(
+  [mapTranscriptsSelector, currentTranscriptIDSelector],
+  (transcripts, transcriptID) => {
+    return transcriptID ? transcripts[transcriptID] : null;
+  }
+);
 
-export const hasUnreadTranscriptsSelector = createSelector([rootTranscriptsSelector], ({ hasUnreadTranscripts }) => hasUnreadTranscripts);
+export const hasUnreadTranscriptsSelector = createSelector(
+  [rootTranscriptsSelector],
+  ({ hasUnreadTranscripts }) => hasUnreadTranscripts
+);

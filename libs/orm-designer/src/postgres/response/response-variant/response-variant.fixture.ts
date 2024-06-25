@@ -2,10 +2,7 @@ import type { EntityDTO } from '@mikro-orm/core';
 import { CardLayout, ResponseContext, ResponseVariantType } from '@voiceflow/dtos';
 
 import { responseAttachmentList } from '../response-attachment/response-attachment.fixture';
-import type {
-  PromptResponseVariantEntity,
-  TextResponseVariantEntity,
-} from './response-variant.entity';
+import type { PromptResponseVariantEntity, TextResponseVariantEntity } from './response-variant.entity';
 
 const baseResponseVariant = {
   createdAt: new Date(),

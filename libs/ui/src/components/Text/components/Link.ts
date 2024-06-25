@@ -1,7 +1,8 @@
 import { css, styled, transition } from '@ui/styles';
 import { linkResetStyle } from '@ui/styles/bootstrap';
 import { changeColorShade } from '@ui/utils/colors';
-import { layout, LayoutProps, space, SpaceProps, typography, TypographyProps } from 'styled-system';
+import type { LayoutProps, SpaceProps, TypographyProps } from 'styled-system';
+import { layout, space, typography } from 'styled-system';
 
 export interface LinkProps extends LayoutProps, SpaceProps, TypographyProps {
   link?: string;
@@ -14,7 +15,8 @@ export interface LinkProps extends LayoutProps, SpaceProps, TypographyProps {
 
 const PROTOCOL_POSTFIX_REGEXP = /:?\/\//;
 
-const formatHref = (href: string | undefined, isBlank: boolean) => (!isBlank || !href || !!href.match(PROTOCOL_POSTFIX_REGEXP) ? href : `//${href}`);
+const formatHref = (href: string | undefined, isBlank: boolean) =>
+  !isBlank || !href || !!href.match(PROTOCOL_POSTFIX_REGEXP) ? href : `//${href}`;
 
 export const linkStyles = css<LinkProps>`
   ${transition('color')}

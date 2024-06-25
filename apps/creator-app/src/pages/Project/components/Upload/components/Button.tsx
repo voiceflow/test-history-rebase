@@ -1,5 +1,6 @@
 import * as Platform from '@voiceflow/platform-config';
-import { Button as UIButton, ButtonVariant as UIButtonVariant, SvgIconTypes, Text, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
+import type { SvgIconTypes, TippyTooltipProps } from '@voiceflow/ui';
+import { Button as UIButton, ButtonVariant as UIButtonVariant, Text, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { useActiveProjectPlatform } from '@/hooks';
@@ -119,7 +120,14 @@ const ConnectButton: React.FC<ConnectButtonProps> = ({ onClick, ...props }) => {
 
   return (
     <TippyTooltip {...buttonProps.tooltip} disabled={!buttonProps.tooltip} position="bottom">
-      <UIButton small variant={UIButtonVariant.SECONDARY} id={Identifier.UPLOAD} onClick={onClick} center {...buttonProps} />
+      <UIButton
+        small
+        variant={UIButtonVariant.SECONDARY}
+        id={Identifier.UPLOAD}
+        onClick={onClick}
+        center
+        {...buttonProps}
+      />
     </TippyTooltip>
   );
 };

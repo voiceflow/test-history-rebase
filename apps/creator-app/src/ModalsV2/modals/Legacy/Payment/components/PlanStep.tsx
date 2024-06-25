@@ -1,4 +1,4 @@
-import { BillingPeriod } from '@voiceflow/internal';
+import type { BillingPeriod } from '@voiceflow/internal';
 import { Badge, BlockText, Box, Button, Link, Modal } from '@voiceflow/ui';
 import React from 'react';
 
@@ -23,7 +23,12 @@ const PlanStep: React.FC<PlanStepProps> = ({ onNext, onClose, period, prices, on
           </Link>
         </PlanCard>
 
-        <PlanCard title="Pro" badge={<Badge.Descriptive>Popular</Badge.Descriptive>} price={prices?.[period] ?? null} active>
+        <PlanCard
+          title="Pro"
+          badge={<Badge.Descriptive>Popular</Badge.Descriptive>}
+          price={prices?.[period] ?? null}
+          active
+        >
           For individuals and small teams creating agents.{' '}
           <Link href="https://www.voiceflow.com/pricing" $hidden>
             View details

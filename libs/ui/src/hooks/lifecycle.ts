@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { useCreateConst, usePersistFunction } from './cache';
 
@@ -97,7 +98,10 @@ interface OnScreenOptions extends OnScreenCallbackOptions {
   initialState?: boolean;
 }
 
-export const useOnScreen = <T extends Element>(ref: React.RefObject<T>, { initialState = false, ...options }: OnScreenOptions = {}): boolean => {
+export const useOnScreen = <T extends Element>(
+  ref: React.RefObject<T>,
+  { initialState = false, ...options }: OnScreenOptions = {}
+): boolean => {
   const [isIntersecting, setIntersecting] = useState(initialState);
 
   useOnScreenCallback(ref, (entry) => setIntersecting(entry.isIntersecting), options);

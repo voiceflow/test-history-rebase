@@ -8,7 +8,7 @@ import { sharedNodesSelector } from '@/ducks/diagramV2/selectors/base';
 import { featureSelectorFactory } from '@/ducks/feature';
 import { diagramIDParamSelector, nodeIDParamSelector } from '@/ducks/utils';
 
-import { ReferenceAnyTriggerNode, ReferenceTriggerNodeResource } from '../reference.interface';
+import type { ReferenceAnyTriggerNode, ReferenceTriggerNodeResource } from '../reference.interface';
 import { getAllResourceIDsByRefererID, getAllResourcesByIDs, resourceMap, triggerNodeResourceIDs } from './root.select';
 
 export const triggerNodeResources = createSelector(

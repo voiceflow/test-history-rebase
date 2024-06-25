@@ -10,7 +10,7 @@ import { useDispatch } from '@/hooks/store.hook';
 import { useTrackingEvents } from '@/hooks/tracking';
 import { openURLInANewPopupWindow } from '@/utils/window';
 
-import { IKBImportIntegrationWaiting } from './KBImportIntegrationWaiting.interface';
+import type { IKBImportIntegrationWaiting } from './KBImportIntegrationWaiting.interface';
 
 const { colors } = Tokens;
 

@@ -1,4 +1,5 @@
-import { TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
+import type { TippyTooltipProps } from '@voiceflow/ui';
+import { TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { useKeygen, useOnScreen, useRAF } from '@/hooks';
@@ -24,7 +25,13 @@ export interface TabsProps<V extends string = string> {
   selected?: V;
 }
 
-const Tabs = <V extends string = string>({ as = 'button', options, selected, onChange, innerRef }: TabsProps<V>): React.ReactElement<any, any> => {
+const Tabs = <V extends string = string>({
+  as = 'button',
+  options,
+  selected,
+  onChange,
+  innerRef,
+}: TabsProps<V>): React.ReactElement<any, any> => {
   const tabsRef = React.useRef<Record<string, Element | null>>({});
   const activeLineRef = React.useRef<HTMLDivElement>(null);
 

@@ -1,16 +1,15 @@
 import composeRefs from '@seznam/compose-react-refs';
 import { useSetup } from '@ui/hooks';
-import { Either } from '@ui/types';
+import type { Either } from '@ui/types';
 import { withEnterPress, withTargetValue } from '@ui/utils/dom';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 
+import type { DefaultInputProps, InlineInputProps } from './components';
 import {
   CounterInput,
   DefaultInput,
-  DefaultInputProps,
   InlineInput,
-  InlineInputProps,
   InputWrapper,
   RangeInput,
   ScrollingPlaceholderWrapper,
@@ -33,7 +32,10 @@ interface SharedProps {
   autoSelectText?: boolean;
 }
 
-export interface InlineVariantInputProps extends InlineInputProps, SharedProps, Omit<React.ComponentProps<'input'>, 'ref' | 'children'> {
+export interface InlineVariantInputProps
+  extends InlineInputProps,
+    SharedProps,
+    Omit<React.ComponentProps<'input'>, 'ref' | 'children'> {
   variant: Variant.INLINE;
   children?: DefaultInputProps['children'];
 }
@@ -45,7 +47,10 @@ interface BaseDefaultVariantInputProps extends SharedProps {
 export type DefaultVariantInputProps = BaseDefaultVariantInputProps & DefaultInputProps;
 
 const Input = React.forwardRef<HTMLInputElement, Either<InlineVariantInputProps, DefaultVariantInputProps>>(
-  ({ variant = Variant.DEFAULT, onChange, children, autoSelectText, onKeyPress, onChangeText, onEnterPress, ...props }, ref) => {
+  (
+    { variant = Variant.DEFAULT, onChange, children, autoSelectText, onKeyPress, onChangeText, onEnterPress, ...props },
+    ref
+  ) => {
     const localRef = React.useRef<HTMLInputElement>(null);
 
     useSetup(() => {
@@ -57,8 +62,14 @@ const Input = React.forwardRef<HTMLInputElement, Either<InlineVariantInputProps,
     const sharedProps = {
       ...props,
       ref: composeRefs<HTMLInputElement>(ref, localRef),
-      onChange: Utils.functional.chain<[React.ChangeEvent<HTMLInputElement>]>(onChange, onChangeText && withTargetValue(onChangeText)),
-      onKeyPress: Utils.functional.chain<[React.KeyboardEvent<HTMLInputElement>]>(onKeyPress, onEnterPress && withEnterPress(onEnterPress)),
+      onChange: Utils.functional.chain<[React.ChangeEvent<HTMLInputElement>]>(
+        onChange,
+        onChangeText && withTargetValue(onChangeText)
+      ),
+      onKeyPress: Utils.functional.chain<[React.KeyboardEvent<HTMLInputElement>]>(
+        onKeyPress,
+        onEnterPress && withEnterPress(onEnterPress)
+      ),
     };
 
     if (variant === Variant.INLINE) {

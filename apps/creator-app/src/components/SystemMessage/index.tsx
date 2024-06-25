@@ -4,7 +4,7 @@ import React from 'react';
 import { useActiveProjectType } from '@/hooks';
 
 import { ChatMessage, VoiceMessage } from './components';
-import { ChatMessageProps, ChatMessageRef, SystemMessageProps, VoiceMessageProps, VoiceMessageRef } from './types';
+import type { ChatMessageProps, ChatMessageRef, SystemMessageProps, VoiceMessageProps, VoiceMessageRef } from './types';
 
 const SystemMessage = React.forwardRef<HTMLDivElement, SystemMessageProps>((props, ref) => {
   const projectType = useActiveProjectType();

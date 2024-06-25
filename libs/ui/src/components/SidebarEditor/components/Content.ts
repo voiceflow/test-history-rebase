@@ -1,7 +1,7 @@
 import { css, styled } from '@ui/styles';
 
 import CustomScrollbars from '../../CustomScrollbars';
-import * as T from '../types';
+import type * as T from '../types';
 
 const Content = styled(CustomScrollbars)<T.ContentProps>`
   width: 100%;

@@ -1,13 +1,13 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { SlateEditorAPI } from '@/components/SlateEditable';
 import { BlockType } from '@/constants';
 import { isDialogflowPlatform } from '@/utils/typeGuards';
 
-import { NodeConfig } from '../types';
+import type { NodeConfig } from '../types';
 import { buttonFactory } from './Editor/Buttons/constants';
 
 export const cardFactory = (platform?: Platform.Constants.PlatformType): BaseNode.Carousel.CarouselCard => ({
@@ -23,7 +23,8 @@ export const cardFactory = (platform?: Platform.Constants.PlatformType): BaseNod
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Carousel, Realtime.NodeData.CarouselBuiltInPorts> = {
   type: BlockType.CAROUSEL,
   icon: 'carousel',
-  isMergeTerminator: ({ data }) => Realtime.Utils.typeGuards.isCarouselNodeData(data) && Boolean(data.noMatch || data.noReply),
+  isMergeTerminator: ({ data }) =>
+    Realtime.Utils.typeGuards.isCarouselNodeData(data) && Boolean(data.noMatch || data.noReply),
 
   factory: (_, options) => {
     const card = cardFactory(options?.platform);

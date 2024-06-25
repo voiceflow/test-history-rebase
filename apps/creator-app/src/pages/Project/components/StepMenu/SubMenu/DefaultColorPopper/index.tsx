@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { COLOR_PICKER_CONSTANTS, ColorPicker, Portal, SvgIcon, usePopper } from '@voiceflow/ui';
 import React from 'react';
 
@@ -12,10 +12,10 @@ interface StepMenuSubMenuDefaultColorPopperProps {
   isHovered: boolean;
 }
 
-const StepMenuSubMenuDefaultColorPopper: React.ForwardRefRenderFunction<HTMLDivElement, StepMenuSubMenuDefaultColorPopperProps> = (
-  { blockType, isHovered },
-  ref
-) => {
+const StepMenuSubMenuDefaultColorPopper: React.ForwardRefRenderFunction<
+  HTMLDivElement,
+  StepMenuSubMenuDefaultColorPopperProps
+> = ({ blockType, isHovered }, ref) => {
   const stepTypeColor = useSelector(VersionV2.active.defaultStepColorByStepType, {
     stepType: blockType,
   });
@@ -57,4 +57,6 @@ const StepMenuSubMenuDefaultColorPopper: React.ForwardRefRenderFunction<HTMLDivE
   );
 };
 
-export default React.forwardRef<HTMLDivElement, StepMenuSubMenuDefaultColorPopperProps>(StepMenuSubMenuDefaultColorPopper);
+export default React.forwardRef<HTMLDivElement, StepMenuSubMenuDefaultColorPopperProps>(
+  StepMenuSubMenuDefaultColorPopper
+);

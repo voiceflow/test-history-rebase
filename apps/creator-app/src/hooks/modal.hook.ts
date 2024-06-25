@@ -1,7 +1,7 @@
 import type { Entity, Flow, Folder, Intent, Variable, Workflow } from '@voiceflow/dtos';
 
 import * as Organization from '@/ducks/organization';
-import { UpgradePrompt } from '@/ducks/tracking/constants';
+import type { UpgradePrompt } from '@/ducks/tracking/constants';
 import { useSelector } from '@/hooks/redux';
 import { useModal } from '@/ModalsV2/modal.hook';
 import type { Props as ConfirmProps } from '@/ModalsV2/modals/Confirm';
@@ -10,7 +10,7 @@ import type { IEntityBulkImportVariantsModal } from '@/ModalsV2/modals/Entity/En
 import type { IEntityCreateModal } from '@/ModalsV2/modals/Entity/EntityCreate.modal';
 import type { IEntityEditModal } from '@/ModalsV2/modals/Entity/EntityEdit.modal';
 import type { Props as ErrorProps } from '@/ModalsV2/modals/Error';
-import { IFlowCreateModal } from '@/ModalsV2/modals/Flow/FlowCreate/FlowCreate.modal';
+import type { IFlowCreateModal } from '@/ModalsV2/modals/Flow/FlowCreate/FlowCreate.modal';
 import type { IFolderCreateModal } from '@/ModalsV2/modals/Folder/FolderCreate.modal';
 import type { IIntentBulkImportUtterancesModal } from '@/ModalsV2/modals/Intent/IntentBulkImportUtterances.modal';
 import type { IIntentCreateModal } from '@/ModalsV2/modals/Intent/IntentCreate/IntentCreate.interface';
@@ -21,8 +21,8 @@ import type { UpgradeModal } from '@/ModalsV2/modals/Upgrade';
 import type { IVariableCreateModal } from '@/ModalsV2/modals/Variable/VariableCreate.modal';
 import type { IVariableEditModal } from '@/ModalsV2/modals/Variable/VariableEdit.modal';
 import type { Props as VariablePromptProps, Result as VariablePromptResult } from '@/ModalsV2/modals/VariablePrompt';
-import { IWorkflowCreateModal } from '@/ModalsV2/modals/Workflow/WorkflowCreate/WorkflowCreate.modal';
-import { PropsPublicAPI } from '@/ModalsV2/types';
+import type { IWorkflowCreateModal } from '@/ModalsV2/modals/Workflow/WorkflowCreate/WorkflowCreate.modal';
+import type { PropsPublicAPI } from '@/ModalsV2/types';
 
 export { useModal } from '@/ModalsV2/modal.hook';
 

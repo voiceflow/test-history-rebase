@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import type { Entity, EntityWithVariants } from '@voiceflow/dtos';
-import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Platform from '@voiceflow/platform-config';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SectionV2, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
@@ -64,12 +64,14 @@ const EntityPromptSection: React.FC<EntityPromptSectionProps> = ({
   const entityInputsAreEmpty = React.useMemo(
     () =>
       inputs.every(
-        ({ value, synonyms }) => !value.trim() && !(Array.isArray(synonyms) ? synonyms : synonyms.split(',')).filter((s) => s.trim()).length
+        ({ value, synonyms }) =>
+          !value.trim() && !(Array.isArray(synonyms) ? synonyms : synonyms.split(',')).filter((s) => s.trim()).length
       ),
     [inputs]
   );
 
-  const hasExtraContext = !isDefaultSlotName(entity.name) || !entityInputsAreEmpty || !!intentName || !intentInputsAreEmpty;
+  const hasExtraContext =
+    !isDefaultSlotName(entity.name) || !entityInputsAreEmpty || !!intentName || !intentInputsAreEmpty;
 
   useSetup(() => {
     if (autogenerate && (hasExtraContext || promptsManager.items)) {

@@ -1,9 +1,9 @@
 import { Utils } from '@voiceflow/common';
 
 import client from '@/client';
-import { VersionEventInfo } from '@/ducks/tracking/types';
+import type { VersionEventInfo } from '@/ducks/tracking/types';
 import { createVersionEvent, createVersionEventTracker } from '@/ducks/tracking/utils';
-import { Thunk } from '@/store/types';
+import type { Thunk } from '@/store/types';
 
 export const cmsTrackingNameBuilderFactory = (scope: string) => {
   const prefix = `CMS - ${scope}`;
@@ -25,9 +25,10 @@ export const cmsTrackingNameBuilderFactory = (scope: string) => {
 export const cmsTrackingFactory = (scope: string) => {
   const nameBuilder = cmsTrackingNameBuilderFactory(scope);
 
-  const error = createVersionEventTracker<{ errorType: 'Import' | 'Create' | 'Duplicate' | 'Export' | 'Delete' | (string & {}) }>((eventInfo) =>
-    client.analytics.track(createVersionEvent(nameBuilder.ERROR, eventInfo))
-  );
+  const error = createVersionEventTracker<{
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    errorType: 'Import' | 'Create' | 'Duplicate' | 'Export' | 'Delete' | (string & {});
+  }>((eventInfo) => client.analytics.track(createVersionEvent(nameBuilder.ERROR, eventInfo)));
 
   const created = createVersionEventTracker<{ id: string; templateID?: string }>((eventInfo) =>
     client.analytics.track(createVersionEvent(nameBuilder.CREATED, eventInfo))
@@ -43,20 +44,26 @@ export const cmsTrackingFactory = (scope: string) => {
 
   const imported = createVersionEventTracker<{ names: string[] }>(
     (eventInfo) =>
-      eventInfo.names.length && client.analytics.track(createVersionEvent(nameBuilder.IMPORTED, { ...eventInfo, count: eventInfo.names.length }))
+      eventInfo.names.length &&
+      client.analytics.track(createVersionEvent(nameBuilder.IMPORTED, { ...eventInfo, count: eventInfo.names.length }))
   );
 
   const exported = createVersionEventTracker<{ count: number }>((eventInfo) =>
     client.analytics.track(createVersionEvent(nameBuilder.EXPORTED, eventInfo))
   );
 
-  const pageOpen = createVersionEventTracker((eventInfo) => client.analytics.track(createVersionEvent(nameBuilder.PAGE_OPEN, eventInfo)));
+  const pageOpen = createVersionEventTracker((eventInfo) =>
+    client.analytics.track(createVersionEvent(nameBuilder.PAGE_OPEN, eventInfo))
+  );
 
   const duplicated = createVersionEventTracker<{ id: string }>((eventInfo) =>
     client.analytics.track(createVersionEvent(nameBuilder.DUPLICATED, eventInfo))
   );
 
-  const tracker = <T>(action: string, extractData: (data: VersionEventInfo & T, ...args: Parameters<Thunk>) => object = (data) => data) =>
+  const tracker = <T>(
+    action: string,
+    extractData: (data: VersionEventInfo & T, ...args: Parameters<Thunk>) => object = (data) => data
+  ) =>
     createVersionEventTracker<T>((eventInfo, ...args) =>
       client.analytics.track(
         createVersionEvent(nameBuilder(action), {

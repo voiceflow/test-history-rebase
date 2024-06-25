@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import { CRUD } from '@voiceflow/sdk-logux-designer';
 
-import { KnowledgeBaseIntegration } from '@/models/KnowledgeBase.model';
+import type { KnowledgeBaseIntegration } from '@/models/KnowledgeBase.model';
 
 import { STATE_KEY } from './integration.state';
 

@@ -6,7 +6,7 @@ import { Bar, BarChart as ReBarChart, Cell, LabelList, ResponsiveContainer, Tool
 
 import { BarChartBar, BarChartGradient, BarChartTooltip } from './components';
 import { COLORS } from './constants';
-import { BarChartColor, BarChartDatum } from './types';
+import type { BarChartColor, BarChartDatum } from './types';
 
 export * from './types';
 
@@ -66,7 +66,14 @@ const BarChart: React.FC<BarChartProps> = ({
         <YAxis hide dataKey="label" type="category" />
         <XAxis hide axisLine={false} type="number" />
         {withTooltip && <Tooltip cursor={false} content={<BarChartTooltip />} />}
-        <Bar dataKey="primary" stackId={STACK_ID} radius={barRadius} cursor="pointer" onClick={onClick} shape={<BarChartBar />}>
+        <Bar
+          dataKey="primary"
+          stackId={STACK_ID}
+          radius={barRadius}
+          cursor="pointer"
+          onClick={onClick}
+          shape={<BarChartBar />}
+        >
           {withLabels && (
             <LabelList
               dataKey="label"
@@ -87,7 +94,12 @@ const BarChart: React.FC<BarChartProps> = ({
             <Cell key={datum.label} fill={barColors[index % barColors.length].primary} />
           ))}
         </Bar>
-        <Bar dataKey="secondary" stackId={STACK_ID} radius={barRadius} style={{ transform: `translate(${barStackGap}px,0)` }}>
+        <Bar
+          dataKey="secondary"
+          stackId={STACK_ID}
+          radius={barRadius}
+          style={{ transform: `translate(${barStackGap}px,0)` }}
+        >
           {data.map((datum, index) => (
             <Cell key={datum.label} fill={`url(#${getGradientID(index % barColors.length)})`} />
           ))}

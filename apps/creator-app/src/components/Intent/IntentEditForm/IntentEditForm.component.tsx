@@ -5,7 +5,12 @@ import { IntentEditRequiredEntitiesSection } from '../IntentEditRequiredEntities
 import { IntentEditUtterancesSection } from '../IntentEditUtterancesSection/IntentEditUtterancesSection.component';
 import type { IIntentEditForm } from './IntentEditForm.interface';
 
-export const IntentEditForm: React.FC<IIntentEditForm> = ({ intent, newUtterances, utterancesError, resetUtterancesError }) => (
+export const IntentEditForm: React.FC<IIntentEditForm> = ({
+  intent,
+  newUtterances,
+  utterancesError,
+  resetUtterancesError,
+}) => (
   <>
     <IntentEditUtterancesSection
       intent={intent}

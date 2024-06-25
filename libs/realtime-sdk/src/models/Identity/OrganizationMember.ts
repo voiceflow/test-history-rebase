@@ -1,7 +1,7 @@
-import { UserRole } from '@voiceflow/dtos';
-import { RoleScopeType } from '@voiceflow/schema-types';
+import type { UserRole } from '@voiceflow/dtos';
+import type { RoleScopeType } from '@voiceflow/schema-types';
 
-import { User } from './User';
+import type { User } from './User';
 
 export interface OrganizationMember {
   user: User;

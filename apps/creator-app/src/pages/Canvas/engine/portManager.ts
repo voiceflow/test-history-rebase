@@ -1,9 +1,9 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
-import PortEntity from '@/pages/Canvas/engine/entities/portEntity';
+import type PortEntity from '@/pages/Canvas/engine/entities/portEntity';
 
 import { EngineConsumer } from './utils';
 
@@ -24,7 +24,9 @@ class PortManager extends EngineConsumer {
     },
 
     addDynamic: async (nodeID: string, port: Realtime.PartialModel<Realtime.Port>, index?: number): Promise<void> => {
-      await this.dispatch.partialSync(Realtime.port.addDynamic({ ...this.engine.context, nodeID, portID: port.id, label: port.label, index }));
+      await this.dispatch.partialSync(
+        Realtime.port.addDynamic({ ...this.engine.context, nodeID, portID: port.id, label: port.label, index })
+      );
     },
 
     addBuiltin: async (nodeID: string, port: Realtime.PartialModel<Realtime.Port>): Promise<void> => {
@@ -167,7 +169,12 @@ class PortManager extends EngineConsumer {
     const portID = ports.out.dynamic[from];
 
     if (!portID) {
-      this.log.warn('attempted to reorder a port that could not be found at index', this.log.value(from), 'of node', this.log.slug(nodeID));
+      this.log.warn(
+        'attempted to reorder a port that could not be found at index',
+        this.log.value(from),
+        'of node',
+        this.log.slug(nodeID)
+      );
       return;
     }
 

@@ -1,7 +1,8 @@
-import { Struct, Utils } from '@voiceflow/common';
-import { ArrayOperator, PullOperator, PushOperator } from 'mongodb';
+import type { Struct } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import type { ArrayOperator, PullOperator, PushOperator } from 'mongodb';
 
-import { PullOperation, PushOperation, SetOperation, UnsetOperation, UpdateOperation } from './scheme';
+import type { PullOperation, PushOperation, SetOperation, UnsetOperation, UpdateOperation } from './scheme';
 
 export * from './scheme';
 
@@ -27,10 +28,14 @@ const combinePathAndFilters = ({
     if (typeof fragment === 'string') {
       combinedPath.push(fragment);
     } else {
-      const filterName = `${prefix}${operationID}${index}${fragmentIndex}${Utils.id.cuid.slug()}`.toLowerCase().replace(/[^\da-z]/gi, '');
+      const filterName = `${prefix}${operationID}${index}${fragmentIndex}${Utils.id.cuid.slug()}`
+        .toLowerCase()
+        .replace(/[^\da-z]/gi, '');
 
       combinedPath.push(`$[${filterName}]`);
-      arrayFilters.push(Object.fromEntries(Object.entries(fragment).map(([key, value]) => [`${filterName}.${key}`, value])));
+      arrayFilters.push(
+        Object.fromEntries(Object.entries(fragment).map(([key, value]) => [`${filterName}.${key}`, value]))
+      );
     }
   });
 
@@ -38,7 +43,9 @@ const combinePathAndFilters = ({
 };
 
 export const pull = (pulls: PullOperation[]): UpdateOperation<'$pull'> => {
-  const query: PullOperator<unknown> = Object.fromEntries(pulls.map<[string, unknown]>(({ path, match }) => [path, match]));
+  const query: PullOperator<unknown> = Object.fromEntries(
+    pulls.map<[string, unknown]>(({ path, match }) => [path, match])
+  );
 
   return { query, operation: '$pull', arrayFilters: [] };
 };
@@ -46,10 +53,9 @@ export const pull = (pulls: PullOperation[]): UpdateOperation<'$pull'> => {
 export const push = (pushes: PushOperation[]): UpdateOperation<'$push'> => {
   const query: PushOperator<unknown> = Object.fromEntries(
     pushes
-      .map<[string, ArrayOperator<unknown[]>]>(({ path, value, index }) => [
-        path,
-        { $each: Array.isArray(value) ? value : [value], ...(index != null && { $position: index }) },
-      ])
+      .map<
+        [string, ArrayOperator<unknown[]>]
+      >(({ path, value, index }) => [path, { $each: Array.isArray(value) ? value : [value], ...(index != null && { $position: index }) }])
       .filter(([, { $each }]) => ($each?.length || 0) > 0)
   );
 
@@ -70,7 +76,10 @@ export const set = (sets: SetOperation[], operationID: string = Utils.id.cuid.sl
   return { query, operation: '$set', arrayFilters };
 };
 
-export const unset = (unsets: UnsetOperation[], operationID: string = Utils.id.cuid.slug()): UpdateOperation<'$unset'> => {
+export const unset = (
+  unsets: UnsetOperation[],
+  operationID: string = Utils.id.cuid.slug()
+): UpdateOperation<'$unset'> => {
   const query: Record<string, 1> = {};
   const arrayFilters: Struct[] = [];
 

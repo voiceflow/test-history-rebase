@@ -2,7 +2,8 @@ import { useToggle } from '@voiceflow/ui';
 import React from 'react';
 import { useFocused, useSelected } from 'slate-react';
 
-import { Popper, PopperItem, PopperProps } from './components';
+import type { PopperItem, PopperProps } from './components';
+import { Popper } from './components';
 
 interface SuggestionsProps<T extends PopperItem> extends Omit<PopperProps<T>, 'isSelected' | 'togglePopperFocused'> {
   isSelected?: boolean;

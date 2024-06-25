@@ -36,7 +36,9 @@ export const RangeSlider = styled.input.attrs({
     border-radius: 50%;
     height: 24px;
     width: 24px;
-    box-shadow: 0 1px 3px 0 rgba(17, 49, 96, 0.12), 0 0 0 1px rgba(17, 49, 96, 0.06);
+    box-shadow:
+      0 1px 3px 0 rgba(17, 49, 96, 0.12),
+      0 0 0 1px rgba(17, 49, 96, 0.06);
   }
 
   &::-moz-range-thumb {
@@ -46,7 +48,9 @@ export const RangeSlider = styled.input.attrs({
     width: 10px;
     appearance: none;
     background-color: transparent;
-    box-shadow: 0 1px 3px 0 rgba(17, 49, 96, 0.12), 0 0 0 1px rgba(17, 49, 96, 0.06);
+    box-shadow:
+      0 1px 3px 0 rgba(17, 49, 96, 0.12),
+      0 0 0 1px rgba(17, 49, 96, 0.06);
   }
 
   &::-moz-range-track {

@@ -1,4 +1,4 @@
-import { IntentClassificationLLMSettings } from '@voiceflow/dtos';
+import type { IntentClassificationLLMSettings } from '@voiceflow/dtos';
 
 export interface IIntentClassificationLLMSettings {
   settings: Omit<IntentClassificationLLMSettings, 'type'>;

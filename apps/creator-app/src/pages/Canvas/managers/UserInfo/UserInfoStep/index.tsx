@@ -1,11 +1,12 @@
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { HSLShades, PERMISSION_LABELS } from '@/constants';
+import type { HSLShades } from '@/constants';
+import { PERMISSION_LABELS } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import Step, { FailureItem, Item, Section, SuccessItem, VariableLabel } from '@/pages/Canvas/components/Step';
-import { ConnectedStep } from '@/pages/Canvas/managers/types';
+import type { ConnectedStep } from '@/pages/Canvas/managers/types';
 
 import { NODE_CONFIG } from '../constants';
 
@@ -18,7 +19,14 @@ export interface UserInfoStepProps {
   palette: HSLShades;
 }
 
-export const UserInfoStep: React.FC<UserInfoStepProps> = ({ userPermissions, withPorts, nodeID, successPortID, failurePortID, palette }) => (
+export const UserInfoStep: React.FC<UserInfoStepProps> = ({
+  userPermissions,
+  withPorts,
+  nodeID,
+  successPortID,
+  failurePortID,
+  palette,
+}) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item

@@ -3,11 +3,15 @@ import { Collapsible, CollapsibleHeader, CollapsibleHeaderButton, TextArea } fro
 import React from 'react';
 
 import { textAreaStyles } from './CMSKnowledgeBaseEditorContent.css';
-import { ICMSKnowledgeBaseEditorContent } from './CMSKnowledgeBaseEditorContent.interface';
+import type { ICMSKnowledgeBaseEditorContent } from './CMSKnowledgeBaseEditorContent.interface';
 
 const TESTID = tid('document', 'content');
 
-export const CMSKnowledgeBaseEditorContent: React.FC<ICMSKnowledgeBaseEditorContent> = ({ value, onBlur, onValueChange }) => {
+export const CMSKnowledgeBaseEditorContent: React.FC<ICMSKnowledgeBaseEditorContent> = ({
+  value,
+  onBlur,
+  onValueChange,
+}) => {
   return (
     <Collapsible
       header={

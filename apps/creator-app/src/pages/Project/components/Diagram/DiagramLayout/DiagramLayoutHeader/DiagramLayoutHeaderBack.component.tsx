@@ -10,7 +10,7 @@ import { useDidUpdateEffect } from '@/hooks/lifecircle.hook';
 import { usePermission } from '@/hooks/permission';
 import { useDispatch, useGetValueSelector, useSelector } from '@/hooks/store.hook';
 import { useTrackingEvents } from '@/hooks/tracking';
-import { getHotkeyLabel,Hotkey } from '@/keymap';
+import { getHotkeyLabel, Hotkey } from '@/keymap';
 import { PrototypeContext } from '@/pages/Prototype/context';
 
 interface IDiagramLayoutHeaderBack {

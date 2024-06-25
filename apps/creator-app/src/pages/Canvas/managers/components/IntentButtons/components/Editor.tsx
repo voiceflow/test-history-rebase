@@ -1,7 +1,7 @@
-import { BaseButton } from '@voiceflow/base-types';
+import type { BaseButton } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, createDividerMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 

@@ -1,6 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { Actions } from '@voiceflow/sdk-logux-designer';
-import { BaseContextData, Context, terminateResend, unrestrictedAccess } from '@voiceflow/socket-utils';
+import type { BaseContextData, Context } from '@voiceflow/socket-utils';
+import { terminateResend, unrestrictedAccess } from '@voiceflow/socket-utils';
 
 import { AbstractActionControl } from '@/legacy/actions/utils';
 
@@ -8,7 +9,10 @@ export interface WorkspaceCreationContextData extends BaseContextData {
   workspaceID?: string;
 }
 
-class CreateWorkspace extends AbstractActionControl<Realtime.workspace.CreateWorkspacePayload, WorkspaceCreationContextData> {
+class CreateWorkspace extends AbstractActionControl<
+  Realtime.workspace.CreateWorkspacePayload,
+  WorkspaceCreationContextData
+> {
   protected actionCreator = Realtime.workspace.create.started;
 
   protected access = unrestrictedAccess(this);
@@ -45,7 +49,11 @@ class CreateWorkspace extends AbstractActionControl<Realtime.workspace.CreateWor
 
     if (!quota) return;
 
-    await this.server.processAs(ctx.data.creatorID, ctx.data.clientID, Realtime.workspace.quotas.replaceQuota({ workspaceID, quotaDetails: quota }));
+    await this.server.processAs(
+      ctx.data.creatorID,
+      ctx.data.clientID,
+      Realtime.workspace.quotas.replaceQuota({ workspaceID, quotaDetails: quota })
+    );
   };
 }
 

@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { CustomScrollbarsTypes } from '@voiceflow/ui';
+import type { CustomScrollbarsTypes } from '@voiceflow/ui';
 import React from 'react';
 
 export interface ScrollContextValue<T extends HTMLElement | CustomScrollbarsTypes.Scrollbars> {
@@ -18,10 +18,11 @@ export const ScrollContext = React.createContext<ScrollContextValue<HTMLElement 
 
 export const { Consumer: ScrollContextConsumer } = ScrollContext;
 
-// eslint-disable-next-line xss/no-mixed-html
 export const ScrollContextProvider = <T extends HTMLElement | CustomScrollbarsTypes.Scrollbars>({
   value,
   children,
 }: React.ProviderProps<ScrollContextValue<T>>): React.ReactElement => (
-  <ScrollContext.Provider value={value as ScrollContextValue<HTMLElement | CustomScrollbarsTypes.Scrollbars>}>{children}</ScrollContext.Provider>
+  <ScrollContext.Provider value={value as ScrollContextValue<HTMLElement | CustomScrollbarsTypes.Scrollbars>}>
+    {children}
+  </ScrollContext.Provider>
 );

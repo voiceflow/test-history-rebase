@@ -2,7 +2,8 @@ import { datadogRum } from '@datadog/browser-rum';
 import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { MenuTypes, toast, Utils } from '@voiceflow/ui';
+import type { MenuTypes } from '@voiceflow/ui';
+import { toast, Utils } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';

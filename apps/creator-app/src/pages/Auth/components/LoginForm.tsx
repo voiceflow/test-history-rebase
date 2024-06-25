@@ -22,7 +22,7 @@ import { IS_PRIVATE_CLOUD } from '@/config';
 import * as Router from '@/ducks/router';
 import * as Session from '@/ducks/session';
 import { useDispatch } from '@/hooks';
-import { Query } from '@/models';
+import type { Query } from '@/models';
 import HeaderBox from '@/pages/Auth/components/HeaderBox';
 import { useHubspotInject } from '@/pages/Auth/components/useHubspotInject';
 
@@ -188,7 +188,9 @@ export const LoginForm: React.FC<LoginFormProps> = ({ query, children }) => {
                   />
                 </TippyTooltip>
 
-                {state.password.length !== 0 && <ShowPasswordIcon showPassword={state.showPassword} onClick={stateAPI.showPassword.toggle} />}
+                {state.password.length !== 0 && (
+                  <ShowPasswordIcon showPassword={state.showPassword} onClick={stateAPI.showPassword.toggle} />
+                )}
 
                 <System.Link.Router className="forgotLink" to="/reset">
                   Forgot password?

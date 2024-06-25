@@ -14,7 +14,7 @@ import { useDispatch, useHotkeyList, useRegistration, useSelector } from '@/hook
 import { getHotkeyLabel, Hotkey } from '@/keymap';
 import * as ModalsV2 from '@/ModalsV2';
 import { ClipboardContext, EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
-import { CanvasContainerAPI } from '@/pages/Canvas/types';
+import type { CanvasContainerAPI } from '@/pages/Canvas/types';
 import { MarkupContext, SelectionSetTargetsContext } from '@/pages/Project/contexts';
 import { useCommentingMode, useEditingMode, usePrototypingMode } from '@/pages/Project/hooks';
 import { Identifier } from '@/styles/constants';

@@ -7,7 +7,7 @@ import { useLinkedState } from '@/hooks/state.hook';
 import { onOpenURLInANewTabFactory } from '@/utils/window';
 
 import { AIMaxTokensSlider } from '../AIMaxTokensSlider/AIMaxTokensSlider.component';
-import { IAIMaxTokensSliderSection } from './AIMaxTokensSliderSection.interface';
+import type { IAIMaxTokensSliderSection } from './AIMaxTokensSliderSection.interface';
 
 export const AIMaxTokensSliderSection: React.FC<IAIMaxTokensSliderSection> = ({
   value: propValue,

@@ -1,7 +1,7 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 // migrates legacy components to cms flows
 const migrateToV7_00: Transform = ({ cms, diagrams }, { project, creatorID }) => {

@@ -58,7 +58,6 @@ export const CMSResourceEditor: React.FC<ICMSResourceEditor> = ({ Editor, childr
     <Box direction="column" className={container} onClick={onClick}>
       {children}
 
-      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
       <div className={content} onClick={onContentClick}>
         <Drawer isOpen={!!pathMatch.params.resourceID} className={drawer}>
           <div ref={setDrawerNode}>

@@ -1,13 +1,7 @@
-import {
-  Diagram,
-  Function as CMSFunction,
-  Intent,
-  ReferenceResourceType,
-  RequiredEntity,
-  Response,
-} from '@voiceflow/dtos';
+import type { Diagram, Function as CMSFunction, Intent, RequiredEntity, Response } from '@voiceflow/dtos';
+import { ReferenceResourceType } from '@voiceflow/dtos';
 
-import { AssistantLoadCreatorResponse } from '@/assistant/dtos/assistant-load-creator.response';
+import type { AssistantLoadCreatorResponse } from '@/assistant/dtos/assistant-load-creator.response';
 
 import { ReferenceBaseBuilderUtil } from './reference-base-builder.util';
 import { ReferenceBuilderCacheUtil } from './reference-builder-cache.util';

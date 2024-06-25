@@ -37,7 +37,12 @@ export const Component: React.FC<Props> = ({ onError, disabled, onSuccess, authO
   });
 
   return (
-    <Button variant={Button.Variant.PRIMARY} className="LoginWithAmazon" onClick={onConnect} disabled={!scriptLoaded || disabled}>
+    <Button
+      variant={Button.Variant.PRIMARY}
+      className="LoginWithAmazon"
+      onClick={onConnect}
+      disabled={!scriptLoaded || disabled}
+    >
       Connect Amazon
     </Button>
   );

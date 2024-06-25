@@ -4,7 +4,15 @@ import React from 'react';
 import { useKeygen } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 
-import { Count, DropdownLabel, InnerContainer, Label, SectionLabel, TriggerContainer, ValueContainer } from './components';
+import {
+  Count,
+  DropdownLabel,
+  InnerContainer,
+  Label,
+  SectionLabel,
+  TriggerContainer,
+  ValueContainer,
+} from './components';
 
 function DropdownMultiselect({
   options = [],
@@ -110,8 +118,14 @@ function DropdownMultiselect({
           <TriggerContainer className={ClassName.MULTISELECT_DROPDOWN} ref={ref} onClick={onToggle}>
             <InnerContainer active={dropdownActive && isOpen}>
               {dropdownLabel && <Label>{dropdownLabel}</Label>}
-              <ValueContainer className={ClassName.MULTISELECT_SELECTED_VALUE}>{selectedValue || <span>{placeholder}</span>}</ValueContainer>
-              {withCaret ? <SvgIcon icon="caretDown" size={10} color="#6e849a" /> : <Count>{selectedItems.length}</Count>}
+              <ValueContainer className={ClassName.MULTISELECT_SELECTED_VALUE}>
+                {selectedValue || <span>{placeholder}</span>}
+              </ValueContainer>
+              {withCaret ? (
+                <SvgIcon icon="caretDown" size={10} color="#6e849a" />
+              ) : (
+                <Count>{selectedItems.length}</Count>
+              )}
             </InnerContainer>
           </TriggerContainer>
         )

@@ -9,7 +9,7 @@ import { useSelector } from '@/hooks';
 import { useConfirmModal } from '@/hooks/modal.hook';
 import THEME from '@/styles/theme';
 
-import { ProjectVersion } from './hooks';
+import type { ProjectVersion } from './hooks';
 import * as S from './styles';
 
 interface VersionItemProps {

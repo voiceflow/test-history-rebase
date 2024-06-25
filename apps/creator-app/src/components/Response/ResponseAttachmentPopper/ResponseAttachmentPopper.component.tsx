@@ -54,7 +54,10 @@ export const ResponseAttachmentPopper: React.FC<IResponseAttachmentPopper> = ({
       {({ onClose }) => (
         <Switch value={view}>
           <Switch.Pane value="type-menu">
-            <MediaLibraryTypeMenu onTypeSelect={onTypeSelect(onClose)} onLibraryClick={(type) => setView(`library-${type}`)} />
+            <MediaLibraryTypeMenu
+              onTypeSelect={onTypeSelect(onClose)}
+              onLibraryClick={(type) => setView(`library-${type}`)}
+            />
           </Switch.Pane>
 
           <Switch.Pane value={`media-${MediaType.IMAGE}`}>
@@ -68,13 +71,20 @@ export const ResponseAttachmentPopper: React.FC<IResponseAttachmentPopper> = ({
 
           <Switch.Pane value={`media-${MediaType.CARD}`}>
             {attachment?.type === AttachmentType.CARD && (
-              <MediaLibraryCardPopper card={attachment} onClose={onClose} onLibraryClick={() => setView(`library-${MediaType.IMAGE}`)} />
+              <MediaLibraryCardPopper
+                card={attachment}
+                onClose={onClose}
+                onLibraryClick={() => setView(`library-${MediaType.IMAGE}`)}
+              />
             )}
           </Switch.Pane>
 
           <Switch.Pane value={`library-${MediaType.IMAGE}`}>
             <MediaLibraryImagesPopper
-              onImageSelect={Utils.functional.chainAsync((id: string) => onAttachmentSelect({ id, type: AttachmentType.MEDIA }), onClose)}
+              onImageSelect={Utils.functional.chainAsync(
+                (id: string) => onAttachmentSelect({ id, type: AttachmentType.MEDIA }),
+                onClose
+              )}
             />
           </Switch.Pane>
 

@@ -1,4 +1,5 @@
-import { Box, Menu, SvgIcon, SvgIconTypes, Text } from '@voiceflow/ui';
+import type { SvgIconTypes } from '@voiceflow/ui';
+import { Box, Menu, SvgIcon, Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { useHover } from '@/hooks';

@@ -1,5 +1,5 @@
 import { useEditor } from '../EditorV2/hooks';
-import { EditorV3Action } from './EditorV3.interface';
+import type { EditorV3Action } from './EditorV3.interface';
 
 export { useEditor } from '../EditorV2/hooks';
 

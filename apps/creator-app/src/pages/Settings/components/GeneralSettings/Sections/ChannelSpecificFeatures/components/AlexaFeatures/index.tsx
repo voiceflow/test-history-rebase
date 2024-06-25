@@ -20,7 +20,10 @@ const MODEL_SENSITIVITY_SUPPORTED_LOCALES = new Set<string>([
 const AlexaFeatures: React.FC = () => {
   const locales = useSelector(VersionV2.active.localesSelector);
 
-  const modelSensitivityShown = React.useMemo(() => locales.some((locale: string) => MODEL_SENSITIVITY_SUPPORTED_LOCALES.has(locale)), [locales]);
+  const modelSensitivityShown = React.useMemo(
+    () => locales.some((locale: string) => MODEL_SENSITIVITY_SUPPORTED_LOCALES.has(locale)),
+    [locales]
+  );
 
   return (
     <Settings.Section title="Channel Specific Features">

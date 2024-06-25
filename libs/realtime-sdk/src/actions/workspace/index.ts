@@ -1,9 +1,10 @@
-import { ClientCRUDPayload, createCRUDActions, getCRUDActionTargets } from '@realtime-sdk/actions/utils';
-import { Quota, Workspace, WorkspaceSettings } from '@realtime-sdk/models';
-import { BaseCreatorPayload, BaseWorkspacePayload } from '@realtime-sdk/types';
+import type { ClientCRUDPayload } from '@realtime-sdk/actions/utils';
+import { createCRUDActions, getCRUDActionTargets } from '@realtime-sdk/actions/utils';
+import type { Quota, Workspace, WorkspaceSettings } from '@realtime-sdk/models';
+import type { BaseCreatorPayload, BaseWorkspacePayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
-import { BillingPeriod, PlanType } from '@voiceflow/internal';
-import { Action, AnyAction } from 'typescript-fsa';
+import type { BillingPeriod, PlanType } from '@voiceflow/internal';
+import type { Action, AnyAction } from 'typescript-fsa';
 
 import { workspaceType } from './utils';
 
@@ -70,7 +71,9 @@ export const changeSeats = Utils.protocol.createAction<ChangeSeatsPayload>(works
 
 export const updateImage = Utils.protocol.createAction<UpdateWorkspaceImagePayload>(workspaceType('UPDATE_IMAGE'));
 
-export const downgradeTrial = Utils.protocol.createAsyncAction<DowngradeTrialPayload, null>(workspaceType('DOWNGRADE_TRIAL'));
+export const downgradeTrial = Utils.protocol.createAsyncAction<DowngradeTrialPayload, null>(
+  workspaceType('DOWNGRADE_TRIAL')
+);
 
 export const crud = createCRUDActions<Workspace, BaseCreatorPayload>(workspaceType);
 

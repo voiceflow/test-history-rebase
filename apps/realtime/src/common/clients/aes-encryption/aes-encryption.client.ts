@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import crypto from 'crypto';
 
-import { AesEncryptionModuleOptions } from './aes-encryption.interface';
+import type { AesEncryptionModuleOptions } from './aes-encryption.interface';
 import { AES_ENCRYPTION_TOKEN_MODULE_OPTIONS_TOKEN } from './aes-encryption.module-definition';
 
 @Injectable()

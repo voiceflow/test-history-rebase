@@ -89,7 +89,10 @@ export class VariableLoguxController {
     const result = await this.service.deleteManyAndSync([id], { context });
 
     // overriding entities cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, variables: [] } }, { auth, context });
+    await this.service.broadcastDeleteMany(
+      { ...result, delete: { ...result.delete, variables: [] } },
+      { auth, context }
+    );
   }
 
   @Action(Actions.Variable.DeleteMany)
@@ -104,7 +107,10 @@ export class VariableLoguxController {
     const result = await this.service.deleteManyAndSync(ids, { context });
 
     // overriding entities cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, variables: [] } }, { auth, context });
+    await this.service.broadcastDeleteMany(
+      { ...result, delete: { ...result.delete, variables: [] } },
+      { auth, context }
+    );
   }
 
   @Action(Actions.Variable.AddOne)

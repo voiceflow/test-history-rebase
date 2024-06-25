@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
@@ -40,7 +40,10 @@ export const DEFAULT_SIDEBAR_HEADER_ACTIONS: SidebarHeaderAction[] = [
   },
 ];
 
-export const SidebarProvider: React.FC<SidebarProviderProps> = ({ headerActions = DEFAULT_SIDEBAR_HEADER_ACTIONS, children }) => {
+export const SidebarProvider: React.FC<SidebarProviderProps> = ({
+  headerActions = DEFAULT_SIDEBAR_HEADER_ACTIONS,
+  children,
+}) => {
   const [state, updateState] = useLinkedState({ headerActions });
 
   const api = useContextApi({ state, updateState });

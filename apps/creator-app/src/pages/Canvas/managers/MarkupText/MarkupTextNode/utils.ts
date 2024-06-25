@@ -8,6 +8,8 @@ export const findAllDraggableParents = (node?: HTMLElement | null): HTMLElement[
   return [];
 };
 
-export const addDraggableAttr = (nodes?: HTMLElement[]) => nodes?.forEach((parentNode) => parentNode.setAttribute('draggable', 'true'));
+export const addDraggableAttr = (nodes?: HTMLElement[]) =>
+  nodes?.forEach((parentNode) => parentNode.setAttribute('draggable', 'true'));
 
-export const removeDraggableAttr = (nodes?: HTMLElement[]) => nodes?.forEach((parentNode) => parentNode.removeAttribute('draggable'));
+export const removeDraggableAttr = (nodes?: HTMLElement[]) =>
+  nodes?.forEach((parentNode) => parentNode.removeAttribute('draggable'));

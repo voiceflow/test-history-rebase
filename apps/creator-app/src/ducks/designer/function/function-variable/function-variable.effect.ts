@@ -6,7 +6,10 @@ import { getActiveAssistantContext } from '@/ducks/versionV2/utils';
 import type { Thunk } from '@/store/types';
 
 export const createOne =
-  (functionID: string, data: Pick<Actions.FunctionVariable.CreateData, 'name' | 'type' | 'description'>): Thunk<FunctionVariable> =>
+  (
+    functionID: string,
+    data: Pick<Actions.FunctionVariable.CreateData, 'name' | 'type' | 'description'>
+  ): Thunk<FunctionVariable> =>
   async (dispatch, getState) => {
     const state = getState();
 

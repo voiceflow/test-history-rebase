@@ -1,17 +1,24 @@
 import { BlockType } from '@realtime-sdk/constants';
-import { NodeData } from '@realtime-sdk/models';
-import { BaseModels } from '@voiceflow/base-types';
-import * as Platform from '@voiceflow/platform-config/backend';
+import type { NodeData } from '@realtime-sdk/models';
+import type { BaseModels } from '@voiceflow/base-types';
+import type * as Platform from '@voiceflow/platform-config/backend';
 import { createSimpleAdapter } from 'bidirectional-adapter';
 
-import { AdapterContext } from '../types';
+import type { AdapterContext } from '../types';
 import { APP_BLOCK_TYPE_FROM_DB, DB_BLOCK_TYPE_FROM_APP, getBlockAdapters } from './block';
 import { needsMigration } from './utils';
 
 const nodeDataAdapter = createSimpleAdapter<
   { data: BaseModels.BaseDiagramNode['data']; type: string },
   NodeData<unknown>,
-  [{ platform: Platform.Constants.PlatformType; projectType: Platform.Constants.ProjectType; nodeID: string; context: AdapterContext }],
+  [
+    {
+      platform: Platform.Constants.PlatformType;
+      projectType: Platform.Constants.ProjectType;
+      nodeID: string;
+      context: AdapterContext;
+    },
+  ],
   [{ platform: Platform.Constants.PlatformType; projectType: Platform.Constants.ProjectType; context: AdapterContext }]
 >(
   ({ data: dbData, type: dbType }, { platform, projectType, nodeID, context }) => {
@@ -24,7 +31,10 @@ const nodeDataAdapter = createSimpleAdapter<
     try {
       const adapters = getBlockAdapters(platform, projectType, needsMigration(dbType, type));
 
-      data = adapters[type]?.fromDB(dbData, { context, ports: dbData.ports, portsV2: dbData.portsV2 }) || { deprecatedType: type, ...dbData };
+      data = adapters[type]?.fromDB(dbData, { context, ports: dbData.ports, portsV2: dbData.portsV2 }) || {
+        deprecatedType: type,
+        ...dbData,
+      };
     } catch {
       data = { deprecatedType: type, ...dbData };
     }
@@ -41,7 +51,8 @@ const nodeDataAdapter = createSimpleAdapter<
   },
   ({ type, deprecatedType, nodeID, ...appData }, { platform, projectType, context }) => {
     const getNodeType = DB_BLOCK_TYPE_FROM_APP[type];
-    const dbType = typeof getNodeType === 'function' ? getNodeType(appData, { context }) : getNodeType || deprecatedType || type;
+    const dbType =
+      typeof getNodeType === 'function' ? getNodeType(appData, { context }) : getNodeType || deprecatedType || type;
 
     let data: BaseModels.BaseDiagramNode['data'] = {};
 

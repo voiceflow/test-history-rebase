@@ -7,7 +7,14 @@ import { useDeferredSearch } from '@/hooks/search.hook';
 
 import type { IVariableDatatypeDropdown } from './VariableDatatypeDropdown.interface';
 
-export const VariableDatatypeDropdown: React.FC<IVariableDatatypeDropdown> = ({ error, value, onClick, minWidth, disabled, onValueChange }) => {
+export const VariableDatatypeDropdown: React.FC<IVariableDatatypeDropdown> = ({
+  error,
+  value,
+  onClick,
+  minWidth,
+  disabled,
+  onValueChange,
+}) => {
   const datatypes = useMemo(() => Object.values(VariableDatatype), []);
 
   const search = useDeferredSearch({

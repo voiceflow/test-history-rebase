@@ -1,4 +1,5 @@
-import { Dropdown, DropdownPlacement } from '@voiceflow/ui';
+import type { DropdownPlacement } from '@voiceflow/ui';
+import { Dropdown } from '@voiceflow/ui';
 import React from 'react';
 
 import { ButtonContainer, CaretIcon, DisabledWrapper, TextContainer } from '@/components/DropdownWithCaret/components';

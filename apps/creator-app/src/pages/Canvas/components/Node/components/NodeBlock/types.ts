@@ -1,4 +1,4 @@
-import { HSLShades } from '@/constants';
+import type { HSLShades } from '@/constants';
 
 export interface ReorderIndicatorProps {
   index: number;

@@ -9,7 +9,10 @@ import { ZodValidationPipe } from 'nestjs-zod';
 
 import { AssistantService } from '@/assistant/assistant.service';
 import { AssistantImportDataDTO } from '@/assistant/dtos/assistant-import-data.dto';
-import { HashedWorkspaceIDPayloadPipe, HashedWorkspaceIDPayloadType } from '@/common/pipes/hashed-workspace-id-payload.pipe';
+import {
+  HashedWorkspaceIDPayloadPipe,
+  HashedWorkspaceIDPayloadType,
+} from '@/common/pipes/hashed-workspace-id-payload.pipe';
 
 import { ProjectImportJSONRequest } from './dtos/project-import-json.request';
 import { ProjectImportJSONResponse } from './dtos/project-import-json.response';
@@ -32,7 +35,11 @@ export class ProjectPublicHTTPController {
   @Authorize.Permissions([Permission.WORKSPACE_PROJECT_CREATE])
   @ApiOperation({ deprecated: true, summary: 'Deprecated. Use /assistant/import-file/:workspaceID instead' })
   @ApiBody({
-    schema: { type: 'object', required: ['file'], properties: { file: { type: 'string', format: 'binary' }, clientID: { type: 'string' } } },
+    schema: {
+      type: 'object',
+      required: ['file'],
+      properties: { file: { type: 'string', format: 'binary' }, clientID: { type: 'string' } },
+    },
   })
   @ApiParam({ name: 'workspaceID', type: 'string' })
   @ApiConsumes('multipart/form-data')
@@ -55,10 +62,13 @@ export class ProjectPublicHTTPController {
    * @deprecated Use /assistant/import-json instead
    */
   @Post('import-json')
-  @Authorize.Permissions([Permission.WORKSPACE_PROJECT_CREATE], (request: Request<unknown, unknown, ProjectImportJSONRequest>) => ({
-    id: request.body.workspaceID,
-    kind: 'workspace',
-  }))
+  @Authorize.Permissions(
+    [Permission.WORKSPACE_PROJECT_CREATE],
+    (request: Request<unknown, unknown, ProjectImportJSONRequest>) => ({
+      id: request.body.workspaceID,
+      kind: 'workspace',
+    })
+  )
   @ApiOperation({ deprecated: true, summary: 'Deprecated. Use /assistant/import-json instead' })
   @ZodApiBody({ schema: ProjectImportJSONRequest })
   @ZodApiResponse({ status: HttpStatus.CREATED, schema: ProjectImportJSONResponse })

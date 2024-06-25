@@ -1,7 +1,7 @@
-import { LinkProps } from 'react-router-dom';
+import type { LinkProps } from 'react-router-dom';
 
-import { Color } from './link.enum';
-import { SystemProps } from './link.style';
+import type { Color } from './link.enum';
+import type { SystemProps } from './link.style';
 
 export interface BaseProps extends SystemProps {
   color?: string | Color;

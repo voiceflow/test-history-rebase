@@ -1,4 +1,4 @@
-import { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import type { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 export interface NestResourceOptions {
   axios: AxiosInstance;
@@ -34,31 +34,55 @@ export abstract class NestResource {
     return `${this.path}${url}`;
   }
 
-  protected get<T = any, R = AxiosResponse<T>, D = any>(path: `/${string}`, config?: AxiosRequestConfig<D>): Promise<R> {
+  protected get<T = any, R = AxiosResponse<T>, D = any>(
+    path: `/${string}`,
+    config?: AxiosRequestConfig<D>
+  ): Promise<R> {
     return this.axios.get<T, R, D>(this.buildFullPath(path), config).catch(NestResource.processError);
   }
 
-  protected delete<T = any, R = AxiosResponse<T>, D = any>(path: `/${string}`, config?: AxiosRequestConfig<D>): Promise<R> {
+  protected delete<T = any, R = AxiosResponse<T>, D = any>(
+    path: `/${string}`,
+    config?: AxiosRequestConfig<D>
+  ): Promise<R> {
     return this.axios.delete<T, R, D>(this.buildFullPath(path), config).catch(NestResource.processError);
   }
 
-  protected head<T = any, R = AxiosResponse<T>, D = any>(path: `/${string}`, config?: AxiosRequestConfig<D>): Promise<R> {
+  protected head<T = any, R = AxiosResponse<T>, D = any>(
+    path: `/${string}`,
+    config?: AxiosRequestConfig<D>
+  ): Promise<R> {
     return this.axios.head<T, R, D>(this.buildFullPath(path), config).catch(NestResource.processError);
   }
 
-  protected options<T = any, R = AxiosResponse<T>, D = any>(path: `/${string}`, config?: AxiosRequestConfig<D>): Promise<R> {
+  protected options<T = any, R = AxiosResponse<T>, D = any>(
+    path: `/${string}`,
+    config?: AxiosRequestConfig<D>
+  ): Promise<R> {
     return this.axios.options<T, R, D>(this.buildFullPath(path), config).catch(NestResource.processError);
   }
 
-  protected post<T = any, R = AxiosResponse<T>, D = any>(path: `/${string}`, data?: D, config?: AxiosRequestConfig<D>): Promise<R> {
+  protected post<T = any, R = AxiosResponse<T>, D = any>(
+    path: `/${string}`,
+    data?: D,
+    config?: AxiosRequestConfig<D>
+  ): Promise<R> {
     return this.axios.post<T, R, D>(this.buildFullPath(path), data, config).catch(NestResource.processError);
   }
 
-  protected put<T = any, R = AxiosResponse<T>, D = any>(path: `/${string}`, data?: D, config?: AxiosRequestConfig<D>): Promise<R> {
+  protected put<T = any, R = AxiosResponse<T>, D = any>(
+    path: `/${string}`,
+    data?: D,
+    config?: AxiosRequestConfig<D>
+  ): Promise<R> {
     return this.axios.put<T, R, D>(this.buildFullPath(path), data, config).catch(NestResource.processError);
   }
 
-  protected patch<T = any, R = AxiosResponse<T>, D = any>(path: `/${string}`, data?: D, config?: AxiosRequestConfig<D>): Promise<R> {
+  protected patch<T = any, R = AxiosResponse<T>, D = any>(
+    path: `/${string}`,
+    data?: D,
+    config?: AxiosRequestConfig<D>
+  ): Promise<R> {
     return this.axios.patch<T, R, D>(this.buildFullPath(path), data, config).catch(NestResource.processError);
   }
 }

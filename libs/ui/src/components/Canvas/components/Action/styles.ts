@@ -119,7 +119,9 @@ const containerReversedStyles = css`
 export const Container = styled.div<{ borders?: boolean; reversed?: boolean }>`
   display: flex;
   height: 26px;
-  box-shadow: 0 1px 0 0 ${({ theme }) => theme.colors.borders}, 0 0 1px 0 rgba(19, 33, 68, 0.16);
+  box-shadow:
+    0 1px 0 0 ${({ theme }) => theme.colors.borders},
+    0 0 1px 0 rgba(19, 33, 68, 0.16);
   border-radius: 6px;
   background: #fff;
   cursor: pointer;

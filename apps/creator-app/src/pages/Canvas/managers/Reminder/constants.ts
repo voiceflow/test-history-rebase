@@ -1,11 +1,12 @@
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { withProps } from 'recompose';
 
 import { BlockType, ReminderType } from '@/constants';
 
-import { NodeConfig } from '../types';
-import ReminderForm, { ReminderFormProps } from './components/ReminderForm';
+import type { NodeConfig } from '../types';
+import type { ReminderFormProps } from './components/ReminderForm';
+import ReminderForm from './components/ReminderForm';
 
 export const REMINDER_ROUTES = [
   {
@@ -16,7 +17,9 @@ export const REMINDER_ROUTES = [
   {
     id: ReminderType.SCHEDULED,
     label: 'Scheduled',
-    component: withProps<Pick<ReminderFormProps, 'withDate'>, Omit<ReminderFormProps, 'withDate'>>({ withDate: true })(ReminderForm),
+    component: withProps<Pick<ReminderFormProps, 'withDate'>, Omit<ReminderFormProps, 'withDate'>>({ withDate: true })(
+      ReminderForm
+    ),
   },
 ];
 

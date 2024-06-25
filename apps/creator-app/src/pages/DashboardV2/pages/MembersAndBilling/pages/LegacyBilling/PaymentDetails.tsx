@@ -3,7 +3,7 @@ import React from 'react';
 
 import Page from '@/components/Page';
 import * as ModalsV2 from '@/ModalsV2';
-import { DBPaymentSource } from '@/models/Billing';
+import type { DBPaymentSource } from '@/models/Billing';
 
 interface PaymentDetailsProps {
   source: DBPaymentSource | null;

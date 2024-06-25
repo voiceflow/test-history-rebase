@@ -1,13 +1,13 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Portal } from '@voiceflow/ui';
 import React from 'react';
 
-import { BlockType } from '@/constants';
+import type { BlockType } from '@/constants';
 import * as Creator from '@/ducks/creatorV2';
 import { useSelector } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
 
-import { HandlePosition } from '../../constants';
+import type { HandlePosition } from '../../constants';
 import Overlay from '../Overlay';
 import { useTransformOverlayAPI } from './hooks';
 
@@ -34,7 +34,9 @@ const OverlayControls: React.FC<OverlayControlsProps> = ({ children }) => {
 
   return (
     <Portal>
-      <Overlay ref={api.ref}>{children({ nodeType, data, onResizeStart: api.startResize, onRotateStart: api.startRotate })}</Overlay>
+      <Overlay ref={api.ref}>
+        {children({ nodeType, data, onResizeStart: api.startResize, onRotateStart: api.startRotate })}
+      </Overlay>
     </Portal>
   );
 };

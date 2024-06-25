@@ -1,6 +1,6 @@
 import { SYSTEM_VARIABLE_DESCRIPTION_MAP, SYSTEM_VARIABLE_TYPE_MAP, SystemVariable } from '@voiceflow/dtos';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 // adds VF_CHUNKS system variable
 const migrateToV7_01: Transform = ({ cms }, { project, creatorID }) => {

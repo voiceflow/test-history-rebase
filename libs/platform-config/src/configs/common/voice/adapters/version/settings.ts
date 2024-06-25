@@ -2,9 +2,10 @@ import * as Base from '@platform-config/configs/base';
 import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { BaseVersion } from '@voiceflow/base-types';
 import { VoiceVersion } from '@voiceflow/voice-types';
-import { createSimpleAdapter, createSmartSimpleAdapter, SimpleAdapter, SmartSimpleAdapter } from 'bidirectional-adapter';
+import type { SimpleAdapter, SmartSimpleAdapter } from 'bidirectional-adapter';
+import { createSimpleAdapter, createSmartSimpleAdapter } from 'bidirectional-adapter';
 
-import * as Models from '../../models';
+import type * as Models from '../../models';
 import * as Prompt from '../prompt';
 
 export type FromAndToDBOptions = Base.Adapters.Version.Settings.FromAndToDBOptions;
@@ -16,7 +17,9 @@ export const smart = createSmartSimpleAdapter<
   FromAndToDBOptions
 >(
   ({ error, globalNoMatch, globalNoReply, ...dbSettings }, { defaultVoice }) => ({
-    ...Base.Adapters.Version.Settings.smart.fromDB(dbSettings, { defaultVoice: dbSettings.defaultVoice ?? defaultVoice }),
+    ...Base.Adapters.Version.Settings.smart.fromDB(dbSettings, {
+      defaultVoice: dbSettings.defaultVoice ?? defaultVoice,
+    }),
     ...(ConfigUtils.hasValue(dbSettings, 'defaultVoice') && { defaultVoice: dbSettings.defaultVoice ?? defaultVoice }),
     ...(error !== undefined && { error: error && Prompt.simple.fromDB(error) }),
     ...(globalNoMatch &&
@@ -25,7 +28,10 @@ export const smart = createSmartSimpleAdapter<
             globalNoMatch: { type: BaseVersion.GlobalNoMatchType.GENERATIVE, prompt: globalNoMatch.prompt },
           }
         : {
-            globalNoMatch: { type: BaseVersion.GlobalNoMatchType.STATIC, prompt: globalNoMatch.prompt && Prompt.simple.fromDB(globalNoMatch.prompt) },
+            globalNoMatch: {
+              type: BaseVersion.GlobalNoMatchType.STATIC,
+              prompt: globalNoMatch.prompt && Prompt.simple.fromDB(globalNoMatch.prompt),
+            },
           })),
     ...(globalNoReply !== undefined && {
       globalNoReply: { ...globalNoReply, prompt: globalNoReply.prompt && Prompt.simple.fromDB(globalNoReply.prompt) },
@@ -36,7 +42,10 @@ export const smart = createSmartSimpleAdapter<
     ...(ConfigUtils.hasValue(settings, 'defaultVoice') && { defaultVoice: settings.defaultVoice }),
     ...(error !== undefined && { error: error && Prompt.simple.toDB(error) }),
     ...(globalNoMatch?.type === BaseVersion.GlobalNoMatchType.STATIC && {
-      globalNoMatch: { type: globalNoMatch.type, prompt: globalNoMatch.prompt && Prompt.simple.toDB(globalNoMatch.prompt) },
+      globalNoMatch: {
+        type: globalNoMatch.type,
+        prompt: globalNoMatch.prompt && Prompt.simple.toDB(globalNoMatch.prompt),
+      },
     }),
     ...(globalNoMatch?.type === BaseVersion.GlobalNoMatchType.GENERATIVE && {
       globalNoMatch,
@@ -54,7 +63,10 @@ export const simple = createSimpleAdapter<
   FromAndToDBOptions
 >(
   (dbSettings, options) =>
-    smart.fromDB(VoiceVersion.defaultSettings(dbSettings, { defaultPromptVoice: dbSettings.defaultVoice ?? options.defaultVoice }), options),
+    smart.fromDB(
+      VoiceVersion.defaultSettings(dbSettings, { defaultPromptVoice: dbSettings.defaultVoice ?? options.defaultVoice }),
+      options
+    ),
   (settings, options) => smart.toDB(settings, options)
 );
 

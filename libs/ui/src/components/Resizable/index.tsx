@@ -23,7 +23,13 @@ interface ResizableProps extends React.PropsWithChildren {
   disabled?: boolean;
 }
 
-const defaultHandle = ({ axis, onMouseDown }: { axis: ResizableProps['axis']; onMouseDown: (event: React.MouseEvent<HTMLDivElement>) => void }) => {
+const defaultHandle = ({
+  axis,
+  onMouseDown,
+}: {
+  axis: ResizableProps['axis'];
+  onMouseDown: (event: React.MouseEvent<HTMLDivElement>) => void;
+}) => {
   const Component = axis === 'x' ? S.VerticalHandle : S.HorizontalHandle;
 
   return <Component onMouseDown={onMouseDown} />;

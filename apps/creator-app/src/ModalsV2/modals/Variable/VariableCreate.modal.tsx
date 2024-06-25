@@ -118,11 +118,21 @@ export const VariableCreateModal = modalsManager.create<IVariableCreateModal, Va
 
             <Divider fullWidth noPadding />
 
-            <VariableDefaultValueSection value={defaultValue} disabled={closePrevented} onValueChange={setDefaultValue} />
+            <VariableDefaultValueSection
+              value={defaultValue}
+              disabled={closePrevented}
+              onValueChange={setDefaultValue}
+            />
           </Scroll>
 
           <Modal.Footer>
-            <Modal.Footer.Button testID={tid(TEST_ID, 'cancel')} variant="secondary" onClick={api.onClose} disabled={closePrevented} label="Cancel" />
+            <Modal.Footer.Button
+              testID={tid(TEST_ID, 'cancel')}
+              variant="secondary"
+              onClick={api.onClose}
+              disabled={closePrevented}
+              label="Cancel"
+            />
 
             <Modal.Footer.Button
               label="Create variable"

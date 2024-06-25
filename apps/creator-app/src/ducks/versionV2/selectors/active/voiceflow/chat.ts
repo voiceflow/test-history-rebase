@@ -1,4 +1,4 @@
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import { VoiceflowVersion } from '@voiceflow/voiceflow-types';
 import { createSelector } from 'reselect';
 
@@ -33,4 +33,7 @@ export const publishingSelector = createSelector(
   })
 );
 
-export const messageDelaySelector = createSelector([settingsSelector], (settings) => settings?.messageDelay?.durationMilliseconds ?? 0);
+export const messageDelaySelector = createSelector(
+  [settingsSelector],
+  (settings) => settings?.messageDelay?.durationMilliseconds ?? 0
+);

@@ -1,5 +1,5 @@
-import { UploadClient } from '@voiceflow/ui';
-import { AxiosResponse } from 'axios';
+import type { UploadClient } from '@voiceflow/ui';
+import type { AxiosResponse } from 'axios';
 
 import file from './file';
 

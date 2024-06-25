@@ -1,4 +1,4 @@
-import { TippyTooltipProps } from '../TippyTooltip';
+import type { TippyTooltipProps } from '../TippyTooltip';
 
 export interface Props<E extends HTMLElement = HTMLElement> extends Omit<TippyTooltipProps, 'children'> {
   overflow?: boolean;

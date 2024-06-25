@@ -16,7 +16,9 @@ suite('Client - Template', ({ expectMembers, stubFetch }) => {
 
       await client.getPlatformTemplate(Platform.Constants.PlatformType.GOOGLE);
 
-      expect(fetch).toBeCalledWith(`templates/${Platform.Constants.PlatformType.GOOGLE}`, { query: { tag: 'default' } });
+      expect(fetch).toBeCalledWith(`templates/${Platform.Constants.PlatformType.GOOGLE}`, {
+        query: { tag: 'default' },
+      });
     });
 
     it('get a platform template with a specific tag', async () => {

@@ -28,7 +28,9 @@ export class BackupHTTPController {
     @Query('limit', ParseIntPipe) limit: number,
     @Query('offset', ParseIntPipe) offset: number
   ): Promise<BackupFindManyResponse> {
-    return this.service.findManyForAssistantID(projectID, { limit, offset }).then((backups) => ({ data: this.service.mapToJSON(backups) }));
+    return this.service
+      .findManyForAssistantID(projectID, { limit, offset })
+      .then((backups) => ({ data: this.service.mapToJSON(backups) }));
   }
 
   @Post()
@@ -67,8 +69,14 @@ export class BackupHTTPController {
   @ApiParam({ name: 'projectID', type: 'string' })
   @Authorize.Permissions([Permission.PROJECT_UPDATE])
   @ZodApiResponse({ status: HttpStatus.CREATED, schema: BackupDTO })
-  restoreOne(@Param('backupID') backupID: number, @Query('clientID') clientID: string, @UserID() userID: number): Promise<Backup> {
-    return this.service.restoreBackupAndEjectUsers({ clientID, userID }, backupID).then((backup) => this.service.toJSON(backup));
+  restoreOne(
+    @Param('backupID') backupID: number,
+    @Query('clientID') clientID: string,
+    @UserID() userID: number
+  ): Promise<Backup> {
+    return this.service
+      .restoreBackupAndEjectUsers({ clientID, userID }, backupID)
+      .then((backup) => this.service.toJSON(backup));
   }
 
   @Post(':backupID/preview')

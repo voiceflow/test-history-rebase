@@ -1,10 +1,10 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
 import * as Session from '@/ducks/session';
-import { Thunk } from '@/store/types';
+import type { Thunk } from '@/store/types';
 
 import { updatePrototypeSettings } from '../actions';
 import { prototypeSettingsSelector } from '../selectors';

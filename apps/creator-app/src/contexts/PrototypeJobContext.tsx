@@ -1,12 +1,13 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
 import client from '@/client';
 import * as ProjectV2 from '@/ducks/projectV2';
-import useJob, { JobContextValue } from '@/hooks/job';
-import { Job, TwilioPrototypeJob } from '@/models';
+import type { JobContextValue } from '@/hooks/job';
+import useJob from '@/hooks/job';
+import type { Job, TwilioPrototypeJob } from '@/models';
 
 export type AnyPrototypeJob = TwilioPrototypeJob.AnyJob;
 

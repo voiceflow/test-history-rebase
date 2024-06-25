@@ -1,14 +1,16 @@
 import { Utils } from '@voiceflow/common';
-import { BaseRequest } from '@voiceflow/dtos';
+import type { BaseRequest } from '@voiceflow/dtos';
 import React from 'react';
 
 import { PrototypeStatus } from '@/constants/prototype';
-import { IDSelectorParam } from '@/ducks/utils/crudV2';
+import type { IDSelectorParam } from '@/ducks/utils/crudV2';
 import { useTrackingEvents } from '@/hooks';
 import { useEventualEngine } from '@/hooks/engine.hook';
 
-import PrototypeTool, { PrototypeToolProps } from '../PrototypeTool';
-import { Interaction, Message, PMStatus, PrototypeAllTypes } from '../types';
+import type { PrototypeToolProps } from '../PrototypeTool';
+import PrototypeTool from '../PrototypeTool';
+import type { Interaction, Message, PrototypeAllTypes } from '../types';
+import { PMStatus } from '../types';
 
 interface Options extends PrototypeAllTypes {
   debug: boolean;

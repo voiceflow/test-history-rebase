@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/cognitive-complexity */
 import { RefUtil, useCreateConst, useExternalID, usePersistFunction } from '@voiceflow/ui-next';
 import { useEffect, useRef, useState } from 'react';
 import { flushSync } from 'react-dom';

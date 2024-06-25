@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Job } from '@/models';
-import { StageContent, StageContentMap } from '@/platforms/types';
+import type { Job } from '@/models';
+import type { StageContent, StageContentMap } from '@/platforms/types';
 
 export const createUseJobInterfaceContent =
   <J extends Job<any>>(contentMap: StageContentMap<J>) =>

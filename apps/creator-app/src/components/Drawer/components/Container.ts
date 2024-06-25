@@ -3,7 +3,7 @@ import { Tokens } from '@voiceflow/ui-next/styles';
 import { css, styled } from '@/hocs/styled';
 import { SlideOut, SlideOutDirection } from '@/styles/transitions';
 
-import { DrawerProps } from '../types';
+import type { DrawerProps } from '../types';
 
 const Container = styled(SlideOut)<DrawerProps>`
   height: 100%;
@@ -48,7 +48,9 @@ const Container = styled(SlideOut)<DrawerProps>`
     css`
       transition-duration: ${Tokens.animation.duration.default};
       transition-timing-function: ${Tokens.animation.timingFunction.default};
-      transition-property: top, height ${animatedWidth ? ', transform, width' : ''};
+      transition-property:
+        top,
+        height ${animatedWidth ? ', transform, width' : ''};
     `}
 `;
 

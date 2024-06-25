@@ -1,4 +1,4 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
@@ -21,7 +21,10 @@ export const useMigrationDoneObserver = (
   );
 };
 
-export const useMigrationFailedObserver = (versionID: Nullable<string>, onFailed: (error: Realtime.RealtimeError) => void): void => {
+export const useMigrationFailedObserver = (
+  versionID: Nullable<string>,
+  onFailed: (error: Realtime.RealtimeError) => void
+): void => {
   const realtimeClient = useRealtimeClient();
 
   React.useEffect(

@@ -2,14 +2,18 @@ import * as Adapters from '@realtime-sdk/adapters';
 import { typeGuards } from '@realtime-sdk/utils';
 import { Utils } from '@voiceflow/common';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 /**
  * this migration adds missing ports to carousel nodes
  */
 const migrateToV2_1: Transform = ({ diagrams }, { project }) => {
   diagrams.forEach((dbDiagram) => {
-    const diagram = Adapters.creatorAdapter.fromDB(dbDiagram, { platform: project.platform, projectType: project.type, context: {} });
+    const diagram = Adapters.creatorAdapter.fromDB(dbDiagram, {
+      platform: project.platform,
+      projectType: project.type,
+      context: {},
+    });
 
     Object.values(dbDiagram.nodes).forEach((dbNode) => {
       const data = diagram.data[dbNode.nodeID];

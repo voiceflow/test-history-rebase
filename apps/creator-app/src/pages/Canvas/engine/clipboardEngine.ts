@@ -1,6 +1,6 @@
 import { Crypto, Utils } from '@voiceflow/common';
 import type { Entity, IntentWithData } from '@voiceflow/dtos';
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 import { get, set } from 'idb-keyval';
@@ -17,7 +17,7 @@ import * as Session from '@/ducks/session';
 import * as VersionV2 from '@/ducks/versionV2';
 import * as Clipboard from '@/utils/clipboard';
 import { synchronous as synchronousCrypto } from '@/utils/crypto';
-import { Coords } from '@/utils/geometry';
+import type { Coords } from '@/utils/geometry';
 
 import { EngineConsumer, getCopiedNodeDataIDs } from './utils';
 
@@ -175,7 +175,11 @@ class ClipboardEngine extends EngineConsumer {
 
         const nodeOverrides = { parentNode: null, x: parentNode.x, y: parentNode.y, combinedNodes: [id] };
 
-        const entities = this.engine.diagram.getParentEntities(parentNodeID!, type !== BlockType.INTENT && type !== BlockType.TRIGGER, nodeOverrides);
+        const entities = this.engine.diagram.getParentEntities(
+          parentNodeID!,
+          type !== BlockType.INTENT && type !== BlockType.TRIGGER,
+          nodeOverrides
+        );
 
         entities.nodesWithData.forEach(({ data: nodeData }) => {
           data[nodeData.nodeID] = nodeData;
@@ -251,7 +255,9 @@ class ClipboardEngine extends EngineConsumer {
     const nodeMap = Utils.array.createMap(context.nodes, (node) => node.id);
     const linkSourcePortIDMap = Utils.array.createMap(context.links, (link) => link.source.portID);
 
-    const ignoredNodes = context.nodes.filter((node) => node.type === BlockType.INTENT || node.type === BlockType.TRIGGER);
+    const ignoredNodes = context.nodes.filter(
+      (node) => node.type === BlockType.INTENT || node.type === BlockType.TRIGGER
+    );
     const removedNodeIDs: string[] = ignoredNodes.map((node) => node.id);
 
     ignoredNodes.forEach((node) => {

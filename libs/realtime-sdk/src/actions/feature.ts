@@ -1,6 +1,6 @@
-import { FeatureFlag } from '@realtime-sdk/config/features';
+import type { FeatureFlag } from '@realtime-sdk/config/features';
 import { FEATURES_KEY } from '@realtime-sdk/constants';
-import { BaseWorkspacePayload } from '@realtime-sdk/types';
+import type { BaseWorkspacePayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 
 const featureType = Utils.protocol.typeFactory(FEATURES_KEY);
@@ -16,4 +16,6 @@ export interface LoadWorkspaceFeatures extends BaseWorkspacePayload {
 
 export const loadAll = Utils.protocol.createAction<LoadAllFeatures>(featureType('LOAD_ALL'));
 
-export const loadWorkspaceFeatures = Utils.protocol.createAction<LoadWorkspaceFeatures>(featureType('LOAD_WORKSPACE_FEATURES'));
+export const loadWorkspaceFeatures = Utils.protocol.createAction<LoadWorkspaceFeatures>(
+  featureType('LOAD_WORKSPACE_FEATURES')
+);

@@ -4,7 +4,8 @@ import { withHistory } from 'slate-history';
 import { withReact } from 'slate-react';
 
 import EditorAPI from './editorAPI';
-import { PluginType, withPlugins } from './plugins';
+import type { PluginType } from './plugins';
+import { withPlugins } from './plugins';
 import type { Editor } from './types';
 
 export { default as EditorAPI } from './editorAPI';

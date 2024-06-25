@@ -1,7 +1,7 @@
 import { Slider } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { IAITemperatureSlider } from './AITemperatureSlider.interface';
+import type { IAITemperatureSlider } from './AITemperatureSlider.interface';
 
 export const AITemperatureSlider: React.FC<IAITemperatureSlider> = ({
   value,

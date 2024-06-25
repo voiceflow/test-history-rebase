@@ -1,5 +1,5 @@
 import { BaseNode } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box } from '@voiceflow/ui';
 import React from 'react';
 
@@ -35,7 +35,10 @@ const ConditionsBuilder: React.FC<ConditionsBuilderProps> = ({ onChange, express
   };
 
   const onDeleteCondition = (index: number) => () => {
-    onChange({ ...expression, value: expression!.value.filter((_, idx: number) => idx !== index) } as Realtime.ExpressionData);
+    onChange({
+      ...expression,
+      value: expression!.value.filter((_, idx: number) => idx !== index),
+    } as Realtime.ExpressionData);
   };
 
   return (

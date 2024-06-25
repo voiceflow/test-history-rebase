@@ -48,8 +48,18 @@ const Confirm = manager.create<Props>(
       };
 
       return (
-        <Modal type={type} opened={opened} hidden={hidden} centered={centered} animated={animated} onExited={api.remove} maxWidth={maxWidth}>
-          {header && <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>{header}</Modal.Header>}
+        <Modal
+          type={type}
+          opened={opened}
+          hidden={hidden}
+          centered={centered}
+          animated={animated}
+          onExited={api.remove}
+          maxWidth={maxWidth}
+        >
+          {header && (
+            <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>{header}</Modal.Header>
+          )}
 
           <Modal.Body>{body}</Modal.Body>
 

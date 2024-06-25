@@ -1,4 +1,4 @@
-import { IntentClassificationSettings } from '@voiceflow/dtos';
+import type { IntentClassificationSettings } from '@voiceflow/dtos';
 
 import { cmsTrackingFactory } from '../utils/tracking.util';
 

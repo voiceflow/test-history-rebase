@@ -22,7 +22,11 @@ const Colors: React.FC<ColorsProps> = ({ onSelect, colorScheme, selectedColor })
   return (
     <Container>
       <List>
-        <ColorThemes colors={[defaultColor, ...DEFAULT_THEMES, ...colors]} onColorSelect={onSelect} selectedColor={`#${selectedColor}`} />
+        <ColorThemes
+          colors={[defaultColor, ...DEFAULT_THEMES, ...colors]}
+          onColorSelect={onSelect}
+          selectedColor={`#${selectedColor}`}
+        />
       </List>
     </Container>
   );

@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 /**
  * this migration fix an issue if there're multiple templates diagrams in the same version

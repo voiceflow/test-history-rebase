@@ -1,5 +1,5 @@
 import client from '@/client';
-import { Thunk } from '@/store/types';
+import type { Thunk } from '@/store/types';
 
 const checkSharedProtoPassword =
   (versionID: string, password: string): Thunk<boolean> =>

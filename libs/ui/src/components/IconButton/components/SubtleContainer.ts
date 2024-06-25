@@ -1,9 +1,9 @@
 import { ButtonContainer } from '@ui/components/Button';
-import { IconButtonVariant } from '@ui/components/IconButton/types';
+import type { IconButtonVariant } from '@ui/components/IconButton/types';
 import SvgIcon from '@ui/components/SvgIcon';
 import { colors, css, styled, ThemeColor } from '@ui/styles';
 
-import { BaseContainerProps } from './IconButtonContainer';
+import type { BaseContainerProps } from './IconButtonContainer';
 
 export interface SubtleContainerProps extends BaseContainerProps {
   variant: IconButtonVariant.SUBTLE;

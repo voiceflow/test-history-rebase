@@ -1,4 +1,16 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Inject, Logger, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Inject,
+  Logger,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { ApiConsumes, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { ZodApiBody, ZodApiResponse } from '@voiceflow/nestjs-common';
 import { Identity, Permission } from '@voiceflow/sdk-auth';
@@ -62,7 +74,10 @@ export class KnowledgeBaseTagPublicHTTPController {
     description: 'Get tag by id in the target project',
     schema: TagFindOneResponse,
   })
-  async findOne(@Principal() principal: Identity & { legacy: { projectID: string } }, @Param('tagID') tagID: string): Promise<TagFindOneResponse> {
+  async findOne(
+    @Principal() principal: Identity & { legacy: { projectID: string } },
+    @Param('tagID') tagID: string
+  ): Promise<TagFindOneResponse> {
     const tag = await this.service.getOneTag(principal.legacy.projectID, tagID);
     return { data: tag };
   }
@@ -135,7 +150,10 @@ export class KnowledgeBaseTagPublicHTTPController {
     status: HttpStatus.OK,
     description: 'Delete tag by id in the target project',
   })
-  async deleteOne(@Principal() principal: Identity & { legacy: { projectID: string } }, @Param('tagID') tagID: string): Promise<void> {
+  async deleteOne(
+    @Principal() principal: Identity & { legacy: { projectID: string } },
+    @Param('tagID') tagID: string
+  ): Promise<void> {
     this.service.deleteOneTag(principal.legacy.projectID, tagID);
   }
 }

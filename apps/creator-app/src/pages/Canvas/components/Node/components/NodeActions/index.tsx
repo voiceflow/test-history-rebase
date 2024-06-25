@@ -1,6 +1,6 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Struct } from '@voiceflow/common';
-import { PathPoints } from '@voiceflow/realtime-sdk';
+import type { Struct } from '@voiceflow/common';
+import type { PathPoints } from '@voiceflow/realtime-sdk';
 import { Canvas, swallowEvent, useDidUpdateEffect, usePersistFunction, useToggle } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
@@ -12,7 +12,13 @@ import LinkPath from '@/pages/Canvas/components/Port/components/PortLinkPath';
 import LinkSvg from '@/pages/Canvas/components/Port/components/PortLinkSvg';
 import { NODE_LINK_WIDTH } from '@/pages/Canvas/components/Port/constants';
 import { ActionsPortAPIProvider } from '@/pages/Canvas/components/Step/contexts';
-import { ActionsRouteMatchContext, EngineContext, IsStraightLinksContext, NodeEntityContext, NodeEntityProvider } from '@/pages/Canvas/contexts';
+import {
+  ActionsRouteMatchContext,
+  EngineContext,
+  IsStraightLinksContext,
+  NodeEntityContext,
+  NodeEntityProvider,
+} from '@/pages/Canvas/contexts';
 import { PATH } from '@/pages/Canvas/managers/components/Actions/constants';
 import { useInteractiveMode } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';
@@ -39,20 +45,25 @@ const NodeActions: React.FC<NodeActionsProps> = ({ isChip, parentPath, parentPar
   const instance = useNodeInstance<HTMLDivElement>();
   const isInteractiveMode = useInteractiveMode();
 
-  const { combinedNodes, isHighlighted, lastCombinedLink, isLinkCreationStartFomLastCombined } = nodeEntity.useState((e) => {
-    const { node } = e.resolve();
-    const lastCombinedLink = e.resolveLastCombinedLink();
+  const { combinedNodes, isHighlighted, lastCombinedLink, isLinkCreationStartFomLastCombined } = nodeEntity.useState(
+    (e) => {
+      const { node } = e.resolve();
+      const lastCombinedLink = e.resolveLastCombinedLink();
 
-    const lastCombinedPortID = lastCombinedLink?.source.portID;
-    const lastCombinedPortEntity = lastCombinedPortID ? engine.ports.get(lastCombinedPortID) : null;
+      const lastCombinedPortID = lastCombinedLink?.source.portID;
+      const lastCombinedPortEntity = lastCombinedPortID ? engine.ports.get(lastCombinedPortID) : null;
 
-    return {
-      combinedNodes: node.combinedNodes,
-      isHighlighted: (lastCombinedPortEntity?.api.isHighlighted || lastCombinedPortEntity?.api.isPrototypeHighlighted) ?? false,
-      lastCombinedLink,
-      isLinkCreationStartFomLastCombined: engine.linkCreation.isSourceNode(node.combinedNodes[node.combinedNodes.length - 1]),
-    };
-  });
+      return {
+        combinedNodes: node.combinedNodes,
+        isHighlighted:
+          (lastCombinedPortEntity?.api.isHighlighted || lastCombinedPortEntity?.api.isPrototypeHighlighted) ?? false,
+        lastCombinedLink,
+        isLinkCreationStartFomLastCombined: engine.linkCreation.isSourceNode(
+          node.combinedNodes[node.combinedNodes.length - 1]
+        ),
+      };
+    }
+  );
 
   const linkColor = lastCombinedLink?.data?.color;
   const linkReversed = lastCombinedLink?.data?.points?.[0]?.reversed ?? false;
@@ -61,14 +72,23 @@ const NodeActions: React.FC<NodeActionsProps> = ({ isChip, parentPath, parentPar
 
   const [reversed, toggleReversed] = useToggle(linkReversed);
 
-  const isStraight = lastCombinedLink?.data?.type ? lastCombinedLink.data.type === BaseModels.Project.LinkType.STRAIGHT : isStraightLinks;
+  const isStraight = lastCombinedLink?.data?.type
+    ? lastCombinedLink.data.type === BaseModels.Project.LinkType.STRAIGHT
+    : isStraightLinks;
 
-  const onReverseUpdate = React.useCallback((points: PathPoints | null) => toggleReversed(points?.[0].reversed ?? false), []);
+  const onReverseUpdate = React.useCallback(
+    (points: PathPoints | null) => toggleReversed(points?.[0].reversed ?? false),
+    []
+  );
 
   const onOpenEditor = usePersistFunction((actionNodeID: string, routeState?: Struct) => {
     engine.setActive(sourceNodeID, {
       routeState,
-      nodeSubPath: generatePath(parentPath ? `${parentPath}/${PATH}` : PATH, { ...parentParams, sourcePortID, actionNodeID }),
+      nodeSubPath: generatePath(parentPath ? `${parentPath}/${PATH}` : PATH, {
+        ...parentParams,
+        sourcePortID,
+        actionNodeID,
+      }),
     });
   });
 

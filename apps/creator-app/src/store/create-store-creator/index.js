@@ -1,4 +1,3 @@
-/* eslint-disable promise/no-nesting */
 /* eslint-disable sonarjs/no-duplicate-string */
 /* eslint-disable no-param-reassign */
 /* eslint-disable sonarjs/cognitive-complexity */

@@ -1,7 +1,7 @@
-import { BaseRequest } from '@voiceflow/dtos';
+import type { BaseRequest } from '@voiceflow/dtos';
 
-import { Trace } from '@/models/Prototype';
-import { Message } from '@/pages/Prototype/types';
+import type { Trace } from '@/models/Prototype';
+import type { Message } from '@/pages/Prototype/types';
 
 // Never change these, they are used in the transcript_report_tags table as specific ids for tags
 export enum SystemTag {

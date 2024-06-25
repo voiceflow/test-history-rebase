@@ -1,12 +1,12 @@
-import { Client } from '@logux/client';
+import type { Client } from '@logux/client';
 import { ClientContext } from '@logux/client/react';
 import React from 'react';
 import * as ReactRedux from 'react-redux';
-import { Persistor } from 'redux-persist';
+import type { Persistor } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 
 import { StoreAtomProvider } from '@/components/StoreAtomProvider.component';
-import { Store } from '@/store/types';
+import type { Store } from '@/store/types';
 
 export interface StoreProviderProps extends React.PropsWithChildren {
   store: Store;

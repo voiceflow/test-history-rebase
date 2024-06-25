@@ -1,5 +1,3 @@
-/* eslint-disable no-process-env */
-
 import { defineEnv } from '@voiceflow/vite-config';
 
 // eslint-disable-next-line sonarjs/cognitive-complexity

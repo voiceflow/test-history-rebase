@@ -29,6 +29,7 @@ export const CMSRouteFoldersMolecule = molecule<ICMSRouteFolders>((_getMolecule,
     return {
       id: folder.id,
       name: folder.name,
+      // eslint-disable-next-line sonarjs/no-nested-template-literals
       pathname: `${scope.pathname}${parentFolderPathname ? `/${parentFolderPathname}` : ''}/folder/:folderID`,
     };
   });

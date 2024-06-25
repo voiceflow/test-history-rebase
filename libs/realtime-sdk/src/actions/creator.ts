@@ -1,6 +1,6 @@
 import { CREATOR_KEY } from '@realtime-sdk/constants';
-import { EntityMap } from '@realtime-sdk/models';
-import { BaseDiagramPayload, ProjectMetaPayload, SchemaVersionPayload } from '@realtime-sdk/types';
+import type { EntityMap } from '@realtime-sdk/models';
+import type { BaseDiagramPayload, ProjectMetaPayload, SchemaVersionPayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 
 export const creatorType = Utils.protocol.typeFactory(CREATOR_KEY);

@@ -3,7 +3,7 @@ import React from 'react';
 
 import { EngineContext } from '@/pages/Canvas/contexts';
 
-import { OverlayState } from '../../types';
+import type { OverlayState } from '../../types';
 
 const useRotate = ({ snapshot, rotation }: OverlayState) => {
   const engine = React.useContext(EngineContext)!;
@@ -15,7 +15,8 @@ const useRotate = ({ snapshot, rotation }: OverlayState) => {
     const centerY = transform.rect.top + transform.rect.height / 2;
     const centerX = transform.rect.left + transform.rect.width / 2;
 
-    const rotate = Math.atan2(engine.mousePosition.current[1] - centerY, engine.mousePosition.current[0] - centerX) + Math.PI / 2;
+    const rotate =
+      Math.atan2(engine.mousePosition.current[1] - centerY, engine.mousePosition.current[0] - centerX) + Math.PI / 2;
 
     rotation.current = rotate;
 

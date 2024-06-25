@@ -5,7 +5,7 @@ import { linkGraphic } from '@/assets';
 import { UploadedStage } from '@/components/PlatformUploadPopup/components';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
-import { StageComponentProps } from '@/platforms/types';
+import type { StageComponentProps } from '@/platforms/types';
 
 const ConnectStage: React.FC<StageComponentProps<any>> = () => {
   const goToConsole = useDispatch(Router.goToActivePlatformPublish);

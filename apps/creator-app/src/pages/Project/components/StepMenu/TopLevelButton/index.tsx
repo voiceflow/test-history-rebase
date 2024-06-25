@@ -4,7 +4,7 @@ import React from 'react';
 import { useHover } from '@/hooks';
 import { ClassName } from '@/styles/constants';
 
-import { TopLibraryItem, TopStepItem } from '../constants';
+import type { TopLibraryItem, TopStepItem } from '../constants';
 import LibrarySubMenu from '../LibrarySubMenu';
 import SubMenu from '../SubMenu';
 import { useLibrarySubMenuTabs } from './hooks';
@@ -30,13 +30,26 @@ const TopLevelButton: React.FC<TopLevelButtonItem> = ({ section, animationIndex 
     placement: 'right-start',
   });
 
-  const { currentTab, setCurrentTab, tabsData, processedTabItems, searchText, setSearchText, cancelSearch, showSearchbar } = useLibrarySubMenuTabs({
+  const {
+    currentTab,
+    setCurrentTab,
+    tabsData,
+    processedTabItems,
+    searchText,
+    setSearchText,
+    cancelSearch,
+    showSearchbar,
+  } = useLibrarySubMenuTabs({
     librarySections: section.isLibrary ? section.librarySections : { templates: [], customBlocks: [] },
   });
 
   return (
     <div {...hoverHandlers} className={ClassName.STEP_MENU_ITEM}>
-      <Animations.FadeLeft distance={-10} delay={Math.max(animationIndex, 0) * 0.06} duration={animationIndex < 0 ? 0 : 0.1}>
+      <Animations.FadeLeft
+        distance={-10}
+        delay={Math.max(animationIndex, 0) * 0.06}
+        duration={animationIndex < 0 ? 0 : 0.1}
+      >
         <S.ButtonContainer focused={isHovered} ref={rootPopper.setReferenceElement}>
           {!!section.icon && <SvgIcon icon={section.icon} size={section.label === 'Logic' ? 24 : 22} />}
 

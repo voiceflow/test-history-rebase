@@ -11,7 +11,7 @@ const getUsageColor = (percent: number) => {
     return '#4e8bbd';
   }
 
-  return `#50a82e`;
+  return '#50a82e';
 };
 
 interface AIUsageProgressProps {

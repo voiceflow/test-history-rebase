@@ -1,12 +1,15 @@
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
-import { NodeManagerConfig } from '../types';
+import type { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
 import CustomPayloadEditor from './CustomPayloadEditor';
 import CustomPayloadStep from './CustomPayloadStep';
 
-const CustomPayloadManager: NodeManagerConfig<Realtime.NodeData.CustomPayload, Realtime.NodeData.CustomPayloadBuiltInPorts> = {
+const CustomPayloadManager: NodeManagerConfig<
+  Realtime.NodeData.CustomPayload,
+  Realtime.NodeData.CustomPayloadBuiltInPorts
+> = {
   ...NODE_CONFIG,
 
   label: 'Custom',

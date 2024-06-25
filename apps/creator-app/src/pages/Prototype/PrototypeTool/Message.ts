@@ -1,10 +1,19 @@
-import { Nullable } from '@voiceflow/base-types';
+import type { Nullable } from '@voiceflow/base-types';
 import { RequestType } from '@voiceflow/dtos';
 import dayjs from 'dayjs';
 
-import { CardV2Trace, CarouselTrace, ChannelActionTrace, DebugTrace, SpeakTrace, StreamTrace, TextTrace, VisualTrace } from '@/models';
+import type {
+  CardV2Trace,
+  CarouselTrace,
+  ChannelActionTrace,
+  DebugTrace,
+  SpeakTrace,
+  StreamTrace,
+  TextTrace,
+  VisualTrace,
+} from '@/models';
 
-import { Message } from '../types';
+import type { Message } from '../types';
 import {
   createCardMessage,
   createCarouselMessage,

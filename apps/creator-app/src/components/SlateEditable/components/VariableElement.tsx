@@ -1,6 +1,6 @@
 import { OverflowTippyTooltip, swallowEvent } from '@voiceflow/ui';
 import React from 'react';
-import { RenderElementProps } from 'slate-react';
+import type { RenderElementProps } from 'slate-react';
 
 import { VariableTagTooltipStyles } from '@/components/VariableTag';
 import { Designer } from '@/ducks';
@@ -10,7 +10,7 @@ import { useSelector } from '@/hooks/store.hook';
 import { StyledTag as Slot } from '../../TextEditor/plugins/variables/components/StyledTag';
 import { usePluginOptions } from '../contexts';
 import { PluginType } from '../editor';
-import { VariableElement as VariableElementType } from '../editor/types';
+import type { VariableElement as VariableElementType } from '../editor/types';
 
 interface VariableElementProps extends Omit<RenderElementProps, 'element'> {
   element: VariableElementType;
@@ -43,7 +43,12 @@ const VariableElement: React.FC<VariableElementProps> = ({ attributes, element, 
           <>
             {isOverflow && <VariableTagTooltipStyles />}
 
-            <Slot ref={ref} color={isSlot ? entity?.color : variable?.color} isVariable={!withSlots || !isSlot} onMouseDown={onMouseDown}>
+            <Slot
+              ref={ref}
+              color={isSlot ? entity?.color : variable?.color}
+              isVariable={!withSlots || !isSlot}
+              onMouseDown={onMouseDown}
+            >
               {varName}
             </Slot>
           </>

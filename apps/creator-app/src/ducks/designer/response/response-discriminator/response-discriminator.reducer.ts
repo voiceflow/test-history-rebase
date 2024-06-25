@@ -17,7 +17,10 @@ const addToIDByResponseIDLanguageChannel = (
   state.idByLanguageChannelResponseID[language]![channel]![responseID] = id;
 };
 
-const removeFromIDByResponseIDLanguageChannel = (state: Draft<ResponseDiscriminatorState>, discriminator: ResponseDiscriminator | null) => {
+const removeFromIDByResponseIDLanguageChannel = (
+  state: Draft<ResponseDiscriminatorState>,
+  discriminator: ResponseDiscriminator | null
+) => {
   if (!discriminator) return;
 
   const { responseID, language, channel } = discriminator;
@@ -53,7 +56,9 @@ export const responseDiscriminatorReducer = createRootReducer<ResponseDiscrimina
 
     Object.assign(state, normalize(data));
   })
-  .caseWithAction(Actions.ResponseDiscriminator.PatchOne, (state, action) => patchOne(state, action.payload.id, patchWithUpdatedFields(action)))
+  .caseWithAction(Actions.ResponseDiscriminator.PatchOne, (state, action) =>
+    patchOne(state, action.payload.id, patchWithUpdatedFields(action))
+  )
   .caseWithAction(Actions.ResponseDiscriminator.PatchMany, (state, action) =>
     patchMany(
       state,

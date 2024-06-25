@@ -21,5 +21,11 @@ export const MediaLibraryImagesPopper: React.FC<IMediaLibraryImagesPopper> = ({ 
     [imagesAttachments]
   );
 
-  return <ImageLibrary images={images} onImageSelect={({ id }) => onImageSelect(id)} onImageRemove={({ id }) => deleteOne(id)} />;
+  return (
+    <ImageLibrary
+      images={images}
+      onImageSelect={({ id }) => onImageSelect(id)}
+      onImageRemove={({ id }) => deleteOne(id)}
+    />
+  );
 };

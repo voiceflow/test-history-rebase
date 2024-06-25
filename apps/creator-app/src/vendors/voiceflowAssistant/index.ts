@@ -5,7 +5,7 @@ import { APP_ENV, CLOUD_ENV, IS_PRIVATE_CLOUD } from '@/config';
 import logger from '@/utils/logger';
 import speedDetection from '@/utils/speedDetection';
 
-import { ChatWidgetEventData, Project, User, Workspace } from './types';
+import type { ChatWidgetEventData, Project, User, Workspace } from './types';
 
 interface Options {
   projectID: string;

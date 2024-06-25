@@ -1,4 +1,4 @@
-import { BillingPeriodUnit, BillingPlan } from '@voiceflow/dtos';
+import type { BillingPeriodUnit, BillingPlan } from '@voiceflow/dtos';
 import { PlanType } from '@voiceflow/internal';
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { useAtom, useAtomValue } from 'jotai/react';

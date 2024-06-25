@@ -1,6 +1,6 @@
 import { isDefaultColor } from '@ui/components/ColorPicker/utils';
 import ContextMenu from '@ui/components/ContextMenu';
-import { MenuTypes } from '@ui/components/Menu';
+import type { MenuTypes } from '@ui/components/Menu';
 import { toast } from '@ui/components/Toast';
 import { styled, transition } from '@ui/styles';
 import { stopPropagation } from '@ui/utils';
@@ -11,7 +11,7 @@ import React from 'react';
 import TippyTooltip from '../../../TippyTooltip';
 import { AddNamePopper } from '../Poppers/AddNamePopper';
 import { Tooltip, WrapperTooltip } from './styles';
-import { BaseColorProps, ColorProps } from './types';
+import type { BaseColorProps, ColorProps } from './types';
 
 const ColorCircle = styled.div<BaseColorProps>`
   ${({ small }) =>
@@ -127,7 +127,13 @@ export const Color: React.FC<ColorProps> = ({
             onContextMenu={stopPropagation(onContextMenu)}
             background={isHexColor(background) ? background : '#a7a7a7'}
           >
-            <ColorCircle background={background} colorData={colorData} small={small} selected={selected} onClick={onClick} />
+            <ColorCircle
+              background={background}
+              colorData={colorData}
+              small={small}
+              selected={selected}
+              onClick={onClick}
+            />
           </ColorWrapper>
 
           {renaming && <AddNamePopper value={name} isEditing onRename={onRename} />}

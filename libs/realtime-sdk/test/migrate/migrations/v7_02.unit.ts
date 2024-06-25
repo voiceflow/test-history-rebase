@@ -1,4 +1,4 @@
-import { MigrationData } from '@realtime-sdk/migrate/migrations/types';
+import type { MigrationData } from '@realtime-sdk/migrate/migrations/types';
 import migrateToV7_02, { LAST_UTTERANCE } from '@realtime-sdk/migrate/migrations/v7_02';
 import { produce } from 'immer';
 

@@ -1,10 +1,9 @@
-import { Nullish } from '@voiceflow/common';
+import type { Nullish } from '@voiceflow/common';
+import type { GetOptionLabel, GetOptionValue } from '@voiceflow/ui';
 import {
   Box,
   createDividerMenuItemOption,
   getNestedMenuFormattedLabel,
-  GetOptionLabel,
-  GetOptionValue,
   Menu,
   OverflowText,
   Select,
@@ -65,12 +64,21 @@ const PersonasSelect: React.FC<PersonasSelectProps> = ({ preventClose, enableClo
 
   const value = personas.find((variableState) => variableState.id === selectedPersonaID);
 
-  const optionLookup = React.useMemo(() => Object.fromEntries(personas.map((option) => [option.id, option.name])), [personas]);
+  const optionLookup = React.useMemo(
+    () => Object.fromEntries(personas.map((option) => [option.id, option.name])),
+    [personas]
+  );
 
   const isSearchable = options?.length > 5;
 
-  const getOptionLabel: GetOptionLabel<string> = React.useCallback((optionValue) => (optionValue ? optionLookup[optionValue] : null), [value]);
-  const getOptionValue: GetOptionValue<PersonaOption, string> = React.useCallback((option) => option?.value ?? null, []);
+  const getOptionLabel: GetOptionLabel<string> = React.useCallback(
+    (optionValue) => (optionValue ? optionLookup[optionValue] : null),
+    [value]
+  );
+  const getOptionValue: GetOptionValue<PersonaOption, string> = React.useCallback(
+    (option) => option?.value ?? null,
+    []
+  );
 
   const onEdit = React.useCallback(async (option: PersonaOption) => {
     if (!option) return;
@@ -111,10 +119,18 @@ const PersonasSelect: React.FC<PersonasSelectProps> = ({ preventClose, enableClo
       }
       renderOptionLabel={(option, searchLabel, getOptionLabel, getOptionValue) => (
         <S.OverflowWrapper>
-          <OverflowText style={{ display: 'block', overflow: 'hidden', ...(option.value === value?.id ? { textDecoration: 'underline' } : {}) }}>
+          <OverflowText
+            style={{
+              display: 'block',
+              overflow: 'hidden',
+              ...(option.value === value?.id ? { textDecoration: 'underline' } : {}),
+            }}
+          >
             <span> {getNestedMenuFormattedLabel(getOptionLabel(getOptionValue(option)), searchLabel)}</span>
           </OverflowText>
-          {option.value !== ALL.id && <SvgIcon icon="edit" variant={SvgIcon.Variant.STANDARD} onClick={() => onEdit(option)} />}
+          {option.value !== ALL.id && (
+            <SvgIcon icon="edit" variant={SvgIcon.Variant.STANDARD} onClick={() => onEdit(option)} />
+          )}
         </S.OverflowWrapper>
       )}
       renderFooterAction={() => (

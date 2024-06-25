@@ -1,4 +1,4 @@
-import { SvgIconTypes } from '@voiceflow/ui';
+import type { SvgIconTypes } from '@voiceflow/ui';
 
 import { DISCORD_LINK, LEARN_LINK, TEMPLATES_LINK, YOUTUBE_CHANNEL_LINK } from '@/constants/link.constant';
 import * as Tracking from '@/ducks/tracking';

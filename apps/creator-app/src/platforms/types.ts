@@ -1,9 +1,9 @@
-import { JobContextValue } from '@/hooks/job';
-import { Job, JobStage } from '@/models';
+import type { JobContextValue } from '@/hooks/job';
+import type { Job, JobStage } from '@/models';
 
-import * as Alexa from './alexa';
-import * as DialogflowCX from './dialogflowCX';
-import * as General from './general';
+import type * as Alexa from './alexa';
+import type * as DialogflowCX from './dialogflowCX';
+import type * as General from './general';
 
 export type PlatformClient = typeof Alexa.client | typeof DialogflowCX.client | typeof General.client;
 

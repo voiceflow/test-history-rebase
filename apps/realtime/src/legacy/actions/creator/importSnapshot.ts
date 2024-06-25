@@ -1,7 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { Context } from '@voiceflow/socket-utils';
+import type { Context } from '@voiceflow/socket-utils';
 import { normalize } from 'normal-store';
-import { Action } from 'typescript-fsa';
+import type { Action } from 'typescript-fsa';
 
 import { AbstractDiagramResourceControl } from '@/legacy/actions/diagram/utils';
 

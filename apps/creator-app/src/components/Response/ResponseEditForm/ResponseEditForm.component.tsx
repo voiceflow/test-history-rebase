@@ -34,12 +34,16 @@ export const ResponseEditForm: React.FC<IResponseEditForm> = ({ responseID }) =>
       discriminatorID &&
       createManyTextVariants(
         discriminatorID,
-        variants.length ? newVariants.map((variant) => ({ ...variant, attachmentOrder: variants[0].attachmentOrder })) : newVariants
+        variants.length
+          ? newVariants.map((variant) => ({ ...variant, attachmentOrder: variants[0].attachmentOrder }))
+          : newVariants
       ),
     successGeneratedMessage: 'Variants generated',
   });
 
-  const listEmpty = useIsListEmpty(variants, (variant) => (isTextResponseVariant(variant) ? isTextResponseVariantEmpty(variant) : true));
+  const listEmpty = useIsListEmpty(variants, (variant) =>
+    isTextResponseVariant(variant) ? isTextResponseVariantEmpty(variant) : true
+  );
 
   if (!variants.length || discriminatorID === null) return null;
 
@@ -56,7 +60,11 @@ export const ResponseEditForm: React.FC<IResponseEditForm> = ({ responseID }) =>
   return (
     <>
       <Box pt={11} pr={24} pb={18} direction="column">
-        <ResponseEditVariant variant={rootVariant} autoFocusIfEmpty={!hasVariants} textVariantProps={{ onValueEmpty: listEmpty.container(0) }} />
+        <ResponseEditVariant
+          variant={rootVariant}
+          autoFocusIfEmpty={!hasVariants}
+          textVariantProps={{ onValueEmpty: listEmpty.container(0) }}
+        />
       </Box>
 
       <Divider />
@@ -66,7 +74,11 @@ export const ResponseEditForm: React.FC<IResponseEditForm> = ({ responseID }) =>
         pb={hasVariants ? 0 : 11}
         variant="active"
         title={(className) => (
-          <SectionHeaderTitleWithLearnTooltip title="Variants" className={className} onLearnClick={Utils.functional.noop}>
+          <SectionHeaderTitleWithLearnTooltip
+            title="Variants"
+            className={className}
+            onLearnClick={Utils.functional.noop}
+          >
             <Box gap={8} direction="column">
               <span>Variant responses will be selected randomly when you run your agent.</span>
               {/* TODO: uncomment when conditions are supported */}

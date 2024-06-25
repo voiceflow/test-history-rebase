@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { HSLShades } from '@/constants';
+import type { HSLShades } from '@/constants';
 
 import { REORDER_INDICATOR_CLASSNAME } from '../constants';
 import CaptureZone from './StepReorderCaptureZone';
@@ -15,8 +15,21 @@ export interface StepReorderIndicatorProps {
   isLast?: boolean;
 }
 
-const StepReorderIndicator: React.FC<StepReorderIndicatorProps> = ({ isActive, isHovered, onMouseUp, captureZoneRef, palette, isLast }) => (
-  <IndicatorContainer className={REORDER_INDICATOR_CLASSNAME} isActive={isActive} isHovered={isHovered} palette={palette} isLast={isLast}>
+const StepReorderIndicator: React.FC<StepReorderIndicatorProps> = ({
+  isActive,
+  isHovered,
+  onMouseUp,
+  captureZoneRef,
+  palette,
+  isLast,
+}) => (
+  <IndicatorContainer
+    className={REORDER_INDICATOR_CLASSNAME}
+    isActive={isActive}
+    isHovered={isHovered}
+    palette={palette}
+    isLast={isLast}
+  >
     {isActive && <CaptureZone ref={captureZoneRef} onMouseUp={onMouseUp} />}
   </IndicatorContainer>
 );

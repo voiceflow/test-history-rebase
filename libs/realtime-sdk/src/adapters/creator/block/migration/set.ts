@@ -1,4 +1,4 @@
-import { NodeData } from '@realtime-sdk/models';
+import type { NodeData } from '@realtime-sdk/models';
 import { expressionfyV2, sanitizeSetValue } from '@realtime-sdk/utils/expression';
 import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';

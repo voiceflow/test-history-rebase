@@ -1,6 +1,7 @@
 import React from 'react';
 
-import ThreadEditor, { EditableCommentRef } from '@/pages/Canvas/components/ThreadEditor';
+import type { EditableCommentRef } from '@/pages/Canvas/components/ThreadEditor';
+import ThreadEditor from '@/pages/Canvas/components/ThreadEditor';
 import { ThreadEntityContext } from '@/pages/Canvas/contexts';
 
 interface CommentThreadEditorProps {
@@ -16,7 +17,14 @@ const CommentThreadEditor: React.FC<CommentThreadEditorProps> = ({ replyRef, sch
     isFocused: e.isFocused,
   }));
 
-  return <ThreadEditor thread={thread} replyRef={replyRef} isFocused={isFocused} schedulePopperUpdate={schedulePopperUpdate} />;
+  return (
+    <ThreadEditor
+      thread={thread}
+      replyRef={replyRef}
+      isFocused={isFocused}
+      schedulePopperUpdate={schedulePopperUpdate}
+    />
+  );
 };
 
 export default CommentThreadEditor;

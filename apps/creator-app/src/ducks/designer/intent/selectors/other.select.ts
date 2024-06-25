@@ -25,7 +25,9 @@ export const allWithDataByIDs = createSelector(
 );
 
 export const allWithFormattedBuiltInNames = createSelector(all, platformSelector, (intents, platform) =>
-  intents.map((intent) => (isIntentBuiltIn(intent.id) ? { ...intent, name: formatBuiltInIntentName(platform)(intent.name) } : intent))
+  intents.map((intent) =>
+    isIntentBuiltIn(intent.id) ? { ...intent, name: formatBuiltInIntentName(platform)(intent.name) } : intent
+  )
 );
 
 export const mapWithFormattedBuiltInName = createSelector(allWithFormattedBuiltInNames, (intents) =>
@@ -38,8 +40,11 @@ export const oneWithFormattedBuiltNameByID = createSelector(mapWithFormattedBuil
 
 export const getOneWithFormattedBuiltNameByID = createCurriedSelector(oneWithFormattedBuiltNameByID);
 
-export const allWithUtterances = createSelector(allWithFormattedBuiltInNames, getAllUtterancesByIntentID, (entities, getUtterances) =>
-  entities.map((intent) => ({ ...intent, utterances: getUtterances({ intentID: intent.id }) }))
+export const allWithUtterances = createSelector(
+  allWithFormattedBuiltInNames,
+  getAllUtterancesByIntentID,
+  (entities, getUtterances) =>
+    entities.map((intent) => ({ ...intent, utterances: getUtterances({ intentID: intent.id }) }))
 );
 
 export const oneWithUtterances = createSelector(
@@ -52,7 +57,10 @@ export const getOneWithUtterances = createCurriedSelector(oneWithUtterances);
 
 export const nameByID = createSelector(oneWithFormattedBuiltNameByID, (intent) => intent?.name ?? null);
 
-export const automaticRepromptByID = createSelector(oneWithFormattedBuiltNameByID, (intent) => intent?.automaticReprompt ?? null);
+export const automaticRepromptByID = createSelector(
+  oneWithFormattedBuiltNameByID,
+  (intent) => intent?.automaticReprompt ?? null
+);
 
 export const allWithoutNone = createSelector(allWithFormattedBuiltInNames, (intents) =>
   intents.filter((intent) => intent.id !== VoiceflowConstants.IntentName.NONE)

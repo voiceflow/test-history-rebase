@@ -16,7 +16,9 @@ export const TableNavbarContainer = styled.div<{ width: number; isOpen: boolean;
   padding-left: 20px;
   display: none;
   ${fadeInDownDelayedStyle};
-  box-shadow: 0px -1px 0px 0px rgb(0 0 0 / 50%) inset, 0px 1px 3px 0px rgb(0 0 0 / 16%);
+  box-shadow:
+    0px -1px 0px 0px rgb(0 0 0 / 50%) inset,
+    0px 1px 3px 0px rgb(0 0 0 / 16%);
 
   ${({ isOpen }) =>
     isOpen &&

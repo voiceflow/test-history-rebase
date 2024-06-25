@@ -6,7 +6,7 @@ import { useLinkedState } from '@/hooks/state.hook';
 import { onOpenURLInANewTabFactory } from '@/utils/window';
 
 import { NLUConfidenceSlider } from '../NLUConfidenceSlider/NLUConfidenceSlider.component';
-import { INLUConfidenceSliderSection } from './NLUConfidenceSliderSection.interface';
+import type { INLUConfidenceSliderSection } from './NLUConfidenceSliderSection.interface';
 
 export const NLUConfidenceSliderSection: React.FC<INLUConfidenceSliderSection> = ({
   value: propValue,

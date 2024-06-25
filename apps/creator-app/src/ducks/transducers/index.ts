@@ -3,7 +3,7 @@ import { Utils } from '@voiceflow/common';
 import { entityUpdateAtTransducer } from '@/ducks/designer/entity/entity.transducer';
 import { functionUpdateAtTransducer } from '@/ducks/designer/function/function.transducer';
 import { intentUpdateAtTransducer } from '@/ducks/designer/intent/intent.transducer';
-import { InvalidatorLookup, ReverterLookup } from '@/store/types';
+import type { InvalidatorLookup, ReverterLookup } from '@/store/types';
 
 import { invalidatorTransducer, reverterTransducer } from './history';
 import resetTransducer from './reset';

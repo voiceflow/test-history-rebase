@@ -22,7 +22,14 @@ const HideableInput: React.FC<HideableInput> = ({ value, placeholder, onChangeTe
     <Input
       type={showSecret ? 'text' : 'password'}
       value={value}
-      rightAction={<SvgIcon icon={showSecret ? 'eyeHide2' : 'eye2'} color={THEME.iconColors.active} onClick={toggleShowSecret} clickable />}
+      rightAction={
+        <SvgIcon
+          icon={showSecret ? 'eyeHide2' : 'eye2'}
+          color={THEME.iconColors.active}
+          onClick={toggleShowSecret}
+          clickable
+        />
+      }
       placeholder={placeholder}
       autoComplete={autocomplete ?? 'cc-number'}
       onChangeText={onChangeText}

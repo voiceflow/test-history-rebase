@@ -1,4 +1,4 @@
-import { Variable } from '@voiceflow/dtos';
+import type { Variable } from '@voiceflow/dtos';
 
 export interface IVariableMenuEmpty {
   width?: number;

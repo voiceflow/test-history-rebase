@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'slate';
+import type { Text } from 'slate';
 
 import { SPACE_REGEXP } from '@/utils/string.util';
 
@@ -15,7 +15,8 @@ interface VariablesPopperProps {
 
 const NOT_VALID_VAR_REGEXP = /\W/g;
 
-const formatVariable = (variable: string): string => variable.replace(SPACE_REGEXP, '_').replace(NOT_VALID_VAR_REGEXP, '');
+const formatVariable = (variable: string): string =>
+  variable.replace(SPACE_REGEXP, '_').replace(NOT_VALID_VAR_REGEXP, '');
 
 const VariablesPopper: React.FC<VariablesPopperProps> = ({ leaf, textNode }) => {
   const editor = useSlateEditor();

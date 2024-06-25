@@ -1,10 +1,10 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import Chip from '@/pages/Canvas/components/Chip';
 import { IntentMapContext } from '@/pages/Canvas/contexts';
-import { ConnectedChip } from '@/pages/Canvas/managers/types';
+import type { ConnectedChip } from '@/pages/Canvas/managers/types';
 
 import { NODE_CONFIG } from '../constants';
 

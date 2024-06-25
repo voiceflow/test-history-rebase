@@ -1,8 +1,8 @@
-import { NonNullishRecord } from '@voiceflow/common';
+import type { NonNullishRecord } from '@voiceflow/common';
 
 import * as Errors from '@/config/errors';
 import * as Session from '@/ducks/session';
-import { State } from '@/store/types';
+import type { State } from '@/store/types';
 
 export interface ActiveProjectContext {
   workspaceID: string | null;

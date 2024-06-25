@@ -1,9 +1,9 @@
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Tracking from '@/ducks/tracking';
-import { Thunk } from '@/store/types';
+import type { Thunk } from '@/store/types';
 
 import { voice } from '../../selectors/active';
 import { getActivePlatformVersionContext } from '../../utils';
@@ -16,7 +16,10 @@ export const { patchSession, patchSettings, patchPublishing } = platformFactory<
 >();
 
 export const patchActiveAndLivePublishing =
-  (publishing: Partial<Platform.Voiceflow.Chat.Models.Version.Publishing.Model>, { track }: { track?: boolean } = {}): Thunk =>
+  (
+    publishing: Partial<Platform.Voiceflow.Chat.Models.Version.Publishing.Model>,
+    { track }: { track?: boolean } = {}
+  ): Thunk =>
   async (dispatch, getState) => {
     const state = getState();
     const defaultVoice = voice.defaultVoiceSelector(state);
@@ -27,7 +30,11 @@ export const patchActiveAndLivePublishing =
     const liveVersion = ProjectV2.active.liveVersionSelector(state);
 
     if (liveVersion) {
-      actions.push(dispatch.sync(Realtime.version.patchPublishing({ ...activeContext, versionID: liveVersion, publishing, defaultVoice })));
+      actions.push(
+        dispatch.sync(
+          Realtime.version.patchPublishing({ ...activeContext, versionID: liveVersion, publishing, defaultVoice })
+        )
+      );
     }
 
     await Promise.all(actions);

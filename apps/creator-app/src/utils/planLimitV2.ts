@@ -1,9 +1,12 @@
-import { PlanType } from '@voiceflow/internal';
+import type { PlanType } from '@voiceflow/internal';
 
-import { PLAN_LIMITS, PlanLimitKey, PlanLimits } from '@/config/planLimitV2';
-import { LimitType } from '@/constants/limits';
+import type { PlanLimitKey, PlanLimits } from '@/config/planLimitV2';
+import { PLAN_LIMITS } from '@/config/planLimitV2';
+import type { LimitType } from '@/constants/limits';
 
-export type PlanLimitConfig<L extends LimitType> = L extends PlanLimitKey ? PlanLimits[L]['limits'][keyof PlanLimits[L]['limits']] : never;
+export type PlanLimitConfig<L extends LimitType> = L extends PlanLimitKey
+  ? PlanLimits[L]['limits'][keyof PlanLimits[L]['limits']]
+  : never;
 
 export const isSupportedPlanLimit = (limit: LimitType): limit is PlanLimitKey => limit in PLAN_LIMITS;
 

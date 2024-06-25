@@ -2,7 +2,7 @@ import { Box, buildVirtualElement, Flex, Portal, Text, useVirtualElementPopper }
 import React from 'react';
 
 import { useThrottledCallback } from '@/hooks';
-import { Point } from '@/types';
+import type { Point } from '@/types';
 
 import { ChartContainer, LegendItem, Piece, PieceContainer, TooltipContainer, TooltipContent } from './components';
 
@@ -21,7 +21,9 @@ export interface DonutChartProps<T extends DonutDataItem> {
 
 const DonutChart = <T extends DonutDataItem>({ size = 150, data, legend, renderTooltip }: DonutChartProps<T>) => {
   const [hoveredKey, setHoveredKey] = React.useState<null | string>(null);
-  const [virtualElement, setVirtualElement] = React.useState<ReturnType<typeof buildVirtualElement>>(() => buildVirtualElement([0, 0] as Point));
+  const [virtualElement, setVirtualElement] = React.useState<ReturnType<typeof buildVirtualElement>>(() =>
+    buildVirtualElement([0, 0] as Point)
+  );
 
   const popper = useVirtualElementPopper(virtualElement, {
     placement: 'bottom-start',

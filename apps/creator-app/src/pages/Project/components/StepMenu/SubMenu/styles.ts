@@ -15,9 +15,16 @@ export const SubMenuContainer = styled.div<SubMenuContainerProps>`
   margin-top: 8px;
   margin-bottom: 8px;
   margin-left: 8px;
-  box-shadow: 0 0 0 1px rgba(19, 33, 68, 0.04), 0 1px 0 0 rgba(19, 33, 68, 0.02), 0 1px 5px -4px rgba(19, 33, 68, 0.08),
-    0 2px 8px -6px rgba(19, 33, 68, 0.24), 0 1px 3px 1px rgba(19, 33, 68, 0.01);
-  animation: ${Animations.fadeInKeyframes} 0.15s ease, ${Animations.moveInTopKeyframes} 0.15s ease, ${Animations.scaleInYKeyframes} 0.1s ease;
+  box-shadow:
+    0 0 0 1px rgba(19, 33, 68, 0.04),
+    0 1px 0 0 rgba(19, 33, 68, 0.02),
+    0 1px 5px -4px rgba(19, 33, 68, 0.08),
+    0 2px 8px -6px rgba(19, 33, 68, 0.24),
+    0 1px 3px 1px rgba(19, 33, 68, 0.01);
+  animation:
+    ${Animations.fadeInKeyframes} 0.15s ease,
+    ${Animations.moveInTopKeyframes} 0.15s ease,
+    ${Animations.scaleInYKeyframes} 0.1s ease;
 
   ${({ defaultPadding = 6 }) => css`
     padding: ${defaultPadding}px;

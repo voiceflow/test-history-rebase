@@ -1,4 +1,5 @@
-import { Checkbox, CheckboxTypes, Text } from '@voiceflow/ui';
+import type { CheckboxTypes } from '@voiceflow/ui';
+import { Checkbox, Text } from '@voiceflow/ui';
 import React from 'react';
 
 interface MenuCheckboxOptionProps extends CheckboxTypes.Props {

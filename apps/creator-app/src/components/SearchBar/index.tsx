@@ -1,4 +1,5 @@
-import { DefaultInputProps, TippyTooltip } from '@voiceflow/ui';
+import type { DefaultInputProps } from '@voiceflow/ui';
+import { TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { useHotkey } from '@/hooks';

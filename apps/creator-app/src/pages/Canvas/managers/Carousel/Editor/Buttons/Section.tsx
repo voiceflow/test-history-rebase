@@ -1,10 +1,10 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import DraggableList from '@/components/DraggableList';
 import { useMapManager } from '@/hooks';
-import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
+import type { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 
 import { buttonFactory, PATH } from './constants';
 import DraggableItem from './DraggableItem';
@@ -21,8 +21,10 @@ const CarouselEditorButtonsSection: React.FC<CarouselEditorButtonsSectionProps> 
     factory: buttonFactory,
 
     onAdd: (button) => editor.engine.port.addByKey(editor.nodeID, button.id),
-    onAdded: (button) => editor.goToNested({ state: { waitForData: true }, path: PATH, params: { buttonID: button.id } }),
-    onRemove: (button) => editor.engine.port.removeManyByKey([{ key: button.id, portID: editor.node.ports.out.byKey[button.id] }]),
+    onAdded: (button) =>
+      editor.goToNested({ state: { waitForData: true }, path: PATH, params: { buttonID: button.id } }),
+    onRemove: (button) =>
+      editor.engine.port.removeManyByKey([{ key: button.id, portID: editor.node.ports.out.byKey[button.id] }]),
   });
 
   return (
@@ -42,7 +44,8 @@ const CarouselEditorButtonsSection: React.FC<CarouselEditorButtonsSectionProps> 
           contextMenuOptions={[
             {
               label: 'Rename',
-              onClick: ({ item }) => editor.goToNested({ path: PATH, state: { renaming: true }, params: { buttonID: item.id } }),
+              onClick: ({ item }) =>
+                editor.goToNested({ path: PATH, state: { renaming: true }, params: { buttonID: item.id } }),
             },
           ]}
         />

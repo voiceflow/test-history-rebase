@@ -1,7 +1,7 @@
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
-import { NodeManagerConfig } from '../types';
+import type { NodeManagerConfig } from '../types';
 import { NODE_CONFIG } from './constants';
 import UserInfoEditor from './UserInfoEditor';
 import UserInfoStep from './UserInfoStep';

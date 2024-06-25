@@ -1,4 +1,4 @@
-import { CustomScrollbarsTypes } from '@voiceflow/ui';
+import type { CustomScrollbarsTypes } from '@voiceflow/ui';
 import React from 'react';
 
 export type PlaceholderRenderer = (props: { width?: number | string; height?: number | string }) => React.ReactNode;

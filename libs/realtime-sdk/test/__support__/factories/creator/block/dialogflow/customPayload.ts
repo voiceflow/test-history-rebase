@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
-import { NodeData } from '@realtime-sdk/models';
-import { DFESNode } from '@voiceflow/google-dfes-types';
+import type { NodeData } from '@realtime-sdk/models';
+import type { DFESNode } from '@voiceflow/google-dfes-types';
 import { define } from 'cooky-cutter';
 
 export const CustomPayloadStep = define<DFESNode.Payload.StepData>({

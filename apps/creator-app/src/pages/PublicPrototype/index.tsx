@@ -4,7 +4,7 @@ import * as Platform from '@voiceflow/platform-config';
 import { DEVICE_INFO, toast, withProvider } from '@voiceflow/ui';
 import { TabLoader } from '@voiceflow/ui-next';
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
+import type { RouteComponentProps } from 'react-router-dom';
 
 import SeoHelmet from '@/components/SeoHelmet';
 import { Permission } from '@/constants/permissions';

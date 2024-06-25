@@ -1,4 +1,4 @@
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 
 import AlexaFeatures from '@/pages/Settings/components/GeneralSettings/Sections/ChannelSpecificFeatures';
 import { SettingSections } from '@/pages/Settings/constants';
@@ -7,7 +7,12 @@ import { Basic, Canvas, DangerZone, DialogflowConsole, GlobalLogic, Metadata } f
 
 export const SectionComponents: Record<
   SettingSections,
-  React.FC<{ platform: Platform.Constants.PlatformType; projectType: Platform.Constants.ProjectType; title: SettingSections; platformMeta: any }>
+  React.FC<{
+    platform: Platform.Constants.PlatformType;
+    projectType: Platform.Constants.ProjectType;
+    title: SettingSections;
+    platformMeta: any;
+  }>
 > = {
   [SettingSections.BASIC]: Basic,
   [SettingSections.CANVAS]: Canvas,

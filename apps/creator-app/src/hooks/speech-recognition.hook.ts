@@ -4,7 +4,8 @@ import { useCreateConst } from '@voiceflow/ui-next';
 import React from 'react';
 import SpeechRecognition, { useSpeechRecognition as useReactSpeechRecognition } from 'react-speech-recognition';
 import RecordRTC from 'recordrtc';
-import { io, Socket } from 'socket.io-client';
+import type { Socket } from 'socket.io-client';
+import { io } from 'socket.io-client';
 
 import { GENERAL_SERVICE_ENDPOINT } from '@/config';
 

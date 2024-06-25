@@ -4,7 +4,8 @@ import { matchPath, useLocation } from 'react-router-dom';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks/realtime';
 
-import Item, { ItemProps } from './Item';
+import type { ItemProps } from './Item';
+import Item from './Item';
 
 interface NavItemProps extends Omit<ItemProps, 'onClick' | 'isActive'> {
   to: string;

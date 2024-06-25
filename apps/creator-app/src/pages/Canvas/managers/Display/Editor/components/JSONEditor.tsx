@@ -30,7 +30,11 @@ const JSONEditor: React.FC<JSONEditorProps> = ({ onChange, datasource = '', aplC
   const [localAPL, setLocalAPL] = React.useState(aplCommands);
 
   const onUploadJSON = (file: JSONFile) => {
-    onChange({ jsonFileName: file.fileName, datasource: stringify(file.data.datasources), document: stringify(file.data.document) });
+    onChange({
+      jsonFileName: file.fileName,
+      datasource: stringify(file.data.datasources),
+      document: stringify(file.data.document),
+    });
     setLocalDatasource(stringify(file.data.datasources));
   };
 

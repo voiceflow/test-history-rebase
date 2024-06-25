@@ -19,7 +19,12 @@ interface HoverOptions {
 export const useHover = (
   { onEnd, onMove, onStart = () => true, hoverDelay, cleanupOnOverride = true }: HoverOptions = {},
   dependencies: any[] = []
-): [boolean, (el: JSX.Element) => JSX.Element, Record<HoverEventHandler, React.MouseEventHandler<HTMLElement>>, (hovering: boolean) => void] => {
+): [
+  boolean,
+  (el: JSX.Element) => JSX.Element,
+  Record<HoverEventHandler, React.MouseEventHandler<HTMLElement>>,
+  (hovering: boolean) => void,
+] => {
   const parentHover = React.useContext(HoverContext);
 
   const [isHovered, setHovering] = React.useState(false);

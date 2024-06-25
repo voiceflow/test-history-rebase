@@ -1,15 +1,15 @@
 import { Utils } from '@voiceflow/common';
 import { Channel, Language } from '@voiceflow/dtos';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { Designer } from '@/ducks';
 import { useSyncedLookup } from '@/hooks';
 import { useSelector } from '@/hooks/redux';
 import { EntityMapContext, IntentMapContext, RequiredEntityMapContext } from '@/pages/Canvas/contexts';
-import { EntityPrompt } from '@/pages/Canvas/types';
+import type { EntityPrompt } from '@/pages/Canvas/types';
 
-import { ChoiceItem } from './types';
+import type { ChoiceItem } from './types';
 
 interface ChoiceStepOptions {
   data: Realtime.NodeData<Realtime.NodeData.Interaction>;
@@ -72,7 +72,14 @@ export const useChoiceStep = ({ data, ports }: ChoiceStepOptions) => {
           prompts: getPrompts(),
         };
       }, []);
-  }, [choicesByPortID, intentsMap, ports.out.dynamic, entityMap, requiredEntityMap, getAllStringResponseVariantsByLanguageChannelResponseID]);
+  }, [
+    choicesByPortID,
+    intentsMap,
+    ports.out.dynamic,
+    entityMap,
+    requiredEntityMap,
+    getAllStringResponseVariantsByLanguageChannelResponseID,
+  ]);
 
   return { choices };
 };

@@ -26,7 +26,9 @@ export class CardButtonLoguxController {
     @Payload() { data, context }: Actions.CardButton.Create.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.CardButton.Create.Response> {
-    return this.service.createManyAndBroadcast([data], { auth, context }).then(([result]) => ({ data: this.service.toJSON(result), context }));
+    return this.service
+      .createManyAndBroadcast([data], { auth, context })
+      .then(([result]) => ({ data: this.service.toJSON(result), context }));
   }
 
   @Action(Actions.CardButton.PatchOne)
@@ -69,7 +71,10 @@ export class CardButtonLoguxController {
     const result = await this.service.deleteManyAndSync([id], { userID: auth.userID, context });
 
     // overriding cardButtons cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, cardButtons: [] } }, { auth, context });
+    await this.service.broadcastDeleteMany(
+      { ...result, delete: { ...result.delete, cardButtons: [] } },
+      { auth, context }
+    );
   }
 
   @Action(Actions.CardButton.DeleteMany)
@@ -84,7 +89,10 @@ export class CardButtonLoguxController {
     const result = await this.service.deleteManyAndSync(ids, { userID: auth.userID, context });
 
     // overriding cardButtons cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, cardButtons: [] } }, { auth, context });
+    await this.service.broadcastDeleteMany(
+      { ...result, delete: { ...result.delete, cardButtons: [] } },
+      { auth, context }
+    );
   }
 
   @Action(Actions.CardButton.AddOne)

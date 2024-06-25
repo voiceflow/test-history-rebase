@@ -1,9 +1,9 @@
-import { MenuTypes } from '@ui/components/Menu';
-import { Nullable } from '@voiceflow/common';
-import { PopperProps } from '@voiceflow/legacy-react-popper';
-import React from 'react';
+import type { MenuTypes } from '@ui/components/Menu';
+import type { Nullable } from '@voiceflow/common';
+import type { PopperProps } from '@voiceflow/legacy-react-popper';
+import type React from 'react';
 
-import {
+import type {
   GetOptionKey,
   GetOptionLabel,
   GetOptionValue,
@@ -79,11 +79,17 @@ interface OptionalProps<Option> {
   getOptionKey?: GetOptionKey<Option>;
 }
 
-export interface NestedMenuProps<Option, Value> extends BaseNestedMenuProps, OptionalProps<Option>, GenericNestedMenuProps<Option, Value> {
+export interface NestedMenuProps<Option, Value>
+  extends BaseNestedMenuProps,
+    OptionalProps<Option>,
+    GenericNestedMenuProps<Option, Value> {
   getOptionKey: GetOptionKey<Option>;
 }
 
-export interface NestedMenuCreatableProps<Option, Value> extends BaseNestedMenuProps, OptionalProps<Option>, GenericNestedMenuProps<Option, Value> {
+export interface NestedMenuCreatableProps<Option, Value>
+  extends BaseNestedMenuProps,
+    OptionalProps<Option>,
+    GenericNestedMenuProps<Option, Value> {
   onCreate: (value: string, scheduleUpdate: VoidFunction) => void;
   creatable: true;
   getOptionKey: GetOptionKey<Option>;
@@ -125,11 +131,17 @@ export interface NestedMenuGroupedProps<Option, GroupedOption extends MenuItemGr
   getOptionKey: GetOptionKey<Option>;
 }
 
-export interface NestedMenuWithIDGroupedProps<Option extends MenuItemWithID, GroupedOption extends MenuItemGrouped<Option>, Value>
-  extends BaseNestedMenuProps,
+export interface NestedMenuWithIDGroupedProps<
+  Option extends MenuItemWithID,
+  GroupedOption extends MenuItemGrouped<Option>,
+  Value,
+> extends BaseNestedMenuProps,
     OptionalProps<Option>,
     GenericNestedMenuGroupedProps<Option, GroupedOption, Value> {
   grouped: true;
 }
 
-export interface NestedMenuInternalProps extends BaseNestedMenuProps, GenericNestedMenuProps<unknown, unknown>, OptionalProps<unknown> {}
+export interface NestedMenuInternalProps
+  extends BaseNestedMenuProps,
+    GenericNestedMenuProps<unknown, unknown>,
+    OptionalProps<unknown> {}

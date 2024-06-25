@@ -9,7 +9,9 @@ export interface MergePreviewProps {
 const MergePreview = styled.div<MergePreviewProps>`
   position: absolute;
   width: 304px;
-  box-shadow: 0 4px 8px 0 rgba(17, 49, 96, 0.16), 0 0 1px 1px rgba(17, 49, 96, 0.08);
+  box-shadow:
+    0 4px 8px 0 rgba(17, 49, 96, 0.16),
+    0 0 1px 1px rgba(17, 49, 96, 0.08);
   border-radius: 5px;
   z-index: 20;
 

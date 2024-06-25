@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { ChannelContext } from '@voiceflow/socket-utils';
+import type { ChannelContext } from '@voiceflow/socket-utils';
 
 import { AbstractChannelControl } from './utils';
 

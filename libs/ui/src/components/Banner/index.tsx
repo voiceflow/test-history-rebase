@@ -1,4 +1,5 @@
-import Box, { BoxProps } from '@ui/components/Box';
+import type { BoxProps } from '@ui/components/Box';
+import Box from '@ui/components/Box';
 import Button from '@ui/components/Button';
 import { useLocalStorageState } from '@ui/hooks/storage';
 import React from 'react';
@@ -16,7 +17,16 @@ interface BannerProps extends BoxProps {
   backgroundImage?: string;
 }
 
-const Banner: React.FC<BannerProps> = ({ small = false, title, onClick, closeKey, subtitle, buttonText, backgroundImage, ...props }) => {
+const Banner: React.FC<BannerProps> = ({
+  small = false,
+  title,
+  onClick,
+  closeKey,
+  subtitle,
+  buttonText,
+  backgroundImage,
+  ...props
+}) => {
   const [isClosed, setIsClosed] = useLocalStorageState(closeKey ?? 'unknown-close-key', false);
 
   if (isClosed) return null;

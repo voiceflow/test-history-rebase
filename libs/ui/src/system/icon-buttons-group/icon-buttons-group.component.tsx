@@ -3,7 +3,7 @@ import { forwardRef } from '@ui/hocs/forwardRef';
 import * as IconButton from '@ui/system/icon-button';
 import React from 'react';
 
-import * as I from './icon-buttons-group.interface';
+import type * as I from './icon-buttons-group.interface';
 
 export const Base = forwardRef<HTMLDivElement, I.Props>(
   'SystemIconButtonsGroup',

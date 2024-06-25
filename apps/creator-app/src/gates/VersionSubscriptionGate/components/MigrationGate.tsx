@@ -11,7 +11,7 @@ import { AsyncActionError } from '@/utils/logux';
 
 import WorkspaceOrProjectLoader from '../../WorkspaceOrProjectLoader';
 import { MigrationStatus } from '../constants';
-import { VersionSubscriptionContext } from '../types';
+import type { VersionSubscriptionContext } from '../types';
 import MigrationFailedWarning from './MigrationFailedWarning';
 import MigrationInProgressWarning from './MigrationInProgressWarning';
 
@@ -44,7 +44,10 @@ const MigrationGate: React.FC<MigrationGateProps> = ({ versionID, context, setCo
   const acceptContext = React.useCallback((result: Realtime.version.schema.NegotiateResultPayload) => {
     // handle case where the active version is not supported by the frontend code
     if (result.schemaVersion > Realtime.LATEST_SCHEMA_VERSION) {
-      logger.error('migration target not supported', { target: result.schemaVersion, latest: Realtime.LATEST_SCHEMA_VERSION });
+      logger.error('migration target not supported', {
+        target: result.schemaVersion,
+        latest: Realtime.LATEST_SCHEMA_VERSION,
+      });
 
       window.location.reload();
       return;
@@ -118,7 +121,12 @@ const MigrationGate: React.FC<MigrationGateProps> = ({ versionID, context, setCo
   }
 
   return (
-    <LoadingGate load={loadContext} isLoaded={!!context} loader={<WorkspaceOrProjectLoader />} internalName={MigrationGate.name}>
+    <LoadingGate
+      load={loadContext}
+      isLoaded={!!context}
+      loader={<WorkspaceOrProjectLoader />}
+      internalName={MigrationGate.name}
+    >
       {children}
     </LoadingGate>
   );

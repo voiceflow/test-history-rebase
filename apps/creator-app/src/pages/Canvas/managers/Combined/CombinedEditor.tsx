@@ -1,7 +1,7 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
 import { useSetup } from '@/hooks';
-import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
+import type { NodeEditorV2 } from '@/pages/Canvas/managers/types';
 
 const CombinedEditor: NodeEditorV2<Realtime.NodeData.Combined> = ({ node, engine }) => {
   useSetup(() => {

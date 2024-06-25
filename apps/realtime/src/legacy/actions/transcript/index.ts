@@ -1,4 +1,4 @@
-import { LoguxControlOptions } from '@/legacy/control';
+import type { LoguxControlOptions } from '@/legacy/control';
 
 import RemoveTranscriptControl from './remove';
 import UpdateUnreadTranscriptsControl from './updateUnread';

@@ -1,5 +1,6 @@
 import SvgIcon from '@ui/components/SvgIcon';
-import TippyTooltip, { TippyTooltipProps } from '@ui/components/TippyTooltip';
+import type { TippyTooltipProps } from '@ui/components/TippyTooltip';
+import TippyTooltip from '@ui/components/TippyTooltip';
 import { css, styled } from '@ui/styles';
 import React from 'react';
 
@@ -18,11 +19,21 @@ const StyledIcon = styled(SvgIcon).attrs({ size: 16, icon: 'info' })<{ opened?: 
     `}
 `;
 
-const InfoIconTooltip: React.FC<React.PropsWithChildren<Omit<TippyTooltipProps, 'content'>>> = ({ children, interactive, ...props }) => {
+const InfoIconTooltip: React.FC<React.PropsWithChildren<Omit<TippyTooltipProps, 'content'>>> = ({
+  children,
+  interactive,
+  ...props
+}) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
-    <TippyTooltip {...props} onShow={() => setIsOpen(true)} onHide={() => setIsOpen(false)} content={children} interactive={interactive}>
+    <TippyTooltip
+      {...props}
+      onShow={() => setIsOpen(true)}
+      onHide={() => setIsOpen(false)}
+      content={children}
+      interactive={interactive}
+    >
       <StyledIcon opened={isOpen} />
     </TippyTooltip>
   );

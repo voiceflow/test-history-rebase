@@ -3,7 +3,8 @@ import React from 'react';
 
 import * as Settings from '@/components/Settings';
 
-import { SecretsConfig, SecretsConfigProps } from './components';
+import type { SecretsConfigProps } from './components';
+import { SecretsConfig } from './components';
 
 export type { InputField, SecretField } from './types';
 

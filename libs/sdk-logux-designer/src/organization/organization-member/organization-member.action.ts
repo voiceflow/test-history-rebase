@@ -1,6 +1,6 @@
-import { OrganizationMember } from '@voiceflow/dtos';
+import type { OrganizationMember } from '@voiceflow/dtos';
 
-import { AddOneRequest, PatchManyRequest, ReplaceRequest } from '@/crud';
+import type { AddOneRequest, PatchManyRequest, ReplaceRequest } from '@/crud';
 import { createCRUD } from '@/crud/crud.action';
 
 import { organizationType } from '../organization.constants';

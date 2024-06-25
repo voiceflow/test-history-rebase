@@ -1,11 +1,11 @@
 import Box from '@ui/components/Box';
 import SvgIcon from '@ui/components/SvgIcon';
 import TippyTooltip from '@ui/components/TippyTooltip';
-import { UserRole } from '@voiceflow/dtos';
+import type { UserRole } from '@voiceflow/dtos';
 import pluralize from 'pluralize';
 import React from 'react';
 
-import { Member } from './types';
+import type { Member } from './types';
 
 interface RowProjectsTooltipProps {
   member: Member;

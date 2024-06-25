@@ -13,7 +13,12 @@ export interface PreviewCodeProps {
 
 const previewCodeStyle = getJSCodeStyle({ colors: CodeColorStyle });
 
-const PreviewCode: React.FC<PreviewCodeProps> = ({ code, language = 'javascript', padding = 0, wrapLongLines = true }) => (
+const PreviewCode: React.FC<PreviewCodeProps> = ({
+  code,
+  language = 'javascript',
+  padding = 0,
+  wrapLongLines = true,
+}) => (
   <SyntaxHighlighter
     style={previewCodeStyle}
     language={language}

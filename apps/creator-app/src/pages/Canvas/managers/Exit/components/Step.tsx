@@ -3,7 +3,7 @@ import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
-import { ConnectedStep } from '@/pages/Canvas/managers/types';
+import type { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { createPlatformSelector } from '@/utils/platform';
 
 import { NODE_CONFIG } from '../constants';

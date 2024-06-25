@@ -50,7 +50,12 @@ const Routes: React.FC = () => {
         <PublicRoute exact path={Path.SIGNUP} component={Signup} />
         <PrivateRoute exact path={Path.ONBOARDING} component={Onboarding} />
 
-        <PrivateRoute exact path={Path.INTEGRATION_ZENDESK_CALLBACK} component={ZendeskCallback} screenSizeWarning={false} />
+        <PrivateRoute
+          exact
+          path={Path.INTEGRATION_ZENDESK_CALLBACK}
+          component={ZendeskCallback}
+          screenSizeWarning={false}
+        />
 
         {/* workspace routes  */}
         <Route exact path={Path.WORKSPACE_ACCEPT_INVITE} component={WorkspaceAcceptInvite} />
@@ -69,7 +74,11 @@ const Routes: React.FC = () => {
           exact
           path={Path.HOME}
           render={() =>
-            authToken ? <Redirect to={`${Path.DASHBOARD}${window.location.search}`} /> : <Redirect to={`${Path.SIGNUP}${window.location.search}`} />
+            authToken ? (
+              <Redirect to={`${Path.DASHBOARD}${window.location.search}`} />
+            ) : (
+              <Redirect to={`${Path.SIGNUP}${window.location.search}`} />
+            )
           }
         />
 

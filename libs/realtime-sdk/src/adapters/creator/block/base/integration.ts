@@ -1,4 +1,4 @@
-import { NodeData } from '@realtime-sdk/models';
+import type { NodeData } from '@realtime-sdk/models';
 import { BaseNode } from '@voiceflow/base-types';
 
 import {
@@ -67,7 +67,10 @@ export const integrationOutPortsAdapter = createOutPortsAdapter<NodeData.Integra
   (dbPorts, options) => nextAndFailOnlyOutPortsAdapter.toDB(dbPorts, options)
 );
 
-export const integrationOutPortsAdapterV2 = createOutPortsAdapterV2<NodeData.IntegrationBuiltInPorts, NodeData.Integration>(
+export const integrationOutPortsAdapterV2 = createOutPortsAdapterV2<
+  NodeData.IntegrationBuiltInPorts,
+  NodeData.Integration
+>(
   (dbPorts, options) => nextAndFailOnlyOutPortsAdapterV2.fromDB(dbPorts, options),
   (dbPorts, options) => nextAndFailOnlyOutPortsAdapterV2.toDB(dbPorts, options)
 );

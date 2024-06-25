@@ -24,8 +24,14 @@ const ASRSpeechBar: React.FC<ASRSpeechBarProps> = ({
 }) => {
   const cache = useCache({ onStopListening, onStartListening });
 
-  const onDebouncedStopListening = useDebouncedCallback(100, () => cache.current.onStopListening(), [], { leading: true, trailing: false });
-  const onDebouncedStartListening = useDebouncedCallback(100, () => cache.current.onStartListening(), [], { leading: true, trailing: false });
+  const onDebouncedStopListening = useDebouncedCallback(100, () => cache.current.onStopListening(), [], {
+    leading: true,
+    trailing: false,
+  });
+  const onDebouncedStartListening = useDebouncedCallback(100, () => cache.current.onStartListening(), [], {
+    leading: true,
+    trailing: false,
+  });
 
   useHotkey(Hotkey.USER_SPEECH, onDebouncedStopListening, { action: 'keyup', disable: IS_MOBILE });
   useHotkey(Hotkey.USER_SPEECH, onDebouncedStartListening, { action: 'keydown', disable: IS_MOBILE });

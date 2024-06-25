@@ -49,7 +49,10 @@ const EditorHeader: React.FC<HeaderProps> = ({ path = [], className, goToPath })
 
       {!!headerActions.length && (
         <Dropdown
-          options={headerActions.map(({ onClick, ...action }) => ({ ...action, onClick: () => onClick({ data: data!, engine }) }))}
+          options={headerActions.map(({ onClick, ...action }) => ({
+            ...action,
+            onClick: () => onClick({ data: data!, engine }),
+          }))}
           placement="bottom-end"
         >
           {({ ref, onToggle, isOpen }) => (

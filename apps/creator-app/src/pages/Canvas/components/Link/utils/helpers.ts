@@ -1,4 +1,4 @@
-import { PathPoint, Point } from '@/types';
+import type { PathPoint, Point } from '@/types';
 
 interface CreatePointData {
   toTop?: boolean;
@@ -11,7 +11,11 @@ const round = (val: number): number => Math.round((val + Number.EPSILON) * 100) 
 
 export function createPoint(point: Point, data?: CreatePointData): PathPoint;
 export function createPoint(x: number, y: number, data?: CreatePointData): PathPoint;
-export function createPoint(xOrPoint: Point | number, yOrData: number | CreatePointData = {}, data: CreatePointData = {}): PathPoint {
+export function createPoint(
+  xOrPoint: Point | number,
+  yOrData: number | CreatePointData = {},
+  data: CreatePointData = {}
+): PathPoint {
   if (Array.isArray(xOrPoint)) {
     return {
       point: [round(xOrPoint[0]), round(xOrPoint[1])],

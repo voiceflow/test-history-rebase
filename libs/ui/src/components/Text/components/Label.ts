@@ -1,6 +1,7 @@
 import { colors, styled, ThemeColor } from '@ui/styles';
 
-import Text, { TextProps } from './Text';
+import type { TextProps } from './Text';
+import Text from './Text';
 
 export const Label = styled(Text).attrs<TextProps>(({ fontSize = 15 }) => ({ as: 'label', fontSize }))`
   display: block;

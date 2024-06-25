@@ -2,9 +2,10 @@ import { PlanType } from '@voiceflow/internal';
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { LimitType } from '@/constants/limits';
+import type { LimitType } from '@/constants/limits';
 import * as Organization from '@/ducks/organization';
-import { getLimitConfig, getLimitEntitlement, isStaticLimitConfig, PlanLimitConfig } from '@/utils/planLimitV3.util';
+import type { PlanLimitConfig } from '@/utils/planLimitV3.util';
+import { getLimitConfig, getLimitEntitlement, isStaticLimitConfig } from '@/utils/planLimitV3.util';
 
 import { useFeature } from './feature.hook';
 import { useSelector } from './store.hook';

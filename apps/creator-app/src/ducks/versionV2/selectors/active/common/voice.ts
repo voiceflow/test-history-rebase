@@ -1,4 +1,4 @@
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import { createSelector } from 'reselect';
 
 import { projectConfigSelector } from '@/ducks/projectV2/selectors/active';

@@ -1,11 +1,12 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { Context } from '@voiceflow/socket-utils';
-import { Action } from 'typescript-fsa';
+import type { Context } from '@voiceflow/socket-utils';
+import type { Action } from 'typescript-fsa';
 
 import { AbstractVersionResourceControl } from '@/legacy/actions/version/utils';
 
-type PatchVariableStatePayload = Realtime.BaseVersionPayload & Realtime.actionUtils.CRUDValuePayload<Partial<Realtime.VariableState>>;
+type PatchVariableStatePayload = Realtime.BaseVersionPayload &
+  Realtime.actionUtils.CRUDValuePayload<Partial<Realtime.VariableState>>;
 
 class PatchVariableState extends AbstractVersionResourceControl<PatchVariableStatePayload> {
   protected actionCreator = Realtime.variableState.crud.patch;

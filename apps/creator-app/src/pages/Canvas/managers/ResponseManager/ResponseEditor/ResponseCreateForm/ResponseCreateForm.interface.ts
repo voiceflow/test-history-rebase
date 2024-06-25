@@ -1,4 +1,4 @@
-import { TextResponseVariantCreate } from '@voiceflow/dtos';
+import type { TextResponseVariantCreate } from '@voiceflow/dtos';
 
 export interface IResponseCreateForm {
   onResponseCreate: (responseID: string) => void;

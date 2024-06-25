@@ -1,4 +1,4 @@
-import { Nullish } from '@voiceflow/common';
+import type { Nullish } from '@voiceflow/common';
 import { Menu, OverflowText, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
@@ -14,7 +14,11 @@ interface VariableStateOption {
 }
 
 interface VariableStateSelectMenuProps {
-  render: (options: { ref: React.RefObject<HTMLElement>; isOpen: boolean; toggleSelectMenuOpen: () => void }) => JSX.Element;
+  render: (options: {
+    ref: React.RefObject<HTMLElement>;
+    isOpen: boolean;
+    toggleSelectMenuOpen: () => void;
+  }) => JSX.Element;
 }
 
 const VariableStateSelectMenu: React.FC<VariableStateSelectMenuProps> = ({ render }) => {
@@ -36,11 +40,16 @@ const VariableStateSelectMenu: React.FC<VariableStateSelectMenuProps> = ({ rende
   );
 
   const variableStateOptionsMap = React.useMemo(
-    () => variableStateOptions.reduce<Record<string, VariableStateOption>>((acc, option) => Object.assign(acc, { [option.value]: option }), {}),
+    () =>
+      variableStateOptions.reduce<Record<string, VariableStateOption>>(
+        (acc, option) => Object.assign(acc, { [option.value]: option }),
+        {}
+      ),
     [variableStateOptions]
   );
 
-  const getOptionLabel = (variableStateID: Nullish<string>) => (variableStateID ? variableStateOptionsMap[variableStateID].label : '');
+  const getOptionLabel = (variableStateID: Nullish<string>) =>
+    variableStateID ? variableStateOptionsMap[variableStateID].label : '';
 
   return (
     <S.SelectContainer

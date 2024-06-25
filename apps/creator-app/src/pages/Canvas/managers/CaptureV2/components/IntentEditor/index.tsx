@@ -1,6 +1,6 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, createDividerMenuItemOption, SectionV2, useConst } from '@voiceflow/ui';
 import React from 'react';
 
@@ -37,10 +37,14 @@ const IntentEditor: React.FC<{ disableAnimation: boolean }> = ({ disableAnimatio
     [editor.onChange]
   );
 
-  const mapManager = useMapManager(editor.data.intent?.slots ?? defaultSlots, (slots) => editor.onChange({ intent: { slots } }), {
-    factory: () => projectConfig.utils.intent.slotFactory({ id: '' }),
-    clone: ({ id }, cloneData) => ({ ...cloneData, id }),
-  });
+  const mapManager = useMapManager(
+    editor.data.intent?.slots ?? defaultSlots,
+    (slots) => editor.onChange({ intent: { slots } }),
+    {
+      factory: () => projectConfig.utils.intent.slotFactory({ id: '' }),
+      clone: ({ id }, cloneData) => ({ ...cloneData, id }),
+    }
+  );
 
   const dynamicSelectedSlotIDs = React.useMemo(() => mapManager.items.map((item) => item.id || ''), [mapManager.items]);
   const selectedSlotIDs = React.useMemo(() => dynamicSelectedSlotIDs, [dynamicSelectedSlotIDs.join('')]);

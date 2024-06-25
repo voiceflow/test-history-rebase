@@ -1,12 +1,21 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { Utils } from '@voiceflow/common';
 import { tid } from '@voiceflow/style';
-import { Box, Menu, MENU_ITEM_MIN_HEIGHT, MenuItem, Popper, Search, SquareButton, VirtualizedContent } from '@voiceflow/ui-next';
+import {
+  Box,
+  Menu,
+  MENU_ITEM_MIN_HEIGHT,
+  MenuItem,
+  Popper,
+  Search,
+  SquareButton,
+  VirtualizedContent,
+} from '@voiceflow/ui-next';
 import React, { useMemo, useState } from 'react';
 
 import { useDeferredSearch } from '@/hooks/search.hook';
 
-import { IModalHeaderMenu } from './ModalHeaderMenu.interface';
+import type { IModalHeaderMenu } from './ModalHeaderMenu.interface';
 
 export const ModalHeaderMenu: React.FC<IModalHeaderMenu> = ({ items, activeID, onSelect, notFoundLabel, testID }) => {
   const [listNode, setListNode] = useState<HTMLDivElement | null>(null);
@@ -39,7 +48,12 @@ export const ModalHeaderMenu: React.FC<IModalHeaderMenu> = ({ items, activeID, o
           listRef={setListNode}
           maxHeight={310}
           searchSection={
-            <Search value={search.value} placeholder="Search" onValueChange={search.setValue} testID={tid(testID, ['menu', 'search'])} />
+            <Search
+              value={search.value}
+              placeholder="Search"
+              onValueChange={search.setValue}
+              testID={tid(testID, ['menu', 'search'])}
+            />
           }
         >
           {search.hasItems ? (

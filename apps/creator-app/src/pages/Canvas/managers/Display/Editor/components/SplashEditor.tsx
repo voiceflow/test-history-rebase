@@ -14,7 +14,12 @@ const SplashEditor: React.FC<SplashEditorProps> = ({ title, onChange, imageURL }
   <Box bg="#fdfdfd">
     <SectionV2.Content>
       <FormControl>
-        <VariablesInput value={title} onBlur={({ text }) => onChange({ title: text })} placeholder="Enter title, { to add variable" autoFocus />
+        <VariablesInput
+          value={title}
+          onBlur={({ text }) => onChange({ title: text })}
+          placeholder="Enter title, { to add variable"
+          autoFocus
+        />
       </FormControl>
 
       <FormControl>

@@ -6,7 +6,13 @@ import { useInput } from '@/hooks/input.hook';
 
 import type { ICMSEditorDescription } from './CMSEditorDescription.interface';
 
-export const CMSEditorDescription: React.FC<ICMSEditorDescription> = ({ value, showDivider = true, placeholder, onValueChange, testID }) => {
+export const CMSEditorDescription: React.FC<ICMSEditorDescription> = ({
+  value,
+  showDivider = true,
+  placeholder,
+  onValueChange,
+  testID,
+}) => {
   const input = useInput<string, HTMLTextAreaElement>({
     value,
     onSave: onValueChange,

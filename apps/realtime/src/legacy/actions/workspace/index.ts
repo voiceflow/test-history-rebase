@@ -1,4 +1,4 @@
-import { LoguxControlOptions } from '../../control';
+import type { LoguxControlOptions } from '../../control';
 import AddWorkspaceControl from './add';
 import CreateWorkspaceControl from './create';
 import LeaveWorkspaceControl from './leave';

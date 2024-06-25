@@ -4,7 +4,13 @@ import { styled, transition } from '@/hocs/styled';
 
 export const Container = styled.div`
   background-color: #fdfdfd;
-  box-shadow: 0 4px 12px 0 #13214405, 0 2px 4px 0 #13214405, 0 2px 2px 0 #13214402, 0 1px 1px 0 #13214402, 0 1px 0 0 #13214407, 0 0 0 1px #13214413;
+  box-shadow:
+    0 4px 12px 0 #13214405,
+    0 2px 4px 0 #13214405,
+    0 2px 2px 0 #13214402,
+    0 1px 1px 0 #13214402,
+    0 1px 0 0 #13214407,
+    0 0 0 1px #13214413;
   border-radius: 8px;
   width: 306px;
 `;

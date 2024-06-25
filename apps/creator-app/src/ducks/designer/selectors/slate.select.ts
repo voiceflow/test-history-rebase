@@ -26,14 +26,21 @@ export const slateVariables = createSelector(allVariables, isFeatureEnabledSelec
   variables.map(slateVariableItemFactory(SlateEditor.VariableElementVariant.VARIABLE))
 );
 
-export const uniqueSlateEntitiesAndVariables = createSelector(slateEntities, slateVariables, (slateEntities, slateVariables) =>
-  uniqBy([...slateVariables, ...slateEntities], (value) => value.name)
+export const uniqueSlateEntitiesAndVariables = createSelector(
+  slateEntities,
+  slateVariables,
+  (slateEntities, slateVariables) => uniqBy([...slateVariables, ...slateEntities], (value) => value.name)
 );
 
-export const slateEntitiesMapByID = createSelector(slateEntities, (slateEntities) => Utils.array.createMap(slateEntities, (value) => value.id));
+export const slateEntitiesMapByID = createSelector(slateEntities, (slateEntities) =>
+  Utils.array.createMap(slateEntities, (value) => value.id)
+);
 
-export const slateVariablesMapByID = createSelector(slateVariables, (slateVariables) => Utils.array.createMap(slateVariables, (value) => value.id));
+export const slateVariablesMapByID = createSelector(slateVariables, (slateVariables) =>
+  Utils.array.createMap(slateVariables, (value) => value.id)
+);
 
-export const uniqueSlateEntitiesAndVariablesMapByID = createSelector(uniqueSlateEntitiesAndVariables, (uniqueSlateEntitiesAndVariables) =>
-  Utils.array.createMap(uniqueSlateEntitiesAndVariables, (value) => value.id)
+export const uniqueSlateEntitiesAndVariablesMapByID = createSelector(
+  uniqueSlateEntitiesAndVariables,
+  (uniqueSlateEntitiesAndVariables) => Utils.array.createMap(uniqueSlateEntitiesAndVariables, (value) => value.id)
 );

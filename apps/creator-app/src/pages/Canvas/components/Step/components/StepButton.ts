@@ -1,4 +1,5 @@
-import { IconButton, IconButtonSquareContainerProps, IconButtonVariant } from '@voiceflow/ui';
+import type { IconButtonSquareContainerProps } from '@voiceflow/ui';
+import { IconButton, IconButtonVariant } from '@voiceflow/ui';
 
 import { styled, units } from '@/hocs/styled';
 import { CANVAS_PROTOTYPE_ENABLED_CLASSNAME } from '@/pages/Canvas/constants';

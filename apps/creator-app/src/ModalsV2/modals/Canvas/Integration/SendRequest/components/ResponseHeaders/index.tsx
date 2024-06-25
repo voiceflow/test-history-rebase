@@ -1,7 +1,7 @@
 import { SvgIcon, Text } from '@voiceflow/ui';
 import React from 'react';
 
-import { Response } from '../../types';
+import type { Response } from '../../types';
 import ResponseMetadata from '../ResponseMetadata';
 import * as S from './styles';
 

@@ -1,7 +1,7 @@
-import { BaseButton, BaseModels, Node } from '@voiceflow/base-types';
-import { PlanType } from '@voiceflow/internal';
-import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { BaseButton, BaseModels, Node } from '@voiceflow/base-types';
+import type { PlanType } from '@voiceflow/internal';
+import type * as Platform from '@voiceflow/platform-config';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
 import type { PrototypeInputMode, PrototypeLayout, PrototypeStatus } from '@/constants/prototype';
 import type { PrototypeContext } from '@/models';

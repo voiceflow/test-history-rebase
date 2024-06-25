@@ -1,8 +1,8 @@
-import React from 'react';
+import type React from 'react';
 
-import { NodeInstance } from '@/pages/Canvas/engine/entities/nodeEntity';
-import { CombinedAPI } from '@/pages/Canvas/types';
-import { Point } from '@/types';
+import type { NodeInstance } from '@/pages/Canvas/engine/entities/nodeEntity';
+import type { CombinedAPI } from '@/pages/Canvas/types';
+import type { Point } from '@/types';
 
 export interface InternalNodeInstance<T extends HTMLElement> extends NodeInstance {
   ref: React.RefObject<T>;

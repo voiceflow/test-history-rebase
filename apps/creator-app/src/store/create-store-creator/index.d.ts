@@ -1,7 +1,8 @@
-import { Client, ClientMeta } from '@logux/client';
-import { Log } from '@logux/core';
-import { Unsubscribe } from 'nanoevents';
-import { Action, AnyAction, Observable, PreloadedState, Reducer, Store as ReduxStore, StoreEnhancer } from 'redux';
+/* eslint-disable @typescript-eslint/ban-types */
+import type { Client, ClientMeta } from '@logux/client';
+import type { Log } from '@logux/core';
+import type { Unsubscribe } from 'nanoevents';
+import type { Action, AnyAction, Observable, PreloadedState, Reducer, Store as ReduxStore, StoreEnhancer } from 'redux';
 
 export interface LoguxDispatch<A extends Action> {
   <T extends A>(action: T): T;
@@ -77,8 +78,12 @@ export interface ReduxStateListener<S, A extends Action> {
   (state: S, prevState: S, action: A, meta: ClientMeta): void;
 }
 
-export class LoguxReduxStore<S = any, A extends Action = AnyAction, L extends Log = Log<ClientMeta>, C extends Client = Client<{}, L>>
-  implements ReduxStore<S, A>
+export class LoguxReduxStore<
+  S = any,
+  A extends Action = AnyAction,
+  L extends Log = Log<ClientMeta>,
+  C extends Client = Client<{}, L>,
+> implements ReduxStore<S, A>
 {
   /**
    * Logux synchronization client.
@@ -143,13 +148,10 @@ export class LoguxReduxStore<S = any, A extends Action = AnyAction, L extends Lo
 }
 
 export interface LoguxStoreCreator<L extends Log = Log<ClientMeta>, C extends Client = Client<{}, L>> {
-  <S, A extends Action = Action, Ext = {}, StateExt = {}>(reducer: Reducer<S, A>, enhancer?: StoreEnhancer<Ext, StateExt>): LoguxReduxStore<
-    S & StateExt,
-    A,
-    L,
-    C
-  > &
-    Ext;
+  <S, A extends Action = Action, Ext = {}, StateExt = {}>(
+    reducer: Reducer<S, A>,
+    enhancer?: StoreEnhancer<Ext, StateExt>
+  ): LoguxReduxStore<S & StateExt, A, L, C> & Ext;
   <S, A extends Action = Action, Ext = {}, StateExt = {}>(
     reducer: Reducer<S, A>,
     preloadedState?: PreloadedState<S>,

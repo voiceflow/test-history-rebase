@@ -4,7 +4,12 @@ import { PushAction } from '../../constants';
 import { getEntityAtEndSelection, getEntityAtStartSelection, getEntitySelection } from '../../utils';
 import isXMLEntity from './isXMLEntity';
 
-const selectTag = ({ selection: prevSelection, editorState: prevEditorState, isBackDirection, entityAtStartSelection }) => {
+const selectTag = ({
+  selection: prevSelection,
+  editorState: prevEditorState,
+  isBackDirection,
+  entityAtStartSelection,
+}) => {
   let editorState = prevEditorState;
   let selection = prevSelection;
   let entitySelection = getEntitySelection(editorState, entityAtStartSelection);
@@ -70,7 +75,10 @@ const deleteUnlinkedEntities = ({
       return false;
     }
 
-    content = Modifier.removeRange(content, selection.merge({ focusOffset: entity.end - adjustEntity, anchorOffset: entity.start - adjustEntity }));
+    content = Modifier.removeRange(
+      content,
+      selection.merge({ focusOffset: entity.end - adjustEntity, anchorOffset: entity.start - adjustEntity })
+    );
     const entityLength = entity.end - entity.start;
 
     adjustEntity += entityLength;

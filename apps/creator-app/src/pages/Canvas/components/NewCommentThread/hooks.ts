@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { EditableCommentRef } from '@/pages/Canvas/components/ThreadEditor';
-import { CommentDraftValue, NewCommentAPI } from '@/pages/Canvas/types';
-import { Coords } from '@/utils/geometry';
+import type { EditableCommentRef } from '@/pages/Canvas/components/ThreadEditor';
+import type { CommentDraftValue, NewCommentAPI } from '@/pages/Canvas/types';
+import type { Coords } from '@/utils/geometry';
 
 export interface InternalNewCommentAPI extends NewCommentAPI {
   origin: Coords | null;

@@ -7,7 +7,10 @@ export interface AddButtonProps {
   disabled?: boolean;
 }
 
-const AddButton: React.ForwardRefRenderFunction<HTMLButtonElement, AddButtonProps> = ({ onClick, isActive, disabled }, ref) => (
+const AddButton: React.ForwardRefRenderFunction<HTMLButtonElement, AddButtonProps> = (
+  { onClick, isActive, disabled },
+  ref
+) => (
   <System.IconButtonsGroup.Base>
     <System.IconButton.Base ref={ref} icon="plus" active={isActive} onClick={onClick} disabled={disabled} />
   </System.IconButtonsGroup.Base>

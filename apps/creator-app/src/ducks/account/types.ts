@@ -1,4 +1,4 @@
-import * as PlatformConfig from '@voiceflow/platform-config';
+import type * as PlatformConfig from '@voiceflow/platform-config';
 
 export interface AccountState {
   creator_id: number | null;

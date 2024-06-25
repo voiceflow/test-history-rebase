@@ -5,7 +5,8 @@ import * as CustomBlock from '@/ducks/customBlock';
 import { useDispatch, useSelector } from '@/hooks';
 
 import manager from '../../../../manager';
-import ModalContent, { SubmittedCustomBlock } from '../CustomBlockEditorModalContent';
+import type { SubmittedCustomBlock } from '../CustomBlockEditorModalContent';
+import ModalContent from '../CustomBlockEditorModalContent';
 
 export interface CustomBlocksCreateModalProps {
   blockID: string;
@@ -33,7 +34,15 @@ const CustomBlockEditModal = manager.create<CustomBlocksCreateModalProps>(
       };
 
       return (
-        <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={450} hideScrollbar>
+        <Modal
+          type={type}
+          opened={opened}
+          hidden={hidden}
+          animated={animated}
+          onExited={api.remove}
+          maxWidth={450}
+          hideScrollbar
+        >
           <ModalContent
             currentFormVal={customBlock}
             title="Edit Custom Block"

@@ -1,7 +1,8 @@
 import dayjs from 'dayjs';
 
-import { DONUT_CHART_COLORS, PeriodFilterOption } from '../constants';
-import { BarChartResult, DateRange, GraphResult } from '../types';
+import type { PeriodFilterOption } from '../constants';
+import { DONUT_CHART_COLORS } from '../constants';
+import type { BarChartResult, DateRange, GraphResult } from '../types';
 import type * as Queries from './queries';
 
 const sleep = (ms: number) =>

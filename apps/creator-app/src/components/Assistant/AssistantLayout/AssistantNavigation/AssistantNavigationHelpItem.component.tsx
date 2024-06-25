@@ -1,7 +1,8 @@
 import { Utils } from '@voiceflow/common';
-import { IconName } from '@voiceflow/icons';
+import type { IconName } from '@voiceflow/icons';
 import { tid } from '@voiceflow/style';
-import { BaseProps, HotKeys, Menu, Popper, PrimaryNavigation } from '@voiceflow/ui-next';
+import type { BaseProps } from '@voiceflow/ui-next';
+import { HotKeys, Menu, Popper, PrimaryNavigation } from '@voiceflow/ui-next';
 import React from 'react';
 
 import {

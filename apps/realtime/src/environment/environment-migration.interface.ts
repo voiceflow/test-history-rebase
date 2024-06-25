@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import type * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 export type CMSOnlyMigrationData = Omit<Realtime.Migrate.MigrationData['cms'], 'assistant'>;
 

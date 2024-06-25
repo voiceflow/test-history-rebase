@@ -1,12 +1,14 @@
 import { AudioPlayer, Link, stopPropagation } from '@voiceflow/ui';
 import cn from 'classnames';
-import Markdown, { MarkdownToJSX } from 'markdown-to-jsx';
+import type { MarkdownToJSX } from 'markdown-to-jsx';
+import Markdown from 'markdown-to-jsx';
 import React from 'react';
 
 import { ClassName } from '@/styles/constants';
 import { ALL_URLS_REGEX } from '@/utils/string.util';
 
-import BaseMessage, { BaseMessageProps } from '../../Base';
+import type { BaseMessageProps } from '../../Base';
+import BaseMessage from '../../Base';
 
 interface SpeakProps extends Omit<BaseMessageProps, 'iconProps'> {
   ai?: boolean;

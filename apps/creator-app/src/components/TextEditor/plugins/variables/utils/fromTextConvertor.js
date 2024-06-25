@@ -1,5 +1,6 @@
 import { SLOT_REGEXP } from '@voiceflow/common';
 import { genKey } from 'draft-js';
+// eslint-disable-next-line you-dont-need-lodash-underscore/is-string
 import _isString from 'lodash/isString';
 
 import { transformVariablesFromReadable, transformVariablesFromReadableWithoutTrim } from '@/utils/slot';
@@ -12,7 +13,11 @@ export const matchVariables = (text = '', { withoutTrim } = {}) => {
   }
 
   // eslint-disable-next-line no-nested-ternary
-  const textWithFormattedVars = text ? (withoutTrim ? transformVariablesFromReadableWithoutTrim(text) : transformVariablesFromReadable(text)) : '';
+  const textWithFormattedVars = text
+    ? withoutTrim
+      ? transformVariablesFromReadableWithoutTrim(text)
+      : transformVariablesFromReadable(text)
+    : '';
 
   const matches = [...textWithFormattedVars.matchAll(SLOT_REGEXP)];
 

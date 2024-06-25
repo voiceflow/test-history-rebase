@@ -135,7 +135,12 @@ export const KBImportFile = modalsManager.create(
           </Scroll>
 
           <Modal.Footer>
-            <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.onClose} testID={tid(TEST_ID, 'cancel')} />
+            <Modal.Footer.Button
+              label="Cancel"
+              variant="secondary"
+              onClick={api.onClose}
+              testID={tid(TEST_ID, 'cancel')}
+            />
 
             <Modal.Footer.Button
               label="Import"

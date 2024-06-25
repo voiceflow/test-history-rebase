@@ -1,10 +1,10 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import Step, { Attachment, Item, Section } from '@/pages/Canvas/components/Step';
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { ConnectedStep } from '@/pages/Canvas/managers/types';
+import type { ConnectedStep } from '@/pages/Canvas/managers/types';
 
 import { NODE_CONFIG } from '../constants';
 import { useGoToNode } from './hooks';

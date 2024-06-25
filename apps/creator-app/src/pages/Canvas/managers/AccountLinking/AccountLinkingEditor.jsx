@@ -126,10 +126,20 @@ function AccountLinkingEditor({ data, isOpen, loadAccountLinking, patchSettings 
 
           <div>
             <SubHeader>
-              <SubHeaderTabs options={TABS} selected={activeTab || 'client'} onChange={(value) => setActiveTab(value)} />
+              <SubHeaderTabs
+                options={TABS}
+                selected={activeTab || 'client'}
+                onChange={(value) => setActiveTab(value)}
+              />
             </SubHeader>
 
-            <TabComponent data={state} onUpdate={handleInputUpdate} handleAdd={handleAdd} handleRemove={handleRemove} handleChange={handleChange} />
+            <TabComponent
+              data={state}
+              onUpdate={handleInputUpdate}
+              handleAdd={handleAdd}
+              handleRemove={handleRemove}
+              handleChange={handleChange}
+            />
 
             <Section>
               <FormControl label="Access Token Expiration">

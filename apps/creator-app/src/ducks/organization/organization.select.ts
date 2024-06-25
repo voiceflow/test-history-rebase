@@ -1,4 +1,5 @@
-import { Organization, OrganizationMember, RoleScope } from '@voiceflow/dtos';
+import type { Organization, OrganizationMember } from '@voiceflow/dtos';
+import { RoleScope } from '@voiceflow/dtos';
 import type { Normalized } from 'normal-store';
 import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';

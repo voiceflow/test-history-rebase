@@ -1,5 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AnyResponseAttachmentORM, AnyResponseVariantORM, ResponseCardAttachmentORM, ResponseMediaAttachmentORM } from '@voiceflow/orm-designer';
+import {
+  AnyResponseAttachmentORM,
+  AnyResponseVariantORM,
+  ResponseCardAttachmentORM,
+  ResponseMediaAttachmentORM,
+} from '@voiceflow/orm-designer';
 
 import { ResponseAttachmentLoguxController } from './response-attachment.logux.controller';
 import { ResponseAttachmentService } from './response-attachment.service';

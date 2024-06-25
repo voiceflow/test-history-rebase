@@ -1,4 +1,4 @@
-import { IntegrationType } from './dtos/base-oauth-type.enum';
+import type { IntegrationType } from './dtos/base-oauth-type.enum';
 
 interface BaseOauthClient {
   readonly type: IntegrationType;

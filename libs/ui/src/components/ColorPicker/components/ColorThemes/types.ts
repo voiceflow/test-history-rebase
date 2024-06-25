@@ -1,6 +1,6 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 
-import { Colors, IColor } from '../../constants';
+import type { Colors, IColor } from '../../constants';
 
 export interface ColorThemesPersistAPI {
   addCustomTheme?: (theme: BaseModels.Project.Theme) => void;

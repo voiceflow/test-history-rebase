@@ -1,10 +1,10 @@
-import { BaseButton, Nullable } from '@voiceflow/base-types';
+import type { BaseButton, Nullable } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import { OptionalSectionConfig } from '@/pages/Canvas/managers/types';
+import type { OptionalSectionConfig } from '@/pages/Canvas/managers/types';
 import { intentButtonFactory } from '@/utils/intent';
 import { getPlatformValue } from '@/utils/platform';
 

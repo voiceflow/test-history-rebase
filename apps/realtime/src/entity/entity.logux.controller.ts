@@ -26,7 +26,9 @@ export class EntityLoguxController {
     @Payload() { data, context }: Actions.Entity.CreateOne.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.Entity.CreateOne.Response> {
-    return this.service.createManyAndBroadcast([data], { auth, context }).then(([result]) => ({ data: this.service.toJSON(result), context }));
+    return this.service
+      .createManyAndBroadcast([data], { auth, context })
+      .then(([result]) => ({ data: this.service.toJSON(result), context }));
   }
 
   @Action.Async(Actions.Entity.CreateMany)
@@ -39,7 +41,9 @@ export class EntityLoguxController {
     @Payload() { data, context }: Actions.Entity.CreateMany.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.Entity.CreateMany.Response> {
-    return this.service.createManyAndBroadcast(data, { auth, context }).then((results) => ({ data: this.service.mapToJSON(results), context }));
+    return this.service
+      .createManyAndBroadcast(data, { auth, context })
+      .then((results) => ({ data: this.service.mapToJSON(results), context }));
   }
 
   @Action(Actions.Entity.PatchOne)
@@ -82,7 +86,10 @@ export class EntityLoguxController {
     const result = await this.service.deleteManyAndSync([id], { userID: auth.userID, context });
 
     // overriding entities cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, entities: [] } }, { auth, context });
+    await this.service.broadcastDeleteMany(
+      { ...result, delete: { ...result.delete, entities: [] } },
+      { auth, context }
+    );
   }
 
   @Action(Actions.Entity.DeleteMany)
@@ -97,7 +104,10 @@ export class EntityLoguxController {
     const result = await this.service.deleteManyAndSync(ids, { userID: auth.userID, context });
 
     // overriding entities cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, entities: [] } }, { auth, context });
+    await this.service.broadcastDeleteMany(
+      { ...result, delete: { ...result.delete, entities: [] } },
+      { auth, context }
+    );
   }
 
   @Action(Actions.Entity.AddOne)

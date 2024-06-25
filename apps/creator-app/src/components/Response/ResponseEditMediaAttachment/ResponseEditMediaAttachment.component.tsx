@@ -6,7 +6,12 @@ import { useDispatch } from '@/hooks/store.hook';
 import { ResponseMediaAttachment } from '../ResponseMediaAttachment/ResponseMediaAttachment.component';
 import type { IResponseEditMediaAttachment } from './ResponseEditMediaAttachment.interface';
 
-export const ResponseEditMediaAttachment: React.FC<IResponseEditMediaAttachment> = ({ onRemove, variantID, attachment, responseAttachmentID }) => {
+export const ResponseEditMediaAttachment: React.FC<IResponseEditMediaAttachment> = ({
+  onRemove,
+  variantID,
+  attachment,
+  responseAttachmentID,
+}) => {
   const createOneMedia = useDispatch(Designer.Response.ResponseAttachment.effect.createOneMedia, variantID);
   const replaceOneMedia = useDispatch(Designer.Response.ResponseAttachment.effect.replaceOneMedia, variantID);
 

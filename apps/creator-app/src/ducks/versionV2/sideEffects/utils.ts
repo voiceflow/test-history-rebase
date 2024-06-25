@@ -1,8 +1,8 @@
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Errors from '@/config/errors';
-import { Thunk } from '@/store/types';
+import type { Thunk } from '@/store/types';
 
 import { active } from '../selectors';
 import { getActivePlatformVersionContext } from '../utils';
@@ -10,7 +10,7 @@ import { getActivePlatformVersionContext } from '../utils';
 export const platformFactory = <
   Session extends Platform.Base.Models.Version.Session,
   Settings extends Platform.Base.Models.Version.Settings.Model,
-  Publishing extends Platform.Base.Models.Version.Publishing.Model
+  Publishing extends Platform.Base.Models.Version.Publishing.Model,
 >() => {
   const patchSession =
     (session: Partial<Session>): Thunk =>

@@ -1,18 +1,23 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Text } from '@voiceflow/ui';
 import React from 'react';
 
 import { useActiveProjectTypeConfig } from '@/hooks';
 import Step, { NoMatchStepItemV2, NoReplyStepItemV2, Section } from '@/pages/Canvas/components/Step';
 import { ActiveDiagramNormalizedEntitiesAndVariablesContext, EntityMapContext } from '@/pages/Canvas/contexts';
-import { ConnectedStep } from '@/pages/Canvas/managers/types';
+import type { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { transformSlotIntoPrompt } from '@/pages/Canvas/utils';
 
 import { CaptureItem } from './components';
-import { CaptureSlot } from './types';
+import type { CaptureSlot } from './types';
 
-const CaptureV2Step: ConnectedStep<Realtime.NodeData.CaptureV2, Realtime.NodeData.CaptureV2BuiltInPorts> = ({ data, ports, engine, palette }) => {
+const CaptureV2Step: ConnectedStep<Realtime.NodeData.CaptureV2, Realtime.NodeData.CaptureV2BuiltInPorts> = ({
+  data,
+  ports,
+  engine,
+  palette,
+}) => {
   const projectConfig = useActiveProjectTypeConfig();
 
   const entityMap = React.useContext(EntityMapContext)!;
@@ -69,8 +74,18 @@ const CaptureV2Step: ConnectedStep<Realtime.NodeData.CaptureV2, Realtime.NodeDat
           ))
         )}
 
-        <NoMatchStepItemV2 portID={ports.out.builtIn[BaseModels.PortType.NO_MATCH]} noMatch={data.noMatch} nodeID={data.nodeID} nestedWithIcon />
-        <NoReplyStepItemV2 portID={ports.out.builtIn[BaseModels.PortType.NO_REPLY]} noReply={data.noReply} nodeID={data.nodeID} nestedWithIcon />
+        <NoMatchStepItemV2
+          portID={ports.out.builtIn[BaseModels.PortType.NO_MATCH]}
+          noMatch={data.noMatch}
+          nodeID={data.nodeID}
+          nestedWithIcon
+        />
+        <NoReplyStepItemV2
+          portID={ports.out.builtIn[BaseModels.PortType.NO_REPLY]}
+          noReply={data.noReply}
+          nodeID={data.nodeID}
+          nestedWithIcon
+        />
       </Section>
     </Step>
   );

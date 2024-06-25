@@ -1,6 +1,6 @@
 import { Popper } from '@voiceflow/ui';
 import React from 'react';
-import { NavLinkProps } from 'react-router-dom';
+import type { NavLinkProps } from 'react-router-dom';
 
 import { styled } from '@/hocs/styled';
 

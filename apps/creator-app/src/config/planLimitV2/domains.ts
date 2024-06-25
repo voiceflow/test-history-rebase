@@ -4,7 +4,7 @@ import { LimitType } from '@/constants/limits';
 import * as Tracking from '@/ducks/tracking';
 import { getLegacyUpgradeModalProps } from '@/utils/upgrade';
 
-import { PlanLimit, UpgradeModalStaticLimit } from './types';
+import type { PlanLimit, UpgradeModalStaticLimit } from './types';
 import { applyPersonalLimits, applyProLimits, applyStarterLimits, applyTeamLimits } from './utils';
 
 const DEFAULT_MODAL = {

@@ -17,10 +17,17 @@ const CanvasGrid: React.FC = () => {
             <div>
               <Settings.SubSection.Title>Canvas Grid</Settings.SubSection.Title>
 
-              <Settings.SubSection.Description>When on, the canvas will have a dotted background grid.</Settings.SubSection.Description>
+              <Settings.SubSection.Description>
+                When on, the canvas will have a dotted background grid.
+              </Settings.SubSection.Description>
             </div>
 
-            <Toggle checked={canvasGridEnabled} size={Toggle.Size.EXTRA_SMALL} onChange={() => toggleCanvasGrid()} hasLabel />
+            <Toggle
+              checked={canvasGridEnabled}
+              size={Toggle.Size.EXTRA_SMALL}
+              onChange={() => toggleCanvasGrid()}
+              hasLabel
+            />
           </Box.FlexApart>
         </Settings.SubSection>
       </Settings.Card>

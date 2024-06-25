@@ -60,5 +60,8 @@ export default Utils.functional.compose(
     Editor: CMSFunctionEditor,
   }),
 
-  withCMSResourceModals([Modals.Function.Create, ({ result, history, cmsResourceGetPath }) => history.push(cmsResourceGetPath(result.id).path)])
+  withCMSResourceModals([
+    Modals.Function.Create,
+    ({ result, history, cmsResourceGetPath }) => history.push(cmsResourceGetPath(result.id).path),
+  ])
 )(CMSFunction);

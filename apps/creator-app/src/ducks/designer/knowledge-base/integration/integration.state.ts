@@ -1,6 +1,6 @@
 import { createEmpty, type Normalized } from 'normal-store';
 
-import { KnowledgeBaseIntegration } from '@/models/KnowledgeBase.model';
+import type { KnowledgeBaseIntegration } from '@/models/KnowledgeBase.model';
 
 export interface KnowledgeBaseIntegrationState extends Normalized<KnowledgeBaseIntegration> {}
 

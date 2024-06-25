@@ -1,7 +1,6 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { ProjectORM } from '@voiceflow/orm-designer';
 
-// eslint-disable-next-line import/no-cycle
 import { AssistantModule } from '@/assistant/assistant.module';
 import { CacheModule } from '@/cache/cache.module';
 import { DiagramModule } from '@/diagram/diagram.module';

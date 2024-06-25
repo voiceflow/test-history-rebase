@@ -11,7 +11,10 @@ interface useTabsOutput<TabType, TabData> {
   setCurrentTab: (newTab: TabType) => void;
 }
 
-const useTabs = <TabType extends string, TabData>({ tabToDataMap, defaultTab }: useTabsProps<TabType, TabData>): useTabsOutput<TabType, TabData> => {
+const useTabs = <TabType extends string, TabData>({
+  tabToDataMap,
+  defaultTab,
+}: useTabsProps<TabType, TabData>): useTabsOutput<TabType, TabData> => {
   const [currentTab, setCurrentTab] = React.useState<TabType>(defaultTab);
 
   return {

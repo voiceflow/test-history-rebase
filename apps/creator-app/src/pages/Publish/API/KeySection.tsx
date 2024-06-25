@@ -10,7 +10,7 @@ import * as Session from '@/ducks/session';
 import { useAsyncEffect, usePermission, useSetup, useTrackingEvents } from '@/hooks';
 import { useFeature } from '@/hooks/feature.hook';
 import { useConfirmModal } from '@/hooks/modal.hook';
-import { ProjectAPIKey } from '@/models';
+import type { ProjectAPIKey } from '@/models';
 import { copy } from '@/utils/clipboard';
 
 import ProjectAPIKeySection from '../components/ProjectAPIKeySection';

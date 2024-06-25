@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
-import { ReferenceResourceMetadata, ReferenceResourceMetadataDTO } from './reference-resource-metadata.dto';
+import type { ReferenceResourceMetadata } from './reference-resource-metadata.dto';
+import { ReferenceResourceMetadataDTO } from './reference-resource-metadata.dto';
 import { ReferenceResourceType } from './reference-resource-type.enum';
 
 export const ReferenceResourceDTO = z

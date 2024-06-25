@@ -1,6 +1,7 @@
 import type { SvgIconTypes } from '@ui/components/SvgIcon';
 import SvgIcon from '@ui/components/SvgIcon';
-import TippyTooltip, { TippyTooltipProps } from '@ui/components/TippyTooltip';
+import type { TippyTooltipProps } from '@ui/components/TippyTooltip';
+import TippyTooltip from '@ui/components/TippyTooltip';
 import React from 'react';
 
 import * as S from './styles';
@@ -17,7 +18,17 @@ export interface AssistantCardProps {
   iconProps?: Omit<SvgIconTypes.Props, 'icon'>;
 }
 
-const AssistantCard: React.FC<AssistantCardProps> = ({ image, action, iconProps, iconTooltip, isHovered, isActive, subtitle, title, icon }) => {
+const AssistantCard: React.FC<AssistantCardProps> = ({
+  image,
+  action,
+  iconProps,
+  iconTooltip,
+  isHovered,
+  isActive,
+  subtitle,
+  title,
+  icon,
+}) => {
   return (
     <S.OuterContainer>
       <S.CardContainer isHovered={isHovered} active={isActive}>

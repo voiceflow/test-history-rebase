@@ -1,4 +1,4 @@
-import { Enum } from '@voiceflow/dtos';
+import type { Enum } from '@voiceflow/dtos';
 
 type ToPatch<T extends unknown[]> = T extends [infer F, ...infer R] ? `/${F & string}${ToPatch<R>}` : '';
 

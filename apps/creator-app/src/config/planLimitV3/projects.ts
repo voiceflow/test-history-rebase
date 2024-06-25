@@ -4,7 +4,7 @@ import { LimitType } from '@/constants/limits';
 import * as Tracking from '@/ducks/tracking';
 import { getUpgradeModalProps } from '@/utils/upgrade';
 
-import { LimitV3, UpgradeModalEntitlementLimit } from './types';
+import type { LimitV3, UpgradeModalEntitlementLimit } from './types';
 
 const DEFAULT_MODAL = {
   title: 'Need more agents?',
@@ -24,7 +24,9 @@ const PRO_LIMIT = {
     ...DEFAULT_MODAL,
     ...getUpgradeModalProps(PlanType.TEAM, Tracking.UpgradePrompt.PROJECT_LIMIT),
     description: `You've reached your ${limit} agent limit. ${
-      teamsPlanSelfServeIsEnabled ? 'Upgrade to teams to increase agent limits.' : 'Contact us to increase agent limits.'
+      teamsPlanSelfServeIsEnabled
+        ? 'Upgrade to teams to increase agent limits.'
+        : 'Contact us to increase agent limits.'
     }`,
   }),
 } satisfies UpgradeModalEntitlementLimit;

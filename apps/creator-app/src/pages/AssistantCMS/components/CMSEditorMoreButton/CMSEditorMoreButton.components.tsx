@@ -12,7 +12,15 @@ export const CMSEditorMoreButton: React.FC<ICMSEditorMoreButton> = ({ disabled, 
     <Popper
       testID={tid(TEST_ID, 'menu')}
       referenceElement={({ ref, isOpen, onOpen }) => (
-        <SquareButton ref={ref} size="medium" disabled={disabled} isActive={isOpen} onClick={onOpen} iconName="More" testID={TEST_ID} />
+        <SquareButton
+          ref={ref}
+          size="medium"
+          disabled={disabled}
+          isActive={isOpen}
+          onClick={onOpen}
+          iconName="More"
+          testID={TEST_ID}
+        />
       )}
     >
       {({ onClose }) => (

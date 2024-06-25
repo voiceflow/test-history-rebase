@@ -1,7 +1,7 @@
 import { createSimpleAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 import dayjs from 'dayjs';
 
-import { Billing, DBBilling } from '@/models';
+import type { Billing, DBBilling } from '@/models';
 
 const timestampToDate = (timestamp: number) => dayjs.unix(timestamp).format('DD MMM YY');
 

@@ -15,11 +15,20 @@ export const ExpressionDisplayLabel: Record<string, string> = {
   [BaseNode.Utils.ExpressionTypeV2.IS_EMPTY]: 'Is empty',
 };
 
-export const ExpressionWithNoSecondValue = [BaseNode.Utils.ExpressionTypeV2.IS_EMPTY, BaseNode.Utils.ExpressionTypeV2.HAS_VALUE];
+export const ExpressionWithNoSecondValue = [
+  BaseNode.Utils.ExpressionTypeV2.IS_EMPTY,
+  BaseNode.Utils.ExpressionTypeV2.HAS_VALUE,
+];
 
-export const ExcludeValuesLogicType = [BaseNode.Utils.ExpressionTypeV2.HAS_VALUE, BaseNode.Utils.ExpressionTypeV2.IS_EMPTY];
+export const ExcludeValuesLogicType = [
+  BaseNode.Utils.ExpressionTypeV2.HAS_VALUE,
+  BaseNode.Utils.ExpressionTypeV2.IS_EMPTY,
+];
 
-export const DataConfigurableInterface = [BaseNode.Utils.ConditionsLogicInterface.VARIABLE, BaseNode.Utils.ConditionsLogicInterface.VALUE];
+export const DataConfigurableInterface = [
+  BaseNode.Utils.ConditionsLogicInterface.VARIABLE,
+  BaseNode.Utils.ConditionsLogicInterface.VALUE,
+];
 
 export const SupportedOperations = [
   {

@@ -1,9 +1,10 @@
 import { Utils } from '@voiceflow/common';
-import { UserRole } from '@voiceflow/dtos';
+import type { UserRole } from '@voiceflow/dtos';
 
-import { ROLE_PERMISSIONS, RolePermissionKey, RolePermissions } from '@/config/rolePermission';
-import { Permission } from '@/constants/permissions';
-import { VirtualRole } from '@/constants/roles';
+import type { RolePermissionKey, RolePermissions } from '@/config/rolePermission';
+import { ROLE_PERMISSIONS } from '@/config/rolePermission';
+import type { Permission } from '@/constants/permissions';
+import type { VirtualRole } from '@/constants/roles';
 
 export type RolePermissionConfig<P extends Permission> = P extends RolePermissionKey ? RolePermissions[P] : never;
 

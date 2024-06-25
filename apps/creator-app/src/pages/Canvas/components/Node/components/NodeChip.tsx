@@ -3,7 +3,7 @@ import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
 import React from 'react';
 
 import { NodeEntityProvider } from '@/pages/Canvas/contexts';
-import { CombinedAPI } from '@/pages/Canvas/types';
+import type { CombinedAPI } from '@/pages/Canvas/types';
 
 import { useCombined } from './hooks';
 import NodeChipStep from './NodeChipStep';

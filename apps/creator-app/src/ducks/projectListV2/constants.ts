@@ -1,6 +1,6 @@
 import { createCRUDState } from '@/ducks/utils/crudV2';
 
-import { ProjectListState } from './types';
+import type { ProjectListState } from './types';
 
 export const STATE_KEY = 'projectListV2';
 

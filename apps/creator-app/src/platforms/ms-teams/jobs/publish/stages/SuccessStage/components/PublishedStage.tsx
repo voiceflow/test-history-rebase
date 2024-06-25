@@ -2,8 +2,8 @@ import { Button, ButtonVariant } from '@voiceflow/ui';
 import React from 'react';
 
 import { UploadedStage } from '@/components/PlatformUploadPopup/components';
-import { NLPTrainJob } from '@/models';
-import { StageComponentProps } from '@/platforms/types';
+import type { NLPTrainJob } from '@/models';
+import type { StageComponentProps } from '@/platforms/types';
 
 export interface PublishedStageProps extends StageComponentProps<NLPTrainJob.SuccessStage> {
   onClick: VoidFunction;

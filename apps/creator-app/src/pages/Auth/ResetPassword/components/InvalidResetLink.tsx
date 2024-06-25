@@ -35,7 +35,9 @@ const InvalidResetLink: React.FC<InvalidResetLinkProps> = ({ setStage }) => {
 
   return (
     <div>
-      <div className="confirm-helper">The password reset link has expired or is invalid. Please enter your email below to start again.</div>
+      <div className="confirm-helper">
+        The password reset link has expired or is invalid. Please enter your email below to start again.
+      </div>
       <form onSubmit={preventDefault(resetEmail)} className="w-100">
         <Box mt={8}>
           <EmailInput value={email} onChange={setEmail} />

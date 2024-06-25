@@ -1,6 +1,6 @@
 import { QUOTAS_KEY } from '@realtime-sdk/constants';
-import { Quota } from '@realtime-sdk/models';
-import { BaseWorkspacePayload } from '@realtime-sdk/types';
+import type { Quota } from '@realtime-sdk/models';
+import type { BaseWorkspacePayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 
 import { workspaceType } from './utils';
@@ -23,4 +23,6 @@ export const loadAll = Utils.protocol.createAction<LoadQuotasPayload>(quotasType
 
 export const replaceQuota = Utils.protocol.createAction<replaceQuotaPayload>(quotasType('REPLACE_QUOTA_CONSUMED'));
 
-export const refreshQuotaDetails = Utils.protocol.createAction<RefreshQuotaDetailsPayload>(quotasType('REFRESH_QUOTA_DETAILS'));
+export const refreshQuotaDetails = Utils.protocol.createAction<RefreshQuotaDetailsPayload>(
+  quotasType('REFRESH_QUOTA_DETAILS')
+);

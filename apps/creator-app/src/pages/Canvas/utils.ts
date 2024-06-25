@@ -1,9 +1,9 @@
-import { Entity } from '@voiceflow/dtos';
+import type { Entity } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { serializeToText } from '@voiceflow/slate-serializer/text';
 
-import { EntityPrompt } from './types';
+import type { EntityPrompt } from './types';
 
 export const getIntentPromptContent = (
   [prompt]: unknown[],

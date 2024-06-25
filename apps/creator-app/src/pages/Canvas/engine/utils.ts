@@ -1,19 +1,20 @@
 /* eslint-disable max-classes-per-file */
-import { BaseNode } from '@voiceflow/base-types';
-import { NullableRecord, Utils } from '@voiceflow/common';
+import type { BaseNode } from '@voiceflow/base-types';
+import type { NullableRecord } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import { TriggerNodeItemType } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Logger } from '@voiceflow/ui';
+import type { Logger } from '@voiceflow/ui';
 
-import { CanvasAPI } from '@/components/Canvas';
+import type { CanvasAPI } from '@/components/Canvas';
 import { BlockType } from '@/constants';
-import * as CreatorV2 from '@/ducks/creatorV2';
+import type * as CreatorV2 from '@/ducks/creatorV2';
 import { nodeFactory } from '@/ducks/creatorV2/utils/node';
-import { FeatureFlagMap } from '@/ducks/feature';
-import { NodeDescriptorOptionalPorts } from '@/pages/Canvas/managers/types';
+import type { FeatureFlagMap } from '@/ducks/feature';
+import type { NodeDescriptorOptionalPorts } from '@/pages/Canvas/managers/types';
 import { getManager } from '@/pages/Canvas/managers/utils';
-import { Dispatcher, DispatchResult, Selector } from '@/store/types';
-import { Pair, Point } from '@/types';
+import type { Dispatcher, DispatchResult, Selector } from '@/store/types';
+import type { Pair, Point } from '@/types';
 
 import type Engine from '.';
 
@@ -59,7 +60,10 @@ export class EngineConsumer<C extends Record<string, unknown> = Record<string, u
   constructor(protected engine: Engine) {
     super();
 
-    engine.log.debug(this.engine.log.init('initializing'), this.engine.log.value(Object.getPrototypeOf(this).constructor.name));
+    engine.log.debug(
+      this.engine.log.init('initializing'),
+      this.engine.log.value(Object.getPrototypeOf(this).constructor.name)
+    );
   }
 
   get dispatch() {
@@ -94,7 +98,11 @@ export function nodeDescriptorFactory(
   nodeID: string,
   type: BlockType,
   factoryData?: Partial<Realtime.NodeData<unknown>>,
-  options?: { defaultVoice: string; canvasNodeVisibility: BaseNode.Utils.CanvasNodeVisibility; features?: FeatureFlagMap }
+  options?: {
+    defaultVoice: string;
+    canvasNodeVisibility: BaseNode.Utils.CanvasNodeVisibility;
+    features?: FeatureFlagMap;
+  }
 ): { node: CreatorV2.NodeDescriptor; data: CreatorV2.DataDescriptor } {
   if (type === BlockType.COMMENT || type === BlockType.CHOICE_OLD) {
     throw new Error('attempted to create a deprecated node');
@@ -193,7 +201,7 @@ const getOrCreateID = (lookup: Record<string, string>) => (id: string) => {
     return lookup[id];
   }
 
-  // eslint-disable-next-line no-return-assign
+  // eslint-disable-next-line no-return-assign, no-param-reassign
   return (lookup[id] = Utils.id.objectID());
 };
 
@@ -244,7 +252,11 @@ export const cloneEntityMap = (
   };
 };
 
-export const extractPoints = (canvas: CanvasAPI, start: DOMRect | null | undefined, end: DOMRect | null | undefined): Pair<Point> | null => {
+export const extractPoints = (
+  canvas: CanvasAPI,
+  start: DOMRect | null | undefined,
+  end: DOMRect | null | undefined
+): Pair<Point> | null => {
   if (!start || !end) return null;
 
   const startY = start.top + start.height / 2;
@@ -296,12 +308,15 @@ export const getThreadCandidates = (threadIDs: string[], engine: Engine): Thread
   }, []);
 
 export const getNodesData = (nodeData: Record<string, Realtime.NodeData<unknown>>, selectedNodes: Realtime.Node[]) => {
-  const nodeIDs = Utils.array.unique(selectedNodes.flatMap((node) => [node.id, ...node.combinedNodes] || []));
+  const nodeIDs = Utils.array.unique(selectedNodes.flatMap((node) => [node.id, ...node.combinedNodes]));
 
   return nodeIDs.map((nodeID) => nodeData[nodeID]);
 };
 
-export const getCopiedNodeDataIDs = (nodeData: Record<string, Realtime.NodeData<unknown>>, copiedNodes: Realtime.Node[]) => {
+export const getCopiedNodeDataIDs = (
+  nodeData: Record<string, Realtime.NodeData<unknown>>,
+  copiedNodes: Realtime.Node[]
+) => {
   const copiedNodesData = getNodesData(nodeData, copiedNodes);
 
   const intentIDs = new Set<string>();
@@ -345,7 +360,10 @@ export const getCopiedNodeDataIDs = (nodeData: Record<string, Realtime.NodeData<
   };
 };
 
-export const createPortRemap = (node: Realtime.Node | null, targetNodeID: string | null = null): Realtime.NodePortRemap[] =>
+export const createPortRemap = (
+  node: Realtime.Node | null,
+  targetNodeID: string | null = null
+): Realtime.NodePortRemap[] =>
   node
     ? [
         {

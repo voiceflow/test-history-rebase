@@ -15,10 +15,10 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
   "[yaml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -28,13 +28,14 @@
   },
   "editor.formatOnSave": true,
   "eslint.format.enable": true,
-  "eslint.experimental.useFlatConfig": true,
   "search.exclude": {
     "**/node_modules": true,
     "**/build": true,
     "**/sonar": true,
     "**/.husky": true,
     "**/.yarn": true,
-    "**/.turbo": true
-  }
+    "**/.turbo": true,
+    "**/coverage": true
+  },
+  "eslint.useFlatConfig": true
 }

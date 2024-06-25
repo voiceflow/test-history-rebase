@@ -1,9 +1,6 @@
 import type { ToJSON, ToObject } from '@/types';
 
-import type {
-  BaseResponseVariantEntity,
-  TextResponseVariantEntity,
-} from './response-variant.entity';
+import type { BaseResponseVariantEntity, TextResponseVariantEntity } from './response-variant.entity';
 
 export type BaseResponseVariantObject = ToObject<BaseResponseVariantEntity>;
 export type BaseResponseVariantJSON = ToJSON<BaseResponseVariantObject>;

@@ -14,8 +14,10 @@ const AlexaGadgetsToggle: React.FC = () => {
       <Box.FlexApart gap={24} fullWidth>
         <Settings.SubSection.Description>
           Enable communication between your Skill and custom interfaces.{' '}
-          <Link href="https://developer.amazon.com/en-US/docs/alexa/alexa-gadgets-toolkit/custom-interface.html">Custom Interfaces</Link> enable a
-          skill to trigger gadget behaviors, and act on information it receives from a gadget.
+          <Link href="https://developer.amazon.com/en-US/docs/alexa/alexa-gadgets-toolkit/custom-interface.html">
+            Custom Interfaces
+          </Link>{' '}
+          enable a skill to trigger gadget behaviors, and act on information it receives from a gadget.
         </Settings.SubSection.Description>
 
         <Toggle

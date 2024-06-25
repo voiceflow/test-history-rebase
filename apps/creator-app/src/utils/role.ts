@@ -1,14 +1,14 @@
-import { Nullish } from '@voiceflow/common';
-import { UserRole } from '@voiceflow/dtos';
+import type { Nullish } from '@voiceflow/common';
+import type { UserRole } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
+import type { VirtualRole } from '@/constants/roles';
 import {
   ADMIN_ROLES,
   ALL_VIRTUAL_ROLES,
   EDITOR_USER_ROLES,
   VIEWER_USER_ROLES,
   VIRTUAL_ROLE_STRENGTH,
-  VirtualRole,
 } from '@/constants/roles';
 
 export const isVirtualRole = (role: Nullish<UserRole | VirtualRole>): role is VirtualRole =>

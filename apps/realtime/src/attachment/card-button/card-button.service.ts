@@ -78,7 +78,11 @@ export class CardButtonService extends CMSObjectService<CardButtonORM> {
         // eslint-disable-next-line no-param-reassign
         card.buttonOrder = buttonOrder;
 
-        await this.cardAttachmentORM.patchOneForUser(userID, { id: card.id, environmentID: card.environmentID }, { buttonOrder });
+        await this.cardAttachmentORM.patchOneForUser(
+          userID,
+          { id: card.id, environmentID: card.environmentID },
+          { buttonOrder }
+        );
       })
     );
 
@@ -116,7 +120,10 @@ export class CardButtonService extends CMSObjectService<CardButtonORM> {
 
   /* Create */
 
-  async createManyAndSync(data: CMSCreateForUserData<CardButtonORM>[], { userID, context }: { userID: number; context: CMSContext }) {
+  async createManyAndSync(
+    data: CMSCreateForUserData<CardButtonORM>[],
+    { userID, context }: { userID: number; context: CMSContext }
+  ) {
     return this.postgresEM.transactional(async () => {
       const cardButtons = await this.createManyForUser(userID, data.map(injectAssistantAndEnvironmentIDs(context)));
       const cardAttachments = await this.syncCardAttachments(cardButtons, { action: 'create', context, userID });

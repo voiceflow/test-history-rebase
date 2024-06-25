@@ -1,4 +1,5 @@
-import { PlanName, Subscription } from '@voiceflow/dtos';
+import type { Subscription } from '@voiceflow/dtos';
+import { PlanName } from '@voiceflow/dtos';
 import { PlanType } from '@voiceflow/internal';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { toast } from '@voiceflow/ui';
@@ -9,7 +10,7 @@ import * as Tracking from '@/ducks/tracking';
 import { waitAsync } from '@/ducks/utils';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { ChargebeeSubscriptionStatus } from '@/models';
-import { Thunk } from '@/store/types';
+import type { Thunk } from '@/store/types';
 import { getErrorMessage } from '@/utils/error';
 
 import { chargebeeSubscriptionSelector, customerIDSelector } from './subscription.select';

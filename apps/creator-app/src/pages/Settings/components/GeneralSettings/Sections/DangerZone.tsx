@@ -20,7 +20,9 @@ const DangerZone: React.FC = () => {
             <div>
               <Settings.SubSection.Title>Delete Agent</Settings.SubSection.Title>
 
-              <Settings.SubSection.Description>This action can't be reverted. Please proceed with caution.</Settings.SubSection.Description>
+              <Settings.SubSection.Description>
+                This action can't be reverted. Please proceed with caution.
+              </Settings.SubSection.Description>
             </div>
 
             <Button variant={ButtonVariant.SECONDARY} onClick={deletePrompt} squareRadius flat>

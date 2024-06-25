@@ -1,4 +1,4 @@
-import { Thread } from '@voiceflow/dtos';
+import type { Thread } from '@voiceflow/dtos';
 import { Box, Flex, IconButton, IconButtonVariant, Text, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 

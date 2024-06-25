@@ -3,7 +3,7 @@ import TippyTooltip from '@ui/components/TippyTooltip';
 import React from 'react';
 
 import * as S from './styles';
-import * as T from './types';
+import type * as T from './types';
 
 const Column: React.FC<T.Props> = ({ flex, active, width, onClick, tooltip, sortable, children, descending }) => {
   const nubUpColor = active && !descending ? '#132144' : '#becedc';

@@ -1,12 +1,12 @@
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import * as Documentation from '@/config/documentation';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { useSelector } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
+import type { NodeEditorV2 } from '@/pages/Canvas/managers/types';
 
 import { NoMatchV2, NoReplyV2 } from '../../components';
 import Card from './Card';
@@ -28,7 +28,9 @@ const CardV2EditorRoot: NodeEditorV2<Realtime.NodeData.CardV2, Realtime.NodeData
       header={<EditorV2.DefaultHeader />}
       footer={
         <EditorV2.DefaultFooter tutorial={Documentation.CARD_STEP}>
-          {isLast && !isVoiceProject && <EditorV2.FooterActionsButton actions={[noMatchConfig.option, noReplyConfig.option]} />}
+          {isLast && !isVoiceProject && (
+            <EditorV2.FooterActionsButton actions={[noMatchConfig.option, noReplyConfig.option]} />
+          )}
         </EditorV2.DefaultFooter>
       }
     >

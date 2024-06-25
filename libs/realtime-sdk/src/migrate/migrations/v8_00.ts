@@ -2,9 +2,10 @@
 import { typeGuards } from '@realtime-sdk/utils';
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { FolderScope, Workflow } from '@voiceflow/dtos';
+import type { Workflow } from '@voiceflow/dtos';
+import { FolderScope } from '@voiceflow/dtos';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 /**
  * migrates domains and topics to workflows

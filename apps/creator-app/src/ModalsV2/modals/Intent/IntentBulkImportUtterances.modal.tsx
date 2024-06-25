@@ -1,6 +1,6 @@
 import composeRefs from '@seznam/compose-react-refs';
 import { Utils } from '@voiceflow/common';
-import { Utterance } from '@voiceflow/dtos';
+import type { Utterance } from '@voiceflow/dtos';
 import { tid } from '@voiceflow/style';
 import { InputFormControl, notify, Scroll, TextArea } from '@voiceflow/ui-next';
 import pluralize from 'pluralize';

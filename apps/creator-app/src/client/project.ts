@@ -1,4 +1,4 @@
-import { ProjectAPIKey } from '@/models';
+import type { ProjectAPIKey } from '@/models';
 
 import { apiV2 } from './fetch';
 

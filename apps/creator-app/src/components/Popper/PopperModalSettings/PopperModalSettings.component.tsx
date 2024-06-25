@@ -3,7 +3,7 @@ import { tid } from '@voiceflow/style';
 import { Popper, Scroll, SquareButton, Surface, usePopperModifiers } from '@voiceflow/ui-next';
 import React, { useRef } from 'react';
 
-import { IPopperModalSettings } from './PopperModalSettings.interface';
+import type { IPopperModalSettings } from './PopperModalSettings.interface';
 
 export const PopperModalSettings: React.FC<IPopperModalSettings> = ({ testID, children }) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -18,7 +18,13 @@ export const PopperModalSettings: React.FC<IPopperModalSettings> = ({ testID, ch
       modifiers={modifiers}
       placement="right"
       referenceElement={({ ref, popper, onToggle, isOpen }) => (
-        <SquareButton ref={composeRef(ref, buttonRef)} onClick={onToggle} isActive={isOpen} iconName={isOpen ? 'Minus' : 'Settings'} testID={testID}>
+        <SquareButton
+          ref={composeRef(ref, buttonRef)}
+          onClick={onToggle}
+          isActive={isOpen}
+          iconName={isOpen ? 'Minus' : 'Settings'}
+          testID={testID}
+        >
           {popper}
         </SquareButton>
       )}

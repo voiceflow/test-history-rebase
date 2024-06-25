@@ -1,6 +1,9 @@
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
-import { referenceVirtualUpdateAtTransducerFactory, virtualUpdateAtTransducerFactory } from '../utils/virtual-update-at-transducer.util';
+import {
+  referenceVirtualUpdateAtTransducerFactory,
+  virtualUpdateAtTransducerFactory,
+} from '../utils/virtual-update-at-transducer.util';
 import { STATE_KEY as FUNCTION_STATE_KEY } from './function.state';
 import { STATE_KEY as FUNCTION_PATH_STATE_KEY } from './function-path/function-path.state';
 import { STATE_KEY as FUNCTION_VARIABLE_STATE_KEY } from './function-variable/function-variable.state';

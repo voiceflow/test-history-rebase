@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
-import { ReferenceResource, ReferenceResourceType } from '@voiceflow/dtos';
+import type { ReferenceResource } from '@voiceflow/dtos';
+import { ReferenceResourceType } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';

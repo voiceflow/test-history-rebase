@@ -1,10 +1,11 @@
 import * as Base from '@platform-config/configs/base';
 import { Config as ConfigUtils } from '@platform-config/configs/utils';
-import { VoiceModels } from '@voiceflow/voice-types';
-import { createMultiAdapter, createSmartMultiAdapter, MultiAdapter, SmartMultiAdapter } from 'bidirectional-adapter';
+import type { VoiceModels } from '@voiceflow/voice-types';
+import type { MultiAdapter, SmartMultiAdapter } from 'bidirectional-adapter';
+import { createMultiAdapter, createSmartMultiAdapter } from 'bidirectional-adapter';
 import { denormalize, normalize } from 'normal-store';
 
-import * as Models from '../models';
+import type * as Models from '../models';
 import * as Utils from '../utils';
 
 export type KeyRemap = Base.Adapters.Intent.KeyRemap;
@@ -44,4 +45,5 @@ export const smartFactory = <Voice extends string>() =>
 /**
  * Should not be used in the configs, only in the adapters to share the logic and fix TS voice related typings
  */
-export const simpleFactory = <Voice extends string>() => simple as unknown as MultiAdapter<VoiceModels.Intent<Voice>, Models.Intent.Model<Voice>>;
+export const simpleFactory = <Voice extends string>() =>
+  simple as unknown as MultiAdapter<VoiceModels.Intent<Voice>, Models.Intent.Model<Voice>>;

@@ -1,13 +1,14 @@
-import { Fetch } from './types';
+import type { Fetch } from './types';
 
 export * as FetchTypes from './types';
 
 export const fetch: Fetch = (...responses) => {
   let index = 0;
 
-  const fetch = vi.fn<[input: RequestInfo | URL, init?: RequestInit | undefined], Promise<{ status: number; text: () => Promise<string> }>>(
-    globalThis.fetch
-  );
+  const fetch = vi.fn<
+    [input: RequestInfo | URL, init?: RequestInit | undefined],
+    Promise<{ status: number; text: () => Promise<string> }>
+  >(globalThis.fetch);
 
   vi.stubGlobal('fetch', fetch);
 

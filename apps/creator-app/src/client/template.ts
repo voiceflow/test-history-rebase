@@ -1,4 +1,4 @@
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 
 import { apiV2 } from './fetch';
 

@@ -1,10 +1,10 @@
 import * as Common from '@platform-config/configs/common';
 import { Config } from '@platform-config/configs/utils';
 import { Types } from '@platform-config/utils';
-import { VoiceflowVersion } from '@voiceflow/voiceflow-types';
+import type { VoiceflowVersion } from '@voiceflow/voiceflow-types';
 import { createSimpleAdapter, createSmartSimpleAdapter } from 'bidirectional-adapter';
 
-import * as Models from '../../models';
+import type * as Models from '../../models';
 
 // TODO: move to webchat platform when removed from voiceflow types
 const PLATFORM_ONLY_FILES = Types.satisfies<keyof VoiceflowVersion.ChatPublishing>()([

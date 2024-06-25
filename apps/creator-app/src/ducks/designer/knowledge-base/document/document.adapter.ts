@@ -1,8 +1,8 @@
-import { BaseModels } from '@voiceflow/base-types';
-import { KBDocumentData, KnowledgeBaseDocument as RealtimeKnowledgeBaseDocument } from '@voiceflow/dtos';
+import type { BaseModels } from '@voiceflow/base-types';
+import type { KBDocumentData, KnowledgeBaseDocument as RealtimeKnowledgeBaseDocument } from '@voiceflow/dtos';
 import { createMultiAdapter } from 'bidirectional-adapter';
 
-import { DBKnowledgeBaseDocument, KnowledgeBaseDocument } from '@/models/KnowledgeBase.model';
+import type { DBKnowledgeBaseDocument, KnowledgeBaseDocument } from '@/models/KnowledgeBase.model';
 
 export const documentAdapter = createMultiAdapter<DBKnowledgeBaseDocument, KnowledgeBaseDocument>(
   ({ data, status, ...rest }) => ({

@@ -1,13 +1,20 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Canvas, Popper, swallowEvent, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { ConnectedAction } from '../../types';
+import type { ConnectedAction } from '../../types';
 import { NODE_CONFIG } from '../constants';
 import ActionPreview from './ActionPreview';
 import { useGoToNode } from './hooks';
 
-const GoToNodeAction: ConnectedAction<Realtime.NodeData.GoToNode> = ({ data, engine, onRemove, reversed, isActive, onOpenEditor }) => {
+const GoToNodeAction: ConnectedAction<Realtime.NodeData.GoToNode> = ({
+  data,
+  engine,
+  onRemove,
+  reversed,
+  isActive,
+  onOpenEditor,
+}) => {
   const goToNode = useGoToNode(data.goToNodeID ?? null, data.diagramID);
   const isEmpty = !goToNode?.name;
 
@@ -35,7 +42,11 @@ const GoToNodeAction: ConnectedAction<Realtime.NodeData.GoToNode> = ({ data, eng
               <Canvas.Action.Icon icon={isEmpty && !isActive ? 'warning' : NODE_CONFIG.icon!} />
             </TippyTooltip>
           }
-          label={<Canvas.Action.Label secondary={isEmpty}>{isEmpty ? 'Select block' : data.name || goToNode.name}</Canvas.Action.Label>}
+          label={
+            <Canvas.Action.Label secondary={isEmpty}>
+              {isEmpty ? 'Select block' : data.name || goToNode.name}
+            </Canvas.Action.Label>
+          }
           nodeID={data.nodeID}
           active={isOpened || isActive}
           onClick={swallowEvent(onToggle)}

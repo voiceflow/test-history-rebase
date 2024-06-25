@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
 import { BlockText, ClickableText, Description, Label, Link, Text, Title } from '@ui/components/Text';
-import THEME from '@ui/styles/theme';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 

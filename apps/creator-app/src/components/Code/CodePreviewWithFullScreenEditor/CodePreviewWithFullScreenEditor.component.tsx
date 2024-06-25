@@ -5,7 +5,7 @@ import React, { useMemo, useState } from 'react';
 import { useHotkey } from '@/hooks/hotkeys';
 import { Hotkey } from '@/keymap';
 
-import { ICodePreviewWithFullScreenEditor } from './CodePreviewWithFullScreenEditor.interface';
+import type { ICodePreviewWithFullScreenEditor } from './CodePreviewWithFullScreenEditor.interface';
 
 export const CodePreviewWithFullScreenEditor: React.FC<ICodePreviewWithFullScreenEditor> = ({
   code,
@@ -35,7 +35,10 @@ export const CodePreviewWithFullScreenEditor: React.FC<ICodePreviewWithFullScree
     toggleCodeEditorOpen(false);
   };
 
-  useHotkey(Hotkey.MODAL_CLOSE, () => toggleCodeEditorOpen(false), { disable: !codeEditorOpened, preventDefault: true });
+  useHotkey(Hotkey.MODAL_CLOSE, () => toggleCodeEditorOpen(false), {
+    disable: !codeEditorOpened,
+    preventDefault: true,
+  });
 
   return (
     <>
@@ -48,7 +51,10 @@ export const CodePreviewWithFullScreenEditor: React.FC<ICodePreviewWithFullScree
 
       {codeEditorOpened && (
         <Portal portalNode={popperContext.portalNode}>
-          <div style={{ zIndex: popperContext.zIndex, position: 'absolute', inset: 0 }} onKeyDownCapture={onKeyDownCapture}>
+          <div
+            style={{ zIndex: popperContext.zIndex, position: 'absolute', inset: 0 }}
+            onKeyDownCapture={onKeyDownCapture}
+          >
             <CodeEditorWrapper
               title="Prompt"
               testID={tid(testID, 'code-container')}

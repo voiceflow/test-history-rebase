@@ -32,7 +32,10 @@ export const useAceEditor = (isFullscreen: boolean) => {
 
   const applyCompleter = () => {
     if (editorRef.current) {
-      editorRef.current.editor.completers = [...editorRef.current.editor.completers.filter((c: any) => !c._vf_ref), completer];
+      editorRef.current.editor.completers = [
+        ...editorRef.current.editor.completers.filter((c: any) => !c._vf_ref),
+        completer,
+      ];
     }
   };
 

@@ -1,8 +1,8 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { Context } from '@voiceflow/socket-utils';
-import { Action } from 'typescript-fsa';
+import type { Context } from '@voiceflow/socket-utils';
+import type { Action } from 'typescript-fsa';
 
-import { WorkspaceContextData } from '@/legacy/actions/workspace/utils';
+import type { WorkspaceContextData } from '@/legacy/actions/workspace/utils';
 
 import { AbstractDiagramResourceControl } from './utils';
 

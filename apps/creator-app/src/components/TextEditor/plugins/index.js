@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import base from './base';
 import { PluginType } from './constants';
 import Store from './store';
@@ -12,13 +13,21 @@ const PLUGINS_MAP = {
   [PluginType.XML]: xml,
 };
 
-const createPlugins = (pluginsTypes, pluginsProps, { readOnly, enableReadOnly, disableReadOnly }, initialStore = {}) => {
+const createPlugins = (
+  pluginsTypes,
+  pluginsProps,
+  { readOnly, enableReadOnly, disableReadOnly },
+  initialStore = {}
+) => {
   const store = new Store({ ...initialStore, pluginsProps, readOnly, enableReadOnly, disableReadOnly });
 
   const pluginsInstances = pluginsTypes.map((type) => PLUGINS_MAP[type](store, pluginsProps[type]));
 
   const handlers = createPluginsHandlers(pluginsInstances);
-  const toTextAdapters = pluginsInstances.reduce((obj, { type, toTextAdapter }) => Object.assign(obj, { [type]: toTextAdapter }), {});
+  const toTextAdapters = pluginsInstances.reduce(
+    (obj, { type, toTextAdapter }) => Object.assign(obj, { [type]: toTextAdapter }),
+    {}
+  );
   const fromTextConvertor = createTextConvertorsChain(
     ...pluginsInstances.map(({ type, fromTextConvertor }) => ({ type, convertor: fromTextConvertor }))
   );
@@ -37,7 +46,9 @@ const createPlugins = (pluginsTypes, pluginsProps, { readOnly, enableReadOnly, d
     renderComponents: (pluginsProps) => {
       store.set('pluginsProps', pluginsProps);
 
-      return pluginsInstances.map(({ type, renderComponent }) => (renderComponent ? renderComponent(pluginsProps[type]) : null));
+      return pluginsInstances.map(({ type, renderComponent }) =>
+        renderComponent ? renderComponent(pluginsProps[type]) : null
+      );
     },
 
     ableToHandleBlur: () => pluginsInstances.every(({ store }) => store.get('ableToHandleBlur') !== false),

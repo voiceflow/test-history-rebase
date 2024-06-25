@@ -3,7 +3,8 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
-import SlotSelect, { SlotOption } from '@/components/SlotSelect';
+import type { SlotOption } from '@/components/SlotSelect';
+import SlotSelect from '@/components/SlotSelect';
 import VariableSelect from '@/components/VariableSelect';
 import * as Documentation from '@/config/documentation';
 import { useMapManager } from '@/hooks';
@@ -15,9 +16,14 @@ import ListItem from './ListItem';
 const CaptureEditor: React.FC = () => {
   const editor = EditorV2.useEditor<Realtime.NodeData.Capture, Realtime.NodeData.CaptureBuiltInPorts>();
 
-  const slotFilter = React.useCallback((slotType: SlotOption) => slotType?.value !== AlexaConstants.SlotType.SEARCHQUERY, []);
+  const slotFilter = React.useCallback(
+    (slotType: SlotOption) => slotType?.value !== AlexaConstants.SlotType.SEARCHQUERY,
+    []
+  );
 
-  const mapManager = useMapManager(editor.data.examples, (examples) => editor.onChange({ examples }), { factory: () => '' });
+  const mapManager = useMapManager(editor.data.examples, (examples) => editor.onChange({ examples }), {
+    factory: () => '',
+  });
 
   const noReplyConfig = NoReplyV2.useConfig({ step: editor.data });
 
@@ -32,7 +38,10 @@ const CaptureEditor: React.FC = () => {
         </EditorV2.DefaultFooter>
       }
     >
-      <SectionV2.SimpleContentSection header={<SectionV2.Title bold>Input Type</SectionV2.Title>} contentProps={{ topOffset: true }}>
+      <SectionV2.SimpleContentSection
+        header={<SectionV2.Title bold>Input Type</SectionV2.Title>}
+        contentProps={{ topOffset: true }}
+      >
         <SlotSelect value={editor.data.slot} onChange={(slot) => editor.onChange({ slot })} filter={slotFilter} />
       </SectionV2.SimpleContentSection>
 
@@ -48,7 +57,12 @@ const CaptureEditor: React.FC = () => {
             {hasReplies &&
               mapManager.map((item, { key, isLast, onUpdate, onRemove }) => (
                 <Box key={key} pb={isLast ? 8 : 16}>
-                  <ListItem value={item} onChange={onUpdate} onRemove={onRemove} autofocus={key === mapManager.latestCreatedKey} />
+                  <ListItem
+                    value={item}
+                    onChange={onUpdate}
+                    onRemove={onRemove}
+                    autofocus={key === mapManager.latestCreatedKey}
+                  />
                 </Box>
               ))}
           </SectionV2.ActionListSection>
@@ -57,7 +71,10 @@ const CaptureEditor: React.FC = () => {
         </>
       )}
 
-      <SectionV2.SimpleContentSection header={<SectionV2.Title bold>Capture Input to</SectionV2.Title>} contentProps={{ topOffset: true }}>
+      <SectionV2.SimpleContentSection
+        header={<SectionV2.Title bold>Capture Input to</SectionV2.Title>}
+        contentProps={{ topOffset: true }}
+      >
         <VariableSelect value={editor.data.variable} onChange={(variable) => editor.onChange({ variable })} />
       </SectionV2.SimpleContentSection>
 

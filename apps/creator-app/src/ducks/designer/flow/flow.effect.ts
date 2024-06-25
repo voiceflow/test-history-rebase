@@ -1,13 +1,15 @@
 import type { Flow } from '@voiceflow/dtos';
 import { Actions } from '@voiceflow/sdk-logux-designer';
-import { notify, Nullable } from '@voiceflow/ui-next';
+import type { Nullable } from '@voiceflow/ui-next';
+import { notify } from '@voiceflow/ui-next';
 
 import { linksByNodeIDSelector } from '@/ducks/creatorV2';
 import * as Project from '@/ducks/projectV2';
 import { schemaVersionSelector } from '@/ducks/versionV2/selectors/active';
 import { getActiveAssistantContext } from '@/ducks/versionV2/utils';
 import type { Thunk } from '@/store/types';
-import { convertSelectionToComponent, DiagramSelectionPayload } from '@/utils/diagram.utils';
+import type { DiagramSelectionPayload } from '@/utils/diagram.utils';
+import { convertSelectionToComponent } from '@/utils/diagram.utils';
 
 import { waitAsync } from '../../utils';
 import * as selectors from './selectors';

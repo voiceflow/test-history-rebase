@@ -1,11 +1,11 @@
 import { Divider } from '@voiceflow/ui';
 import React from 'react';
 
-import { SlateEditableRef } from '@/components/SlateEditable';
+import type { SlateEditableRef } from '@/components/SlateEditable';
 import { SlateTextInput } from '@/components/SlateInputs';
 import { useActiveProjectTypeConfig } from '@/hooks';
 
-import { ChatMessageProps, ChatMessageRef } from '../../types';
+import type { ChatMessageProps, ChatMessageRef } from '../../types';
 import { DelayButton } from './components';
 
 const ChatMessage = React.forwardRef<ChatMessageRef, ChatMessageProps>(
@@ -36,7 +36,10 @@ const ChatMessage = React.forwardRef<ChatMessageRef, ChatMessageProps>(
           config.project.chat.messageDelay && (
             <>
               <Divider height={15} offset={4} isVertical />
-              <DelayButton delay={message.messageDelayMilliseconds} onChange={(delay) => onChange({ messageDelayMilliseconds: delay })} />
+              <DelayButton
+                delay={message.messageDelayMilliseconds}
+                onChange={(delay) => onChange({ messageDelayMilliseconds: delay })}
+              />
             </>
           )
         }

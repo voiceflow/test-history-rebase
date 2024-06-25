@@ -10,7 +10,13 @@ export const PERSONAL_PLANS = [PlanType.STUDENT, PlanType.CREATOR] satisfies Pla
 
 export const ENTERPRISE_PLANS = [PlanType.ENTERPRISE] satisfies PlanType[];
 
-export const ALL_PLANS = [...STARTER_PLANS, ...PERSONAL_PLANS, ...PRO_PLANS, ...TEAM_PLANS, ...ENTERPRISE_PLANS] satisfies PlanType[];
+export const ALL_PLANS = [
+  ...STARTER_PLANS,
+  ...PERSONAL_PLANS,
+  ...PRO_PLANS,
+  ...TEAM_PLANS,
+  ...ENTERPRISE_PLANS,
+] satisfies PlanType[];
 
 export const PAID_PLANS = [...PERSONAL_PLANS, ...PRO_PLANS, ...TEAM_PLANS, ...ENTERPRISE_PLANS] satisfies PlanType[];
 

@@ -34,7 +34,15 @@ export const ModalContainer = React.forwardRef<HTMLDivElement, IModalContainer>(
     const [isOpened, setIsOpened] = useState(false);
     const [popperContainer, setPopperContainer] = useState<HTMLDivElement | null>(null);
 
-    const renderContainer = ({ index, status, children }: { index: number; status: TransitionStatus; children: React.ReactNode }) => (
+    const renderContainer = ({
+      index,
+      status,
+      children,
+    }: {
+      index: number;
+      status: TransitionStatus;
+      children: React.ReactNode;
+    }) => (
       <UIModal.Container
         width={width}
         testID={testID}
@@ -54,8 +62,19 @@ export const ModalContainer = React.forwardRef<HTMLDivElement, IModalContainer>(
     });
 
     useHotkeyList([
-      { hotkey: Hotkey.MODAL_CLOSE, callback: usePersistFunction(onEscClose), disable: !onEscClose, preventDefault: true },
-      { hotkey: Hotkey.MODAL_SUBMIT, callback: usePersistFunction(onEnterSubmit), disable: !onEnterSubmit, allowInputs: true, preventDefault: true },
+      {
+        hotkey: Hotkey.MODAL_CLOSE,
+        callback: usePersistFunction(onEscClose),
+        disable: !onEscClose,
+        preventDefault: true,
+      },
+      {
+        hotkey: Hotkey.MODAL_SUBMIT,
+        callback: usePersistFunction(onEnterSubmit),
+        disable: !onEnterSubmit,
+        allowInputs: true,
+        preventDefault: true,
+      },
     ]);
 
     useEffect(() => setIsOpened(opened), [opened]);

@@ -1,10 +1,11 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Button } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Documentation from '@/config/documentation';
-import { MapManagedFactoryAPI } from '@/hooks';
-import EditorV2, { EditorV2Types } from '@/pages/Canvas/components/EditorV2';
+import type { MapManagedFactoryAPI } from '@/hooks';
+import type { EditorV2Types } from '@/pages/Canvas/components/EditorV2';
+import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
 interface FooterProps {
   tutorial?: EditorV2Types.DefaultFooter.Props['tutorial'];

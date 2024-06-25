@@ -5,7 +5,7 @@ import { SectionHeaderTitleWithLearnTooltip } from '@/components/Section/Section
 import { useLinkedState } from '@/hooks/state.hook';
 import { onOpenURLInANewTabFactory } from '@/utils/window';
 
-import { IKBSystemInputSection } from './KBSystemInputSection.interface';
+import type { IKBSystemInputSection } from './KBSystemInputSection.interface';
 
 export const KBSystemInputSection: React.FC<IKBSystemInputSection> = ({
   value: propValue,
@@ -23,7 +23,11 @@ export const KBSystemInputSection: React.FC<IKBSystemInputSection> = ({
         variant="active"
         contentProps={{ pr: 24 }}
         title={(className) => (
-          <SectionHeaderTitleWithLearnTooltip title="System" className={className} onLearnClick={onOpenURLInANewTabFactory(learnMoreURL)}>
+          <SectionHeaderTitleWithLearnTooltip
+            title="System"
+            className={className}
+            onLearnClick={onOpenURLInANewTabFactory(learnMoreURL)}
+          >
             Give the system a role that it should play when creating your answers.
           </SectionHeaderTitleWithLearnTooltip>
         )}

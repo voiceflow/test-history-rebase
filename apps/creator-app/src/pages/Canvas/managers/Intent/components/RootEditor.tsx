@@ -1,6 +1,6 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import { Nullable } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { Nullable } from '@voiceflow/common';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { SectionV2 } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
@@ -18,14 +18,17 @@ const RootEditor: React.FC = () => {
 
   const { intent, onOpenIntentEditModal } = useIntent(editor.data.intent);
 
-  const patchPlatformData = (patch: Partial<Realtime.NodeData.Intent.PlatformData>) => editor.onChange({ ...editor.data, ...patch });
+  const patchPlatformData = (patch: Partial<Realtime.NodeData.Intent.PlatformData>) =>
+    editor.onChange({ ...editor.data, ...patch });
 
   const isGlobalIntent = editor.data.availability === BaseNode.Intent.IntentAvailability.GLOBAL;
 
   const onChangeIntent = ({ intent }: { intent: Nullable<string> }) => patchPlatformData({ intent });
 
   const onChangeAvailability = async () => {
-    const nextAvailability = isGlobalIntent ? BaseNode.Intent.IntentAvailability.LOCAL : BaseNode.Intent.IntentAvailability.GLOBAL;
+    const nextAvailability = isGlobalIntent
+      ? BaseNode.Intent.IntentAvailability.LOCAL
+      : BaseNode.Intent.IntentAvailability.GLOBAL;
 
     await patchPlatformData({ availability: nextAvailability });
   };
@@ -33,7 +36,10 @@ const RootEditor: React.FC = () => {
   return (
     <EditorV2
       header={
-        <EditorV2.ChipHeader color={editor.parentBlockData?.blockColor} onChangeColor={(blockColor) => editor.onChangeParentBlock({ blockColor })} />
+        <EditorV2.ChipHeader
+          color={editor.parentBlockData?.blockColor}
+          onChangeColor={(blockColor) => editor.onChangeParentBlock({ blockColor })}
+        />
       }
       footer={<EditorV2.DefaultFooter tutorial={Documentation.INTENT_STEP} />}
       dropLagAccept={Actions.Section.DRAG_TYPE}

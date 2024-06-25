@@ -1,5 +1,7 @@
-import { Nullable, Utils } from '@voiceflow/common';
-import { BlockType, MarkupBlockType } from '@voiceflow/realtime-sdk';
+import type { Nullable } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import type { MarkupBlockType } from '@voiceflow/realtime-sdk';
+import { BlockType } from '@voiceflow/realtime-sdk';
 import { toast, Upload, useCache, useContextApi, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
 

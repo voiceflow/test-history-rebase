@@ -2,7 +2,7 @@ import { PlanType } from '@voiceflow/internal';
 
 import { LimitType } from '@/constants/limits';
 
-import { ErrorRenderer, LimitV3, ToastErrorStaticLimit } from './types';
+import type { ErrorRenderer, LimitV3, ToastErrorStaticLimit } from './types';
 
 const toastError: ErrorRenderer = ({ limit }): string => `File size must not exceed ${limit}MBs`;
 

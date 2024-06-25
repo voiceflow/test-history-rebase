@@ -4,32 +4,38 @@ const TAGS_HISTORY_KEY = 'vf-text-editor-xml-tags-history';
 const TAGS_HISTORY_SIZE = 10;
 
 class XMLStore extends Store {
-  constructor(type, data) {
+  tags: Map<string, any>;
+
+  tagsHistory: any[];
+
+  TAGS_HISTORY_KEY: string;
+
+  constructor(type: any, data: any) {
     super(data);
 
     this.tags = new Map();
     this.TAGS_HISTORY_KEY = `${TAGS_HISTORY_KEY}-${type}`;
 
     try {
-      this.tagsHistory = JSON.parse(localStorage.getItem(this.TAGS_HISTORY_KEY)) || [];
+      this.tagsHistory = JSON.parse(globalThis.localStorage.getItem(this.TAGS_HISTORY_KEY) ?? '') || [];
     } catch {
       this.tagsHistory = [];
     }
   }
 
-  registerTag = (key, linkedKey, forceUpdate) => {
+  registerTag = (key: any, linkedKey: any, forceUpdate: any) => {
     this.tags.set(`key-${key}`, forceUpdate);
     this.tags.set(`linked-key-${linkedKey}`, forceUpdate);
   };
 
-  unRegisterTag = (key, linkedKey) => {
+  unRegisterTag = (key: any, linkedKey: any) => {
     this.tags.delete(`key-${key}`);
     this.tags.delete(`linked-key-${linkedKey}`);
   };
 
   getTagsToHistory = () => [...this.tagsHistory];
 
-  addTagToHistory = (tagData) => {
+  addTagToHistory = (tagData: any) => {
     this.tagsHistory.unshift(tagData);
 
     if (this.tagsHistory.length > TAGS_HISTORY_SIZE) {
@@ -39,7 +45,7 @@ class XMLStore extends Store {
     localStorage.setItem(this.TAGS_HISTORY_KEY, JSON.stringify(this.tagsHistory));
   };
 
-  forceRerenderTags = (key) => {
+  forceRerenderTags = (key: any) => {
     const prevHoveredTagKey = this.get('hoveredTagKey');
 
     this.set('hoveredTagKey', key);

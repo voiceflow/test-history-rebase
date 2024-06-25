@@ -12,7 +12,7 @@ import { UpdatedByID } from '../decorators/updated-by-id.decorator';
 import { PostgresCMSObjectEntity } from './postgres-cms-object.entity';
 
 export abstract class PostgresCMSTabularEntity<
-  DefaultOrNullColumn extends string = never
+  DefaultOrNullColumn extends string = never,
 > extends PostgresCMSObjectEntity<DefaultOrNullColumn | 'folder'> {
   @Property()
   name!: string;

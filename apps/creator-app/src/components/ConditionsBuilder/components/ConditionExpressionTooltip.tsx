@@ -6,7 +6,7 @@ import { SupportedOperations } from '@/components/ConditionsBuilder/constants';
 
 const ConditionExpressionTooltip: React.FC = () => (
   <TutorialInfoIcon>
-    <Text>{`This input accepts plain text numbers, variables using "{" and mathematical expressions.`}</Text>
+    <Text>{'This input accepts plain text numbers, variables using "{" and mathematical expressions.'}</Text>
 
     <Box mt={16} mb={16}>
       <Text fontWeight={600}>The following math operations are supported:</Text>

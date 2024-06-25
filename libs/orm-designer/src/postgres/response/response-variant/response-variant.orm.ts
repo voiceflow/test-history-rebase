@@ -2,15 +2,9 @@
 
 import { PostgresCMSObjectORM } from '@/postgres/common/orms/postgres-cms-object.orm';
 
-import {
-  BaseResponseVariantEntity,
-  TextResponseVariantEntity,
-} from './response-variant.entity';
+import { BaseResponseVariantEntity, TextResponseVariantEntity } from './response-variant.entity';
 import type { AnyResponseVariantEntity } from './response-variant.interface';
-import {
-  BaseResponseVariantJSONAdapter,
-  TextResponseVariantJSONAdapter,
-} from './response-variant-json.adapter';
+import { BaseResponseVariantJSONAdapter, TextResponseVariantJSONAdapter } from './response-variant-json.adapter';
 
 export class ResponseTextVariantORM extends PostgresCMSObjectORM<TextResponseVariantEntity> {
   Entity = TextResponseVariantEntity;
@@ -43,9 +37,7 @@ export class AnyResponseVariantORM extends PostgresCMSObjectORM<BaseResponseVari
 
   jsonAdapter = BaseResponseVariantJSONAdapter;
 
-  protected discriminators = [
-    { Entity: TextResponseVariantEntity, jsonAdapter: TextResponseVariantJSONAdapter },
-  ];
+  protected discriminators = [{ Entity: TextResponseVariantEntity, jsonAdapter: TextResponseVariantJSONAdapter }];
 
   findManyByDiscriminators(environmentID: string, discriminatorIDs: string[]) {
     return this.find({ environmentID, discriminatorID: discriminatorIDs });

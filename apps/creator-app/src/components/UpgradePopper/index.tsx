@@ -1,8 +1,9 @@
 import { Utils } from '@voiceflow/common';
-import { Button, Popper, PopperTypes, SvgIcon, SvgIconTypes, useSetup } from '@voiceflow/ui';
+import type { PopperTypes, SvgIconTypes } from '@voiceflow/ui';
+import { Button, Popper, SvgIcon, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
-import { UpgradePrompt } from '@/ducks/tracking';
+import type { UpgradePrompt } from '@/ducks/tracking';
 import { useStore } from '@/hooks/redux';
 import { useTrackingEvents } from '@/hooks/tracking';
 

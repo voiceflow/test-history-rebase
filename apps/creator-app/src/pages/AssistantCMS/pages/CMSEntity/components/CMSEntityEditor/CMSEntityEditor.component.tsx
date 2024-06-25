@@ -1,5 +1,6 @@
 import { tid } from '@voiceflow/style';
-import { Box, Divider, Editor, IEditorAPI, Scroll } from '@voiceflow/ui-next';
+import type { IEditorAPI } from '@voiceflow/ui-next';
+import { Box, Divider, Editor, Scroll } from '@voiceflow/ui-next';
 import React, { useRef } from 'react';
 
 import { CMSEditorDescription } from '@/components/CMS/CMSEditor/CMSEditorDescription/CMSEditorDescription.component';
@@ -30,7 +31,9 @@ export const CMSEntityEditor: React.FC = () => {
       ref={editorRef}
       title={entity.name}
       onTitleChange={(name) => patchEntity({ name: name.trim() })}
-      headerActions={<CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: entityID, onClose })}</CMSEditorMoreButton>}
+      headerActions={
+        <CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: entityID, onClose })}</CMSEditorMoreButton>
+      }
       titleTransform={transformVariableName}
       testID={EDITOR_TEST_ID}
     >

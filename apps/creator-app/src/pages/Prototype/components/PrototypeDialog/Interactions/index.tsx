@@ -2,7 +2,7 @@ import { Utils } from '@voiceflow/common';
 import { CustomScrollbars, hexToRGBA, preventDefault } from '@voiceflow/ui';
 import React from 'react';
 
-import { Interaction, OnInteraction } from '@/pages/Prototype/types';
+import type { Interaction, OnInteraction } from '@/pages/Prototype/types';
 import { ClassName } from '@/styles/constants';
 
 import { handleRequestActions } from '../utils';
@@ -29,7 +29,9 @@ const Interactions: React.FC<InteractionsProps> = ({ interactions, onInteraction
         return (
           <ButtonElement
             key={name}
-            onClick={Utils.functional.chainVoid(handleRequestActions(request), () => onInteraction({ name, request: request || name }))}
+            onClick={Utils.functional.chainVoid(handleRequestActions(request), () =>
+              onInteraction({ name, request: request || name })
+            )}
             className={ClassName.PROTOTYPE_BUTTON}
             rgbaColor={hexToRGBA(color ?? '#3D81E2')}
             onMouseDown={preventDefault()}

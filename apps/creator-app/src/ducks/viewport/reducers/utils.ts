@@ -1,5 +1,5 @@
 import { createReducerFactory } from '@/ducks/utils';
 
-import { ViewportState } from '../types';
+import type { ViewportState } from '../types';
 
 export const createReducer = createReducerFactory<ViewportState>();

@@ -11,7 +11,12 @@ const FeatureLoadingGate: React.FC<React.PropsWithChildren> = ({ children }) => 
   const loadFeatures = useDispatch(Feature.loadFeatures);
 
   return (
-    <LoadingGate internalName={FeatureLoadingGate.name} isLoaded={isLoaded} load={loadFeatures} loader={<TabLoader variant="dark" />}>
+    <LoadingGate
+      internalName={FeatureLoadingGate.name}
+      isLoaded={isLoaded}
+      load={loadFeatures}
+      loader={<TabLoader variant="dark" />}
+    >
       {children}
     </LoadingGate>
   );

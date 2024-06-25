@@ -1,6 +1,7 @@
-import { BillingPeriod } from '@voiceflow/internal';
+import type { BillingPeriod } from '@voiceflow/internal';
 
-import { NestResource, NestResourceOptions } from '../nest';
+import type { NestResourceOptions } from '../nest';
+import { NestResource } from '../nest';
 
 export interface CheckoutPayload {
   seats: number;

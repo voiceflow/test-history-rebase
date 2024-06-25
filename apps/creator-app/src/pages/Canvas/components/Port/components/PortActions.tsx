@@ -21,7 +21,13 @@ const PortActions: React.FC<PortActionsProps> = ({ isChip, parentPath, parentPar
 
   return targetNodeID === null ? null : (
     <NodeEntityProvider id={targetNodeID} key={targetNodeID}>
-      <ActionsNode isChip={isChip} parentPath={parentPath} sourcePortID={sourcePortID} sourceNodeID={sourceNodeID} parentParams={parentParams} />
+      <ActionsNode
+        isChip={isChip}
+        parentPath={parentPath}
+        sourcePortID={sourcePortID}
+        sourceNodeID={sourceNodeID}
+        parentParams={parentParams}
+      />
     </NodeEntityProvider>
   );
 };

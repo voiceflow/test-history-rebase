@@ -1,6 +1,6 @@
-import { ExtractRouteParams } from 'react-router';
+import type { ExtractRouteParams } from 'react-router';
 
-import { EditorAnimationEffect } from '../../constants';
+import type { EditorAnimationEffect } from '../../constants';
 
 export interface GoToTypes<S extends string> {
   path: S;

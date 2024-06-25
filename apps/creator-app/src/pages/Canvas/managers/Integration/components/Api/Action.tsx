@@ -1,10 +1,10 @@
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Canvas, Popper, swallowEvent, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import Step from '@/pages/Canvas/components/Step';
-import { ConnectedAction } from '@/pages/Canvas/managers/types';
+import type { ConnectedAction } from '@/pages/Canvas/managers/types';
 import { getCustomAPIActionLabel } from '@/utils/customApi';
 
 import { NODE_CONFIG } from '../../constants';

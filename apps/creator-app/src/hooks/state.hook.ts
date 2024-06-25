@@ -23,10 +23,10 @@ export const useSetValueOnChange = <ExternalValue>(value: ExternalValue, setValu
 
 interface ILinkedState {
   <ExternalValue>(externalValue: ExternalValue): [ExternalValue, React.Dispatch<React.SetStateAction<ExternalValue>>];
-  <ExternalValue, InternalValue>(externalValue: ExternalValue, transform: (value: ExternalValue) => InternalValue): [
-    InternalValue,
-    React.Dispatch<React.SetStateAction<InternalValue>>
-  ];
+  <ExternalValue, InternalValue>(
+    externalValue: ExternalValue,
+    transform: (value: ExternalValue) => InternalValue
+  ): [InternalValue, React.Dispatch<React.SetStateAction<InternalValue>>];
 }
 
 /**

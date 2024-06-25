@@ -1,6 +1,6 @@
-import { BaseNode } from '@voiceflow/base-types';
+import type { BaseNode } from '@voiceflow/base-types';
 
-import { NodeData } from '../../../../models';
+import type { NodeData } from '../../../../models';
 import {
   createBlockAdapter,
   createOutPortsAdapter,
@@ -9,7 +9,10 @@ import {
   nextNoMatchNoReplyOutPortsAdapterV2,
 } from '../utils';
 
-const captureAdapter = createBlockAdapter<Omit<BaseNode.Capture.StepData, 'reprompt' | 'noReply'>, Omit<NodeData.Capture, 'buttons' | 'noReply'>>(
+const captureAdapter = createBlockAdapter<
+  Omit<BaseNode.Capture.StepData, 'reprompt' | 'noReply'>,
+  Omit<NodeData.Capture, 'buttons' | 'noReply'>
+>(
   ({ slot, variable, slotInputs }) => ({
     slot,
     variable,

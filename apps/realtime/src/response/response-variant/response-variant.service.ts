@@ -16,7 +16,13 @@ import type {
   CreateData,
   ResponseDiscriminatorObject,
 } from '@voiceflow/orm-designer';
-import { AnyResponseVariantORM, DatabaseTarget, ObjectId, PromptORM, ResponseDiscriminatorORM } from '@voiceflow/orm-designer';
+import {
+  AnyResponseVariantORM,
+  DatabaseTarget,
+  ObjectId,
+  PromptORM,
+  ResponseDiscriminatorORM,
+} from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { match } from 'ts-pattern';
 
@@ -34,9 +40,11 @@ import { emptyResponseVariantFactory } from './response-variant.util';
 
 @Injectable()
 export class ResponseVariantService {
-  toJSON = (data: AnyResponseVariantObject) => match(data).with({ type: ResponseVariantType.TEXT }, this.responseTextVariant.toJSON).exhaustive();
+  toJSON = (data: AnyResponseVariantObject) =>
+    match(data).with({ type: ResponseVariantType.TEXT }, this.responseTextVariant.toJSON).exhaustive();
 
-  fromJSON = (data: AnyResponseVariant) => match(data).with({ type: ResponseVariantType.TEXT }, this.responseTextVariant.fromJSON).exhaustive();
+  fromJSON = (data: AnyResponseVariant) =>
+    match(data).with({ type: ResponseVariantType.TEXT }, this.responseTextVariant.fromJSON).exhaustive();
 
   mapToJSON = (data: AnyResponseVariantObject[]) => data.map(this.toJSON);
 
@@ -72,18 +80,24 @@ export class ResponseVariantService {
   ) {
     const responseDiscriminatorIDs = Utils.array.unique(variants.map((variant) => variant.discriminatorID));
 
-    const responseDiscriminators = await this.responseDiscriminatorORM.findManyByEnvironmentAndIDs(context.environmentID, responseDiscriminatorIDs);
+    const responseDiscriminators = await this.responseDiscriminatorORM.findManyByEnvironmentAndIDs(
+      context.environmentID,
+      responseDiscriminatorIDs
+    );
 
     if (responseDiscriminatorIDs.length !== responseDiscriminators.length) {
       throw new NotFoundException("couldn't find response discriminator to sync");
     }
 
-    const responseVariantsByResponseDiscriminatorIDMap = variants.reduce<Record<string, typeof variants>>((acc, variant) => {
-      acc[variant.discriminatorID] ??= [];
-      acc[variant.discriminatorID].push(variant);
+    const responseVariantsByResponseDiscriminatorIDMap = variants.reduce<Record<string, typeof variants>>(
+      (acc, variant) => {
+        acc[variant.discriminatorID] ??= [];
+        acc[variant.discriminatorID].push(variant);
 
-      return acc;
-    }, {});
+        return acc;
+      },
+      {}
+    );
 
     await Promise.all(
       responseDiscriminators.map(async (discriminator) => {
@@ -122,7 +136,10 @@ export class ResponseVariantService {
     return responseDiscriminators;
   }
 
-  async broadcastSync({ sync }: { sync: { responseDiscriminators: ResponseDiscriminatorObject[] } }, meta: CMSBroadcastMeta) {
+  async broadcastSync(
+    { sync }: { sync: { responseDiscriminators: ResponseDiscriminatorObject[] } },
+    meta: CMSBroadcastMeta
+  ) {
     await Promise.all(
       sync.responseDiscriminators.map((discriminator) =>
         this.logux.processAs(
@@ -157,19 +174,31 @@ export class ResponseVariantService {
 
   /* Create */
 
-  createOne(data: ResponseAnyVariantCreateData & { updatedByID: number | null; assistantID: string; environmentID: string }) {
+  createOne(
+    data: ResponseAnyVariantCreateData & { updatedByID: number | null; assistantID: string; environmentID: string }
+  ) {
     return this.orm.createOne(data);
   }
 
-  createMany(data: Array<ResponseAnyVariantCreateData & { updatedByID: number | null; assistantID: string; environmentID: string }>) {
+  createMany(
+    data: Array<
+      ResponseAnyVariantCreateData & { updatedByID: number | null; assistantID: string; environmentID: string }
+    >
+  ) {
     return this.orm.createMany(data);
   }
 
-  createOneForUser(userID: number, data: ResponseAnyVariantCreateData & { assistantID: string; environmentID: string }) {
+  createOneForUser(
+    userID: number,
+    data: ResponseAnyVariantCreateData & { assistantID: string; environmentID: string }
+  ) {
     return this.orm.createOneForUser(userID, data);
   }
 
-  createManyForUser(userID: number, data: Array<ResponseAnyVariantCreateData & { assistantID: string; environmentID: string }>) {
+  createManyForUser(
+    userID: number,
+    data: Array<ResponseAnyVariantCreateData & { assistantID: string; environmentID: string }>
+  ) {
     return this.orm.createManyForUser(userID, data);
   }
 
@@ -203,7 +232,9 @@ export class ResponseVariantService {
       dataWithIDs.map(({ condition: _, attachments: __, ...data }) => data)
     );
 
-    const responseAttachments = await this.responseAttachment.createMany(dataWithIDs.flatMap(({ attachments }) => attachments));
+    const responseAttachments = await this.responseAttachment.createMany(
+      dataWithIDs.flatMap(({ attachments }) => attachments)
+    );
 
     return {
       responseVariants,
@@ -213,10 +244,17 @@ export class ResponseVariantService {
 
   async createManyAndSync(
     data: ResponseAnyVariantCreateWithSubResourcesData[],
-    { userID, context, discriminatorOrderInsertIndex }: { userID: number; context: CMSContext; discriminatorOrderInsertIndex?: number }
+    {
+      userID,
+      context,
+      discriminatorOrderInsertIndex,
+    }: { userID: number; context: CMSContext; discriminatorOrderInsertIndex?: number }
   ) {
     return this.postgresEM.transactional(async () => {
-      const { responseVariants, responseAttachments } = await this.createManyWithSubResources(data, { userID, context });
+      const { responseVariants, responseAttachments } = await this.createManyWithSubResources(data, {
+        userID,
+        context,
+      });
 
       const responseDiscriminators = await this.syncDiscriminators(responseVariants, {
         action: 'create',
@@ -302,7 +340,10 @@ export class ResponseVariantService {
           assistantID: context.assistantID,
           environmentID: context.environmentID,
         }),
-        this.responseDiscriminatorORM.findOneOrFail({ id: responseVariant.discriminatorID, environmentID: responseVariant.environmentID }),
+        this.responseDiscriminatorORM.findOneOrFail({
+          id: responseVariant.discriminatorID,
+          environmentID: responseVariant.environmentID,
+        }),
         this.collectRelationsToDelete(context.environmentID, [responseVariant.id]),
       ]);
 
@@ -344,8 +385,14 @@ export class ResponseVariantService {
     ]);
   }
 
-  async replaceOneWithTypeAndBroadcast({ id, type }: { id: string; type: ResponseVariantType }, meta: CMSBroadcastMeta) {
-    const result = await this.replaceOneWithTypeAndSync({ id, type }, { userID: meta.auth.userID, context: meta.context });
+  async replaceOneWithTypeAndBroadcast(
+    { id, type }: { id: string; type: ResponseVariantType },
+    meta: CMSBroadcastMeta
+  ) {
+    const result = await this.replaceOneWithTypeAndSync(
+      { id, type },
+      { userID: meta.auth.userID, context: meta.context }
+    );
 
     await this.broadcastReplaceOneWithType(result, meta);
   }
@@ -364,7 +411,10 @@ export class ResponseVariantService {
     };
   }
 
-  async syncOnDelete(variants: AnyResponseVariantObject[], { userID, context }: { userID: number; context: CMSContext }) {
+  async syncOnDelete(
+    variants: AnyResponseVariantObject[],
+    { userID, context }: { userID: number; context: CMSContext }
+  ) {
     const responseDiscriminators = await this.syncDiscriminators(variants, { action: 'delete', userID, context });
 
     return { responseDiscriminators };

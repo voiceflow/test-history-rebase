@@ -5,7 +5,7 @@ import globals from 'globals';
 export default [
   ...baseConfig,
   {
-    ignores: ['**/generated/**', '**/svgs/*.svg.jsx'],
+    ignores: ['**/generated/**', '**/svgs/*.svg.jsx', '**/coverage/**'],
   },
   {
     languageOptions: {
@@ -21,10 +21,6 @@ export default [
       'sonarjs/no-one-iteration-loop': 'off',
       'you-dont-need-lodash-underscore/capitalize': 'off',
       'you-dont-need-lodash-underscore/throttle': 'off',
-
-      // disabled temporarily
-      '@typescript-eslint/consistent-type-imports': 'off',
-      'prettier/prettier': 'off',
     },
   },
   {
@@ -39,6 +35,13 @@ export default [
 
     rules: {
       'no-param-reassign': 'off',
+    },
+  },
+  {
+    files: ['**/orm-designer/**/*.entity.ts'],
+
+    rules: {
+      'max-classes-per-file': 'off',
     },
   },
 ];

@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import React from 'react';
 
-import { HSLShades } from '@/constants';
+import type { HSLShades } from '@/constants';
 import { REORDER_INDICATOR_CLASSNAME } from '@/pages/Canvas/components/Step/constants';
 import { NODE_MERGE_TARGET_CLASSNAME } from '@/pages/Canvas/constants';
 

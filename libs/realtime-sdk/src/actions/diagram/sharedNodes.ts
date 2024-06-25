@@ -1,7 +1,8 @@
-import { BlockType } from '@realtime-sdk/constants';
-import { BaseVersionPayload } from '@realtime-sdk/types';
-import { Nullable, Utils } from '@voiceflow/common';
-import { TriggerNodeItem } from '@voiceflow/dtos';
+import type { BlockType } from '@realtime-sdk/constants';
+import type { BaseVersionPayload } from '@realtime-sdk/types';
+import type { Nullable } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import type { TriggerNodeItem } from '@voiceflow/dtos';
 
 import { diagramType } from './utils';
 

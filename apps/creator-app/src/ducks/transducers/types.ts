@@ -1,4 +1,4 @@
-import { AnyAction } from 'redux';
+import type { AnyAction } from 'redux';
 
 import type { RootReducer } from '@/store/types';
 

@@ -4,18 +4,18 @@ import type { Editor, Range } from 'slate';
 import type { EditorAPIType } from '../editorAPI';
 import { InternalPluginType, PluginType } from './constants';
 import type { Plugin } from './types';
-import { BasePluginEditor, withBasePlugin } from './withBasePlugin';
-import {
-  FakeSelectionEditor,
-  FakeSelectionEditorAPI,
-  FakeSelectionText,
-  withFakeSelectionEditorAPI,
-  withFakeSelectionPlugin,
-} from './withFakeSelection';
-import { HotkeysEditor, withHotkeysPlugin } from './withHotkeys';
-import { LinksEditorAPI, withLinksEditorApi, withLinksPlugin } from './withLinks';
-import { PreventCallbacksEditor, withPreventCallbacksPlugin } from './withPreventCallbacks';
-import { VariablesDecorate, VariablesEditorAPI, VariablesOptions, withVariablesEditorApi, withVariablesPlugin } from './withVariables';
+import type { BasePluginEditor } from './withBasePlugin';
+import { withBasePlugin } from './withBasePlugin';
+import type { FakeSelectionEditor, FakeSelectionEditorAPI, FakeSelectionText } from './withFakeSelection';
+import { withFakeSelectionEditorAPI, withFakeSelectionPlugin } from './withFakeSelection';
+import type { HotkeysEditor } from './withHotkeys';
+import { withHotkeysPlugin } from './withHotkeys';
+import type { LinksEditorAPI } from './withLinks';
+import { withLinksEditorApi, withLinksPlugin } from './withLinks';
+import type { PreventCallbacksEditor } from './withPreventCallbacks';
+import { withPreventCallbacksPlugin } from './withPreventCallbacks';
+import type { VariablesDecorate, VariablesEditorAPI, VariablesOptions } from './withVariables';
+import { withVariablesEditorApi, withVariablesPlugin } from './withVariables';
 
 export { PluginType } from './constants';
 export type { VariableItem } from './withVariables';
@@ -70,9 +70,14 @@ export const withPluginsEditorAPI = (EditorAPI: EditorAPIType): EditorAPIType =>
 export const withPlugins =
   (EditorAPI: EditorAPIType, pluginsTypes: PluginType[] = []) =>
   (editor: Editor): Editor => {
-    const pluginsMap = pluginsTypes.reduce<Partial<Record<PluginType, true>>>((acc, pluginType) => Object.assign(acc, { [pluginType]: true }), {});
+    const pluginsMap = pluginsTypes.reduce<Partial<Record<PluginType, true>>>(
+      (acc, pluginType) => Object.assign(acc, { [pluginType]: true }),
+      {}
+    );
 
-    const pluginsTypesOrder = PUBLIC_PLUGINS_ORDER.map((type) => (pluginsMap[type] ? type : null)).filter(Boolean) as PluginType[];
+    const pluginsTypesOrder = PUBLIC_PLUGINS_ORDER.map((type) => (pluginsMap[type] ? type : null)).filter(
+      Boolean
+    ) as PluginType[];
     const plugins = [...INTERNAL_PLUGINS_ORDER, ...pluginsTypesOrder].map((type) => PLUGIN_MAP[type](EditorAPI));
 
     editor.pluginsMap = pluginsMap;

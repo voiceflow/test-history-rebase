@@ -8,7 +8,7 @@ import VariablesInput from '@/components/VariablesInput';
 import { useMapManager } from '@/hooks';
 
 import { BODY_OPTIONS, expressionFactory } from '../constants';
-import { BaseFormProps } from '../types';
+import type { BaseFormProps } from '../types';
 import * as S from './styles';
 
 const BodySection: React.FC<BaseFormProps> = ({ editor }) => {
@@ -20,7 +20,8 @@ const BodySection: React.FC<BaseFormProps> = ({ editor }) => {
     factory: expressionFactory,
   });
 
-  const bodyData = bodyInputType === BaseNode.Api.APIBodyType.FORM_DATA || bodyInputType === BaseNode.Api.APIBodyType.URL_ENCODED;
+  const bodyData =
+    bodyInputType === BaseNode.Api.APIBodyType.FORM_DATA || bodyInputType === BaseNode.Api.APIBodyType.URL_ENCODED;
 
   return (
     <SectionV2.ActionCollapseSection
@@ -36,7 +37,11 @@ const BodySection: React.FC<BaseFormProps> = ({ editor }) => {
       contentProps={{ paddingBottom: '24px' }}
     >
       <Box mb="20px">
-        <RadioGroup options={BODY_OPTIONS} checked={bodyInputType} onChange={(bodyInputType) => editor.onChange({ bodyInputType })} />
+        <RadioGroup
+          options={BODY_OPTIONS}
+          checked={bodyInputType}
+          onChange={(bodyInputType) => editor.onChange({ bodyInputType })}
+        />
       </Box>
 
       {bodyData && (
@@ -47,9 +52,19 @@ const BodySection: React.FC<BaseFormProps> = ({ editor }) => {
 
               <SectionV2.ListItem action={<SectionV2.RemoveButton onClick={onRemove} />}>
                 <S.Item>
-                  <VariablesInput placeholder="Enter key" value={body.key} onBlur={({ text }) => onUpdate({ key: text })} multiline />
+                  <VariablesInput
+                    placeholder="Enter key"
+                    value={body.key}
+                    onBlur={({ text }) => onUpdate({ key: text })}
+                    multiline
+                  />
 
-                  <VariablesInput placeholder="Enter value or {variable}" value={body.val} onBlur={({ text }) => onUpdate({ val: text })} multiline />
+                  <VariablesInput
+                    placeholder="Enter value or {variable}"
+                    value={body.val}
+                    onBlur={({ text }) => onUpdate({ val: text })}
+                    multiline
+                  />
                 </S.Item>
               </SectionV2.ListItem>
             </React.Fragment>

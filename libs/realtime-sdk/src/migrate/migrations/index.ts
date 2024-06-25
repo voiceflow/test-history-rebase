@@ -1,7 +1,7 @@
 import { SchemaVersion } from '@realtime-sdk/schema-version/schema-version.enum';
 import { Utils } from '@voiceflow/common';
 
-import { Migration, Transform } from './types';
+import type { Migration, Transform } from './types';
 import migrateToV2_0 from './v2_0';
 import migrateToV2_1 from './v2_1';
 import migrateToV2_2 from './v2_2';

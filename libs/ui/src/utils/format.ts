@@ -10,7 +10,6 @@ export const abbreviateNumber = (value: string | number): string => {
   const numericValue = Number(value);
   let minAbbreviation: [number, string] | undefined;
 
-  // eslint-disable-next-line no-restricted-syntax
   for (const abbreviation of ABBREVIATIONS) {
     if (abbreviation[0] <= numericValue) {
       minAbbreviation = abbreviation;

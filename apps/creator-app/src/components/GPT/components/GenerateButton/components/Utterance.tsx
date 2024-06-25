@@ -1,15 +1,24 @@
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 
-import Hover, { HoverButtonProps } from './Hover';
+import type { HoverButtonProps } from './Hover';
+import Hover from './Hover';
 
 export interface UtteranceButtonProps extends Omit<HoverButtonProps, 'label' | 'quantities' | 'pluralLabel'> {
   hasExtraContext?: boolean;
   contextUtterances?: Platform.Base.Models.Intent.Input[];
 }
 
-const UtteranceButton: React.FC<UtteranceButtonProps> = ({ disabled, hasExtraContext, contextUtterances, ...props }) => {
-  const utterancesAreEmpty = React.useMemo(() => !contextUtterances?.some((utterance) => !!utterance.text?.trim()), [contextUtterances]);
+const UtteranceButton: React.FC<UtteranceButtonProps> = ({
+  disabled,
+  hasExtraContext,
+  contextUtterances,
+  ...props
+}) => {
+  const utterancesAreEmpty = React.useMemo(
+    () => !contextUtterances?.some((utterance) => !!utterance.text?.trim()),
+    [contextUtterances]
+  );
 
   return (
     <Hover

@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { SvgIcon, Upload } from '@voiceflow/ui';
 import React from 'react';
 
@@ -14,9 +14,15 @@ interface StreamVisualsFormProps {
 
 const StreamVisualsForm: React.FC<StreamVisualsFormProps> = ({ data, onChange }) => {
   const updateTitle = React.useCallback(({ text }: { text: string }) => onChange({ title: text }), [onChange]);
-  const updateDescription = React.useCallback(({ text }: { text: string }) => onChange({ description: text }), [onChange]);
+  const updateDescription = React.useCallback(
+    ({ text }: { text: string }) => onChange({ description: text }),
+    [onChange]
+  );
   const updateIconImage = React.useCallback((iconImage: string | null) => onChange({ iconImage }), [onChange]);
-  const updateBackgroundImage = React.useCallback((backgroundImage: string | null) => onChange({ backgroundImage }), [onChange]);
+  const updateBackgroundImage = React.useCallback(
+    (backgroundImage: string | null) => onChange({ backgroundImage }),
+    [onChange]
+  );
 
   const isAdded = data.title || data.description || data.iconImage || data.backgroundImage;
 
@@ -42,7 +48,11 @@ const StreamVisualsForm: React.FC<StreamVisualsFormProps> = ({ data, onChange })
       </FormControl>
 
       <FormControl label="Background Image">
-        <Upload.FullImage image={data.backgroundImage} update={updateBackgroundImage} renderInput={VariablesInput.renderInput} />
+        <Upload.FullImage
+          image={data.backgroundImage}
+          update={updateBackgroundImage}
+          renderInput={VariablesInput.renderInput}
+        />
       </FormControl>
     </EditorSection>
   );

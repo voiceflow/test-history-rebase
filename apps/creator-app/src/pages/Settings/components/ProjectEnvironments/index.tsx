@@ -12,7 +12,7 @@ import EnvironmentItem from './EnvironmentItem';
 import { useProjectVersions } from './hooks';
 import LegacyVersionItem from './LegacyVersionItem';
 import * as S from './styles';
-import { EnvironmentRef } from './types';
+import type { EnvironmentRef } from './types';
 
 const Loading = (
   <Box.FlexCenter pt={20} minHeight={50}>

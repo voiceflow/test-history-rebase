@@ -1,7 +1,7 @@
-import * as stripeJs from '@stripe/stripe-js';
-import { useFormik } from 'formik';
+import type * as stripeJs from '@stripe/stripe-js';
+import type { useFormik } from 'formik';
 
-import { Values } from './card-form.scheme';
+import type { Values } from './card-form.scheme';
 
 interface FormProps {
   form: ReturnType<typeof useFormik<Values>>;

@@ -1,6 +1,7 @@
-import { Socket } from 'socket.io';
+import type { Socket } from 'socket.io';
 
-import { AbstractMiddleware, MiddlewareNext } from '../types';
+import type { MiddlewareNext } from '../types';
+import { AbstractMiddleware } from '../types';
 
 class AuthMiddleware extends AbstractMiddleware {
   handle = async (socket: Socket, next: MiddlewareNext) => {

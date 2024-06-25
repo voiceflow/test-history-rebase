@@ -10,7 +10,9 @@ export const eventMappingReducer = reducerWithInitialState<EventMappingState>(cr
   .case(Actions.EventMapping.DeleteOne, (state, { id }) => removeOne(state, id))
   .case(Actions.EventMapping.DeleteMany, (state, { ids }) => removeMany(state, ids))
   .case(Actions.EventMapping.Replace, (state, { data }) => ({ ...state, ...normalize(data) }))
-  .caseWithAction(Actions.EventMapping.PatchOne, (state, action) => patchOne(state, action.payload.id, patchWithUpdatedFields(action)))
+  .caseWithAction(Actions.EventMapping.PatchOne, (state, action) =>
+    patchOne(state, action.payload.id, patchWithUpdatedFields(action))
+  )
   .caseWithAction(Actions.EventMapping.PatchMany, (state, action) =>
     patchMany(
       state,

@@ -3,12 +3,12 @@ import React from 'react';
 
 import client from '@/client';
 import JobInterface from '@/components/JobInterface';
-import { PublishContextValue } from '@/contexts/PublishContext';
+import type { PublishContextValue } from '@/contexts/PublishContext';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useSelector, useTrackingEvents } from '@/hooks';
 import { useJob, useSimulatedProgress } from '@/hooks/job';
 import * as ModalsV2 from '@/ModalsV2';
-import { SMSPublishJob } from '@/models';
+import type { SMSPublishJob } from '@/models';
 import PublishButton from '@/pages/Project/components/Upload/components/PublishButton';
 
 import { useSMSStageContent } from './stages';

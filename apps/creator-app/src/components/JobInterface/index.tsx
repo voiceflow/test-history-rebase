@@ -2,9 +2,9 @@ import { Box, Portal } from '@voiceflow/ui';
 import React from 'react';
 
 import PageProgressBar from '@/components/PageProgressBar';
-import { JobContextValue } from '@/hooks/job';
-import { Job } from '@/models';
-import { StageContent } from '@/platforms/types';
+import type { JobContextValue } from '@/hooks/job';
+import type { Job } from '@/models';
+import type { StageContent } from '@/platforms/types';
 import { getProgress, isRunning } from '@/utils/job';
 
 import Popup from './Popup';
@@ -19,7 +19,12 @@ interface JobInterfaceProps<J extends Job<any>> {
   progress?: number;
 }
 
-const JobInterface = <T extends Job<any>>({ context, Content, progress, children }: React.PropsWithChildren<JobInterfaceProps<T>>) => {
+const JobInterface = <T extends Job<any>>({
+  context,
+  Content,
+  progress,
+  children,
+}: React.PropsWithChildren<JobInterfaceProps<T>>) => {
   const stage = context.job?.stage;
 
   return (

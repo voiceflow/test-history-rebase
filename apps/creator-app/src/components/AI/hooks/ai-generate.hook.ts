@@ -42,7 +42,9 @@ export interface IAIGenerate<Item> {
 
 interface AIGenerate {
   <Item>(options: AIGenerateOptions<Item> & BaseGenerateProps): IAIGenerate<Item>;
-  <ExternalItem, InternalItem>(options: AIGenerateOptionsWithTransform<ExternalItem, InternalItem>): IAIGenerate<ExternalItem>;
+  <ExternalItem, InternalItem>(
+    options: AIGenerateOptionsWithTransform<ExternalItem, InternalItem>
+  ): IAIGenerate<ExternalItem>;
 }
 
 export const useAIGenerate: AIGenerate = ({
@@ -51,7 +53,10 @@ export const useAIGenerate: AIGenerate = ({
   transform = (value) => value,
   onGenerated,
   successGeneratedMessage,
-}: AIGenerateOptions<unknown> & { transform?: (values: unknown[]) => unknown[]; successGeneratedMessage: string }): IAIGenerate<unknown> => {
+}: AIGenerateOptions<unknown> & {
+  transform?: (values: unknown[]) => unknown[];
+  successGeneratedMessage: string;
+}): IAIGenerate<unknown> => {
   const reloadQuota = useDispatch(Workspace.refreshWorkspaceQuotaDetails);
 
   const getGenOptions = useGenOptions();

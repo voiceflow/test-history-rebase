@@ -1,15 +1,8 @@
-import { FolderScope, Workflow } from '@voiceflow/dtos';
+import type { Workflow } from '@voiceflow/dtos';
+import { FolderScope } from '@voiceflow/dtos';
 import { BlockType, FeatureFlag } from '@voiceflow/realtime-sdk';
-import {
-  BaseSelectProps,
-  createUIOnlyMenuItemOption,
-  Link,
-  Menu,
-  MenuItemMultilevel,
-  MenuItemWithID,
-  Select,
-  UIOnlyMenuItemOption,
-} from '@voiceflow/ui';
+import type { BaseSelectProps, MenuItemMultilevel, MenuItemWithID, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import { createUIOnlyMenuItemOption, Link, Menu, Select } from '@voiceflow/ui';
 import React, { useCallback } from 'react';
 
 import * as Documentation from '@/config/documentation';
@@ -18,7 +11,7 @@ import { useFeature } from '@/hooks/feature.hook';
 import { useFolderTree } from '@/hooks/folder.hook';
 import { useSelector } from '@/hooks/store.hook';
 
-import { Value } from './types';
+import type { Value } from './types';
 import { createCombinedID } from './utils';
 
 export interface GoToIntentSelectProps extends BaseSelectProps {

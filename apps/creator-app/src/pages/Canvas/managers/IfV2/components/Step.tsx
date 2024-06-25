@@ -1,17 +1,22 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { useSyncedLookup } from '@/hooks';
 import Step, { ElseStepItemV2, Item, Section } from '@/pages/Canvas/components/Step';
 import { ActiveDiagramNormalizedEntitiesAndVariablesContext } from '@/pages/Canvas/contexts';
 import { NoMatchV2 } from '@/pages/Canvas/managers/components';
-import { ConnectedStep } from '@/pages/Canvas/managers/types';
+import type { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { expressionPreview } from '@/utils/expression';
 
 import { NODE_CONFIG } from '../constants';
 
-const IfStep: ConnectedStep<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltInPorts> = ({ ports, data, engine, palette }) => {
+const IfStep: ConnectedStep<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltInPorts> = ({
+  ports,
+  data,
+  engine,
+  palette,
+}) => {
   const noMatchPortID = ports.out.builtIn[BaseModels.PortType.NO_MATCH];
   const entitiesAndVariables = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext)!;
 
@@ -55,7 +60,12 @@ const IfStep: ConnectedStep<Realtime.NodeData.IfV2, Realtime.NodeData.IfV2BuiltI
         )}
 
         {withNoMatchPort && (
-          <ElseStepItemV2 portID={noMatchPortID} label={data.noMatch.pathName ?? ''} palette={palette} parentActionsPath={NoMatchV2.PATH} />
+          <ElseStepItemV2
+            portID={noMatchPortID}
+            label={data.noMatch.pathName ?? ''}
+            palette={palette}
+            parentActionsPath={NoMatchV2.PATH}
+          />
         )}
       </Section>
     </Step>

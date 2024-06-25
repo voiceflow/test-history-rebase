@@ -1,4 +1,4 @@
-import { RootReducer } from '@/store/types';
+import type { RootReducer } from '@/store/types';
 
 const PERSIST_KEY = 'persist';
 
@@ -15,7 +15,10 @@ type NotUndefined = null | boolean | number | string | any[] | Record<string, an
  */
 const createPersistor =
   (store: Storage) =>
-  <T extends NotUndefined = never>(stateKey: string, key: string): [T] extends [never] ? Persistor<never> : Persistor<T> => {
+  <T extends NotUndefined = never>(
+    stateKey: string,
+    key: string
+  ): [T] extends [never] ? Persistor<never> : Persistor<T> => {
     const namespacedKey = `${PERSIST_KEY}:${stateKey}:${key}`;
     const getRaw = () => store.getItem(namespacedKey);
     const set = (value: T) => store.setItem(namespacedKey, JSON.stringify({ value }));
@@ -77,7 +80,10 @@ export const rehydrateReducer =
  * if not found, use initialState and store using persistor
  * subsequent state changes should all be stored using persistor
  */
-export const persistReducer = <T extends NotUndefined, A>(persistor: Persistor<T>, reducer: RootReducer<T, A>): RootReducer<T, A> => {
+export const persistReducer = <T extends NotUndefined, A>(
+  persistor: Persistor<T>,
+  reducer: RootReducer<T, A>
+): RootReducer<T, A> => {
   let previousState: T | null = null;
 
   return (state, action) => {

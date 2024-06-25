@@ -10,7 +10,7 @@ import { useSelector } from '@/hooks';
 import { useFeature } from '@/hooks/feature.hook';
 
 import { QueryKind, QueryState } from '../constants';
-import { Filters, QueryResult, ResultData } from '../types';
+import type { Filters, QueryResult, ResultData } from '../types';
 import { DEFAULT_FILTERS, periodToDateRange, Queries } from '../utils';
 
 interface AnalyticsDashboardContextValue {

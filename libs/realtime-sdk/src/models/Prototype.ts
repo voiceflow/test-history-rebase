@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 
 export enum PrototypeLayout {
   TEXT_DIALOG = 'text-and-dialog',

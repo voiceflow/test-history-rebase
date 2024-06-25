@@ -1,13 +1,5 @@
-import {
-  Box,
-  Button,
-  Flex,
-  PrimaryButton,
-  PrimaryButtonProps,
-  SvgIcon,
-  SvgIconTypes,
-  TippyTooltip,
-} from '@voiceflow/ui';
+import type { PrimaryButtonProps, SvgIconTypes } from '@voiceflow/ui';
+import { Box, Button, Flex, PrimaryButton, SvgIcon, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { Permission } from '@/constants/permissions';

@@ -98,7 +98,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,cjs,mjs,ts,tsx,cts,mts}": "eslint --fix",
-    "*.{html,md,json,yml,yaml,toml}": "prettier --write"
+    "*.{html,md,json,yml,yaml}": "prettier --write"
   },
   "prettier": "@voiceflow/prettier-config",
   "resolutions": {
@@ -141,7 +141,7 @@
     "clean-package": "2.2.0",
     "deep-equal-in-any-order": "2.0.6",
     "dependency-cruiser": "13.1.5",
-    "eslint": "8.57.0",
+    "eslint": "9.0.0",
     "lint-staged": "15.2.2",
     "mocha": "10.2.0",
     "mocha-suite": "1.0.11",

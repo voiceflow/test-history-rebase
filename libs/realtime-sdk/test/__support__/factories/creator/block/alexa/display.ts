@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { getRandomEnumElement } from '@test/utils';
-import { AlexaNode } from '@voiceflow/alexa-types';
+import type { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseNode } from '@voiceflow/base-types';
 import { define } from 'cooky-cutter';
 

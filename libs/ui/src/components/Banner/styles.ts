@@ -29,7 +29,9 @@ export const CloseButton = styled(Button).attrs({
   top: -8px;
   right: -8px;
   opacity: 0;
-  box-shadow: 0px 0px 0px 1px rgba(19, 33, 68, 0.08), 0px 1px 3px rgba(19, 33, 68, 0.12);
+  box-shadow:
+    0px 0px 0px 1px rgba(19, 33, 68, 0.08),
+    0px 1px 3px rgba(19, 33, 68, 0.12);
 `;
 
 export const OuterContainer = styled(Box)`

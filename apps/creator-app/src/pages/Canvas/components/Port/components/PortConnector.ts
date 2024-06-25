@@ -2,7 +2,7 @@ import { Canvas } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs/styled';
 import { PORT_HIGHLIGHTED_CLASSNAME, PORT_PROTOTYPE_END_UNLINKED_CLASSNAME } from '@/pages/Canvas/constants';
-import { Theme } from '@/styles/theme';
+import type { Theme } from '@/styles/theme';
 
 const getConnectedStyles = (chip: boolean, theme: Theme) =>
   chip

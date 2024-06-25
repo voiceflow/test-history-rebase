@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Container, EditorContentAnimation, Header, HeaderProps } from '@/pages/Canvas/components/Editor';
+import type { HeaderProps } from '@/pages/Canvas/components/Editor';
+import { Container, EditorContentAnimation, Header } from '@/pages/Canvas/components/Editor';
 import { Identifier } from '@/styles/constants';
 
 interface BlockEditorProps extends HeaderProps, React.PropsWithChildren {

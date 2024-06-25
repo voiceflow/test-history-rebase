@@ -31,7 +31,10 @@ export class BillingPlanHTTPController {
     schema: z.array(PlanNameDTO),
   })
   @ZodApiResponse({ status: HttpStatus.OK, schema: GetBillingPlansResponse })
-  async getPlans(@Query('planIDs') planIDs: PlanName[], @Query('coupon') coupon?: string | undefined): Promise<BillingPlan[]> {
+  async getPlans(
+    @Query('planIDs') planIDs: PlanName[],
+    @Query('coupon') coupon?: string | undefined
+  ): Promise<BillingPlan[]> {
     return this.service.getPlans(planIDs, coupon);
   }
 }

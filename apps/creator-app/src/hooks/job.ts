@@ -1,11 +1,11 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import { useContextApi, useDidUpdateEffect, usePersistFunction, useSetup, useTeardown } from '@voiceflow/ui';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
 import { JobStatus } from '@/constants';
 import * as Session from '@/ducks/session';
-import { Job, JobClient } from '@/models';
+import type { Job, JobClient } from '@/models';
 import { getProgress, isRunning } from '@/utils/job';
 
 export interface JobContextValue<T extends Job<any>> {
@@ -128,7 +128,16 @@ export const useJob = <J extends Job<any>, S extends string = string>(jobClient?
 
   const active = starting || isRunning(job);
 
-  return useContextApi({ job, active, cancel, start, restart, retry, updateCurrentStage, setJob: setJobWithStartingOptions });
+  return useContextApi({
+    job,
+    active,
+    cancel,
+    start,
+    restart,
+    retry,
+    updateCurrentStage,
+    setJob: setJobWithStartingOptions,
+  });
 };
 
 // simulate fake progress between checkpoints

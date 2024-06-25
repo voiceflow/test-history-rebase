@@ -1,4 +1,5 @@
-import { SectionV2, SidebarEditor, SidebarEditorTypes, System } from '@voiceflow/ui';
+import type { SidebarEditorTypes } from '@voiceflow/ui';
+import { SectionV2, SidebarEditor, System } from '@voiceflow/ui';
 import React from 'react';
 
 import { useEditor, useEditorDefaultActions } from '../hooks';

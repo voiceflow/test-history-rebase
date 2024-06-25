@@ -1,5 +1,6 @@
 import React from 'react';
-import { Route, RouteProps, Switch, useRouteMatch } from 'react-router-dom';
+import type { RouteProps } from 'react-router-dom';
+import { Route, Switch, useRouteMatch } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
 

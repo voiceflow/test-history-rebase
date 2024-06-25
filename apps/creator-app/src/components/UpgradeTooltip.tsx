@@ -1,4 +1,5 @@
-import { TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
+import type { TippyTooltipProps } from '@voiceflow/ui';
+import { TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { useStore } from '@/hooks/redux';
@@ -14,7 +15,14 @@ export interface UpgradeTooltipProps extends UpgradeTooltipData {
   tooltipProps?: Omit<TippyTooltipProps, 'content' | 'interactive'>;
 }
 
-const UpgradeTooltip: React.FC<UpgradeTooltipProps> = ({ title, onUpgrade, children, description, tooltipProps, upgradeButtonText }) => {
+const UpgradeTooltip: React.FC<UpgradeTooltipProps> = ({
+  title,
+  onUpgrade,
+  children,
+  description,
+  tooltipProps,
+  upgradeButtonText,
+}) => {
   const store = useStore();
 
   return (
@@ -24,7 +32,11 @@ const UpgradeTooltip: React.FC<UpgradeTooltipProps> = ({ title, onUpgrade, child
       {...tooltipProps}
       interactive
       content={
-        <TippyTooltip.FooterButton title={title} buttonText={upgradeButtonText} onClick={() => onUpgrade(store.dispatch)}>
+        <TippyTooltip.FooterButton
+          title={title}
+          buttonText={upgradeButtonText}
+          onClick={() => onUpgrade(store.dispatch)}
+        >
           {description}
         </TippyTooltip.FooterButton>
       }

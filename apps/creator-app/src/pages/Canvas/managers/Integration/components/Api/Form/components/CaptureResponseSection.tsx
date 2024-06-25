@@ -7,7 +7,7 @@ import { useMapManager } from '@/hooks';
 import { useVariableCreateModal } from '@/hooks/modal.hook';
 
 import { mappingFactory } from '../constants';
-import { BaseFormProps } from '../types';
+import type { BaseFormProps } from '../types';
 import * as S from './styles';
 
 const ParametersSection: React.FC<BaseFormProps> = ({ editor }) => {
@@ -36,7 +36,12 @@ const ParametersSection: React.FC<BaseFormProps> = ({ editor }) => {
 
           <SectionV2.ListItem action={<SectionV2.RemoveButton onClick={onRemove} />}>
             <S.Item>
-              <VariablesInput placeholder="Enter key" value={mapping.path} onBlur={({ text }) => onUpdate({ path: text })} multiline />
+              <VariablesInput
+                placeholder="Enter key"
+                value={mapping.path}
+                onBlur={({ text }) => onUpdate({ path: text })}
+                multiline
+              />
 
               <VariableSelectV2
                 value={mapping.var}

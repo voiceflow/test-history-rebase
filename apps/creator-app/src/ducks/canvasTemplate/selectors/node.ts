@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
 
@@ -16,20 +16,30 @@ export const nodeDataMapSelector = createSelector([creatorStateSelector], ({ nod
 
 const nodeTypeByIDSelector = createSelector([nodeDataByIDSelector], (data) => data?.type ?? null);
 
-const parentNodeIDByStepIDSelector = createSelector([creatorStateSelector, idParamSelector], ({ parentNodeIDByStepID }, stepID) =>
-  stepID ? parentNodeIDByStepID[stepID] ?? null : null
+const parentNodeIDByStepIDSelector = createSelector(
+  [creatorStateSelector, idParamSelector],
+  ({ parentNodeIDByStepID }, stepID) => (stepID ? parentNodeIDByStepID[stepID] ?? null : null)
 );
 
-const nodeCoordsByIDSelector = createSelector([creatorStateSelector, idParamSelector], ({ coordsByNodeID: positionByNodeID }, nodeID) =>
-  nodeID ? positionByNodeID[nodeID] ?? null : null
+const nodeCoordsByIDSelector = createSelector(
+  [creatorStateSelector, idParamSelector],
+  ({ coordsByNodeID: positionByNodeID }, nodeID) => (nodeID ? positionByNodeID[nodeID] ?? null : null)
 );
 
-const stepIDsByParentNodeIDSelector = createSelector([creatorStateSelector, idParamSelector], ({ stepIDsByParentNodeID }, nodeID) =>
-  nodeID ? stepIDsByParentNodeID[nodeID] ?? [] : []
+const stepIDsByParentNodeIDSelector = createSelector(
+  [creatorStateSelector, idParamSelector],
+  ({ stepIDsByParentNodeID }, nodeID) => (nodeID ? stepIDsByParentNodeID[nodeID] ?? [] : [])
 );
 
 export const nodeByIDSelector = createSelector(
-  [parentNodeIDByStepIDSelector, nodeCoordsByIDSelector, portsByNodeIDSelector, stepIDsByParentNodeIDSelector, nodeTypeByIDSelector, idParamSelector],
+  [
+    parentNodeIDByStepIDSelector,
+    nodeCoordsByIDSelector,
+    portsByNodeIDSelector,
+    stepIDsByParentNodeIDSelector,
+    nodeTypeByIDSelector,
+    idParamSelector,
+  ],
   // eslint-disable-next-line max-params
   (parentNode, origin, ports, stepIDs, type, nodeID): Realtime.Node | null =>
     nodeID && type
@@ -61,16 +71,18 @@ export const nodesByIDsSelector = createSelector([getNodeByIDSelector, idsParamS
 
 const getNodeDataByIDSelector = createCurriedSelector(nodeDataByIDSelector);
 
-export const nodesDataByIDsSelector = createSelector([getNodeDataByIDSelector, idsParamSelector], (getNodeDataByID, nodeIDs) =>
-  nodeIDs.reduce<Realtime.NodeData<unknown>[]>((acc, nodeID) => {
-    const node = getNodeDataByID({ id: nodeID });
+export const nodesDataByIDsSelector = createSelector(
+  [getNodeDataByIDSelector, idsParamSelector],
+  (getNodeDataByID, nodeIDs) =>
+    nodeIDs.reduce<Realtime.NodeData<unknown>[]>((acc, nodeID) => {
+      const node = getNodeDataByID({ id: nodeID });
 
-    if (node) {
-      acc.push(node);
-    }
+      if (node) {
+        acc.push(node);
+      }
 
-    return acc;
-  }, [])
+      return acc;
+    }, [])
 );
 
 export const blockColorSelector = createSelector([nodeDataByIDSelector], (data) => {

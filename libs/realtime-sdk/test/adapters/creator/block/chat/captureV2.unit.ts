@@ -2,7 +2,7 @@ import captureV2Adapter from '@realtime-sdk/adapters/creator/block/chat/captureV
 import { chatNoMatchAdapter, chatNoReplyAdapter } from '@realtime-sdk/adapters/creator/block/utils';
 import { Creator } from '@test/factories';
 import { BaseNode } from '@voiceflow/base-types';
-import { ChatNode } from '@voiceflow/chat-types';
+import type { ChatNode } from '@voiceflow/chat-types';
 
 const DEFAULT_INTENT = {
   key: '',

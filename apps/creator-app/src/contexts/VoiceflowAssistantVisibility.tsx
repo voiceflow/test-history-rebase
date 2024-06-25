@@ -14,9 +14,11 @@ export interface VoiceflowAssistantVisibilityContextValue {
 }
 
 export const VoiceflowAssistantVisibilityContext = React.createContext<VoiceflowAssistantVisibilityContextValue>({
+  // eslint-disable-next-line no-empty-function
   setIDs: () => {},
   isShown: true,
   isEnabled: true,
+  // eslint-disable-next-line no-empty-function
   onToggleEnabled: () => {},
 });
 
@@ -42,5 +44,7 @@ export const VoiceflowAssistantVisibilityProvider: React.FC<React.PropsWithChild
 
   useHotkey(Hotkey.TOGGLE_CHATBOT, onToggleEnabled);
 
-  return <VoiceflowAssistantVisibilityContext.Provider value={api}>{children}</VoiceflowAssistantVisibilityContext.Provider>;
+  return (
+    <VoiceflowAssistantVisibilityContext.Provider value={api}>{children}</VoiceflowAssistantVisibilityContext.Provider>
+  );
 };

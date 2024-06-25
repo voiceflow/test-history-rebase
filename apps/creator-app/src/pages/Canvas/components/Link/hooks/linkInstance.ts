@@ -5,22 +5,24 @@ import React from 'react';
 
 import { BlockType } from '@/constants';
 import { useLinkedRef, useRAF } from '@/hooks';
-import { LinkedRects } from '@/pages/Canvas/components/Link';
+import type { LinkedRects } from '@/pages/Canvas/components/Link';
 import { EngineContext, LinkEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
-import { PathPoints } from '@/types';
+import type { PathPoints } from '@/types';
 import { isRectsEqual } from '@/utils/dom';
 import { isChipNode } from '@/utils/node';
 
 import { MIN_HEIGHT, PLACEHOLDER_WIDTH } from '../components/LinkCaptionText';
 import { STROKE_DEFAULT_COLOR } from '../constants';
-import { InternalLinkInstance } from '../types';
+import type { InternalLinkInstance } from '../types';
 import { buildPath, getMarkerAttrs, getPathPoints, getPathPointsCenter, syncPointsWithLinkedRects } from '../utils';
 
 const useLinkRelatedRects = () => {
   const linkEntity = React.useContext(LinkEntityContext)!;
 
-  const cacheData = React.useRef<null | { linkedRects: LinkedRects | null; sourceParentNodeRect: DOMRect | null }>(null);
+  const cacheData = React.useRef<null | { linkedRects: LinkedRects | null; sourceParentNodeRect: DOMRect | null }>(
+    null
+  );
 
   const { linkedRects, sourceParentNodeRect } = linkEntity.useState((entity) => ({
     linkedRects: entity.getLinkedRects(),
@@ -74,25 +76,26 @@ const useLinkInstance = () => {
   const [stylesScheduler] = useRAF();
   const elementInstance = useElementInstance(containerRef);
 
-  const { isStraight, sourceNodeIsChip, sourceNodeIsStart, sourceNodeIsAction, targetNodeIsCombined } = React.useMemo(() => {
-    const isStraight = engine.isStraightLinks();
-    const targetNode = engine.getNodeByID(targetNodeID);
-    const sourceNode = engine.getNodeByID(sourceNodeID);
-    const sourceNodeParent = engine.getNodeByID(sourceNode?.parentNode);
+  const { isStraight, sourceNodeIsChip, sourceNodeIsStart, sourceNodeIsAction, targetNodeIsCombined } =
+    React.useMemo(() => {
+      const isStraight = engine.isStraightLinks();
+      const targetNode = engine.getNodeByID(targetNodeID);
+      const sourceNode = engine.getNodeByID(sourceNodeID);
+      const sourceNodeParent = engine.getNodeByID(sourceNode?.parentNode);
 
-    const sourceNodeIsChip = isChipNode(sourceNode, sourceNodeParent);
-    const sourceNodeIsStart = sourceNode?.type === BlockType.START;
-    const sourceNodeIsAction = sourceNodeParent?.type === BlockType.ACTIONS;
-    const targetNodeIsCombined = targetNode?.type === BlockType.COMBINED;
+      const sourceNodeIsChip = isChipNode(sourceNode, sourceNodeParent);
+      const sourceNodeIsStart = sourceNode?.type === BlockType.START;
+      const sourceNodeIsAction = sourceNodeParent?.type === BlockType.ACTIONS;
+      const targetNodeIsCombined = targetNode?.type === BlockType.COMBINED;
 
-    return {
-      isStraight: linkData?.type ? linkData.type === BaseModels.Project.LinkType.STRAIGHT : isStraight,
-      sourceNodeIsChip,
-      sourceNodeIsStart,
-      sourceNodeIsAction,
-      targetNodeIsCombined,
-    };
-  }, [linkData?.type, targetNodeID, sourceNodeID]);
+      return {
+        isStraight: linkData?.type ? linkData.type === BaseModels.Project.LinkType.STRAIGHT : isStraight,
+        sourceNodeIsChip,
+        sourceNodeIsStart,
+        sourceNodeIsAction,
+        targetNodeIsCombined,
+      };
+    }, [linkData?.type, targetNodeID, sourceNodeID]);
 
   const cache = useCache({
     linkData,
@@ -249,7 +252,13 @@ const useLinkInstance = () => {
     };
 
     // will be called when the actions are rendered from the opposite side
-    const onLinkPositionReversed = ({ isSource, sourceAndTargetSelected }: { isSource: boolean; sourceAndTargetSelected: boolean }) => {
+    const onLinkPositionReversed = ({
+      isSource,
+      sourceAndTargetSelected,
+    }: {
+      isSource: boolean;
+      sourceAndTargetSelected: boolean;
+    }) => {
       const linkedRects = linkEntity.getLinkedRects();
 
       if (!linkedRectsRef.current || !linkedRects || !pointsRef.current) return;
@@ -277,7 +286,8 @@ const useLinkInstance = () => {
       updateCaptionPosition,
 
       getLinkType: () =>
-        cache.current.linkData?.type ?? (cache.current.isStraight ? BaseModels.Project.LinkType.STRAIGHT : BaseModels.Project.LinkType.CURVED),
+        cache.current.linkData?.type ??
+        (cache.current.isStraight ? BaseModels.Project.LinkType.STRAIGHT : BaseModels.Project.LinkType.CURVED),
       getLinkColor: () => cache.current.linkData?.color ?? STROKE_DEFAULT_COLOR,
 
       getCenter: () => centerRef,
@@ -319,7 +329,9 @@ const useLinkInstance = () => {
         scheduler(() => {
           redraw();
 
-          linkEntity.portLinkInstance?.api.updatePosition(pointsRef.current, () => onLinkPositionReversed({ isSource, sourceAndTargetSelected }));
+          linkEntity.portLinkInstance?.api.updatePosition(pointsRef.current, () =>
+            onLinkPositionReversed({ isSource, sourceAndTargetSelected })
+          );
         });
       },
 

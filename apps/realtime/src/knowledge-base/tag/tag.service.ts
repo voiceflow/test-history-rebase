@@ -1,7 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { BaseModels } from '@voiceflow/base-types';
 import { KBTag, KBTagRecord, KBTagsFilter, KnowledgeBaseDocument } from '@voiceflow/dtos';
-import { BadRequestException, ForbiddenException, NotAcceptableException, NotFoundException } from '@voiceflow/exception';
+import {
+  BadRequestException,
+  ForbiddenException,
+  NotAcceptableException,
+  NotFoundException,
+} from '@voiceflow/exception';
 import { KnowledgeBaseORM, RefreshJobsOrm, VersionKnowledgeBaseDocument } from '@voiceflow/orm-designer';
 import { Identity } from '@voiceflow/sdk-auth';
 import { AuthService } from '@voiceflow/sdk-auth/nestjs';
@@ -83,7 +88,12 @@ export class KnowledgeBaseTagService extends MutableService<KnowledgeBaseORM> {
 
   /* Delete */
 
-  async removeRelatedTags(assistantID: string, workspaceID: number, document: VersionKnowledgeBaseDocument, tags: string[]) {
+  async removeRelatedTags(
+    assistantID: string,
+    workspaceID: number,
+    document: VersionKnowledgeBaseDocument,
+    tags: string[]
+  ) {
     this.refreshJobsOrm.detachManyTags(assistantID, document.documentID, tags);
 
     await this.klParserClient.updateDocument(
@@ -97,7 +107,10 @@ export class KnowledgeBaseTagService extends MutableService<KnowledgeBaseORM> {
   }
 
   async deleteOneTag(assistantID: string, tagID: string) {
-    const [documents, workspaceID] = await Promise.all([this.orm.findAllDocuments(assistantID), this.orm.getWorkspaceID(assistantID)]);
+    const [documents, workspaceID] = await Promise.all([
+      this.orm.findAllDocuments(assistantID),
+      this.orm.getWorkspaceID(assistantID),
+    ]);
     await this.validateKBTagExists(assistantID, tagID);
 
     await this.orm.deleteOneTag(assistantID, tagID);
@@ -111,7 +124,11 @@ export class KnowledgeBaseTagService extends MutableService<KnowledgeBaseORM> {
       }
     });
 
-    await Promise.allSettled(removeTagJobs.map(({ projectID, document, tags }) => this.removeRelatedTags(projectID, workspaceID, document, tags)));
+    await Promise.allSettled(
+      removeTagJobs.map(({ projectID, document, tags }) =>
+        this.removeRelatedTags(projectID, workspaceID, document, tags)
+      )
+    );
   }
 
   /* Validation */
@@ -139,7 +156,10 @@ export class KnowledgeBaseTagService extends MutableService<KnowledgeBaseORM> {
 
   /* Utils */
 
-  async limitKBTagsDocument(document?: KnowledgeBaseDocument | VersionKnowledgeBaseDocument, additionalAmount?: number) {
+  async limitKBTagsDocument(
+    document?: KnowledgeBaseDocument | VersionKnowledgeBaseDocument,
+    additionalAmount?: number
+  ) {
     // check amout of existing KB tags for specific KB Document
     let tagsAmount = 0;
 
@@ -243,7 +263,9 @@ export class KnowledgeBaseTagService extends MutableService<KnowledgeBaseORM> {
     if (nonExistingTags.length > 0) {
       if (createIfMissingTags) {
         if (Object.keys(tags).length + nonExistingTags.length > this.MAX_KB_TAGS) {
-          throw new BadRequestException(`${[this.MAX_KB_TAGS]} tag limit per project exceeded. Please delete a tag to add a new one.`);
+          throw new BadRequestException(
+            `${[this.MAX_KB_TAGS]} tag limit per project exceeded. Please delete a tag to add a new one.`
+          );
         }
 
         const objectsForUpdate = nonExistingTags.map((label) => {

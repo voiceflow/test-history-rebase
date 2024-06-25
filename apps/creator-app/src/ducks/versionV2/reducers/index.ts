@@ -1,4 +1,4 @@
-import { VersionSettings } from '@voiceflow/dtos';
+import type { VersionSettings } from '@voiceflow/dtos';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import * as Normal from 'normal-store';
 

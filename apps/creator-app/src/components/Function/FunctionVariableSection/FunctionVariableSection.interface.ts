@@ -1,5 +1,5 @@
 import type { FunctionVariable } from '@voiceflow/dtos';
-import { BaseProps } from '@voiceflow/ui-next';
+import type { BaseProps } from '@voiceflow/ui-next';
 
 export interface IFunctionVariableSection extends BaseProps {
   functionVariables: FunctionVariable[];

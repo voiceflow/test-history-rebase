@@ -26,7 +26,9 @@ export class UtteranceLoguxController {
     @Payload() { data, context }: Actions.Utterance.CreateOne.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.Utterance.CreateOne.Response> {
-    return this.service.createManyAndBroadcast([data], { auth, context }).then(([result]) => ({ data: this.service.toJSON(result), context }));
+    return this.service
+      .createManyAndBroadcast([data], { auth, context })
+      .then(([result]) => ({ data: this.service.toJSON(result), context }));
   }
 
   @Action.Async(Actions.Utterance.CreateMany)
@@ -39,7 +41,9 @@ export class UtteranceLoguxController {
     @Payload() { data, context }: Actions.Utterance.CreateMany.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.Utterance.CreateMany.Response> {
-    return this.service.createManyAndBroadcast(data, { auth, context }).then((result) => ({ data: this.service.mapToJSON(result), context }));
+    return this.service
+      .createManyAndBroadcast(data, { auth, context })
+      .then((result) => ({ data: this.service.mapToJSON(result), context }));
   }
 
   @Action(Actions.Utterance.PatchOne)
@@ -82,7 +86,10 @@ export class UtteranceLoguxController {
     const result = await this.service.deleteManyAndSync([id], context);
 
     // overriding utterances cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, utterances: [] } }, { auth, context });
+    await this.service.broadcastDeleteMany(
+      { ...result, delete: { ...result.delete, utterances: [] } },
+      { auth, context }
+    );
   }
 
   @Action(Actions.Utterance.DeleteMany)
@@ -97,7 +104,10 @@ export class UtteranceLoguxController {
     const result = await this.service.deleteManyAndSync(ids, context);
 
     // overriding utterances cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, utterances: [] } }, { auth, context });
+    await this.service.broadcastDeleteMany(
+      { ...result, delete: { ...result.delete, utterances: [] } },
+      { auth, context }
+    );
   }
 
   @Action(Actions.Utterance.AddOne)

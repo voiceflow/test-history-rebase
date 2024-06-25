@@ -21,8 +21,8 @@ const getCircleStyles = (image: string | null, color?: string) => {
   } else if (image) {
     style.backgroundImage = `url(${image})`;
   } else {
-    style.color = `#4E8BBD`;
-    style.backgroundColor = `#d4e6f5`;
+    style.color = '#4E8BBD';
+    style.backgroundColor = '#d4e6f5';
   }
 
   return style;
@@ -30,7 +30,10 @@ const getCircleStyles = (image: string | null, color?: string) => {
 
 export const isColorImage = (image: string | null): image is string => image?.length === 13 && image.includes('|');
 
-const Avatar: React.ForwardRefRenderFunction<HTMLDivElement, AvatarProps> = ({ image, text, color, className, ...props }, ref) => {
+const Avatar: React.ForwardRefRenderFunction<HTMLDivElement, AvatarProps> = (
+  { image, text, color, className, ...props },
+  ref
+) => {
   const styles = React.useMemo(() => getCircleStyles(image, color), [image, color]);
 
   return (

@@ -14,7 +14,15 @@ interface PlanCardProps extends React.PropsWithChildren {
   onClick?: VoidFunction;
 }
 
-export const PlanCard: React.FC<PlanCardProps> = ({ title, amount, badge, period = 'm', active = false, children, onClick }) => (
+export const PlanCard: React.FC<PlanCardProps> = ({
+  title,
+  amount,
+  badge,
+  period = 'm',
+  active = false,
+  children,
+  onClick,
+}) => (
   <S.Container $active={active} onClick={onClick}>
     <Box.FlexApart mb={4}>
       <Box.Flex gap={8}>
@@ -24,7 +32,8 @@ export const PlanCard: React.FC<PlanCardProps> = ({ title, amount, badge, period
       </Box.Flex>
 
       <S.Period>
-        <S.Title>{amount !== null ? currency.formatUSD(amount, { noDecimal: true, unit: 'cent' }) : '-'}</S.Title>/{period}
+        <S.Title>{amount !== null ? currency.formatUSD(amount, { noDecimal: true, unit: 'cent' }) : '-'}</S.Title>/
+        {period}
       </S.Period>
     </Box.FlexApart>
 

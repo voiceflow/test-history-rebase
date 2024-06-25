@@ -1,11 +1,17 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
-import Step, { FailureStepItemV2, Item, Section, SuccessStepItemV2, VariableLabel } from '@/pages/Canvas/components/Step';
+import Step, {
+  FailureStepItemV2,
+  Item,
+  Section,
+  SuccessStepItemV2,
+  VariableLabel,
+} from '@/pages/Canvas/components/Step';
 import { ActiveDiagramNormalizedEntitiesAndVariablesContext } from '@/pages/Canvas/contexts';
-import { ConnectedStep } from '@/pages/Canvas/managers/types';
+import type { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { transformVariablesToReadable } from '@/utils/slot';
 
 import { NODE_CONFIG } from '../../constants';
@@ -39,7 +45,13 @@ const IntegrationStep: ConnectedStep<Realtime.NodeData.CustomApi, Realtime.NodeD
         <Item
           v2
           icon={NODE_CONFIG.icon}
-          label={data.url ? <VariableLabel>{transformVariablesToReadable(data.url, entitiesAndVariables.byKey)}</VariableLabel> : ''}
+          label={
+            data.url ? (
+              <VariableLabel>{transformVariablesToReadable(data.url, entitiesAndVariables.byKey)}</VariableLabel>
+            ) : (
+              ''
+            )
+          }
           title={getCustomApiAction(data.selectedAction)}
           palette={palette}
           placeholder="Enter request URL"

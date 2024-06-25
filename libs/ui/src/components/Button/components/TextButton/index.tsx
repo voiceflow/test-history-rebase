@@ -6,7 +6,10 @@ export interface TextButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEl
   className?: string;
 }
 
-const TextButton: React.ForwardRefRenderFunction<HTMLButtonElement, TextButtonProps> = ({ children, ...props }, ref) => (
+const TextButton: React.ForwardRefRenderFunction<HTMLButtonElement, TextButtonProps> = (
+  { children, ...props },
+  ref
+) => (
   <S.TextButtonContainer ref={ref} type="button" {...props}>
     {children}
   </S.TextButtonContainer>

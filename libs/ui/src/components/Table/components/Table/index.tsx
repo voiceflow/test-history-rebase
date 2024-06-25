@@ -2,11 +2,11 @@ import Divider from '@ui/components/Divider';
 import React from 'react';
 
 import { Provider } from '../../contexts';
-import * as T from '../../types';
+import type { Item, Props } from '../../types';
 import Container from '../Container';
 import * as S from './styles';
 
-const Table = <T extends T.Item>({ items, empty, header, renderRow, hideLastDivider }: T.Props<T>) => (
+const Table = <T extends Item>({ items, empty, header, renderRow, hideLastDivider }: Props<T>) => (
   <Provider items={items}>
     {items.length ? (
       <Container>

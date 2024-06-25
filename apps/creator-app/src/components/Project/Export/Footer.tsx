@@ -1,6 +1,6 @@
 import { tid } from '@voiceflow/style';
 import { Box, System } from '@voiceflow/ui';
-import { BaseProps } from '@voiceflow/ui-next';
+import type { BaseProps } from '@voiceflow/ui-next';
 import React from 'react';
 
 import PlatformUploadButton from '@/components/PlatformUploadButton';

@@ -1,5 +1,6 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import { EmptyObject, Utils } from '@voiceflow/common';
+import type { EmptyObject } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { createDividerMenuItemOption } from '@voiceflow/ui';
 import React from 'react';

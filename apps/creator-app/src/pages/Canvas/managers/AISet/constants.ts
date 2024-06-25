@@ -1,10 +1,10 @@
 import { BaseModels, BaseUtils } from '@voiceflow/base-types';
 import { AIModel } from '@voiceflow/dtos';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
 
-import { NodeConfig } from '../types';
+import type { NodeConfig } from '../types';
 
 export const DEFAULT_LENGTH = 128;
 

@@ -20,7 +20,13 @@ export class AssistantViewerService {
     this.redis = this.redisService.getClient();
   }
 
-  private static getAssistantCacheKey({ assistantID, environmentID }: { assistantID: string; environmentID: string }): string {
+  private static getAssistantCacheKey({
+    assistantID,
+    environmentID,
+  }: {
+    assistantID: string;
+    environmentID: string;
+  }): string {
     return `assistant-viewers:${assistantID}:${environmentID}`;
   }
 
@@ -70,7 +76,13 @@ export class AssistantViewerService {
     await pipeline.exec();
   }
 
-  public async getAllViewers({ assistantID, environmentID }: { assistantID: string; environmentID: string }): Promise<Realtime.Viewer[]> {
+  public async getAllViewers({
+    assistantID,
+    environmentID,
+  }: {
+    assistantID: string;
+    environmentID: string;
+  }): Promise<Realtime.Viewer[]> {
     const assistantCacheKey = AssistantViewerService.getAssistantCacheKey({ assistantID, environmentID });
     const viewerIDs = await this.redis.smembers(assistantCacheKey);
 
@@ -107,7 +119,15 @@ export class AssistantViewerService {
       .filter((viewer): viewer is Realtime.Viewer => viewer !== null);
   }
 
-  public async addViewer({ viewerID, assistantID, environmentID }: { viewerID: number; assistantID: string; environmentID: string }): Promise<void> {
+  public async addViewer({
+    viewerID,
+    assistantID,
+    environmentID,
+  }: {
+    viewerID: number;
+    assistantID: string;
+    environmentID: string;
+  }): Promise<void> {
     const user = await this.userService.getByID(Number(viewerID));
 
     if (!user) return;

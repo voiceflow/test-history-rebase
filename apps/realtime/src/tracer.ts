@@ -4,7 +4,6 @@ import { EnvironmentVariables } from './app.env';
 
 const env = EnvironmentVariables.parse(process.env);
 
-
 tracer.init({
   service: env.APP_NAME,
   runtimeMetrics: true,

@@ -1,4 +1,5 @@
-import { SectionV2, SectionV2Types } from '@voiceflow/ui';
+import type { SectionV2Types } from '@voiceflow/ui';
+import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 export interface DescriptionProps extends SectionV2Types.DescriptionProps, React.PropsWithChildren {}

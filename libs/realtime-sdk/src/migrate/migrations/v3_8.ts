@@ -1,8 +1,8 @@
 import * as Utils from '@realtime-sdk/utils';
 import { BaseNode, BaseUtils } from '@voiceflow/base-types';
-import { VoiceflowNode } from '@voiceflow/voiceflow-types';
+import type { VoiceflowNode } from '@voiceflow/voiceflow-types';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 /**
  * this migration transforms card nodes into cardV2s
@@ -19,7 +19,9 @@ const migrateToV3_8: Transform = ({ diagrams }, { project }) => {
           title: dbNode.data.title,
           buttons: [],
           imageUrl: dbNode.data.image?.smallImageUrl ?? dbNode.data?.image?.largeImageUrl ?? null,
-          description: Utils.typeGuards.isVoiceProjectType(project.type) ? dbNode.data.text : ([{ children: [{ text: dbNode.data.text }] }] as any),
+          description: Utils.typeGuards.isVoiceProjectType(project.type)
+            ? dbNode.data.text
+            : ([{ children: [{ text: dbNode.data.text }] }] as any),
           portsV2: dbNode.data.portsV2 as any,
         },
       };

@@ -11,7 +11,12 @@ const AccountLoadingGate: React.FC<React.PropsWithChildren> = ({ children }) => 
   const restoreSession = useDispatch(Session.restoreSession);
 
   return (
-    <LoadingGate internalName={AccountLoadingGate.name} isLoaded={!isLoggingIn} load={restoreSession} loader={<TabLoader variant="dark" />}>
+    <LoadingGate
+      internalName={AccountLoadingGate.name}
+      isLoaded={!isLoggingIn}
+      load={restoreSession}
+      loader={<TabLoader variant="dark" />}
+    >
       {children}
     </LoadingGate>
   );

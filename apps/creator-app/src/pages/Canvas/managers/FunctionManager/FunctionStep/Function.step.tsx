@@ -1,11 +1,11 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Thumbnail } from '@voiceflow/ui';
 import React from 'react';
 
 import Step from '@/pages/Canvas/components/Step';
 import { DEFAULT_BY_KEY_PORT } from '@/pages/Canvas/constants';
 import { FunctionMapContext, FunctionPathMapContext } from '@/pages/Canvas/contexts';
-import { ConnectedStep } from '@/pages/Canvas/managers/types';
+import type { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { toSorted } from '@/utils/sort.util';
 
 import { useMemoizedPropertyFilter } from '../../hooks/memoized-property-filter.hook';

@@ -1,4 +1,4 @@
-import { NestExpressApplication } from '@nestjs/platform-express';
+import type { NestExpressApplication } from '@nestjs/platform-express';
 
 export const appRef = {
   _app: null as NestExpressApplication | null,

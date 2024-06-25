@@ -9,13 +9,15 @@ export interface DeleteComponentProps {
   message?: React.ReactNode;
 }
 
-const DeleteComponent = React.forwardRef<HTMLDivElement, DeleteComponentProps>(({ message = 'Drop here to remove' }, ref) => (
-  <DeleteComponentWrapper>
-    <DeleteComponentContent ref={ref}>
-      <SvgIcon icon="trash" />
-      <DeleteText>{message}</DeleteText>
-    </DeleteComponentContent>
-  </DeleteComponentWrapper>
-));
+const DeleteComponent = React.forwardRef<HTMLDivElement, DeleteComponentProps>(
+  ({ message = 'Drop here to remove' }, ref) => (
+    <DeleteComponentWrapper>
+      <DeleteComponentContent ref={ref}>
+        <SvgIcon icon="trash" />
+        <DeleteText>{message}</DeleteText>
+      </DeleteComponentContent>
+    </DeleteComponentWrapper>
+  )
+);
 
 export default DeleteComponent;

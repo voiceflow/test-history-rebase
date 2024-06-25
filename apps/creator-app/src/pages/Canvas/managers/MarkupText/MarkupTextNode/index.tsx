@@ -1,16 +1,17 @@
 import composeRefs from '@seznam/compose-react-refs';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { useCache, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
-import { Descendant, Node, Transforms } from 'slate';
+import type { Descendant } from 'slate';
+import { Node, Transforms } from 'slate';
 
 import SlateEditable, { SlateEditorAPI } from '@/components/SlateEditable';
 import { markupRenderElement } from '@/components/SlateEditable/renderers';
 import { useForceUpdate } from '@/hooks';
 import { useBlockAPI } from '@/pages/Canvas/components/Block/hooks';
-import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
+import type { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
 import { EngineContext, NodeEntityContext } from '@/pages/Canvas/contexts';
-import { CombinedAPI } from '@/pages/Canvas/types';
+import type { CombinedAPI } from '@/pages/Canvas/types';
 
 import { SLATE_EDITOR_CLASS_NAME } from '../constants';
 import { Border, BorderPosition, Container } from './components';
@@ -176,7 +177,9 @@ const MarkupTextNode = React.forwardRef<CombinedAPI, MarkupTextNodeProps>(({ dat
   React.useLayoutEffect(() => {
     if (!isInitialWidthApplied && isNew && isFocused) {
       const isEmpty = SlateEditorAPI.isNewState(value);
-      const slateNodes = Array.from(containerRef.current?.querySelectorAll<HTMLElement>('[data-slate-node="element"]') ?? []);
+      const slateNodes = Array.from(
+        containerRef.current?.querySelectorAll<HTMLElement>('[data-slate-node="element"]') ?? []
+      );
       const maxWidth = Math.max(0, ...slateNodes.map(({ clientWidth }) => clientWidth));
 
       const zoom = engine.canvas?.getZoom() ?? 1;

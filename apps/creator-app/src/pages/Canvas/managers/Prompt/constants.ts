@@ -4,7 +4,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { BlockType } from '@/constants';
 import { intentButtonFactory } from '@/utils/intent';
 
-import { NodeConfig } from '../types';
+import type { NodeConfig } from '../types';
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.Prompt, Realtime.NodeData.PromptBuiltInPorts> = {
   type: BlockType.PROMPT,

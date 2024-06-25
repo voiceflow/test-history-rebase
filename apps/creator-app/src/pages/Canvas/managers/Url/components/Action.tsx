@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Canvas, Popper, swallowEvent, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,7 +8,7 @@ import { copyWithToast } from '@/utils/clipboard';
 import { transformVariablesToReadable } from '@/utils/slot';
 
 import Step from '../../../components/Step';
-import { ConnectedAction } from '../../types';
+import type { ConnectedAction } from '../../types';
 import { NODE_CONFIG } from '../constants';
 import ActionPreview from './ActionPreview';
 

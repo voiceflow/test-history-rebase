@@ -14,8 +14,8 @@ import type {
 import type { Atom, PrimitiveAtom } from 'jotai';
 
 import type { State as AppState } from '@/ducks';
-import { KnowledgeBaseDocument } from '@/models/KnowledgeBase.model';
-import { Thunk } from '@/store/types';
+import type { KnowledgeBaseDocument } from '@/models/KnowledgeBase.model';
+import type { Thunk } from '@/store/types';
 
 export interface CMSFolder extends Folder {
   group: true;

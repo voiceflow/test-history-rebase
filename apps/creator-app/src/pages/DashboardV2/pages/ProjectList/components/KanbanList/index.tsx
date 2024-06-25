@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, IconButton, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
@@ -12,7 +12,7 @@ import * as Organization from '@/ducks/organization';
 import * as ProjectListV2 from '@/ducks/projectListV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { DragItem } from '@/hocs/withDraggable';
+import type { DragItem } from '@/hocs/withDraggable';
 import { useDispatch, usePermission, usePlanLimitedConfig, useScrollHelpers, useSelector } from '@/hooks';
 import { useDropLagFix } from '@/hooks/dnd.hook';
 import { useConditionalLimit } from '@/hooks/planLimitV3';
@@ -23,8 +23,10 @@ import { Sidebar } from '../../../../components';
 import Header from '../Header';
 import { Container } from './Container';
 import DragLayer from './DragLayer';
-import { Item as ListItem, ItemProps as ListItemProps, OwnItemProps as ListItemOwnProps } from './Item';
-import DraggableList, { List, ListProps, OwnListProps } from './List';
+import type { ItemProps as ListItemProps, OwnItemProps as ListItemOwnProps } from './Item';
+import { Item as ListItem } from './Item';
+import type { ListProps, OwnListProps } from './List';
+import DraggableList, { List } from './List';
 
 export const ProjectListList: React.FC = () => {
   const projects = useSelector(ProjectV2.allProjectsSelector);

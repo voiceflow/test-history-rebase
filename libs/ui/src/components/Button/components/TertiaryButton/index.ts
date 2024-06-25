@@ -1,8 +1,9 @@
-import { ButtonVariant } from '@ui/components/Button/constants';
+import type { ButtonVariant } from '@ui/components/Button/constants';
 import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
 
-import ButtonContainer, { ButtonContainerProps } from '../ButtonContainer';
-import { CommonButtonProps } from '../types';
+import type { ButtonContainerProps } from '../ButtonContainer';
+import ButtonContainer from '../ButtonContainer';
+import type { CommonButtonProps } from '../types';
 
 export type TertiaryButtonProps = ButtonContainerProps &
   CommonButtonProps<

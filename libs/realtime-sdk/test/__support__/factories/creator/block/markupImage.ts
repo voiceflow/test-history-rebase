@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { Markup } from '@realtime-sdk/models';
+import type { Markup } from '@realtime-sdk/models';
 import { define } from 'cooky-cutter';
 
 export const MarkupImageNodeData = define<Markup.NodeData.Image>({

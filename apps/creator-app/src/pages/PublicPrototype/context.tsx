@@ -4,7 +4,7 @@ import * as Platform from '@voiceflow/platform-config';
 import React, { createContext } from 'react';
 
 import { PrototypeLayout } from '@/constants/prototype';
-import * as PrototypeDuck from '@/ducks/prototype';
+import type * as PrototypeDuck from '@/ducks/prototype';
 
 type PrototypeSettings = PrototypeDuck.PrototypeSettings & { globalMessageDelayMilliseconds?: number };
 

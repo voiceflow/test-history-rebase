@@ -2,7 +2,8 @@ import { Box } from '@voiceflow/ui';
 import React from 'react';
 
 import FormGroup from '@/components/FormGroup';
-import Slider, { SliderProps } from '@/components/Slider';
+import type { SliderProps } from '@/components/Slider';
+import Slider from '@/components/Slider';
 
 import { Input, InputAction, SliderPrefixContainer } from './components';
 
@@ -39,7 +40,12 @@ const SliderInputGroup: React.FC<SliderInputGroupProps> = ({
       </>
     }
     rightColumn={
-      <Input {...inputProps} value={inputValue} onChange={onChangeInput} rightAction={inputAction && <InputAction>{inputAction}</InputAction>} />
+      <Input
+        {...inputProps}
+        value={inputValue}
+        onChange={onChangeInput}
+        rightAction={inputAction && <InputAction>{inputAction}</InputAction>}
+      />
     }
   />
 );

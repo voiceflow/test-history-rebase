@@ -1,7 +1,7 @@
 import { createUseJobInterfaceContent, DownloadStage } from '@/components/JobInterface';
 import { ErrorStage } from '@/components/PlatformUploadPopup/components';
 import { GeneralStageType } from '@/constants/platforms';
-import { GeneralExportJob } from '@/models';
+import type { GeneralExportJob } from '@/models';
 
 export const useGeneralExportStageContent = createUseJobInterfaceContent<GeneralExportJob.AnyJob>({
   [GeneralStageType.ERROR]: {

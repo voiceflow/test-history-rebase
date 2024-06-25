@@ -3,8 +3,9 @@ import { readJSONFile } from '@ui/utils';
 import React from 'react';
 
 import { UPLOAD_ERROR } from '../../constants';
-import UploadDrop, { UploadDropProps } from '../Drop';
-import { InputRenderer } from '../LinkInput';
+import type { UploadDropProps } from '../Drop';
+import UploadDrop from '../Drop';
+import type { InputRenderer } from '../LinkInput';
 import * as S from './styles';
 
 interface JSONFile {
@@ -34,7 +35,10 @@ const UploadJSON: React.FC<UploadJSONProps> = ({ onChange, onClose, value }) => 
 
     fileReader.onloadend = (event) => {
       try {
-        const file = readJSONFile<{ document?: object; datasources?: object }>(acceptedFiles[0], event.target!, ['document', 'datasources']);
+        const file = readJSONFile<{ document?: object; datasources?: object }>(acceptedFiles[0], event.target!, [
+          'document',
+          'datasources',
+        ]);
 
         onChange(file);
       } catch {

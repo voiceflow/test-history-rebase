@@ -1,7 +1,7 @@
-import { NodeData } from '@realtime-sdk/models';
+import type { NodeData } from '@realtime-sdk/models';
 import { BaseNode } from '@voiceflow/base-types';
-import { ChatNode } from '@voiceflow/chat-types';
-import { Nullish } from '@voiceflow/common';
+import type { ChatNode } from '@voiceflow/chat-types';
+import type { Nullish } from '@voiceflow/common';
 import * as Platform from '@voiceflow/platform-config/backend';
 
 import { baseCaptureV2Adapter } from '../base';
@@ -31,7 +31,9 @@ const captureAdapter = createBlockAdapter<ChatNode.CaptureV2.StepData, Omit<Node
               key: '',
               name: '',
               inputs: [],
-              slots: (intent?.slots as Nullish<Platform.Common.Chat.Models.Intent.Slot[]>)?.map(Platform.Common.Chat.Utils.Intent.slotSanitizer),
+              slots: (intent?.slots as Nullish<Platform.Common.Chat.Models.Intent.Slot[]>)?.map(
+                Platform.Common.Chat.Utils.Intent.slotSanitizer
+              ),
             },
           }
         : { type: captureType, variable },

@@ -1,5 +1,5 @@
-import { SchemaVersion } from '@realtime-sdk/schema-version/schema-version.enum';
-import { RealtimeError } from '@realtime-sdk/types';
+import type { SchemaVersion } from '@realtime-sdk/schema-version/schema-version.enum';
+import type { RealtimeError } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 
 import { versionType } from './utils';
@@ -21,6 +21,10 @@ export interface MigratePayload {
   versionID: string;
 }
 
-export const negotiate = Utils.protocol.createAsyncAction<NegotiatePayload, NegotiateResultPayload>(versionSchemaType('NEGOTIATE'));
+export const negotiate = Utils.protocol.createAsyncAction<NegotiatePayload, NegotiateResultPayload>(
+  versionSchemaType('NEGOTIATE')
+);
 
-export const migrate = Utils.protocol.createAsyncAction<MigratePayload, NegotiateResultPayload, RealtimeError>(versionSchemaType('MIGRATE'));
+export const migrate = Utils.protocol.createAsyncAction<MigratePayload, NegotiateResultPayload, RealtimeError>(
+  versionSchemaType('MIGRATE')
+);

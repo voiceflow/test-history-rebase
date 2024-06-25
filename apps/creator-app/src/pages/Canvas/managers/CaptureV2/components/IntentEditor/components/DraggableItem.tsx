@@ -1,17 +1,21 @@
 import composeRef from '@seznam/compose-react-refs';
-import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Platform from '@voiceflow/platform-config';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
-import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
+import type {
+  DragPreviewComponentProps,
+  ItemComponentProps,
+  MappedItemComponentHandlers,
+} from '@/components/DraggableList';
 import EntityPromptSection from '@/components/EntityPromptSection';
 import * as Designer from '@/ducks/designer';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectTypeConfig, useAutoScrollNodeIntoView, useSelector } from '@/hooks';
 import { useEntityCreateModal, useEntityEditModal } from '@/hooks/modal.hook';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
+import type { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 import { isDialogflowPlatform, isGooglePlatform } from '@/utils/typeGuards';
 
 import { ENTIRE_USER_REPLY_ID } from '../../constants';
@@ -66,7 +70,9 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
     } else {
       onUpdate({
         id: slotID,
-        dialog: projectConfig.utils.intent.slotDialogSanitizer({ prompt: [projectConfig.utils.intent.promptFactory({ defaultVoice })] }),
+        dialog: projectConfig.utils.intent.slotDialogSanitizer({
+          prompt: [projectConfig.utils.intent.promptFactory({ defaultVoice })],
+        }),
       });
     }
   };
@@ -90,7 +96,10 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
 
   const autofocus = latestCreatedKey === itemKey || editor.data.intent?.slots.length === 1;
 
-  const [sectionRef, scrollIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: autofocus, options: { block: 'end' } });
+  const [sectionRef, scrollIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({
+    condition: autofocus,
+    options: { block: 'end' },
+  });
 
   return (
     <EditorV2.PersistCollapse namespace={['CaptureSection', item.id || itemKey]} defaultCollapsed={!autofocus}>
@@ -103,7 +112,11 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
               <SectionV2.CollapseSection
                 ref={composeRef(ref, sectionRef) as React.Ref<HTMLDivElement>}
                 header={
-                  <SectionV2.Header ref={connectedDragRef} sticky sticked={sticked && !collapsed && !isDraggingPreview && !isDragging}>
+                  <SectionV2.Header
+                    ref={connectedDragRef}
+                    sticky
+                    sticked={sticked && !collapsed && !isDraggingPreview && !isDragging}
+                  >
                     <SectionV2.Title bold={!collapsed}>{`Capture ${entity?.name ?? index + 1}`}</SectionV2.Title>
 
                     <SectionV2.CollapseArrowIcon collapsed={collapsed} />

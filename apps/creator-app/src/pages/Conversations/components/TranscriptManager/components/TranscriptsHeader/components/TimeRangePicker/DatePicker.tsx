@@ -1,8 +1,8 @@
 import { TimeRange } from '@voiceflow/internal';
-import { PopperTypes } from '@voiceflow/ui';
+import type { PopperTypes } from '@voiceflow/ui';
 import dayjs from 'dayjs';
 import React from 'react';
-import { DateRange } from 'react-day-picker';
+import type { DateRange } from 'react-day-picker';
 
 import DropdownMultiselect from '@/components/DropdownMultiselect';
 import { isBuiltInRange } from '@/pages/Conversations/constants';

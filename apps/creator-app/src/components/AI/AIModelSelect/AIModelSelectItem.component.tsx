@@ -7,7 +7,7 @@ import { getAdvancedAiModelUpgradeModal } from '@/config/planPermission/advanced
 import { useAIModelEntitlement } from '@/hooks/entitlements.hook';
 import { useUpgradeModal } from '@/hooks/modal.hook';
 
-import { IAIModelSelectItem } from './AIModelSelect.interface';
+import type { IAIModelSelectItem } from './AIModelSelect.interface';
 
 export const AIModelSelectItem: React.FC<IAIModelSelectItem> = ({ model, onClick, testID }) => {
   const aiModelEntitlement = useAIModelEntitlement();

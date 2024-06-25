@@ -21,7 +21,9 @@ const ChartContainer = styled.div<ChartContainerProps>`
     transform: translate3d(-50%, -50%, 0);
     border: ${({ size }) => Math.floor(size / 13.5)}px solid rgba(255, 255, 255, 0.24);
     border-radius: 50%;
-    box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.06), inset 0 0 0 ${({ size }) => size / 5}px #fff;
+    box-shadow:
+      0 0 8px 0 rgba(0, 0, 0, 0.06),
+      inset 0 0 0 ${({ size }) => size / 5}px #fff;
     content: '';
     z-index: 1;
     pointer-events: none;

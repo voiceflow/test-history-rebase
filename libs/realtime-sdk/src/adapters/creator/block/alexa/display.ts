@@ -1,4 +1,4 @@
-import { AlexaNode } from '@voiceflow/alexa-types';
+import type { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseNode } from '@voiceflow/base-types';
 
 import { visualOutPortsAdapter, visualOutPortsAdapterV2 } from '../base/visual';

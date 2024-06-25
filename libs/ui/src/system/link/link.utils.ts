@@ -2,8 +2,8 @@ import { changeColorShade } from '@ui/utils/colors';
 
 import * as C from './link.constant';
 import * as E from './link.enum';
-import * as I from './link.interface';
-import * as S from './link.style';
+import type * as I from './link.interface';
+import type * as S from './link.style';
 
 export const formatHref = (href: string | undefined, target: string) =>
   target !== '_blank' || !href || !!href.match(C.PROTOCOL_POSTFIX_REGEXP) ? href : `//${href}`;

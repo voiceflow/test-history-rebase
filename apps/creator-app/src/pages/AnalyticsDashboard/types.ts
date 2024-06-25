@@ -1,6 +1,6 @@
-import { DonutChartDatum } from '@voiceflow/ui';
+import type { DonutChartDatum } from '@voiceflow/ui';
 
-import { PeriodFilterOption, QueryKind, QueryState } from './constants';
+import type { PeriodFilterOption, QueryKind, QueryState } from './constants';
 
 type TimeSeriesPoint = [time: Date, value: number];
 

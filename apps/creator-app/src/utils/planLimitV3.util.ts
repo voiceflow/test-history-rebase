@@ -1,9 +1,19 @@
-import { PlanType } from '@voiceflow/internal';
+import type { PlanType } from '@voiceflow/internal';
 
-import { BaseStaticLimit, EntitlementLimitDef, EntitlementType, LimitKey, LIMITS, Limits, LimitV3 } from '@/config/planLimitV3';
-import { LimitType } from '@/constants/limits';
+import type {
+  BaseStaticLimit,
+  EntitlementLimitDef,
+  EntitlementType,
+  LimitKey,
+  Limits,
+  LimitV3,
+} from '@/config/planLimitV3';
+import { LIMITS } from '@/config/planLimitV3';
+import type { LimitType } from '@/constants/limits';
 
-export type PlanLimitConfig<L extends LimitType> = L extends LimitKey ? Limits[L]['limits'][keyof Limits[L]['limits']] : never;
+export type PlanLimitConfig<L extends LimitType> = L extends LimitKey
+  ? Limits[L]['limits'][keyof Limits[L]['limits']]
+  : never;
 
 export type PlanLimitDefinition<L extends LimitType> = L extends LimitKey ? PlanLimitConfig<L> : never;
 

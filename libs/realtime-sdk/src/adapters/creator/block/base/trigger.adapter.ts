@@ -1,7 +1,7 @@
-import { NodeData } from '@realtime-sdk/models';
+import type { NodeData } from '@realtime-sdk/models';
 import * as RealtimeUtilsPort from '@realtime-sdk/utils/port';
 import { Utils } from '@voiceflow/common';
-import { TriggerNodeData } from '@voiceflow/dtos';
+import type { TriggerNodeData } from '@voiceflow/dtos';
 
 import { createBlockAdapter, createOutPortsAdapterV2, outPortDataFromDB, outPortDataToDB } from '../utils';
 

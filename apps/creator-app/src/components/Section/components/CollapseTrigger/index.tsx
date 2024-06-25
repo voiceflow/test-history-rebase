@@ -37,7 +37,10 @@ const CollapseTrigger: React.FC<CollapseTriggerProps> = ({ disabled, onToggle, i
     {variant === SectionToggleVariant.ADD_V2 && (
       <ToggleAddContainer>
         <System.IconButtonsGroup.Base>
-          <System.IconButton.Base icon={isCollapsed ? 'plus' : 'minus'} onClick={preventDefault(onToggle as React.MouseEventHandler)} />
+          <System.IconButton.Base
+            icon={isCollapsed ? 'plus' : 'minus'}
+            onClick={preventDefault(onToggle as React.MouseEventHandler)}
+          />
         </System.IconButtonsGroup.Base>
       </ToggleAddContainer>
     )}

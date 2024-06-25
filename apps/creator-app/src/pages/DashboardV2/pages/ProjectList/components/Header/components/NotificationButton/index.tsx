@@ -3,8 +3,9 @@ import React from 'react';
 
 import Page from '@/components/Page';
 import UpdatesPopover from '@/components/UpdatesPopover';
+import type { Notification } from '@/ducks/notifications';
 import * as Notifications from '@/ducks/notifications';
-import { Notification, notificationsSelector, NotificationType } from '@/ducks/notifications';
+import { notificationsSelector, NotificationType } from '@/ducks/notifications';
 import { useDispatch, useSelector, useSetup } from '@/hooks';
 
 import * as S from './styles';

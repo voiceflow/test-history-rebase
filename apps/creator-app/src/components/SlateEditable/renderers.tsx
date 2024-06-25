@@ -1,5 +1,5 @@
 import React from 'react';
-import { RenderElementProps, RenderLeafProps, RenderPlaceholderProps } from 'slate-react';
+import type { RenderElementProps, RenderLeafProps, RenderPlaceholderProps } from 'slate-react';
 
 import { DefaultElement, LinkElement, Placeholder, PrismVariable, Text, VariableElement } from './components';
 import { EditorAPI, PrismVariablesProperty } from './editor';

@@ -1,12 +1,12 @@
-import { SvgIconTypes } from '@voiceflow/ui';
+import type { SvgIconTypes } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 
-import { CombinedAPI } from '@/pages/Canvas/types';
+import type { CombinedAPI } from '@/pages/Canvas/types';
 import { ClassName } from '@/styles/constants';
 
 import { Container, Section } from './components';
-import { BlockSectionProps } from './components/BlockSection';
+import type { BlockSectionProps } from './components/BlockSection';
 import { useBlockAPI } from './hooks';
 
 export * from './constants';
@@ -33,7 +33,20 @@ export interface BlockProps extends BlockSectionProps {
 
 const Block = React.forwardRef<CombinedAPI, React.PropsWithChildren<BlockProps>>(
   (
-    { nodeID, palette, onClick, sections = [], children, className, isDisabled, onMouseMove, onMouseDown, onMouseEnter, onMouseLeave, ...props },
+    {
+      nodeID,
+      palette,
+      onClick,
+      sections = [],
+      children,
+      className,
+      isDisabled,
+      onMouseMove,
+      onMouseDown,
+      onMouseEnter,
+      onMouseLeave,
+      ...props
+    },
     ref
   ) => {
     const blockAPI = useBlockAPI();

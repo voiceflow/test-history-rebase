@@ -1,7 +1,8 @@
 import { css, styled, transition } from '@ui/styles';
 import { spinReverseStyle, spinStyle } from '@ui/styles/animations/Spin';
 import _isNumber from 'lodash/isNumber';
-import { space, SpaceProps } from 'styled-system';
+import type { SpaceProps } from 'styled-system';
+import { space } from 'styled-system';
 
 import { Variant } from './constants';
 
@@ -37,7 +38,8 @@ export const Container = styled.span<ContainerProps>`
   color: ${({ theme, color, variant }) => (variant && theme.components.icon[variant]?.color) || color};
   background: transparent;
 
-  ${({ theme, transition }) => transition && theme.transition(...(typeof transition === 'string' ? [transition] : transition))}
+  ${({ theme, transition }) =>
+    transition && theme.transition(...(typeof transition === 'string' ? [transition] : transition))}
   ${({ rotation }) =>
     _isNumber(rotation) &&
     css`
@@ -117,7 +119,9 @@ export const Container = styled.span<ContainerProps>`
     const iconVariant = theme.components.icon[variant];
 
     const activeStyle = css`
-      color: ${variant === Variant.STANDARD && clickable ? '#132144' : iconVariant?.activeColor || iconVariant?.hoverColor || color};
+      color: ${variant === Variant.STANDARD && clickable
+        ? '#132144'
+        : iconVariant?.activeColor || iconVariant?.hoverColor || color};
       opacity: 1;
     `;
 

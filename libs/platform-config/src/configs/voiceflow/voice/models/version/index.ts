@@ -1,5 +1,5 @@
-import * as Common from '@platform-config/configs/common';
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import type * as Common from '@platform-config/configs/common';
+import type { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 
 import * as Publishing from './publishing';
 import * as Settings from './settings';

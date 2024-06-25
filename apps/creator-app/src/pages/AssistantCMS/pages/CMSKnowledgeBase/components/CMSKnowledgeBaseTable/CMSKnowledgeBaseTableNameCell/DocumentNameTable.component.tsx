@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import { Table, Text, Tooltip } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -12,7 +12,15 @@ export const DocumentNameTable: React.FC<IDocumentNameTable> = ({ data, search }
   return (
     <Tooltip.Overflow
       referenceElement={({ ref, onOpen, onClose }) => (
-        <Table.Cell.Link ref={ref} label={data.name} overflow highlight={search} isClickable={false} onMouseEnter={onOpen} onMouseLeave={onClose} />
+        <Table.Cell.Link
+          ref={ref}
+          label={data.name}
+          overflow
+          highlight={search}
+          isClickable={false}
+          onMouseEnter={onOpen}
+          onMouseLeave={onClose}
+        />
       )}
     >
       {() => (

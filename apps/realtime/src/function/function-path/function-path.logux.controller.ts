@@ -14,7 +14,7 @@ export class FunctionPathLoguxController {
   constructor(
     @Inject(FunctionPathService)
     private readonly service: FunctionPathService
-  ) { }
+  ) {}
 
   @Action.Async(Actions.FunctionPath.CreateOne)
   @Authorize.Permissions<Actions.FunctionPath.CreateOne.Request>([Permission.PROJECT_UPDATE], ({ context }) => ({

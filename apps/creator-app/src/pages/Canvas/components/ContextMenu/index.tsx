@@ -1,4 +1,5 @@
-import { Eventual, Utils } from '@voiceflow/common';
+import type { Eventual } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { serializeToText } from '@voiceflow/slate-serializer/text';
 import { Box, buildVirtualElement, NestedMenu, Text, useCache, useVirtualElementPopper } from '@voiceflow/ui';
@@ -9,7 +10,8 @@ import { Permission } from '@/constants/permissions';
 import { Diagram, UI } from '@/ducks';
 import { useDispatch, usePermission } from '@/hooks';
 import { usePaymentModal } from '@/hooks/modal.hook';
-import { ClipboardContext, ContextMenuContext, ContextMenuValue, EngineContext } from '@/pages/Canvas/contexts';
+import type { ContextMenuValue } from '@/pages/Canvas/contexts';
+import { ClipboardContext, ContextMenuContext, EngineContext } from '@/pages/Canvas/contexts';
 import { MarkupContext } from '@/pages/Project/contexts';
 import { Identifier } from '@/styles/constants';
 import * as Clipboard from '@/utils/clipboard';
@@ -17,7 +19,7 @@ import { Coords } from '@/utils/geometry';
 
 import { EntityType } from '../../engine/constants';
 import { CanvasAction, TARGET_OPTIONS } from './constants';
-import { ContextMenuOption, OptionProps } from './types';
+import type { ContextMenuOption, OptionProps } from './types';
 
 type OptionHandler = (contextMenu: ContextMenuValue, props: OptionProps) => Eventual<void>;
 

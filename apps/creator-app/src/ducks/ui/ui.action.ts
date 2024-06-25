@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 
-import { ControlScheme, ZoomType } from '@/components/Canvas/constants';
+import type { ControlScheme, ZoomType } from '@/components/Canvas/constants';
 
 import { STATE_KEY } from './ui.state';
 

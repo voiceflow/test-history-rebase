@@ -1,6 +1,7 @@
 import { styled } from '@/hocs/styled';
 
-import { BlockHeaderProps, headerInputStyles } from './HeaderInput';
+import type { BlockHeaderProps } from './HeaderInput';
+import { headerInputStyles } from './HeaderInput';
 
 const Title = styled.div<BlockHeaderProps & { disabled?: boolean }>`
   ${headerInputStyles};

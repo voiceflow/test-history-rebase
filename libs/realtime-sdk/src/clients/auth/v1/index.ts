@@ -1,4 +1,5 @@
-import { NestVersion, NestVersionOptions } from '../../nest';
+import type { NestVersionOptions } from '../../nest';
+import { NestVersion } from '../../nest';
 import { SSO } from './sso';
 
 export class V1 extends NestVersion {

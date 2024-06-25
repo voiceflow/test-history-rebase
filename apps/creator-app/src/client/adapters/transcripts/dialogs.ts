@@ -1,4 +1,3 @@
-/* eslint-disable xss/no-mixed-html */
 import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { RequestType } from '@voiceflow/dtos';
@@ -18,7 +17,7 @@ import {
   createUserMessage,
   createVisualMessage,
 } from '@/pages/Prototype/PrototypeTool/utils/message';
-import { Message } from '@/pages/Prototype/types';
+import type { Message } from '@/pages/Prototype/types';
 
 const transformSpeakTrace = (trace: SpeakTrace): SpeakTrace => {
   const {

@@ -1,4 +1,4 @@
-import { Utils } from '@voiceflow/common';
+import type { Utils } from '@voiceflow/common';
 
 export type ErrorCode<T> = T extends Utils.protocol.AsyncError<infer R> ? R : never;
 

@@ -4,9 +4,9 @@ import { UploadedStage } from '@/components/PlatformUploadPopup/components';
 import * as Project from '@/ducks/projectV2';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
-import { AlexaPublishJob, JobStageData } from '@/models';
+import type { AlexaPublishJob, JobStageData } from '@/models';
 import { ALEXA_LEARN_MORE_URL, ALEXA_SIMULATOR_URL } from '@/platforms/alexa/constants';
-import { StageComponentProps } from '@/platforms/types';
+import type { StageComponentProps } from '@/platforms/types';
 
 const SuccessStage: React.FC<StageComponentProps<AlexaPublishJob.SuccessStage>> = ({ stage }) => {
   const locales = useSelector(VersionV2.active.localesSelector);

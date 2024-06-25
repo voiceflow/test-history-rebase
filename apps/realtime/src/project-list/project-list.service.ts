@@ -103,7 +103,11 @@ export class ProjectListService {
     await this.replaceMany(workspaceID, [...projectLists, data]);
   }
 
-  public async patchOne(workspaceID: number, listID: string, data: Partial<Realtime.ProjectList>): Promise<Realtime.DBProjectList | null> {
+  public async patchOne(
+    workspaceID: number,
+    listID: string,
+    data: Partial<Realtime.ProjectList>
+  ): Promise<Realtime.DBProjectList | null> {
     return this.applyPatchByWorkspace(workspaceID, listID, () => Utils.object.pick(data, ['name']));
   }
 
@@ -126,21 +130,38 @@ export class ProjectListService {
 
     await Promise.all([
       this.logux.processAs(
-        Realtime.project.crud.removeMany({ keys: targetProjectList.projects, workspaceID: this.hashedIDService.encodeWorkspaceID(workspaceID) }),
+        Realtime.project.crud.removeMany({
+          keys: targetProjectList.projects,
+          workspaceID: this.hashedIDService.encodeWorkspaceID(workspaceID),
+        }),
         authMeta
       ),
       this.replaceMany(workspaceID, Utils.array.withoutValue(projectLists, targetProjectList)),
     ]);
   }
 
-  public async addProjectToList(workspaceID: number, listID: string, projectID: string): Promise<Realtime.DBProjectList | null> {
-    return this.applyPatchByWorkspace(workspaceID, listID, (list) => ({ projects: Utils.array.unique([projectID, ...list.projects]) }));
+  public async addProjectToList(
+    workspaceID: number,
+    listID: string,
+    projectID: string
+  ): Promise<Realtime.DBProjectList | null> {
+    return this.applyPatchByWorkspace(workspaceID, listID, (list) => ({
+      projects: Utils.array.unique([projectID, ...list.projects]),
+    }));
   }
 
-  public async removeProjectFromList(authMeta: AuthMetaPayload, workspaceID: number, listID: string, projectID: string): Promise<void> {
+  public async removeProjectFromList(
+    authMeta: AuthMetaPayload,
+    workspaceID: number,
+    listID: string,
+    projectID: string
+  ): Promise<void> {
     await Promise.all([
       this.logux.processAs(
-        Realtime.project.crud.remove({ key: projectID, workspaceID: this.hashedIDService.encodeWorkspaceID(workspaceID) }),
+        Realtime.project.crud.remove({
+          key: projectID,
+          workspaceID: this.hashedIDService.encodeWorkspaceID(workspaceID),
+        }),
         authMeta
       ),
       this.applyPatchByWorkspace(workspaceID, listID, (list) => ({

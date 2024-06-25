@@ -5,12 +5,13 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import SlateEditable from '@/components/SlateEditable';
 import { BlockType } from '@/constants';
 
-import { NodeConfig } from '../types';
+import type { NodeConfig } from '../types';
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.CardV2, Realtime.NodeData.CardV2BuiltInPorts> = {
   type: BlockType.CARDV2,
   icon: 'cardV2',
-  isMergeTerminator: ({ data }) => Realtime.Utils.typeGuards.isCardV2NodeData(data) && Boolean(data.noMatch || data.noReply),
+  isMergeTerminator: ({ data }) =>
+    Realtime.Utils.typeGuards.isCardV2NodeData(data) && Boolean(data.noMatch || data.noReply),
 
   factory: (_, options) => ({
     node: {
@@ -28,7 +29,8 @@ export const NODE_CONFIG: NodeConfig<Realtime.NodeData.CardV2, Realtime.NodeData
     data: {
       name: 'Card',
       title: '',
-      description: options?.projectType === Platform.Constants.ProjectType.VOICE ? '' : SlateEditable.EditorAPI.getEmptyState(),
+      description:
+        options?.projectType === Platform.Constants.ProjectType.VOICE ? '' : SlateEditable.EditorAPI.getEmptyState(),
       imageUrl: '',
       buttons: [],
       noMatch: null,

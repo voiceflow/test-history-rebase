@@ -3,11 +3,11 @@ import { Box, Upload } from '@voiceflow/ui';
 import React from 'react';
 
 import SSMLWithVars from '@/components/SSMLWithVars';
-import { TextEditorRef } from '@/components/TextEditor/types';
+import type { TextEditorRef } from '@/components/TextEditor/types';
 import VariablesInput from '@/components/VariablesInput';
 import { useActiveProjectPlatform } from '@/hooks';
 
-import { VoiceMessageProps, VoiceMessageRef } from '../types';
+import type { VoiceMessageProps, VoiceMessageRef } from '../types';
 
 const SpeakAudioItem = React.forwardRef<VoiceMessageRef, VoiceMessageProps>(
   ({ message, placeholder, autoFocus, onChange, readOnly, onEmpty, isActive }, ref) => {
@@ -20,7 +20,9 @@ const SpeakAudioItem = React.forwardRef<VoiceMessageRef, VoiceMessageProps>(
       ref,
       () => ({
         getCurrentValue: () =>
-          Realtime.isSSML(message) ? { ...message, content: ssmlRef.current?.getCurrentValue()?.text ?? message.content } : message,
+          Realtime.isSSML(message)
+            ? { ...message, content: ssmlRef.current?.getCurrentValue()?.text ?? message.content }
+            : message,
       }),
       [message]
     );
@@ -41,7 +43,11 @@ const SpeakAudioItem = React.forwardRef<VoiceMessageRef, VoiceMessageProps>(
       />
     ) : (
       <>
-        <Upload.AudioUpload audio={message.url} update={(url) => onChange({ url: url ?? '' })} renderInput={VariablesInput.renderInput} />
+        <Upload.AudioUpload
+          audio={message.url}
+          update={(url) => onChange({ url: url ?? '' })}
+          renderInput={VariablesInput.renderInput}
+        />
 
         {isGoogle && message.url && (
           <Box mt={12}>

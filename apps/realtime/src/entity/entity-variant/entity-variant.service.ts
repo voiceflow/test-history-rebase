@@ -52,7 +52,10 @@ export class EntityVariantService extends CMSObjectService<EntityVariantORM> {
 
   /* Create */
 
-  async createManyAndSync(data: CMSCreateForUserData<EntityVariantORM>[], { userID, context }: { userID: number; context: CMSContext }) {
+  async createManyAndSync(
+    data: CMSCreateForUserData<EntityVariantORM>[],
+    { userID, context }: { userID: number; context: CMSContext }
+  ) {
     const entityVariants = await this.createManyForUser(userID, data.map(injectAssistantAndEnvironmentIDs(context)));
 
     return {
@@ -84,7 +87,10 @@ export class EntityVariantService extends CMSObjectService<EntityVariantORM> {
     return this.orm.deleteManyByEnvironmentAndIDs(environmentID, ids);
   }
 
-  async broadcastDeleteMany({ delete: del }: { delete: { entityVariants: EntityVariantObject[] } }, meta: CMSBroadcastMeta) {
+  async broadcastDeleteMany(
+    { delete: del }: { delete: { entityVariants: EntityVariantObject[] } },
+    meta: CMSBroadcastMeta
+  ) {
     await this.logux.processAs(
       Actions.EntityVariant.DeleteMany({
         ids: toPostgresEntityIDs(del.entityVariants),

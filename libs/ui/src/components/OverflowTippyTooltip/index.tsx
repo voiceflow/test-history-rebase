@@ -2,7 +2,7 @@ import { usePersistFunction, useResizeObserver, useToggle } from '@ui/hooks';
 import React from 'react';
 
 import TippyTooltip from '../TippyTooltip';
-import * as T from './types';
+import type * as T from './types';
 
 export * as OverflowTippyTooltipTypes from './types';
 

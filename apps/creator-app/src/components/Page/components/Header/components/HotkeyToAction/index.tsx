@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { useHotkey } from '@/hooks/hotkeys';
-import { Hotkey, HOTKEY_LABEL_MAP } from '@/keymap';
+import type { Hotkey } from '@/keymap';
+import { HOTKEY_LABEL_MAP } from '@/keymap';
 
 import * as S from './styles';
 

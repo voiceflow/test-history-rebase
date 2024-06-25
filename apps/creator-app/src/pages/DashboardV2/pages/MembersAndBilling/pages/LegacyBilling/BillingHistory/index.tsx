@@ -2,7 +2,7 @@ import { Box, Link, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import Page from '@/components/Page';
-import { Billing } from '@/models';
+import type { Billing } from '@/models';
 
 import { Status } from './hooks';
 import * as S from './styles';
@@ -42,7 +42,11 @@ const BillingHistory: React.FC<BillingHistoryProps> = ({ data, loadMore, status,
       </React.Fragment>
     ))}
 
-    {hasMore && <S.LoadMoreButton onClick={loadMore}>{status === Status.LOADING_MORE ? 'Loading...' : 'View More'}</S.LoadMoreButton>}
+    {hasMore && (
+      <S.LoadMoreButton onClick={loadMore}>
+        {status === Status.LOADING_MORE ? 'Loading...' : 'View More'}
+      </S.LoadMoreButton>
+    )}
   </Page.Section>
 );
 

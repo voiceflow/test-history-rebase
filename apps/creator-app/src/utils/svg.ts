@@ -1,4 +1,4 @@
-import { Point } from '@/types';
+import type { Point } from '@/types';
 
 export const pathBuilder = (initialX: number, initialY: number) => {
   let str = `M ${initialX} ${initialY}`;

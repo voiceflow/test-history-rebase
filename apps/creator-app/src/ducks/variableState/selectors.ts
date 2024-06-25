@@ -5,7 +5,7 @@ import { createSelector } from 'reselect';
 import { BlockType } from '@/constants';
 import * as CreatorV2 from '@/ducks/creatorV2';
 import { createCRUDSelectors } from '@/ducks/utils/crudV2';
-import { Variable, VariableValue } from '@/models';
+import type { Variable, VariableValue } from '@/models';
 
 import { ALL_PROJECT_VARIABLES_ID, STATE_KEY } from './constants';
 
@@ -17,7 +17,10 @@ export const {
   getByID: getVariableStateByIDSelector,
 } = createCRUDSelectors(STATE_KEY);
 
-export const selectedVariableStateSelector = createSelector([rootVariableStatesSelector], (variableStates) => variableStates?.selectedState || null);
+export const selectedVariableStateSelector = createSelector(
+  [rootVariableStatesSelector],
+  (variableStates) => variableStates?.selectedState || null
+);
 
 export const selectedVariableStateIDSelector = createSelector(
   [selectedVariableStateSelector],
@@ -73,19 +76,26 @@ export const selectedStartFromNodeIDSelector = createSelector(
   }
 );
 
-export const selectedStartFromDiagramIDSelector = createSelector([selectedVariableStateSelector], (selectedVariableState) => {
-  if (!selectedVariableState?.startFrom) return null;
-  return selectedVariableState?.startFrom?.diagramID || null;
-});
+export const selectedStartFromDiagramIDSelector = createSelector(
+  [selectedVariableStateSelector],
+  (selectedVariableState) => {
+    if (!selectedVariableState?.startFrom) return null;
+    return selectedVariableState?.startFrom?.diagramID || null;
+  }
+);
 
-export const selectedVariablesStateVariablesSelector = createSelector([selectedVariableStateSelector], (selectedVariableState) => {
-  if (!selectedVariableState) return [];
-  return createVariableList(selectedVariableState.variables);
-});
+export const selectedVariablesStateVariablesSelector = createSelector(
+  [selectedVariableStateSelector],
+  (selectedVariableState) => {
+    if (!selectedVariableState) return [];
+    return createVariableList(selectedVariableState.variables);
+  }
+);
 
 export const selectedVariableStateSavedStateSelector = createSelector(
   [selectedVariableStateIDSelector, getVariableStateByIDSelector],
-  (selectedVariableStateID, getSavedStateByID) => selectedVariableStateID && getSavedStateByID({ id: selectedVariableStateID })
+  (selectedVariableStateID, getSavedStateByID) =>
+    selectedVariableStateID && getSavedStateByID({ id: selectedVariableStateID })
 );
 
 export const IsVariableStateUnsyncSelector = createSelector(

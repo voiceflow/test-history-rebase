@@ -1,4 +1,4 @@
-import { ReferenceResourceType } from '@voiceflow/dtos';
+import type { ReferenceResourceType } from '@voiceflow/dtos';
 
 import { PostgresObjectIDMutableORM } from '@/postgres/common/orms/postgres-object-id-mutable.orm';
 

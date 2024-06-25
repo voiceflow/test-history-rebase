@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 import { Entity, Enum, Index, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
 import type { ConditionAssertion, Markup } from '@voiceflow/dtos';
 import { ConditionType } from '@voiceflow/dtos';

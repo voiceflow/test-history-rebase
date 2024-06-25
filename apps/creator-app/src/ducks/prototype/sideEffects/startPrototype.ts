@@ -1,9 +1,13 @@
 import { PrototypeStatus } from '@/constants/prototype';
-import { selectedStartFromDiagramIDSelector, selectedStartFromNodeIDSelector, selectedVariablesSelector } from '@/ducks/variableState/selectors';
-import { SyncThunk } from '@/store/types';
+import {
+  selectedStartFromDiagramIDSelector,
+  selectedStartFromNodeIDSelector,
+  selectedVariablesSelector,
+} from '@/ducks/variableState/selectors';
+import type { SyncThunk } from '@/store/types';
 
 import { pushContextHistory, pushPrototypeVisualDataHistory, updatePrototype } from '../actions';
-import { Context } from '../types';
+import type { Context } from '../types';
 
 const startPrototype = (): SyncThunk => (dispatch, getState) => {
   const state = getState();

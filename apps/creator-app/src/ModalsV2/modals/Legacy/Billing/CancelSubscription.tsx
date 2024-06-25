@@ -26,7 +26,9 @@ const CancelSubscription = manager.create('LegacyBillingCancelSubscription', () 
 
         await paymentAPI.refetchPlanSubscription();
         tracking.trackPlanChanged({ currentPlan: workspace.plan ?? PlanType.PRO, newPlan: PlanType.STARTER });
-        toast.success(`Subscription cancelled. Pro features will be available until ${paymentAPI.planSubscription?.nextBillingDate}`);
+        toast.success(
+          `Subscription cancelled. Pro features will be available until ${paymentAPI.planSubscription?.nextBillingDate}`
+        );
         api.enableClose();
         api.close();
       } catch {
@@ -38,13 +40,15 @@ const CancelSubscription = manager.create('LegacyBillingCancelSubscription', () 
 
     return (
       <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={400}>
-        <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>Cancel Subscription</Modal.Header>
+        <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>
+          Cancel Subscription
+        </Modal.Header>
 
         <Modal.Body centered>
           <Box>
             Downgrading will result in limited feature access. We recommend you review the{' '}
-            <System.Link.Anchor href={PRICING_LINK}>pricing page</System.Link.Anchor> to see what's included in our tiers. If you're all set, click
-            the button below to cancel your subscription.
+            <System.Link.Anchor href={PRICING_LINK}>pricing page</System.Link.Anchor> to see what's included in our
+            tiers. If you're all set, click the button below to cancel your subscription.
           </Box>
         </Modal.Body>
 

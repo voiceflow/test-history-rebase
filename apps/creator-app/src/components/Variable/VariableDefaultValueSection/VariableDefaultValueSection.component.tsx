@@ -11,7 +11,11 @@ import { onOpenInternalURLInANewTabFactory } from '@/utils/window';
 
 import type { IVariableDefaultValueSection } from './VariableDefaultValueSection.interface';
 
-export const VariableDefaultValueSection: React.FC<IVariableDefaultValueSection> = ({ value, disabled, onValueChange }) => {
+export const VariableDefaultValueSection: React.FC<IVariableDefaultValueSection> = ({
+  value,
+  disabled,
+  onValueChange,
+}) => {
   const TEST_ID = tid('variable', 'default-value');
 
   const modifiers = usePopperModifiers([popperPaddingModifierFactory({ padding: 3 })]);

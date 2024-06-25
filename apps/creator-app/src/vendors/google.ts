@@ -1,5 +1,5 @@
 import { GOOGLE_CLIENT_ID } from '@/config';
-import { GooglePromptType } from '@/constants';
+import type { GooglePromptType } from '@/constants';
 
 export const initialize = async () => {
   await new Promise((resolve) => {

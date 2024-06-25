@@ -4,7 +4,7 @@ import type { BasePKEntity, Constructor, CreateData, DEFAULT_OR_NULL_COLUMN, ToO
 
 export interface ORM<
   BaseEntity extends BasePKEntity,
-  DiscriminatorEntity extends Omit<BaseEntity, typeof DEFAULT_OR_NULL_COLUMN>
+  DiscriminatorEntity extends Omit<BaseEntity, typeof DEFAULT_OR_NULL_COLUMN>,
 > {
   Entity: Constructor<BaseEntity>;
 

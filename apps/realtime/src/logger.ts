@@ -1,4 +1,5 @@
-import { createLogger as createVFLogger, LogFormat, Logger, LogLevel } from '@voiceflow/logger';
+import type { Logger, LogLevel } from '@voiceflow/logger';
+import { createLogger as createVFLogger, LogFormat } from '@voiceflow/logger';
 
 export const createLogger = (env: string, level: LogLevel): Logger =>
   createVFLogger({

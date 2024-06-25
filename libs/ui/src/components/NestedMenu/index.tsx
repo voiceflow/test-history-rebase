@@ -1,13 +1,13 @@
 import BaseMenu from '@ui/components/Menu';
-import { PopperProps } from '@voiceflow/legacy-react-popper';
+import type { PopperProps } from '@voiceflow/legacy-react-popper';
 import React from 'react';
 
 import defaultMenuLabelRenderer from './defaultMenuLabelRenderer';
 import Menu, { DEFAULT_PATH } from './Menu';
-import { NestedMenuInternalProps, NestedMenuMultilevelProps, NestedMenuWithIDMultilevelProps } from './Menu/types';
+import type { NestedMenuInternalProps, NestedMenuMultilevelProps, NestedMenuWithIDMultilevelProps } from './Menu/types';
 import MenuOptions from './MenuOptions';
 import OptionContainer from './OptionContainer';
-import { MenuItemMultilevel, MenuItemWithID, RenderOptionLabel } from './types';
+import type { MenuItemMultilevel, MenuItemWithID, RenderOptionLabel } from './types';
 
 export { getFormattedLabel as getNestedMenuFormattedLabel } from './getFormattedLabel';
 export { defaultMenuLabelRenderer };
@@ -47,7 +47,9 @@ function NestedMenu({
   renderOptionLabel = defaultMenuLabelRenderer,
   ...props
 }: ExtraProps<MenuItemMultilevel<any>, any> &
-  Omit<NestedMenuInternalProps, 'options' | ExcludedProps> & { options: MenuItemMultilevel<any>[] }): React.ReactElement {
+  Omit<NestedMenuInternalProps, 'options' | ExcludedProps> & {
+    options: MenuItemMultilevel<any>[];
+  }): React.ReactElement {
   const [childFocusItemIndex, setChildFocusItemIndex] = React.useState<number | null>(null);
   const [focusedOptionIndex, updateFocusedOptionIndex] = React.useState<number | null>(null);
 

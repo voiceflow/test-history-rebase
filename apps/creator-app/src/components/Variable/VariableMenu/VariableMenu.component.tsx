@@ -1,5 +1,5 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { Variable } from '@voiceflow/dtos';
+import type { Variable } from '@voiceflow/dtos';
 import { ActionButtons, Menu, MENU_ITEM_MIN_HEIGHT, Search, VirtualizedContent } from '@voiceflow/ui-next';
 import React, { useMemo, useState } from 'react';
 

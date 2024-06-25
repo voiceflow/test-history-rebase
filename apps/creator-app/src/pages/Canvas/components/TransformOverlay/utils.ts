@@ -1,5 +1,5 @@
-import { MarkupTransform } from '@/pages/Canvas/types';
-import { Pair, Point } from '@/types';
+import type { MarkupTransform } from '@/pages/Canvas/types';
+import type { Pair, Point } from '@/types';
 import { getRectCenter } from '@/utils/dom';
 import { Coords, Vector } from '@/utils/geometry';
 import { getHypotenuse, pivotPoint, scalePoint } from '@/utils/math';
@@ -60,7 +60,10 @@ export const getScaleTransformations = (
   // get simulate the next origin point based on scale
   const scaledOrigin = scalePoint(startOrigin, center, scale);
 
-  const targetCenter: Point = [center[0] + startOrigin[0] - scaledOrigin[0], center[1] + startOrigin[1] - scaledOrigin[1]];
+  const targetCenter: Point = [
+    center[0] + startOrigin[0] - scaledOrigin[0],
+    center[1] + startOrigin[1] - scaledOrigin[1],
+  ];
   const currentCenter = getRectCenter(currentTransform.rect);
 
   return {

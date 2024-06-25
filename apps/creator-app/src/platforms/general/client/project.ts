@@ -1,4 +1,4 @@
-import { AnyRecord, BaseModels } from '@voiceflow/base-types';
+import type { AnyRecord, BaseModels } from '@voiceflow/base-types';
 
 import { createProjectService } from '@/client/services';
 import { GENERAL_SERVICE_ENDPOINT } from '@/config';

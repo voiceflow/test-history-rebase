@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 
 import type { knowledgeBaseReducer } from './knowledge-base.reducer';
 

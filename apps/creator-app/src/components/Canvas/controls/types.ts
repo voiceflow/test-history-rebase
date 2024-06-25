@@ -1,8 +1,8 @@
-import React from 'react';
+import type React from 'react';
 
-import { Either } from '@/types';
+import type { Either } from '@/types';
 
-import { ControlScheme, ControlType } from '../constants';
+import type { ControlScheme, ControlType } from '../constants';
 
 export type GestureEvent = UIEvent & {
   scale?: number;
@@ -88,4 +88,7 @@ export interface ControlInterface {
   keydown: (event: KeyboardEvent) => void;
 }
 
-export type GenerateControlInterface<T extends any[] = []> = (handle: (action: ControlAction) => void, ...args: T) => ControlInterface;
+export type GenerateControlInterface<T extends any[] = []> = (
+  handle: (action: ControlAction) => void,
+  ...args: T
+) => ControlInterface;

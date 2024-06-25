@@ -1,7 +1,8 @@
 import { SectionV2, TippyTooltip, Toggle } from '@voiceflow/ui';
 import React from 'react';
 
-import { AIPromptSettings, IAIPromptSettings } from '@/components/AI/AIPromptSettings/AIPromptSettings.component';
+import type { IAIPromptSettings } from '@/components/AI/AIPromptSettings/AIPromptSettings.component';
+import { AIPromptSettings } from '@/components/AI/AIPromptSettings/AIPromptSettings.component';
 
 interface IKBPromptSettingsEditor extends IAIPromptSettings {
   value: IAIPromptSettings['value'] & { overrideParams?: boolean };

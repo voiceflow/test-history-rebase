@@ -1,4 +1,7 @@
-export const getScale = (containerNode: HTMLDivElement | null, dimension: { width: number; height: number }): number => {
+export const getScale = (
+  containerNode: HTMLDivElement | null,
+  dimension: { width: number; height: number }
+): number => {
   if (!containerNode) {
     return 1;
   }

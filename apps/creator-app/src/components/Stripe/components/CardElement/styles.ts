@@ -1,5 +1,6 @@
-import * as stripeJs from '@stripe/stripe-js';
-import { inputStyle, StyledInputProps, SvgIconTypes } from '@voiceflow/ui';
+import type * as stripeJs from '@stripe/stripe-js';
+import type { StyledInputProps, SvgIconTypes } from '@voiceflow/ui';
+import { inputStyle } from '@voiceflow/ui';
 
 import { css, styled } from '@/hocs/styled';
 

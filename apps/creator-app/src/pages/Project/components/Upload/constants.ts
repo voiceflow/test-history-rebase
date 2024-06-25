@@ -1,6 +1,6 @@
 import * as Platform from '@voiceflow/platform-config';
 import { Utils } from '@voiceflow/realtime-sdk';
-import { SvgIconTypes } from '@voiceflow/ui';
+import type { SvgIconTypes } from '@voiceflow/ui';
 
 interface PlatformIconProps {
   icon: SvgIconTypes.Icon;

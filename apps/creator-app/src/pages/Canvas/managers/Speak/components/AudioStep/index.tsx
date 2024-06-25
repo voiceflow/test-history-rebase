@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { AudioPlayer, Popper, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
@@ -10,7 +10,7 @@ import { prettifyBucketURL } from '@/utils/audio';
 import { transformVariablesToReadable } from '@/utils/slot';
 
 import StepPreview from '../StepPreview';
-import { BaseStepProps } from '../types';
+import type { BaseStepProps } from '../types';
 import PlayButton from './components/PlayButton';
 import * as S from './styles';
 
@@ -23,7 +23,8 @@ export const AudioStep: React.FC<AudioStepProps> = ({ item, palette, nextPortID,
 
   const audioPlayer = AudioPlayer.useAudioPlayer({ audioURL: item.url });
   const prettifiedURL = React.useMemo(
-    () => Utils.string.stripHTMLTags(transformVariablesToReadable(prettifyBucketURL(item.url), entitiesAndVariables.byKey)),
+    () =>
+      Utils.string.stripHTMLTags(transformVariablesToReadable(prettifyBucketURL(item.url), entitiesAndVariables.byKey)),
     [item.url, entitiesAndVariables.byKey]
   );
 
@@ -47,7 +48,9 @@ export const AudioStep: React.FC<AudioStepProps> = ({ item, palette, nextPortID,
         <Step.StepPreviewButton>
           <Popper
             placement="right-start"
-            renderContent={({ onClose }) => <StepPreview items={attachmentItems} onClose={onClose} onOpenEditor={onOpenEditor} />}
+            renderContent={({ onClose }) => (
+              <StepPreview items={attachmentItems} onClose={onClose} onOpenEditor={onOpenEditor} />
+            )}
           >
             {({ onToggle, ref, isOpened }) => (
               <Step.StepButton

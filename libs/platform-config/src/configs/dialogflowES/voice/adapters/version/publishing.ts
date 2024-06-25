@@ -4,7 +4,7 @@ import { DFESVersion } from '@voiceflow/google-dfes-types';
 import { createSimpleAdapter, createSmartSimpleAdapter } from 'bidirectional-adapter';
 
 import * as DialogflowESCommon from '../../../common';
-import * as Models from '../../models';
+import type * as Models from '../../models';
 
 type KeyRemap = [['agentName', 'invocationName'], ['triggerPhrase', 'invocationNameSamples']];
 

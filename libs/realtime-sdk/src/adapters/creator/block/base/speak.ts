@@ -1,7 +1,13 @@
-import { BaseNode } from '@voiceflow/base-types';
+import type { BaseNode } from '@voiceflow/base-types';
 
-import { NodeData } from '../../../../models';
-import { createBlockAdapter, createOutPortsAdapter, createOutPortsAdapterV2, nextOnlyOutPortsAdapter, nextOnlyOutPortsAdapterV2 } from '../utils';
+import type { NodeData } from '../../../../models';
+import {
+  createBlockAdapter,
+  createOutPortsAdapter,
+  createOutPortsAdapterV2,
+  nextOnlyOutPortsAdapter,
+  nextOnlyOutPortsAdapterV2,
+} from '../utils';
 
 const speakAdapter = createBlockAdapter<BaseNode.Speak.StepData, Omit<NodeData.Speak, 'dialogs'>>(
   ({ randomize, canvasVisibility }) => ({

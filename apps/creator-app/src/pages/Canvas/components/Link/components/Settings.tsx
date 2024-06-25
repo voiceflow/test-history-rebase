@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import { stopPropagation, SvgIcon, useCache, useToggle } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,7 +8,7 @@ import { CanvasSidebarContext, EngineContext, IsCanvasOnlyContext, LinkEntityCon
 import { useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks/canvas';
 import { ClassName } from '@/styles/constants';
 
-import { InternalLinkInstance } from '../types';
+import type { InternalLinkInstance } from '../types';
 import Button from './SettingsButton';
 import SettingsColor from './SettingsColor';
 import Container from './SettingsContainer';
@@ -32,7 +32,14 @@ interface SettingsProps {
   onChangeColor: (color: string) => void;
 }
 
-const Settings: React.FC<SettingsProps> = ({ instance, onRemove, isTextActive, onToggleText, onChangeType, onChangeColor }) => {
+const Settings: React.FC<SettingsProps> = ({
+  instance,
+  onRemove,
+  isTextActive,
+  onToggleText,
+  onChangeType,
+  onChangeColor,
+}) => {
   const engine = React.useContext(EngineContext)!;
   const linkEntity = React.useContext(LinkEntityContext)!;
   const isCanvasOnly = React.useContext(IsCanvasOnlyContext)!;
@@ -47,13 +54,15 @@ const Settings: React.FC<SettingsProps> = ({ instance, onRemove, isTextActive, o
 
   const cache = useCache({ isCanvasOnly, canvasSidebar }, { isCanvasOnly, canvasSidebar });
 
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   const setPosition = React.useCallback(() => {
     if (!engine.canvas) return;
 
     const pathRect = instance.hiddenPathRef.current?.getBoundingClientRect();
     const canvasRect = engine.canvas.getRect();
     const captionRect = instance.getCaptionRect();
-    const sidebarWidth = (cache.current.isCanvasOnly || cache.current.canvasSidebar?.visible ? 0 : SIDEBAR_WIDTH) + NAV_WIDTH;
+    const sidebarWidth =
+      (cache.current.isCanvasOnly || cache.current.canvasSidebar?.visible ? 0 : SIDEBAR_WIDTH) + NAV_WIDTH;
 
     const zoom = engine.canvas.getZoom() ?? 1;
     const zoomedOffset = OFFSET * zoom;
@@ -68,7 +77,10 @@ const Settings: React.FC<SettingsProps> = ({ instance, onRemove, isTextActive, o
       y = pathRect.top - SETTINGS_HEIGHT_WITH_OFFSET - zoomedOffset - ((captionRect.current.height ?? 0) * zoom) / 2;
       x = pathRect.left + pathRect.width / 2 - SETTINGS_WIDTH / 2;
 
-      if (y - zoomedOffset < canvasRect.top && canvasRect.bottom > pathRect.bottom + SETTINGS_HEIGHT_WITH_OFFSET + zoomedOffset) {
+      if (
+        y - zoomedOffset < canvasRect.top &&
+        canvasRect.bottom > pathRect.bottom + SETTINGS_HEIGHT_WITH_OFFSET + zoomedOffset
+      ) {
         y = Math.max(pathRect.bottom + zoomedOffset, canvasRect.top + zoomedOffset);
       } else if (y + SETTINGS_HEIGHT_WITH_OFFSET + OFFSET > canvasRect.bottom) {
         y = canvasRect.bottom - SETTINGS_HEIGHT_WITH_OFFSET - zoomedOffset;

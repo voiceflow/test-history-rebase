@@ -1,26 +1,18 @@
 import composeRef from '@seznam/compose-react-refs';
-import * as Realtime from '@voiceflow/realtime-sdk';
-import {
-  Box,
-  ContextMenu,
-  OptionsMenuOption,
-  Portal,
-  SvgIcon,
-  SvgIconTypes,
-  TippyTooltip,
-  useEnableDisable,
-  usePopper,
-} from '@voiceflow/ui';
+import type * as Realtime from '@voiceflow/realtime-sdk';
+import type { OptionsMenuOption, SvgIconTypes } from '@voiceflow/ui';
+import { Box, ContextMenu, Portal, SvgIcon, TippyTooltip, useEnableDisable, usePopper } from '@voiceflow/ui';
 import React from 'react';
 import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
-import { BlockType, DragItem } from '@/constants';
+import type { BlockType } from '@/constants';
+import { DragItem } from '@/constants';
 import { AutoPanningCacheContext } from '@/contexts/AutoPanningContext';
 import { useEventualEngine } from '@/hooks/engine.hook';
 import { useHover } from '@/hooks/hover';
 import { usePaymentModal } from '@/hooks/modal.hook';
-import { StepDragItem } from '@/pages/Canvas/components/CanvasDiagram';
+import type { StepDragItem } from '@/pages/Canvas/components/CanvasDiagram';
 import { ClassName } from '@/styles/constants';
 import { openInternalURLInANewTab } from '@/utils/window';
 

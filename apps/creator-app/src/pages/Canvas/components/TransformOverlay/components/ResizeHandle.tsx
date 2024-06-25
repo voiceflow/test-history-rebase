@@ -3,7 +3,8 @@ import React from 'react';
 
 import { useSwallowZoom } from '../hooks';
 import LineHandle from './LineHandle';
-import SquareHandle, { SquareHandleProps } from './SquareHandle';
+import type { SquareHandleProps } from './SquareHandle';
+import SquareHandle from './SquareHandle';
 
 export type ResizeHandleProps = SquareHandleProps & {
   onDragStart: (event: React.DragEvent<HTMLDivElement>) => void;
@@ -16,9 +17,29 @@ const ResizeHandle: React.FC<ResizeHandleProps> = ({ position, onDragStart }) =>
 
   return (
     <>
-      <LineHandle edge="start" position={position} draggable onMouseDown={stopPropagation()} onDragStart={onDragStart} ref={lineStartRef} />
-      <SquareHandle position={position} draggable onMouseDown={stopPropagation()} onDragStart={onDragStart} ref={squareRef} />
-      <LineHandle edge="end" position={position} draggable onMouseDown={stopPropagation()} onDragStart={onDragStart} ref={lineEndRef} />
+      <LineHandle
+        edge="start"
+        position={position}
+        draggable
+        onMouseDown={stopPropagation()}
+        onDragStart={onDragStart}
+        ref={lineStartRef}
+      />
+      <SquareHandle
+        position={position}
+        draggable
+        onMouseDown={stopPropagation()}
+        onDragStart={onDragStart}
+        ref={squareRef}
+      />
+      <LineHandle
+        edge="end"
+        position={position}
+        draggable
+        onMouseDown={stopPropagation()}
+        onDragStart={onDragStart}
+        ref={lineEndRef}
+      />
     </>
   );
 };

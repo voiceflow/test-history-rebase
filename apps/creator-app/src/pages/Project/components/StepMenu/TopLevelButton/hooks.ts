@@ -2,9 +2,10 @@ import React from 'react';
 
 import { useDeferredSearch } from '@/hooks/search.hook';
 
-import { LibraryStepType, TabData } from '../constants';
+import type { TabData } from '../constants';
+import { LibraryStepType } from '../constants';
 import Tabs from '../Tabs';
-import { LibrarySections } from './types';
+import type { LibrarySections } from './types';
 
 export const useLibrarySubMenuTabs = ({ librarySections }: { librarySections: LibrarySections }) => {
   const { templates, customBlocks } = librarySections;

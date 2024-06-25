@@ -25,7 +25,10 @@ const chatNoMatchFactory = ({ reprompts, ...options }: NoMatchFactoryOptions = {
     : [Platform.Common.Chat.CONFIG.utils.prompt.factory(options)],
 });
 
-const voiceNoMatchFactory = ({ reprompts, ...options }: NoMatchFactoryOptions = {}): Realtime.NodeData.VoiceNoMatch => ({
+const voiceNoMatchFactory = ({
+  reprompts,
+  ...options
+}: NoMatchFactoryOptions = {}): Realtime.NodeData.VoiceNoMatch => ({
   ...BASE_NO_MATCH,
   reprompts: reprompts
     ? reprompts.map((prompt) => Platform.Common.Voice.CONFIG.utils.prompt.textFactory({ content: prompt, ...options }))

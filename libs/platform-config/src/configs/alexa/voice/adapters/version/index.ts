@@ -1,15 +1,19 @@
 import * as Common from '@platform-config/configs/common';
-import { AlexaVersion } from '@voiceflow/alexa-types';
+import type { AlexaVersion } from '@voiceflow/alexa-types';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 
-import * as Models from '../../models';
+import type * as Models from '../../models';
 import * as Publishing from './publishing';
 import * as Session from './session';
 import * as Settings from './settings';
 
 export { Publishing, Session, Settings };
 
-export const simple = createMultiAdapter<AlexaVersion.Version, Models.Version.Model, Common.Voice.Adapters.Version.FromDBOptions>(
+export const simple = createMultiAdapter<
+  AlexaVersion.Version,
+  Models.Version.Model,
+  Common.Voice.Adapters.Version.FromDBOptions
+>(
   (version, options) => ({
     ...Common.Voice.Adapters.Version.simple.fromDB(version, {
       ...options,

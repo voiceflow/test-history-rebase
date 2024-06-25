@@ -20,7 +20,8 @@ import { ProjectIdentityProvider } from '@/pages/Project/contexts/ProjectIdentit
 import { Sidebar } from '../../components';
 import { getProjectStatusAndMembers } from '../../utils';
 import { Banner, EmptySearch, EmptyWorkspace, Header, TemplateSection } from './components';
-import { SortByOptions, SortOptionType } from './constants';
+import type { SortOptionType } from './constants';
+import { SortByOptions } from './constants';
 import * as S from './styles';
 import { getProjectSortFunction } from './utils';
 

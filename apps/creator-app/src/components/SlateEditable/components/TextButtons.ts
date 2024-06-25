@@ -1,7 +1,11 @@
 import { Hotkey, TextProperty } from '../constants';
 import { createTextPropertyButton, createToggleTextPropertyButton } from './utils';
 
-export const TextItalicButton = createToggleTextPropertyButton({ icon: 'systemItalic', property: TextProperty.ITALIC, hotkey: Hotkey.ITALIC });
+export const TextItalicButton = createToggleTextPropertyButton({
+  icon: 'systemItalic',
+  property: TextProperty.ITALIC,
+  hotkey: Hotkey.ITALIC,
+});
 
 export const TextUnderlineButton = createToggleTextPropertyButton({
   icon: 'systemUnderscore',

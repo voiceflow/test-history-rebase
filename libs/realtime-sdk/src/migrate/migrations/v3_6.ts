@@ -1,12 +1,14 @@
 /* eslint-disable no-param-reassign */
 import { BaseModels, BaseUtils } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { Draft } from 'immer';
+import type { Draft } from 'immer';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
-const findStartNode = (nodes: Draft<Record<string, BaseModels.BaseDiagramNode>>) => Object.values(nodes).find(BaseUtils.step.isStart);
-const findAllComponentsNodes = (nodes: Draft<Record<string, BaseModels.BaseDiagramNode>>) => Object.values(nodes).filter(BaseUtils.step.isComponent);
+const findStartNode = (nodes: Draft<Record<string, BaseModels.BaseDiagramNode>>) =>
+  Object.values(nodes).find(BaseUtils.step.isStart);
+const findAllComponentsNodes = (nodes: Draft<Record<string, BaseModels.BaseDiagramNode>>) =>
+  Object.values(nodes).filter(BaseUtils.step.isComponent);
 
 /**
  * renames intentStepIDs into menuNodeIDs and adds components and start nodes into it

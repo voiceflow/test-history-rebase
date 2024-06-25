@@ -1,6 +1,6 @@
 import { Method } from './constants';
 import createRawFetch from './raw';
-import { FetchOptions } from './types';
+import type { FetchOptions } from './types';
 import { extractBody } from './utils';
 
 export * from './constants';

@@ -7,7 +7,12 @@ import { Utils } from '@voiceflow/common';
 import { AnyResponseAttachment, AttachmentType } from '@voiceflow/dtos';
 import { NotFoundException } from '@voiceflow/exception';
 import { LoguxService } from '@voiceflow/nestjs-logux';
-import type { AnyResponseAttachmentEntity, AnyResponseAttachmentObject, AnyResponseVariantObject, CreateData } from '@voiceflow/orm-designer';
+import type {
+  AnyResponseAttachmentEntity,
+  AnyResponseAttachmentObject,
+  AnyResponseVariantObject,
+  CreateData,
+} from '@voiceflow/orm-designer';
 import { AnyResponseAttachmentORM, AnyResponseVariantORM, DatabaseTarget } from '@voiceflow/orm-designer';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 import { match } from 'ts-pattern';
@@ -15,17 +20,24 @@ import { match } from 'ts-pattern';
 import { CMSBroadcastMeta, CMSContext } from '@/types';
 
 import { cmsBroadcastContext, injectAssistantAndEnvironmentIDs, toPostgresEntityIDs } from '../../common/utils';
-import type { ResponseAnyAttachmentCreateData, ResponseAnyAttachmentReplaceData } from './response-attachment.interface';
+import type {
+  ResponseAnyAttachmentCreateData,
+  ResponseAnyAttachmentReplaceData,
+} from './response-attachment.interface';
 import { ResponseCardAttachmentService } from './response-card-attachment.service';
 import { ResponseMediaAttachmentService } from './response-media-attachment.service';
 
 @Injectable()
 export class ResponseAttachmentService {
   toJSON = (data: AnyResponseAttachmentObject) =>
-    data.type === AttachmentType.CARD ? this.responseCardAttachment.toJSON(data) : this.responseMediaAttachment.toJSON(data);
+    data.type === AttachmentType.CARD
+      ? this.responseCardAttachment.toJSON(data)
+      : this.responseMediaAttachment.toJSON(data);
 
   fromJSON = (data: AnyResponseAttachment) =>
-    data.type === AttachmentType.CARD ? this.responseCardAttachment.fromJSON(data) : this.responseMediaAttachment.fromJSON(data);
+    data.type === AttachmentType.CARD
+      ? this.responseCardAttachment.fromJSON(data)
+      : this.responseMediaAttachment.fromJSON(data);
 
   mapToJSON = (data: AnyResponseAttachmentObject[]) => data.map(this.toJSON);
 
@@ -52,20 +64,28 @@ export class ResponseAttachmentService {
     responseAttachments: AnyResponseAttachmentObject[],
     { action, userID, context }: { action: 'create' | 'delete'; userID: number; context: CMSContext }
   ): Promise<AnyResponseVariantObject[]> {
-    const variantIDs = Utils.array.unique(responseAttachments.map((responseAttachment) => responseAttachment.variantID));
+    const variantIDs = Utils.array.unique(
+      responseAttachments.map((responseAttachment) => responseAttachment.variantID)
+    );
 
-    const responseVariants = await this.responseVariantORM.findManyByEnvironmentAndIDs(context.environmentID, variantIDs);
+    const responseVariants = await this.responseVariantORM.findManyByEnvironmentAndIDs(
+      context.environmentID,
+      variantIDs
+    );
 
     if (variantIDs.length !== responseVariants.length) {
       throw new NotFoundException("couldn't find response variants to sync");
     }
 
-    const responseAttachmentsByVariantIDMap = responseAttachments.reduce<Record<string, AnyResponseAttachmentObject[]>>((acc, attachment) => {
-      acc[attachment.variantID] ??= [];
-      acc[attachment.variantID].push(attachment);
+    const responseAttachmentsByVariantIDMap = responseAttachments.reduce<Record<string, AnyResponseAttachmentObject[]>>(
+      (acc, attachment) => {
+        acc[attachment.variantID] ??= [];
+        acc[attachment.variantID].push(attachment);
 
-      return acc;
-    }, {});
+        return acc;
+      },
+      {}
+    );
 
     await Promise.all(
       responseVariants.map(async (responseVariant) => {
@@ -151,10 +171,17 @@ export class ResponseAttachmentService {
     return this.orm.createMany(data);
   }
 
-  async createManyAndSync(data: ResponseAnyAttachmentCreateData[], { userID, context }: { userID: number; context: CMSContext }) {
+  async createManyAndSync(
+    data: ResponseAnyAttachmentCreateData[],
+    { userID, context }: { userID: number; context: CMSContext }
+  ) {
     return this.postgresEM.transactional(async () => {
       const responseAttachments = await this.createMany(data.map(injectAssistantAndEnvironmentIDs(context)));
-      const responseVariants = await this.syncResponseVariants(responseAttachments, { action: 'create', userID, context });
+      const responseVariants = await this.syncResponseVariants(responseAttachments, {
+        action: 'create',
+        userID,
+        context,
+      });
 
       return {
         add: { responseAttachments },
@@ -211,8 +238,20 @@ export class ResponseAttachmentService {
 
       const newResponseAttachment = await this.createOne(
         type === AttachmentType.CARD
-          ? { type, cardID: newAttachmentID, variantID, assistantID: context.assistantID, environmentID: oldResponseAttachment.environmentID }
-          : { type, mediaID: newAttachmentID, variantID, assistantID: context.assistantID, environmentID: oldResponseAttachment.environmentID }
+          ? {
+              type,
+              cardID: newAttachmentID,
+              variantID,
+              assistantID: context.assistantID,
+              environmentID: oldResponseAttachment.environmentID,
+            }
+          : {
+              type,
+              mediaID: newAttachmentID,
+              variantID,
+              assistantID: context.assistantID,
+              environmentID: oldResponseAttachment.environmentID,
+            }
       );
 
       await this.deleteOne({ id: oldResponseAttachment.id, environmentID: oldResponseAttachment.environmentID });
@@ -289,7 +328,10 @@ export class ResponseAttachmentService {
     return this.orm.deleteManyByEnvironmentAndIDs(environmentID, ids);
   }
 
-  async syncOnDelete(attachments: AnyResponseAttachmentObject[], { userID, context }: { userID: number; context: CMSContext }) {
+  async syncOnDelete(
+    attachments: AnyResponseAttachmentObject[],
+    { userID, context }: { userID: number; context: CMSContext }
+  ) {
     const responseVariants = await this.syncResponseVariants(attachments, { action: 'delete', userID, context });
 
     return { responseVariants };

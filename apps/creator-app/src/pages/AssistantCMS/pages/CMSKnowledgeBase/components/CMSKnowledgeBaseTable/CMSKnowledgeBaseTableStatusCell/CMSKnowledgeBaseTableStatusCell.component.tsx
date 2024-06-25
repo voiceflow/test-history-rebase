@@ -1,7 +1,7 @@
 import { BaseModels } from '@voiceflow/base-types';
 import React from 'react';
 
-import { ICMSKnowledgeBaseTableStatusCell } from './CMSKnowledgeBaseTableStatusCell.interface';
+import type { ICMSKnowledgeBaseTableStatusCell } from './CMSKnowledgeBaseTableStatusCell.interface';
 import { DocumentStatusError } from './DocumentStatusError.component';
 import { DocumentStatusLoading } from './DocumentStatusLoading.component';
 import { DocumentStatusSuccess } from './DocumentStatusSuccess.component';

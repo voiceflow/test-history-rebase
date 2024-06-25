@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { useCreateConst, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
@@ -6,7 +6,7 @@ import SlateEditable, { SlateEditorAPI, useSetupSlateEditor } from '@/components
 import { useSetup, useTeardown } from '@/hooks';
 import { withEnterPress } from '@/utils/dom';
 
-import { InternalLinkInstance } from '../types';
+import type { InternalLinkInstance } from '../types';
 import { getPathPointsCenter } from '../utils';
 import CaptionText, { MIN_HEIGHT, PLACEHOLDER_WIDTH } from './LinkCaptionText';
 
@@ -20,9 +20,19 @@ interface LinkCaptionInputProps {
   onToggleEditing: (value: unknown) => void;
 }
 
-const LinkCaptionInput: React.FC<LinkCaptionInputProps> = ({ color, value, instance, onChange, isLineActive, isHighlighted, onToggleEditing }) => {
+const LinkCaptionInput: React.FC<LinkCaptionInputProps> = ({
+  color,
+  value,
+  instance,
+  onChange,
+  isLineActive,
+  isHighlighted,
+  onToggleEditing,
+}) => {
   const editor = useSetupSlateEditor();
-  const initialValue = useCreateConst(() => (value ? SlateEditorAPI.createTextState(value) : SlateEditorAPI.getEmptyState()));
+  const initialValue = useCreateConst(() =>
+    value ? SlateEditorAPI.createTextState(value) : SlateEditorAPI.getEmptyState()
+  );
   const [localValue, setLocalValue] = React.useState(initialValue);
 
   const center = instance.getCenter();

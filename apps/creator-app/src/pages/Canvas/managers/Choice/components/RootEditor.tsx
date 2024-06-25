@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, createDividerMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 
@@ -38,7 +38,13 @@ const RootEditor: React.FC = () => {
         !isDragging && (
           <EditorV2.DefaultFooter tutorial={Documentation.CHOICE_STEP}>
             <EditorV2.FooterActionsButton
-              actions={[intentScopeOption, createDividerMenuItemOption(), buttonsConfig.option, noMatchConfig.option, noReplyConfig.option]}
+              actions={[
+                intentScopeOption,
+                createDividerMenuItemOption(),
+                buttonsConfig.option,
+                noMatchConfig.option,
+                noReplyConfig.option,
+              ]}
             />
 
             <Button variant={Button.Variant.PRIMARY} onClick={() => mapManager.onAdd()} squareRadius>

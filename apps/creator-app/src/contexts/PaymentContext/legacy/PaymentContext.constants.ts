@@ -1,4 +1,4 @@
-import { StripeElementsOptions } from '@stripe/stripe-js';
+import type { StripeElementsOptions } from '@stripe/stripe-js';
 
 export const MAX_POLL_COUNT = 30;
 export const POLL_INTERVAL = 1000;

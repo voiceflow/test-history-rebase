@@ -96,7 +96,10 @@ export class KnowledgeBaseIntegrationsPublicHTTPController {
     status: HttpStatus.OK,
     description: 'Delete a knowledge base integration',
   })
-  async deleteIntegration(@Param('assistantID') assistantID: string, @Param('integrationType') integrationType: IntegrationType): Promise<void> {
+  async deleteIntegration(
+    @Param('assistantID') assistantID: string,
+    @Param('integrationType') integrationType: IntegrationType
+  ): Promise<void> {
     return this.service.deleteIntegration(assistantID, integrationType);
   }
 
@@ -121,7 +124,13 @@ export class KnowledgeBaseIntegrationsPublicHTTPController {
     @Param('integrationType') integrationType: IntegrationType,
     @Req() req: Request
   ): Promise<IntegrationAuthUrlResponse> {
-    return this.service.getAuthUrlIntegration({ assistantID, creatorID: userID, query, host: req.hostname, integrationType });
+    return this.service.getAuthUrlIntegration({
+      assistantID,
+      creatorID: userID,
+      query,
+      host: req.hostname,
+      integrationType,
+    });
   }
 
   @Get(':assistantID/integrations/:integrationType/auth-reconnect-redirect-url')
@@ -145,7 +154,14 @@ export class KnowledgeBaseIntegrationsPublicHTTPController {
     @Param('integrationType') integrationType: IntegrationType,
     @Req() req: Request
   ): Promise<IntegrationAuthUrlResponse> {
-    return this.service.getAuthUrlIntegration({ assistantID, creatorID: userID, query, host: req.hostname, integrationType, overwrite: true });
+    return this.service.getAuthUrlIntegration({
+      assistantID,
+      creatorID: userID,
+      query,
+      host: req.hostname,
+      integrationType,
+      overwrite: true,
+    });
   }
 
   @Get(':assistantID/integrations/:integrationType/filters')

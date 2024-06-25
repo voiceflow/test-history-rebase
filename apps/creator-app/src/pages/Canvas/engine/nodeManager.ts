@@ -1,7 +1,8 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import { BaseNode } from '@voiceflow/base-types';
-import { Nullish, Utils } from '@voiceflow/common';
+import type { Nullish } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import _partition from 'lodash/partition';
 import { createSelector } from 'reselect';
@@ -17,13 +18,13 @@ import * as Tracking from '@/ducks/tracking';
 import * as TrackingEvents from '@/ducks/tracking/events';
 import * as VersionV2 from '@/ducks/versionV2';
 import * as ModalsV2 from '@/ModalsV2';
-import { Pair, Point } from '@/types';
-import { Coords } from '@/utils/geometry';
+import type { Pair, Point } from '@/types';
+import type { Coords } from '@/utils/geometry';
 import { centerNodeGroup, getNodesGroupCenter } from '@/utils/node';
 import { isMarkupBlockType, isMarkupOrCombinedBlockType } from '@/utils/typeGuards';
 
 import { EntityType } from './constants';
-import NodeEntity from './entities/nodeEntity';
+import type NodeEntity from './entities/nodeEntity';
 import { createPortRemap, DUPLICATE_OFFSET, EngineConsumer, nodeDescriptorFactory } from './utils';
 
 const nodeFactoryOptionsSelector = createSelector(

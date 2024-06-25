@@ -1,5 +1,5 @@
 import { BaseNode, BaseVersion } from '@voiceflow/base-types';
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Version from '@/ducks/versionV2';

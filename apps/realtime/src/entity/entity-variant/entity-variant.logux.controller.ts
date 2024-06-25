@@ -26,7 +26,9 @@ export class EntityVariantLoguxController {
     @Payload() { data, context }: Actions.EntityVariant.CreateOne.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.EntityVariant.CreateOne.Response> {
-    return this.service.createManyAndBroadcast([data], { auth, context }).then(([result]) => ({ data: this.service.toJSON(result), context }));
+    return this.service
+      .createManyAndBroadcast([data], { auth, context })
+      .then(([result]) => ({ data: this.service.toJSON(result), context }));
   }
 
   @Action.Async(Actions.EntityVariant.CreateMany)
@@ -39,7 +41,9 @@ export class EntityVariantLoguxController {
     @Payload() { data, context }: Actions.EntityVariant.CreateMany.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.EntityVariant.CreateMany.Response> {
-    return this.service.createManyAndBroadcast(data, { auth, context }).then((result) => ({ data: this.service.mapToJSON(result), context }));
+    return this.service
+      .createManyAndBroadcast(data, { auth, context })
+      .then((result) => ({ data: this.service.mapToJSON(result), context }));
   }
 
   @Action(Actions.EntityVariant.PatchOne)
@@ -62,7 +66,10 @@ export class EntityVariantLoguxController {
   @Broadcast<Actions.EntityVariant.PatchMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchMany(@Payload() { ids, patch, context }: Actions.EntityVariant.PatchMany, @AuthMeta() auth: AuthMetaPayload) {
+  async patchMany(
+    @Payload() { ids, patch, context }: Actions.EntityVariant.PatchMany,
+    @AuthMeta() auth: AuthMetaPayload
+  ) {
     await this.service.patchManyForUser(
       auth.userID,
       ids.map((id) => ({ id, environmentID: context.environmentID })),
@@ -82,7 +89,10 @@ export class EntityVariantLoguxController {
     const result = await this.service.deleteManyAndSync([id], context);
 
     // overriding entity variants cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, entityVariants: [] } }, { auth, context });
+    await this.service.broadcastDeleteMany(
+      { ...result, delete: { ...result.delete, entityVariants: [] } },
+      { auth, context }
+    );
   }
 
   @Action(Actions.EntityVariant.DeleteMany)
@@ -97,7 +107,10 @@ export class EntityVariantLoguxController {
     const result = await this.service.deleteManyAndSync(ids, context);
 
     // overriding entity variants cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, entityVariants: [] } }, { auth, context });
+    await this.service.broadcastDeleteMany(
+      { ...result, delete: { ...result.delete, entityVariants: [] } },
+      { auth, context }
+    );
   }
 
   @Action(Actions.EntityVariant.AddOne)

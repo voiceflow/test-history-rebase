@@ -1,5 +1,6 @@
 import React from 'react';
-import Textarea, { TextareaAutosizeProps } from 'react-textarea-autosize';
+import type { TextareaAutosizeProps } from 'react-textarea-autosize';
+import Textarea from 'react-textarea-autosize';
 
 import { inputControlStyles } from '@/components/Form/styles';
 import { css, styled } from '@/hocs/styled';

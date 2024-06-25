@@ -14,12 +14,13 @@ import { LockedBlockOverlay } from '@/pages/Canvas/components/LockedEditorOverla
 import { EngineContext, ManagerContext } from '@/pages/Canvas/contexts';
 import BlockEditor from '@/pages/Canvas/editors/BlockEditor';
 import MarkupEditor from '@/pages/Canvas/editors/MarkupEditor';
-import { NodeEditor } from '@/pages/Canvas/managers/types';
+import type { NodeEditor } from '@/pages/Canvas/managers/types';
 import { useEditingMode } from '@/pages/Project/hooks';
 import { isMarkupBlockType } from '@/utils/typeGuards';
 
 import EditorModal from '../EditorModal';
-import { SidebarHeaderAction, SidebarProvider } from './contexts';
+import type { SidebarHeaderAction } from './contexts';
+import { SidebarProvider } from './contexts';
 import { useEditorPath, useUpdateData } from './hooks';
 
 const UNEDITABLE_BLOCKS = new Set<Realtime.BlockType>([...Realtime.MARKUP_MEDIA_NODES]);

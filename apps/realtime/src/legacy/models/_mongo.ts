@@ -1,14 +1,23 @@
 // eslint-disable-next-line max-classes-per-file
 import type { EmptyObject } from '@voiceflow/common';
 import type { LoguxControl } from '@voiceflow/socket-utils';
-import { SmartMultiAdapter } from 'bidirectional-adapter';
+import type { SmartMultiAdapter } from 'bidirectional-adapter';
 import { ObjectId } from 'bson';
-import { Collection, Filter, FindOneAndUpdateOptions, OptionalUnlessRequiredId, Sort, UpdateFilter, UpdateOptions, WithId } from 'mongodb';
+import type {
+  Collection,
+  Filter,
+  FindOneAndUpdateOptions,
+  OptionalUnlessRequiredId,
+  Sort,
+  UpdateFilter,
+  UpdateOptions,
+  WithId,
+} from 'mongodb';
 
-import { Config } from '@/types';
+import type { Config } from '@/types';
 
 import type { ClientMap } from '../clients';
-import { Atomic } from './utils';
+import type { Atomic } from './utils';
 
 export interface ModelDependencies {
   clients: ClientMap;
@@ -17,10 +26,14 @@ export interface ModelDependencies {
 export interface FromDB<DBModel, Model> {
   (diagram: DBModel): Model;
 
-  <PartialDBModel extends Partial<DBModel>>(diagram: PartialDBModel): Pick<Model, Extract<keyof Model, keyof PartialDBModel>>;
+  <PartialDBModel extends Partial<DBModel>>(
+    diagram: PartialDBModel
+  ): Pick<Model, Extract<keyof Model, keyof PartialDBModel>>;
 }
 
-abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, ReadOnlyKeys extends string> implements LoguxControl {
+abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, ReadOnlyKeys extends string>
+  implements LoguxControl
+{
   abstract READ_ONLY_KEYS: ReadonlyArray<ReadOnlyKeys>;
 
   protected static getAtomicUpdatesFields<M>(updates: Atomic.UpdateOperation<any>[]) {
@@ -52,7 +65,10 @@ abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, R
 
   abstract adapter: SmartMultiAdapter<DBModel, Model>;
 
-  constructor(public config: Config, { clients }: ModelDependencies) {
+  constructor(
+    public config: Config,
+    { clients }: ModelDependencies
+  ) {
     this.clients = clients;
   }
 
@@ -72,18 +88,18 @@ abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, R
     this._collection = this.clients.mongo.db.collection(this.collectionName);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  // eslint-disable-next-line no-empty-function
   destroy(): void {}
 
   // type assertion
   // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/39358
-  idFilter = (id: string) => ({ _id: new ObjectId(id) } as Filter<DBModel>);
+  idFilter = (id: string) => ({ _id: new ObjectId(id) }) as Filter<DBModel>;
 
   // TODO not sure if this works
   idsFilter = (ids: string[]) =>
     ({
       _id: { $in: ids.map((x) => new ObjectId(x)) },
-    } as unknown as Filter<DBModel>);
+    }) as unknown as Filter<DBModel>;
 
   generateObjectID(): ObjectId {
     return new ObjectId();
@@ -109,7 +125,11 @@ abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, R
     return data as WithId<DBModel>[];
   }
 
-  async atomicUpdateOne(filter: Filter<DBModel>, updates: Atomic.UpdateOperation<any>[], options?: UpdateOptions): Promise<void> {
+  async atomicUpdateOne(
+    filter: Filter<DBModel>,
+    updates: Atomic.UpdateOperation<any>[],
+    options?: UpdateOptions
+  ): Promise<void> {
     const { query, arrayFilters } = MongoModel.getAtomicUpdatesFields<DBModel>(updates);
 
     const { matchedCount, acknowledged } = await this.collection.updateOne(filter, query, {
@@ -197,11 +217,23 @@ abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, R
 
   async findManyAndSort(filter: Filter<DBModel>, sortProperty: Sort): Promise<DBModel[]>;
 
-  async findManyAndSort<Key extends keyof DBModel>(filter: Filter<DBModel>, sortProperty: Sort, fields: Key[]): Promise<Pick<DBModel, Key>[]>;
+  async findManyAndSort<Key extends keyof DBModel>(
+    filter: Filter<DBModel>,
+    sortProperty: Sort,
+    fields: Key[]
+  ): Promise<Pick<DBModel, Key>[]>;
 
-  async findManyAndSort(filter: Filter<DBModel>, sortProperty: Sort, fields?: (keyof DBModel)[]): Promise<Partial<DBModel>[]>;
+  async findManyAndSort(
+    filter: Filter<DBModel>,
+    sortProperty: Sort,
+    fields?: (keyof DBModel)[]
+  ): Promise<Partial<DBModel>[]>;
 
-  async findManyAndSort(filter: Filter<DBModel>, sortProperty: Sort, fields?: (keyof DBModel)[]): Promise<Partial<DBModel>[]> {
+  async findManyAndSort(
+    filter: Filter<DBModel>,
+    sortProperty: Sort,
+    fields?: (keyof DBModel)[]
+  ): Promise<Partial<DBModel>[]> {
     return this.collection.find(filter, MongoModel.projection(fields)).sort(sortProperty).toArray();
   }
 
@@ -263,7 +295,11 @@ abstract class MongoModel<DBModel extends Document, Model extends EmptyObject, R
     return this.atomicUpdateOne(this.idFilter(id), updates, options);
   }
 
-  async findAndAtomicUpdateByID(id: string, updates: Atomic.UpdateOperation<any>[], options?: FindOneAndUpdateOptions): Promise<WithId<DBModel>> {
+  async findAndAtomicUpdateByID(
+    id: string,
+    updates: Atomic.UpdateOperation<any>[],
+    options?: FindOneAndUpdateOptions
+  ): Promise<WithId<DBModel>> {
     return this.findOneAndAtomicUpdate(this.idFilter(id), updates, options);
   }
 

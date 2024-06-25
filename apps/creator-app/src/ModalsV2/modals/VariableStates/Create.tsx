@@ -7,7 +7,8 @@ import { useDispatch, useHotkey, useSelector, useTrackingEvents } from '@/hooks'
 import { Hotkey } from '@/keymap';
 
 import manager from '../../manager';
-import { Form, FormTypes } from './components';
+import type { FormTypes } from './components';
+import { Form } from './components';
 
 /**
  * name is used in the modals helpers to fix circular dependency

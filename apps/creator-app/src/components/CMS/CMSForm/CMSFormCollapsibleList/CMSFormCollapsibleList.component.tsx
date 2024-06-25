@@ -19,5 +19,13 @@ export const CMSFormCollapsibleList = <Item extends { id: string }>({
     scroll.scrollNode?.scrollTo({ top: 0 });
   }, [autoScrollToTopRevision]);
 
-  return <CollapsibleList {...props} overscan={overscan} getItemKey={getItemKey} stickyFooter={stickyFooter} footerClassName={footer} />;
+  return (
+    <CollapsibleList
+      {...props}
+      overscan={overscan}
+      getItemKey={getItemKey}
+      stickyFooter={stickyFooter}
+      footerClassName={footer}
+    />
+  );
 };

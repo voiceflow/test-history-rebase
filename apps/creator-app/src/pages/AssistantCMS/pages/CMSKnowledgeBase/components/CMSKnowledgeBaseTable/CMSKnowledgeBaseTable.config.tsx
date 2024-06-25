@@ -27,7 +27,9 @@ export const CMS_KNOWLEDGE_BASE_TABLE_CONFIG: TableConfig<KnowledgeBaseTableColu
       name: 'Data source',
       sorter: withFolderSort<CMSKnowledgeBase>(sortByName),
 
-      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={(item) => <CMSKnowledgeBaseTableNameCell item={item} />} />,
+      cell: ({ item }) => (
+        <Table.Cell.GroupEmpty item={item} label={(item) => <CMSKnowledgeBaseTableNameCell item={item} />} />
+      ),
     },
 
     [KnowledgeBaseTableColumn.IMPORTED_BY]: {
@@ -35,7 +37,10 @@ export const CMS_KNOWLEDGE_BASE_TABLE_CONFIG: TableConfig<KnowledgeBaseTableColu
       name: 'Imported by',
 
       cell: ({ item }) => (
-        <Table.Cell.GroupEmpty item={item} label={({ creatorID }) => <CMSKnowledgeBaseTableImportedByCell creatorID={creatorID} />} />
+        <Table.Cell.GroupEmpty
+          item={item}
+          label={({ creatorID }) => <CMSKnowledgeBaseTableImportedByCell creatorID={creatorID} />}
+        />
       ),
     },
 
@@ -72,7 +77,9 @@ export const CMS_KNOWLEDGE_BASE_TABLE_CONFIG: TableConfig<KnowledgeBaseTableColu
       type: KnowledgeBaseTableColumn.REFRESH,
       name: 'Refresh',
 
-      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={(item) => <CMSKnowledgeBaseTableRefreshCell item={item} />} />,
+      cell: ({ item }) => (
+        <Table.Cell.GroupEmpty item={item} label={(item) => <CMSKnowledgeBaseTableRefreshCell item={item} />} />
+      ),
     },
   },
 };

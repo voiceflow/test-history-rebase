@@ -19,5 +19,12 @@ export const CMSResourceActionsButtonDelete: React.FC = () => {
     onDeleteMany(Array.from(selectedIDs));
   };
 
-  return <CMSResourceActionsButton label="Delete" iconName="Trash" onClick={onClick} testID={tid(TABLE_TEST_ID, 'delete-selection')} />;
+  return (
+    <CMSResourceActionsButton
+      label="Delete"
+      iconName="Trash"
+      onClick={onClick}
+      testID={tid(TABLE_TEST_ID, 'delete-selection')}
+    />
+  );
 };

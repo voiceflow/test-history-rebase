@@ -8,7 +8,10 @@ import type { CompletionRequest } from './dtos/completion.request';
 
 @Injectable()
 export class CompletionService {
-  constructor(@Inject(LLMService) private llm: LLMService, @Inject(ModerationService) private moderation: ModerationService) {}
+  constructor(
+    @Inject(LLMService) private llm: LLMService,
+    @Inject(ModerationService) private moderation: ModerationService
+  ) {}
 
   async generateCompletion({ prompt, params, options, moderation, workspaceID, projectID }: CompletionRequest) {
     if (moderation) {
@@ -18,7 +21,14 @@ export class CompletionService {
     return this.llm.get(params?.model).generateCompletion(prompt, params, options);
   }
 
-  async generateChatCompletion({ messages, params, options, moderation, workspaceID, projectID }: ChatCompletionRequest) {
+  async generateChatCompletion({
+    messages,
+    params,
+    options,
+    moderation,
+    workspaceID,
+    projectID,
+  }: ChatCompletionRequest) {
     if (moderation) {
       await this.moderation.checkModeration(JSON.stringify(messages), { workspaceID, projectID });
     }
@@ -34,7 +44,14 @@ export class CompletionService {
     return this.llm.get(params?.model).generateCompletionStream(prompt, params, options);
   }
 
-  async generateChatCompletionStream({ messages, params, options, moderation, workspaceID, projectID }: ChatCompletionRequest) {
+  async generateChatCompletionStream({
+    messages,
+    params,
+    options,
+    moderation,
+    workspaceID,
+    projectID,
+  }: ChatCompletionRequest) {
     if (moderation) {
       await this.moderation.checkModeration(JSON.stringify(messages), { workspaceID, projectID });
     }

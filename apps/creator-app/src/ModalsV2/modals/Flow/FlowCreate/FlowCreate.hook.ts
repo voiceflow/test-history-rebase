@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useInputState } from '@/hooks/input.hook';
 import { useValidators } from '@/hooks/validate.hook';
 
-import { ResultInternalAPI } from '../../../types';
+import type { ResultInternalAPI } from '../../../types';
 
 export const useFlowCreateForm = ({
   api,

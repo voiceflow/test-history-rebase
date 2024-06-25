@@ -9,7 +9,11 @@ import { CMSTableCellTextTooltip } from '../../../../components/CMSTableCellText
 import { CMSTableMemberCell } from '../../../../components/CMSTableMemberCell/CMSTableMemberCell.component';
 import { CMSTableNameCell } from '../../../../components/CMSTableNameCell/CMSTableNameCell.component';
 import type { CMSFolder, CMSVariable } from '../../../../contexts/CMSManager/CMSManager.interface';
-import { updatedAtSort, withFieldLocaleCompareSort, withFolderSort } from '../../../../contexts/CMSManager/CMSManager.util';
+import {
+  updatedAtSort,
+  withFieldLocaleCompareSort,
+  withFolderSort,
+} from '../../../../contexts/CMSManager/CMSManager.util';
 import { VariableTableColumn } from './CMSVariableTable.constant';
 
 export const CMS_VARIABLE_TABLE_CONFIG: TableConfig<VariableTableColumn, CMSFolder | CMSVariable> = {
@@ -45,7 +49,9 @@ export const CMS_VARIABLE_TABLE_CONFIG: TableConfig<VariableTableColumn, CMSFold
       cell: ({ item }) => (
         <Table.Cell.GroupEmpty
           item={item}
-          label={(item) => (item.description ? <CMSTableCellTextTooltip label={item.description} /> : <Table.Cell.Empty />)}
+          label={(item) =>
+            item.description ? <CMSTableCellTextTooltip label={item.description} /> : <Table.Cell.Empty />
+          }
         />
       ),
     },
@@ -58,7 +64,9 @@ export const CMS_VARIABLE_TABLE_CONFIG: TableConfig<VariableTableColumn, CMSFold
       cell: ({ item }) => (
         <Table.Cell.GroupEmpty
           item={item}
-          label={(item) => (item.defaultValue ? <CMSTableCellTextTooltip label={item.defaultValue} /> : <Table.Cell.Empty />)}
+          label={(item) =>
+            item.defaultValue ? <CMSTableCellTextTooltip label={item.defaultValue} /> : <Table.Cell.Empty />
+          }
         />
       ),
     },
@@ -67,7 +75,12 @@ export const CMS_VARIABLE_TABLE_CONFIG: TableConfig<VariableTableColumn, CMSFold
       type: VariableTableColumn.LAST_EDITOR,
       name: 'Last editor',
 
-      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={({ updatedByID }) => <CMSTableMemberCell creatorID={updatedByID} />} />,
+      cell: ({ item }) => (
+        <Table.Cell.GroupEmpty
+          item={item}
+          label={({ updatedByID }) => <CMSTableMemberCell creatorID={updatedByID} />}
+        />
+      ),
     },
 
     [VariableTableColumn.UPDATED]: {
@@ -75,7 +88,12 @@ export const CMS_VARIABLE_TABLE_CONFIG: TableConfig<VariableTableColumn, CMSFold
       name: 'Updated',
       sorter: withFolderSort(updatedAtSort),
 
-      cell: ({ item }) => <Table.Cell.GroupEmpty item={item} label={({ updatedAt }) => <CMSTableCellFromNowTooltip updatedAt={updatedAt} />} />,
+      cell: ({ item }) => (
+        <Table.Cell.GroupEmpty
+          item={item}
+          label={({ updatedAt }) => <CMSTableCellFromNowTooltip updatedAt={updatedAt} />}
+        />
+      ),
     },
   },
 };

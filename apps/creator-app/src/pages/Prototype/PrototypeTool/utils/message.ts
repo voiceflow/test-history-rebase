@@ -1,6 +1,7 @@
 import { BaseNode } from '@voiceflow/base-types';
-import { Nullable, Utils } from '@voiceflow/common';
-import { BaseRequest } from '@voiceflow/dtos';
+import type { Nullable } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import type { BaseRequest } from '@voiceflow/dtos';
 import { isIntentRequest, isTextRequest } from '@voiceflow/utils-designer';
 
 import type {
@@ -37,7 +38,10 @@ export interface CommonProperties {
   startTime: string;
 }
 
-export const createDebugMessage = ({ id, payload: { message } }: DebugTrace, common: CommonProperties): DebugMessage => ({
+export const createDebugMessage = (
+  { id, payload: { message } }: DebugTrace,
+  common: CommonProperties
+): DebugMessage => ({
   id,
   type: MessageType.DEBUG,
   message,
@@ -51,7 +55,16 @@ export const createSpeakMessage = (
   if (type === BaseNode.Speak.TraceSpeakType.AUDIO) {
     return { id, type: MessageType.AUDIO, name: message, src, ai, ...common };
   }
-  return { id, type: MessageType.SPEAK, message, voice, src, ai, knowledgeBase: (payload as any).knowledgeBase, ...common };
+  return {
+    id,
+    type: MessageType.SPEAK,
+    message,
+    voice,
+    src,
+    ai,
+    knowledgeBase: (payload as any).knowledgeBase,
+    ...common,
+  };
 };
 
 export const createSessionMessage = (
@@ -64,7 +77,10 @@ export const createSessionMessage = (
   ...common,
 });
 
-export const createStreamMessage = ({ id, payload: { src } }: StreamTrace, common: CommonProperties): StreamMessage => ({
+export const createStreamMessage = (
+  { id, payload: { src } }: StreamTrace,
+  common: CommonProperties
+): StreamMessage => ({
   id,
   type: MessageType.STREAM,
   audio: src,
@@ -144,7 +160,10 @@ export const createVisualMessage = (trace: VisualTrace, common: CommonProperties
   };
 };
 
-export const createChannelActionMessage = (trace: ChannelActionTrace, common: CommonProperties): ChannelActionMessage => ({
+export const createChannelActionMessage = (
+  trace: ChannelActionTrace,
+  common: CommonProperties
+): ChannelActionMessage => ({
   id: trace.id,
   type: MessageType.CHANNEL_ACTION,
   name: trace.payload.name,

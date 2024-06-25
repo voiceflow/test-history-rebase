@@ -1,8 +1,9 @@
-import { EmptyObject } from '@voiceflow/common';
+import type { EmptyObject } from '@voiceflow/common';
 import _constant from 'lodash/constant';
 import _throttle from 'lodash/throttle';
 import React from 'react';
-import { DragSourceMonitor, useDrag, useDrop } from 'react-dnd';
+import type { DragSourceMonitor } from 'react-dnd';
+import { useDrag, useDrop } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
 export interface InjectedDraggableProps {
@@ -69,7 +70,9 @@ export const withDraggable =
 
           props.onMove?.(item, props as DragItem<Props>);
 
+          // eslint-disable-next-line no-param-reassign
           item.index = hoverIndex;
+          // eslint-disable-next-line no-param-reassign
           item.listID = props.listID;
         }, 150),
       });

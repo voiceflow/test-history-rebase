@@ -18,7 +18,8 @@ export const createContext = <Value>(defaultValue: Value) => {
   const Context = React.createContext<Value>(defaultValue);
 
   return {
-    extend: <ExtensionValue>(extensionDefaultValue: ExtensionValue) => createContext({ ...defaultValue, ...extensionDefaultValue }),
+    extend: <ExtensionValue>(extensionDefaultValue: ExtensionValue) =>
+      createContext({ ...defaultValue, ...extensionDefaultValue }),
     Context,
     useContext: createUseContext(Context),
     notInjected: methodNotInjected,

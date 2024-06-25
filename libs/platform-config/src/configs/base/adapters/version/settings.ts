@@ -3,7 +3,7 @@ import { Types } from '@platform-config/utils';
 import { BaseVersion } from '@voiceflow/base-types';
 import { createSimpleAdapter, createSmartSimpleAdapter } from 'bidirectional-adapter';
 
-import * as Models from '../../models';
+import type * as Models from '../../models';
 import * as Prompt from '../prompt';
 
 export type FromAndToDBOptions = [{ defaultVoice: string }];
@@ -24,7 +24,9 @@ export const smart = createSmartSimpleAdapter<
 >(
   (dbSettings) => ({
     ...ConfigUtils.pickNonEmptyFields(dbSettings, SHARED_FIELDS),
-    ...(ConfigUtils.hasValue(dbSettings, 'error') && { error: dbSettings.error === null ? null : Prompt.simple.fromDB(dbSettings.error) }),
+    ...(ConfigUtils.hasValue(dbSettings, 'error') && {
+      error: dbSettings.error === null ? null : Prompt.simple.fromDB(dbSettings.error),
+    }),
     ...(ConfigUtils.hasValue(dbSettings, 'globalNoMatch') &&
       (dbSettings.globalNoMatch.type === BaseVersion.GlobalNoMatchType.GENERATIVE
         ? {
@@ -37,13 +39,18 @@ export const smart = createSmartSimpleAdapter<
             globalNoMatch: {
               type: BaseVersion.GlobalNoMatchType.STATIC,
               prompt:
-                dbSettings.globalNoMatch.prompt != null ? Prompt.simple.fromDB(dbSettings.globalNoMatch.prompt) : dbSettings.globalNoMatch.prompt,
+                dbSettings.globalNoMatch.prompt != null
+                  ? Prompt.simple.fromDB(dbSettings.globalNoMatch.prompt)
+                  : dbSettings.globalNoMatch.prompt,
             },
           })),
     ...(ConfigUtils.hasValue(dbSettings, 'globalNoReply') && {
       globalNoReply: {
         ...dbSettings.globalNoReply,
-        prompt: dbSettings.globalNoReply.prompt != null ? Prompt.simple.fromDB(dbSettings.globalNoReply.prompt) : dbSettings.globalNoReply.prompt,
+        prompt:
+          dbSettings.globalNoReply.prompt != null
+            ? Prompt.simple.fromDB(dbSettings.globalNoReply.prompt)
+            : dbSettings.globalNoReply.prompt,
       },
     }),
   }),

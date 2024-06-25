@@ -1,7 +1,8 @@
-import { IconButtonVariant } from '@ui/components/IconButton/types';
+import type { IconButtonVariant } from '@ui/components/IconButton/types';
 import { styled } from '@ui/styles';
 
-import IconButtonContainer, { activeStyle, IconButtonContainerSharedProps } from './IconButtonContainer';
+import type { IconButtonContainerSharedProps } from './IconButtonContainer';
+import IconButtonContainer, { activeStyle } from './IconButtonContainer';
 
 export interface FlatContainerProps extends IconButtonContainerSharedProps {
   variant: IconButtonVariant.FLAT;

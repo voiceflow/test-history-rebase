@@ -1,5 +1,5 @@
 import reportTagsAdapter from '@/client/adapters/reportTags';
-import { DBReportTag } from '@/models';
+import type { DBReportTag } from '@/models';
 
 import { apiV2 } from './fetch';
 
@@ -12,7 +12,9 @@ const reportTagsClient = {
       .then((data) => Object.values(data).map((tag) => reportTagsAdapter.fromDB(tag, { projectID }))),
 
   createTag: (projectID: string, tag: { tagID?: string; label: string }) =>
-    apiV2.put<DBReportTag>(`${PROJECT_PATH}/${projectID}/tags`, tag).then((data) => reportTagsAdapter.fromDB(data, { projectID })),
+    apiV2
+      .put<DBReportTag>(`${PROJECT_PATH}/${projectID}/tags`, tag)
+      .then((data) => reportTagsAdapter.fromDB(data, { projectID })),
 
   patchTag: (projectID: string, { tagID, label }: { tagID: string; label: string }) =>
     apiV2.patch(`${PROJECT_PATH}/${projectID}/tags/${tagID}`, { label }),

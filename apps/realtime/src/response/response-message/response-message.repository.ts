@@ -1,10 +1,11 @@
-import { Primary } from '@mikro-orm/core';
+import type { Primary } from '@mikro-orm/core';
 import { Inject, Injectable } from '@nestjs/common';
-import { ResponseMessageEntity, ResponseMessageObject, ResponseMessageORM } from '@voiceflow/orm-designer';
+import type { ResponseMessageEntity, ResponseMessageObject } from '@voiceflow/orm-designer';
+import { ResponseMessageORM } from '@voiceflow/orm-designer';
 
 import { CMSObjectService } from '@/common';
 
-import { ResponseMessageCreateData } from './response-message.interface';
+import type { ResponseMessageCreateData } from './response-message.interface';
 
 type CreateResponseMessagePayload = ResponseMessageCreateData & { assistantID: string; environmentID: string };
 

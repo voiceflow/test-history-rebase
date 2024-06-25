@@ -4,7 +4,7 @@ import { GENERAL_RUNTIME_ENDPOINT } from '@/config';
 import { formatBuiltInIntentName } from '@/utils/intent.util';
 
 import { AUTH_HEADERS } from '../constant';
-import {
+import type {
   GeneralRuntimeFunctionTestRequest,
   GeneralRuntimeFunctionTestResponse,
   GeneralRuntimeIntentPreviewUtteranceRequest,
@@ -18,6 +18,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use((config) => {
   if (!config.headers.Authorization) {
+    // eslint-disable-next-line no-param-reassign
     config.headers.Authorization = AUTH_HEADERS.Authorization;
   }
 
@@ -31,10 +32,10 @@ export const generalRuntimeClient = {
       data: GeneralRuntimeIntentPreviewUtteranceRequest
     ): Promise<GeneralRuntimeIntentPreviewUtteranceResponse> =>
       axiosInstance
-        .post<GeneralRuntimeIntentPreviewUtteranceRequest, { data: GeneralRuntimeIntentPreviewUtteranceResponse }>(
-          `/test/${workspaceID}/classification`,
-          data
-        )
+        .post<
+          GeneralRuntimeIntentPreviewUtteranceRequest,
+          { data: GeneralRuntimeIntentPreviewUtteranceResponse }
+        >(`/test/${workspaceID}/classification`, data)
         .then((response) => {
           const nameFormatter = formatBuiltInIntentName();
 
@@ -52,7 +53,7 @@ export const generalRuntimeClient = {
   function: {
     test: (data: GeneralRuntimeFunctionTestRequest): Promise<GeneralRuntimeFunctionTestResponse> =>
       axiosInstance
-        .post<GeneralRuntimeFunctionTestRequest, { data: GeneralRuntimeFunctionTestResponse }>(`/test/functions`, data)
+        .post<GeneralRuntimeFunctionTestRequest, { data: GeneralRuntimeFunctionTestResponse }>('/test/functions', data)
         .then((response) => response.data),
   },
 };

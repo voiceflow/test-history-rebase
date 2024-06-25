@@ -123,11 +123,9 @@ export const getAllPending = (): Thunk<KnowledgeBaseDocument[]> => async (dispat
 
   if (documentIDs.length === 0) return [];
 
-
   const response = await designerClient.knowledgeBase.document.retrieveMany(projectID, { documentIDs });
 
   const documents = documentAdapterRealtime.mapFromDB(response.documents);
-
 
   dispatch.local(Actions.AddMany({ data: documents }));
 
@@ -204,7 +202,6 @@ export const retryOne =
       Errors.assertProjectID(projectID);
 
       await designerClient.knowledgeBase.document.retryOne(projectID, documentID);
-
     } catch {
       notify.short.error('Failed to retry data source');
     }
@@ -220,19 +217,19 @@ const createManyFromFormData =
     Errors.assertProjectID(projectID);
 
     const result = await Promise.allSettled(
-        manyFormData.map((data) => {
-          const file = data.get('file');
-          const canEdit = data.get('canEdit') === 'true';
+      manyFormData.map((data) => {
+        const file = data.get('file');
+        const canEdit = data.get('canEdit') === 'true';
 
-          if (file instanceof Blob) {
-            return designerClient.knowledgeBase.document.createOneFile(projectID, { file, canEdit });
-          }
+        if (file instanceof Blob) {
+          return designerClient.knowledgeBase.document.createOneFile(projectID, { file, canEdit });
+        }
 
-          throw new Error('Invalid file data');
-        })
-      );
+        throw new Error('Invalid file data');
+      })
+    );
 
-    const  documents = documentAdapterRealtime.mapFromDB(
+    const documents = documentAdapterRealtime.mapFromDB(
       result.filter((res): res is PromiseFulfilledResult<any> => res.status === 'fulfilled').map((res) => res.value)
     );
 
@@ -307,7 +304,9 @@ export const createManyFromData =
     Errors.assertProjectID(projectID);
 
     const dataUrls = data as BaseModels.Project.KnowledgeBaseURL[];
-    const response = await Promise.resolve(designerClient.knowledgeBase.document.createManyURLs(projectID, { data: dataUrls })).catch((error) => {
+    const response = await Promise.resolve(
+      designerClient.knowledgeBase.document.createManyURLs(projectID, { data: dataUrls })
+    ).catch((error) => {
       const err = error.response?.status === 406 ? error : null;
       if (err) throw err;
     });
@@ -348,7 +347,6 @@ export const getOne =
 
     const dbDocument = await designerClient.knowledgeBase.document.getOne(projectID, documentID);
     const document = documentAdapterRealtime.fromDB(dbDocument);
-
 
     dispatch.local(Actions.AddOne({ data: document }));
 
@@ -432,7 +430,6 @@ export const deleteMany =
     Errors.assertProjectID(projectID);
 
     const data = await designerClient.knowledgeBase.document.deleteMany(projectID, { documentIDs });
-
 
     Tracking.trackAiKnowledgeBaseSourceDeleted({ documentIDs: data.deletedDocumentIDs });
 

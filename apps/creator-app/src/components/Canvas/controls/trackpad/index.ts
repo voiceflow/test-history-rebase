@@ -1,6 +1,6 @@
 import { ControlScheme } from '@/components/Canvas/constants';
 
-import { GenerateControlInterface } from '../types';
+import type { GenerateControlInterface } from '../types';
 import Controls from './controls';
 
 const TrackpadInterface: GenerateControlInterface<[number]> = (handle, scrollTimeout) => {

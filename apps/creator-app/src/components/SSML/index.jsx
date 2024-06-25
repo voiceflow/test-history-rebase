@@ -159,7 +159,17 @@ const SSML = (
         createInputPlaceholder,
       },
     }),
-    [additionalXMLControlsRenderer, space, variables, creatable, characters, onAddVariable, createInputPlaceholder, withVariablesPlugin, platformTags]
+    [
+      additionalXMLControlsRenderer,
+      space,
+      variables,
+      creatable,
+      characters,
+      onAddVariable,
+      createInputPlaceholder,
+      withVariablesPlugin,
+      platformTags,
+    ]
   );
 
   const onBlurCallback = React.useCallback(

@@ -1,8 +1,9 @@
-import * as Identity from '@realtime-sdk/models/Identity';
-import { DBWorkspaceProperties } from '@realtime-sdk/models/Workspace';
-import { Organization } from '@voiceflow/dtos';
+import type * as Identity from '@realtime-sdk/models/Identity';
+import type { DBWorkspaceProperties } from '@realtime-sdk/models/Workspace';
+import type { Organization } from '@voiceflow/dtos';
 
-import { NestResource, NestResourceOptions } from '../../nest';
+import type { NestResourceOptions } from '../../nest';
+import { NestResource } from '../../nest';
 
 export class Workspace extends NestResource {
   constructor(options: NestResourceOptions) {
@@ -45,7 +46,7 @@ export class Workspace extends NestResource {
   }
 
   public async list(params?: { members?: boolean }): Promise<Identity.WorkspaceCombined[]> {
-    const { data } = await this.get<Identity.WorkspaceCombined[]>(`/`, { params });
+    const { data } = await this.get<Identity.WorkspaceCombined[]>('/', { params });
 
     return data;
   }

@@ -1,6 +1,6 @@
 import { tid } from '@voiceflow/style';
 import { Box, CodeEditor, CodeEditorWrapper } from '@voiceflow/ui-next';
-import { TCodeData } from '@voiceflow/ui-next/build/cjs/components/Inputs/CodeEditor/CodeEditorInput/types';
+import type { TCodeData } from '@voiceflow/ui-next/build/cjs/components/Inputs/CodeEditor/CodeEditorInput/types';
 import React, { useContext } from 'react';
 import { DismissableLayerContext } from 'react-dismissable-layers';
 import { useHistory } from 'react-router';

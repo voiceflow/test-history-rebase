@@ -1,11 +1,11 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, stopPropagation, useColorPalette } from '@voiceflow/ui';
 import React from 'react';
 
 import { LinkEntityContext } from '@/pages/Canvas/contexts';
 
 import { PALETTE_SHADE } from '../constants';
-import { InternalLinkInstance } from '../types';
+import type { InternalLinkInstance } from '../types';
 import { migrateColor } from '../utils/colors';
 import CaptionInput from './LinkCaptionInput';
 import CaptionText from './LinkCaptionText';

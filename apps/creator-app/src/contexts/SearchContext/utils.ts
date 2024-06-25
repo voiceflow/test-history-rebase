@@ -1,8 +1,9 @@
 /* eslint-disable max-depth */
 
-import { Channel, Diagram, EntityWithVariants, Language } from '@voiceflow/dtos';
+import type { Diagram, EntityWithVariants } from '@voiceflow/dtos';
+import { Channel, Language } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { SvgIconTypes } from '@voiceflow/ui';
+import type { SvgIconTypes } from '@voiceflow/ui';
 
 import { Designer, Project } from '@/ducks';
 import { getManager } from '@/pages/Canvas/managers';
@@ -10,20 +11,18 @@ import type { State } from '@/store/types';
 import { isTemplateDiagram, isTopicDiagram } from '@/utils/diagram.utils';
 import { utteranceTextToString } from '@/utils/utterance.util';
 
-import {
+import type {
   DatabaseEntry,
   DiagramDatabaseEntry,
   DiagramNodeDatabaseMap,
   EntityDatabaseEntry,
   Filters,
   IntentDatabaseEntry,
-  NODE_CATEGORY_ORDER,
   NodeCategory,
   NodeDatabaseEntry,
-  SEARCH_CATEGORY_ORDER,
-  SearchCategory,
   SearchDatabase,
 } from './types';
+import { NODE_CATEGORY_ORDER, SEARCH_CATEGORY_ORDER, SearchCategory } from './types';
 
 export const EmptySearchDatabase: SearchDatabase = SEARCH_CATEGORY_ORDER.reduce<SearchDatabase>((acc, category) => {
   acc[category] = [];

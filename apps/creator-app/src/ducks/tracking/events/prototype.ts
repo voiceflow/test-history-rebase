@@ -5,17 +5,21 @@ import type { PrototypeLayout } from '@/constants/prototype';
 import { prototypeContextStepSelector, prototypeVisualDeviceSelector } from '@/ducks/prototype/selectors';
 import * as Recent from '@/ducks/recent';
 import * as Session from '@/ducks/session';
-import { SyncThunk } from '@/store/types';
+import type { SyncThunk } from '@/store/types';
 
 import { EventName } from '../constants';
 import { createVersionEvent, createVersionEventTracker } from '../utils';
 
 export const trackPrototypeManualNavForwardButton = createVersionEventTracker((eventInfo) =>
-  client.analytics.track(createVersionEvent(EventName.PROTOTYPE_MANUAL_NAVIGATION, { ...eventInfo, direction: 'forward' }))
+  client.analytics.track(
+    createVersionEvent(EventName.PROTOTYPE_MANUAL_NAVIGATION, { ...eventInfo, direction: 'forward' })
+  )
 );
 
 export const trackPrototypeManualNavBackwardButton = createVersionEventTracker((eventInfo) =>
-  client.analytics.track(createVersionEvent(EventName.PROTOTYPE_MANUAL_NAVIGATION, { ...eventInfo, direction: 'backward' }))
+  client.analytics.track(
+    createVersionEvent(EventName.PROTOTYPE_MANUAL_NAVIGATION, { ...eventInfo, direction: 'backward' })
+  )
 );
 
 export const trackProjectTrainAssistant = createVersionEventTracker<{ origin?: string }>((eventInfo) =>
@@ -48,7 +52,11 @@ export const trackProjectBlockPrototypeTestStart = createVersionEventTracker((ev
   const display = prototypeVisualDeviceSelector(state);
 
   return client.analytics.track(
-    createVersionEvent(EventName.PROJECT_BLOCK_TEST_START, { ...eventInfo, debug, display: display || BaseNode.Visual.DeviceType.DESKTOP })
+    createVersionEvent(EventName.PROJECT_BLOCK_TEST_START, {
+      ...eventInfo,
+      debug,
+      display: display || BaseNode.Visual.DeviceType.DESKTOP,
+    })
   );
 });
 
@@ -56,11 +64,22 @@ export const trackProjectPrototypeEnd = createVersionEventTracker((eventInfo, _d
   const state = getState();
   const contextStep = prototypeContextStepSelector(state);
 
-  return client.analytics.track(createVersionEvent(EventName.PROJECT_CANVAS_PROTOTYPE_END, { ...eventInfo, interactions: contextStep }));
+  return client.analytics.track(
+    createVersionEvent(EventName.PROJECT_CANVAS_PROTOTYPE_END, { ...eventInfo, interactions: contextStep })
+  );
 });
 
 export const trackPublicPrototypeView =
-  ({ sessionID, versionID, ...data }: { device: string; layout: PrototypeLayout; sessionID: string; versionID: string }): SyncThunk =>
+  ({
+    sessionID,
+    versionID,
+    ...data
+  }: {
+    device: string;
+    layout: PrototypeLayout;
+    sessionID: string;
+    versionID: string;
+  }): SyncThunk =>
   (_, getState) => {
     client.analytics.track({
       name: EventName.PUBLIC_PROTOTYPE_VIEW,

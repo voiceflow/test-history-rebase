@@ -4,7 +4,7 @@ import React from 'react';
 import Button from '../../Button';
 import type { OptionsMenuOption } from '../../OptionsMenu';
 import Select from '../../Select';
-import * as T from '../types';
+import type * as T from '../types';
 
 const FooterActionsButton: React.FC<T.FooterActionsButtonProps> = ({ actions, placement = 'bottom' }) => (
   <Select<OptionsMenuOption>

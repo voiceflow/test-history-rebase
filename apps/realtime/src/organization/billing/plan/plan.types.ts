@@ -1,4 +1,4 @@
-import { BillingPeriodUnit } from '@voiceflow/dtos';
+import type { BillingPeriodUnit } from '@voiceflow/dtos';
 
 export interface PlanItemPrice {
   _id: string;

@@ -12,7 +12,10 @@ import { PROJECT_PLATFORM_MODULE_OPTIONS_TOKEN } from './project-platform.module
 
 @Injectable()
 export class ProjectPlatformService {
-  private generalClient = new MemoizedClient(this.user, (token) => new GeneralClient(this.options.generalBaseURL, token));
+  private generalClient = new MemoizedClient(
+    this.user,
+    (token) => new GeneralClient(this.options.generalBaseURL, token)
+  );
 
   private alexaClient = new MemoizedClient(this.user, (token) => new AlexaClient(this.options.alexaBaseURL, token));
 

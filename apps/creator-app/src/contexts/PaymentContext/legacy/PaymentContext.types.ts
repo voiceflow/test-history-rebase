@@ -1,6 +1,6 @@
-import { Source } from '@stripe/stripe-js';
+import type { Source } from '@stripe/stripe-js';
 
-import { DBPaymentSource, PlanSubscription } from '@/models';
+import type { DBPaymentSource, PlanSubscription } from '@/models';
 
 export type CreateFullSourceFunction = (cardHolderInfo: CardHolderInfo) => Promise<Source>;
 export interface CardHolderInfo {

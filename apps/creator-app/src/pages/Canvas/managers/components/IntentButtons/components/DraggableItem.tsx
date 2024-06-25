@@ -1,11 +1,16 @@
 import composeRef from '@seznam/compose-react-refs';
-import { BaseButton } from '@voiceflow/base-types';
-import { Intent } from '@voiceflow/dtos';
+import type { BaseButton } from '@voiceflow/base-types';
+import type { Intent } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
-import { Box, SectionV2, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import type { UIOnlyMenuItemOption } from '@voiceflow/ui';
+import { Box, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
-import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
+import type {
+  DragPreviewComponentProps,
+  ItemComponentProps,
+  MappedItemComponentHandlers,
+} from '@/components/DraggableList';
 import IntentSelect from '@/components/IntentSelect';
 import VariablesInput from '@/components/VariablesInput';
 import { Designer, Diagram } from '@/ducks';
@@ -16,7 +21,7 @@ import { getPlatformValue } from '@/utils/platform';
 import { transformVariablesToReadable } from '@/utils/slot';
 import { isGooglePlatform } from '@/utils/typeGuards';
 
-import { NodeEditorV2Props } from '../../../types';
+import type { NodeEditorV2Props } from '../../../types';
 
 export interface DraggableItemProps
   extends ItemComponentProps<BaseButton.IntentButton>,
@@ -49,7 +54,10 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
   const intent = useSelector(Designer.Intent.selectors.oneWithFormattedBuiltNameByID, { id: item.payload.intentID });
   const entitiesAndVariables = useSelector(Diagram.active.allSlotsAndVariablesNormalizedSelector);
 
-  const [sectionRef, scrollIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: autofocus, options: { block: 'end' } });
+  const [sectionRef, scrollIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({
+    condition: autofocus,
+    options: { block: 'end' },
+  });
 
   const label = getPlatformValue(editor.platform, { [Platform.Constants.PlatformType.GOOGLE]: 'Chip' }, 'Button');
 

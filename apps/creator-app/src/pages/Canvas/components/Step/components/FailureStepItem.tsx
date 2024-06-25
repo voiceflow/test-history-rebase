@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ItemProps } from '../types';
+import type { ItemProps } from '../types';
 import Item from './StepItem';
 
 const FAILURE_COLOR = '#d94c4c';

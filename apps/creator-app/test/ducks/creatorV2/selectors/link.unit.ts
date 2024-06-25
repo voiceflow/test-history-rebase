@@ -38,7 +38,10 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - link selectors', ({ describeS
       });
 
       it('select link IDs by connected node ID', () => {
-        expect(select((state) => CreatorV2.linkIDsByNodeIDSelector(state, { id: NODE_ID }), rootState)).toEqual([LINK_ID, fooLink.id]);
+        expect(select((state) => CreatorV2.linkIDsByNodeIDSelector(state, { id: NODE_ID }), rootState)).toEqual([
+          LINK_ID,
+          fooLink.id,
+        ]);
       });
 
       it('select empty array if unrecognized ID', () => {
@@ -66,7 +69,10 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - link selectors', ({ describeS
       });
 
       it('select link IDs by connected node ID', () => {
-        expect(select((state) => CreatorV2.linksByNodeIDSelector(state, { id: NODE_ID }), rootState)).toEqual([LINK, fooLink]);
+        expect(select((state) => CreatorV2.linksByNodeIDSelector(state, { id: NODE_ID }), rootState)).toEqual([
+          LINK,
+          fooLink,
+        ]);
       });
 
       it('select empty array if unrecognized node ID', () => {
@@ -83,7 +89,10 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - link selectors', ({ describeS
       });
 
       it('select link IDs by connected port ID', () => {
-        expect(select((state) => CreatorV2.linkIDsByPortIDSelector(state, { id: PORT_ID }), rootState)).toEqual([LINK_ID, fooLink.id]);
+        expect(select((state) => CreatorV2.linkIDsByPortIDSelector(state, { id: PORT_ID }), rootState)).toEqual([
+          LINK_ID,
+          fooLink.id,
+        ]);
       });
 
       it('select empty array if unrecognized link ID', () => {
@@ -111,7 +120,10 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - link selectors', ({ describeS
       });
 
       it('select link IDs by connected port ID', () => {
-        expect(select((state) => CreatorV2.linksByPortIDSelector(state, { id: PORT_ID }), rootState)).toEqual([LINK, fooLink]);
+        expect(select((state) => CreatorV2.linksByPortIDSelector(state, { id: PORT_ID }), rootState)).toEqual([
+          LINK,
+          fooLink,
+        ]);
       });
 
       it('select empty array if unrecognized link ID', () => {
@@ -122,8 +134,18 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - link selectors', ({ describeS
     describe('joiningLinkIDsSelector()', () => {
       const sourceNodeID = 'sourceNodeID';
       const targetNodeID = 'targetNodeID';
-      const fooLink = { ...LINK, id: 'fooLink', source: { nodeID: sourceNodeID, portID: '' }, target: { nodeID: targetNodeID, portID: '' } };
-      const barLink = { ...LINK, id: 'barLink', source: { nodeID: targetNodeID, portID: '' }, target: { nodeID: sourceNodeID, portID: '' } };
+      const fooLink = {
+        ...LINK,
+        id: 'fooLink',
+        source: { nodeID: sourceNodeID, portID: '' },
+        target: { nodeID: targetNodeID, portID: '' },
+      };
+      const barLink = {
+        ...LINK,
+        id: 'barLink',
+        source: { nodeID: targetNodeID, portID: '' },
+        target: { nodeID: sourceNodeID, portID: '' },
+      };
       const rootState = createState({
         ...MOCK_STATE,
         links: normalize([LINK, fooLink, barLink]),
@@ -134,23 +156,33 @@ suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - link selectors', ({ describeS
       });
 
       it('select the IDs of links between the source and target nodes, ignoring the link direction', () => {
-        const result = select((state) => CreatorV2.joiningLinkIDsSelector(state, { sourceNodeID, targetNodeID }), rootState);
+        const result = select(
+          (state) => CreatorV2.joiningLinkIDsSelector(state, { sourceNodeID, targetNodeID }),
+          rootState
+        );
 
         expect(result).toEqual([barLink.id, fooLink.id]);
       });
 
       it('select the IDs of links between the source and target nodes, respecting the link direction', () => {
-        const result = select((state) => CreatorV2.joiningLinkIDsSelector(state, { sourceNodeID, targetNodeID, directional: true }), rootState);
+        const result = select(
+          (state) => CreatorV2.joiningLinkIDsSelector(state, { sourceNodeID, targetNodeID, directional: true }),
+          rootState
+        );
 
         expect(result).toEqual([fooLink.id]);
       });
 
       it('select empty array if unrecognized source node ID', () => {
-        expect(select((state) => CreatorV2.joiningLinkIDsSelector(state, { sourceNodeID: 'foo', targetNodeID }), rootState)).toEqual([]);
+        expect(
+          select((state) => CreatorV2.joiningLinkIDsSelector(state, { sourceNodeID: 'foo', targetNodeID }), rootState)
+        ).toEqual([]);
       });
 
       it('select empty array if unrecognized target node ID', () => {
-        expect(select((state) => CreatorV2.joiningLinkIDsSelector(state, { targetNodeID: 'foo', sourceNodeID }), rootState)).toEqual([]);
+        expect(
+          select((state) => CreatorV2.joiningLinkIDsSelector(state, { targetNodeID: 'foo', sourceNodeID }), rootState)
+        ).toEqual([]);
       });
     });
   });

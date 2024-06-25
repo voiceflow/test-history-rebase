@@ -7,8 +7,30 @@ import { buttonStyle, containerStyle } from './CMSFormListItem.css';
 import type { ICMSFormListItem } from './CMSFormListItem.interface';
 
 export const CMSFormListItem = forwardRef<HTMLDivElement, ICMSFormListItem>('CMSFormListItem')(
-  ({ pr = 16, gap = 12, index, onRemove, children, className, showOnHover, removeDisabled, contentContainerProps, ...props }, ref) => (
-    <Box {...props} pr={pr} ref={ref} gap={gap} direction="row" className={clsx(containerStyle, className)} data-index={index}>
+  (
+    {
+      pr = 16,
+      gap = 12,
+      index,
+      onRemove,
+      children,
+      className,
+      showOnHover,
+      removeDisabled,
+      contentContainerProps,
+      ...props
+    },
+    ref
+  ) => (
+    <Box
+      {...props}
+      pr={pr}
+      ref={ref}
+      gap={gap}
+      direction="row"
+      className={clsx(containerStyle, className)}
+      data-index={index}
+    >
       <Box width="100%" overflow="hidden" direction="column" {...contentContainerProps}>
         {children}
       </Box>

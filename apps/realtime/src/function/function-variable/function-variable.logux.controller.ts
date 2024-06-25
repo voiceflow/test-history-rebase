@@ -26,7 +26,9 @@ export class FunctionVariableLoguxController {
     @Payload() { data, context }: Actions.FunctionVariable.CreateOne.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.FunctionVariable.CreateOne.Response> {
-    return this.service.createManyAndBroadcast([data], { auth, context }).then(([result]) => ({ data: this.service.toJSON(result), context }));
+    return this.service
+      .createManyAndBroadcast([data], { auth, context })
+      .then(([result]) => ({ data: this.service.toJSON(result), context }));
   }
 
   @Action(Actions.FunctionVariable.PatchOne)
@@ -37,7 +39,10 @@ export class FunctionVariableLoguxController {
   @Broadcast<Actions.FunctionVariable.PatchOne>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchOne(@Payload() { id, patch, context }: Actions.FunctionVariable.PatchOne, @AuthMeta() auth: AuthMetaPayload) {
+  async patchOne(
+    @Payload() { id, patch, context }: Actions.FunctionVariable.PatchOne,
+    @AuthMeta() auth: AuthMetaPayload
+  ) {
     await this.service.patchOneForUser(auth.userID, { id, environmentID: context.environmentID }, patch);
   }
 
@@ -49,7 +54,10 @@ export class FunctionVariableLoguxController {
   @Broadcast<Actions.FunctionVariable.PatchMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async patchMany(@Payload() { ids, patch, context }: Actions.FunctionVariable.PatchMany, @AuthMeta() auth: AuthMetaPayload) {
+  async patchMany(
+    @Payload() { ids, patch, context }: Actions.FunctionVariable.PatchMany,
+    @AuthMeta() auth: AuthMetaPayload
+  ) {
     await this.service.patchManyForUser(
       auth.userID,
       ids.map((id) => ({ id, environmentID: context.environmentID })),
@@ -69,7 +77,10 @@ export class FunctionVariableLoguxController {
     const result = await this.service.deleteManyAndSync([id], context);
 
     // overriding functions cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, functionVariables: [] } }, { auth, context });
+    await this.service.broadcastDeleteMany(
+      { ...result, delete: { ...result.delete, functionVariables: [] } },
+      { auth, context }
+    );
   }
 
   @Action(Actions.FunctionVariable.DeleteMany)
@@ -80,17 +91,22 @@ export class FunctionVariableLoguxController {
   @Broadcast<Actions.FunctionVariable.DeleteMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async deleteMany(@Payload() { ids, context }: Actions.FunctionVariable.DeleteMany, @AuthMeta() auth: AuthMetaPayload) {
+  async deleteMany(
+    @Payload() { ids, context }: Actions.FunctionVariable.DeleteMany,
+    @AuthMeta() auth: AuthMetaPayload
+  ) {
     const result = await this.service.deleteManyAndSync(ids, context);
 
     // overriding functions cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, functionVariables: [] } }, { auth, context });
+    await this.service.broadcastDeleteMany(
+      { ...result, delete: { ...result.delete, functionVariables: [] } },
+      { auth, context }
+    );
   }
 
   @Action(Actions.FunctionVariable.AddOne)
   @Broadcast<Actions.FunctionVariable.AddOne>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async addOne(@Payload() _: Actions.FunctionVariable.AddOne) {
     // broadcast only
   }
@@ -98,7 +114,6 @@ export class FunctionVariableLoguxController {
   @Action(Actions.FunctionVariable.AddMany)
   @Broadcast<Actions.FunctionVariable.AddMany>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async addMany(@Payload() _: Actions.FunctionVariable.AddMany) {
     // broadcast only
   }

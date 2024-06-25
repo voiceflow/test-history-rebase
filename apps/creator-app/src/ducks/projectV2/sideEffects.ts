@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import type { ProjectAIAssistSettings } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
@@ -19,8 +19,8 @@ import { waitAsync } from '@/ducks/utils';
 import { isEnterpriseSelector, numberOfSeatsSelector } from '@/ducks/workspaceV2/selectors/active';
 import { editorMemberIDsSelector } from '@/ducks/workspaceV2/selectors/active.members';
 import { getActiveWorkspaceContext } from '@/ducks/workspaceV2/utils';
-import { NLUImportModel } from '@/models/NLU';
-import { SyncThunk, Thunk } from '@/store/types';
+import type { NLUImportModel } from '@/models/NLU';
+import type { SyncThunk, Thunk } from '@/store/types';
 import logger from '@/utils/logger';
 import { projectToLegacyBaseProject } from '@/utils/project.util';
 import { isEditorUserRole } from '@/utils/role';

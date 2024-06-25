@@ -1,4 +1,5 @@
-import { RequestType, TextRequest } from '@voiceflow/dtos';
+import type { TextRequest } from '@voiceflow/dtos';
+import { RequestType } from '@voiceflow/dtos';
 import { Chat, ChatWidget, SystemResponse, UserResponse } from '@voiceflow/react-chat';
 import React from 'react';
 
@@ -29,7 +30,13 @@ export const PreviewSection: React.FC = () => {
   return (
     <ChatWidget.ChatContainer>
       <Chat {...config} isLoading={false} withWatermark>
-        <SystemResponse messages={SYSTEM_MESSAGES} avatar={config.avatar} timestamp={startTime} isLast actions={ACTIONS} />
+        <SystemResponse
+          messages={SYSTEM_MESSAGES}
+          avatar={config.avatar}
+          timestamp={startTime}
+          isLast
+          actions={ACTIONS}
+        />
         {/* normally a user response would never appear after buttons */}
         <UserResponse message="Sample reply" timestamp={startTime} />
       </Chat>

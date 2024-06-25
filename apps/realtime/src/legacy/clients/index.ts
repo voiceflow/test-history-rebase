@@ -1,13 +1,16 @@
-import { BaseClientMap, Cache, PubSub, Redis, RedisClient } from '@voiceflow/socket-utils';
-import axios, { AxiosStatic } from 'axios';
-import { Adapter } from 'socket.io-adapter';
+import type { BaseClientMap, Redis } from '@voiceflow/socket-utils';
+import { Cache, PubSub, RedisClient } from '@voiceflow/socket-utils';
+import type { AxiosStatic } from 'axios';
+import axios from 'axios';
+import type { Adapter } from 'socket.io-adapter';
 import { createAdapter as createIOAdapter } from 'socket.io-redis';
 
 import Hashids from './hashids';
 import MongoClient from './mongo';
-import { BaseOptions } from './types';
+import type { BaseOptions } from './types';
 import UnleashClient from './unleash';
-import VoiceflowFactoryClient, { VoiceflowFactory } from './voiceflow';
+import type { VoiceflowFactory } from './voiceflow';
+import VoiceflowFactoryClient from './voiceflow';
 
 export interface ClientMap extends BaseClientMap {
   iopub: Redis;
@@ -54,5 +57,10 @@ const buildClients = (options: BaseOptions): ClientMap => {
 export default buildClients;
 
 export const stopClients = async (clients: ClientMap): Promise<void> => {
-  await Promise.allSettled([clients.pubsub.subscriber.quit(), clients.iopub.quit(), clients.iosub.quit(), clients.redis.quit()]);
+  await Promise.allSettled([
+    clients.pubsub.subscriber.quit(),
+    clients.iopub.quit(),
+    clients.iosub.quit(),
+    clients.redis.quit(),
+  ]);
 };

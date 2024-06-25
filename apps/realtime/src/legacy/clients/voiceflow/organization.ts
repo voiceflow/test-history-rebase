@@ -1,4 +1,4 @@
-import { ExtraOptions } from './types';
+import type { ExtraOptions } from './types';
 import createResourceClient from './utils/resource';
 
 const Client = ({ api }: ExtraOptions) => ({

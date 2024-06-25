@@ -1,5 +1,6 @@
-import { BaseNode, Nullable } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { Nullable } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Popper, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
@@ -31,7 +32,12 @@ const NoReplyStepItemV2: React.FC<NoReplyStepItemProps> = ({ nodeID, noReply, po
     <Popper
       placement="right"
       renderContent={({ onClose }) => (
-        <PromptsPreview title="No Reply" onClose={onClose} prompts={noReply.reprompts as any} onOpenEditor={handleOpenEditor} />
+        <PromptsPreview
+          title="No Reply"
+          onClose={onClose}
+          prompts={noReply.reprompts as any}
+          onOpenEditor={handleOpenEditor}
+        />
       )}
     >
       {({ ref, onToggle, isOpened }) => (

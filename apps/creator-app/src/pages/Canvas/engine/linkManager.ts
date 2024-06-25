@@ -1,10 +1,11 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as CreatorV2 from '@/ducks/creatorV2';
-import { LinkedRects } from '@/pages/Canvas/components/Link';
-import LinkEntity, { TranslatePointData } from '@/pages/Canvas/engine/entities/linkEntity';
-import { Pair } from '@/types';
+import type { LinkedRects } from '@/pages/Canvas/components/Link';
+import type { TranslatePointData } from '@/pages/Canvas/engine/entities/linkEntity';
+import type LinkEntity from '@/pages/Canvas/engine/entities/linkEntity';
+import type { Pair } from '@/types';
 
 import { EngineConsumer, extractPoints, toCanvasRect } from './utils';
 
@@ -88,7 +89,8 @@ class LinkManager extends EngineConsumer {
     const link = this.engine.getLinkByID(linkID);
     if (!link) return false;
 
-    const isPortReady = (relationship: 'source' | 'target') => !!this.engine.port.api(link[relationship].portID)?.isReady();
+    const isPortReady = (relationship: 'source' | 'target') =>
+      !!this.engine.port.api(link[relationship].portID)?.isReady();
 
     return isPortReady('source') && isPortReady('target');
   }

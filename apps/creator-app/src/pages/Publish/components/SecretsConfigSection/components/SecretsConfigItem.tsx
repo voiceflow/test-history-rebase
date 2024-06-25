@@ -4,7 +4,7 @@ import React from 'react';
 import HideableInput from '@/components/HideableInput';
 import * as Settings from '@/components/Settings';
 
-import { SecretField } from '../types';
+import type { SecretField } from '../types';
 
 export interface SecretsConfigItemProps extends SecretField {
   value: unknown;

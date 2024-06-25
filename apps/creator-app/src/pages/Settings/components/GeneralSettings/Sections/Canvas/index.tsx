@@ -54,7 +54,15 @@ const Canvas: React.FC = () => {
 
           <Settings.SubSection header="Zoom Preference" splitView>
             <Settings.SubSection.RadioGroupContainer>
-              <RadioGroup width={318} options={ZOOM_OPTIONS} checked={zoomType} onChange={setZoomType} column activeBar noPaddingLastItem={false} />
+              <RadioGroup
+                width={318}
+                options={ZOOM_OPTIONS}
+                checked={zoomType}
+                onChange={setZoomType}
+                column
+                activeBar
+                noPaddingLastItem={false}
+              />
             </Settings.SubSection.RadioGroupContainer>
 
             <div />
@@ -76,7 +84,8 @@ const Canvas: React.FC = () => {
             </Settings.SubSection.RadioGroupContainer>
 
             <Settings.SubSection.RadioGroupDescription offset={activeLinkType === BaseModels.Project.LinkType.CURVED}>
-              Choose between straight or curved connection lines between blocks. <Link href={Documentation.LINK_TYPE}>Learn more</Link>
+              Choose between straight or curved connection lines between blocks.{' '}
+              <Link href={Documentation.LINK_TYPE}>Learn more</Link>
             </Settings.SubSection.RadioGroupDescription>
           </Settings.SubSection>
         </Settings.Card>

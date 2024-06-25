@@ -1,4 +1,4 @@
-import { Nullish } from '@voiceflow/common';
+import type { Nullish } from '@voiceflow/common';
 import { COLOR_PICKER_CONSTANTS } from '@voiceflow/ui';
 import React from 'react';
 
@@ -12,7 +12,7 @@ import type Engine from '../../engine';
 import { EntityType } from '../../engine/constants';
 import { ContextColorPicker } from './components/ContextColorPicker';
 import { ContextTemplateLibrary } from './components/ContextTemplateLibrary';
-import { ContextMenuOption } from './types';
+import type { ContextMenuOption } from './types';
 
 export enum CanvasAction {
   PASTE = 'paste',

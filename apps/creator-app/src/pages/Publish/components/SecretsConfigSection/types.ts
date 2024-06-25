@@ -1,4 +1,4 @@
-import { ProjectSecretTag } from '@voiceflow/schema-types';
+import type { ProjectSecretTag } from '@voiceflow/schema-types';
 
 export interface InputField {
   description: string;

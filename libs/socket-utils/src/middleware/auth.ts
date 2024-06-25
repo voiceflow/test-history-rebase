@@ -1,7 +1,10 @@
 import type { SocketServer } from '@socket-utils/server';
-import { Eventual } from '@voiceflow/common';
+import type { Eventual } from '@voiceflow/common';
 
-export const authenticateUser = (server: SocketServer, validate: (creatorID: number, token: string) => Eventual<boolean>) =>
+export const authenticateUser = (
+  server: SocketServer,
+  validate: (creatorID: number, token: string) => Eventual<boolean>
+) =>
   server.auth(({ userId, token }) => {
     const creatorID = Number(userId);
 

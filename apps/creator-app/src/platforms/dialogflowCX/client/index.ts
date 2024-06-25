@@ -2,7 +2,7 @@ import * as Platform from '@voiceflow/platform-config';
 
 import { generalService } from '@/client/fetch';
 import { RESOURCE_ENDPOINT } from '@/client/services/modelImport';
-import { NLUImportModel } from '@/models';
+import type { NLUImportModel } from '@/models';
 
 import generalServiceClient from '../../general/client';
 

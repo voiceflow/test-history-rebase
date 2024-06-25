@@ -4,8 +4,8 @@ import React from 'react';
 import ProjectItem from '@/components/PlatformUploadPopup/components/ProjectItem';
 import * as Account from '@/ducks/account';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
-import { AlexaPublishJob } from '@/models';
-import { StageComponentProps } from '@/platforms/types';
+import type { AlexaPublishJob } from '@/models';
+import type { StageComponentProps } from '@/platforms/types';
 
 const SelectVendorStage: React.FC<StageComponentProps<AlexaPublishJob.SelectVendorsStage>> = ({ restart }) => {
   const [trackingEvents] = useTrackingEvents();

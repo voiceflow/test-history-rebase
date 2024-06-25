@@ -1,4 +1,11 @@
-export const styleSelectionElement = (selectionEl: HTMLElement, left: number, top: number, width: number, height: number) => {
+/* eslint-disable no-param-reassign */
+export const styleSelectionElement = (
+  selectionEl: HTMLElement,
+  left: number,
+  top: number,
+  width: number,
+  height: number
+) => {
   selectionEl.style.left = `${left}px`;
   selectionEl.style.top = `${top}px`;
   selectionEl.style.width = `${width}px`;

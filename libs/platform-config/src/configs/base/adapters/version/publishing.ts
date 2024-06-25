@@ -1,9 +1,9 @@
 import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { Types } from '@platform-config/utils';
-import { BaseVersion } from '@voiceflow/base-types';
+import type { BaseVersion } from '@voiceflow/base-types';
 import { createSimpleAdapter, createSmartSimpleAdapter } from 'bidirectional-adapter';
 
-import * as Models from '../../models';
+import type * as Models from '../../models';
 
 export type FromAndToDBOptions = [{ defaultVoice: string }];
 
@@ -25,7 +25,12 @@ export const smart = createSmartSimpleAdapter<
   (publishing) => ConfigUtils.pickNonEmptyFields(publishing, SHARED_FIELDS)
 );
 
-export const simple = createSimpleAdapter<BaseVersion.Publishing, Models.Version.Publishing.Model, FromAndToDBOptions, FromAndToDBOptions>(
+export const simple = createSimpleAdapter<
+  BaseVersion.Publishing,
+  Models.Version.Publishing.Model,
+  FromAndToDBOptions,
+  FromAndToDBOptions
+>(
   (dbPublishing, options) => ({
     ...smart.fromDB(dbPublishing, options),
     ...DEFAULT_VALUES,

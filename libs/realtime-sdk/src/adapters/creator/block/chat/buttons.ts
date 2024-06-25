@@ -1,8 +1,14 @@
-import { NodeData } from '@realtime-sdk/models';
-import { ChatNode } from '@voiceflow/chat-types';
+import type { NodeData } from '@realtime-sdk/models';
+import type { ChatNode } from '@voiceflow/chat-types';
 
 import { baseButtonsAdapter } from '../base';
-import { chatMigrateRepromptToNoReply, chatNoMatchAdapter, chatNoReplyAdapter, createBlockAdapter, fallbackNoMatch } from '../utils';
+import {
+  chatMigrateRepromptToNoReply,
+  chatNoMatchAdapter,
+  chatNoReplyAdapter,
+  createBlockAdapter,
+  fallbackNoMatch,
+} from '../utils';
 
 const buttonsAdapter = createBlockAdapter<ChatNode.Buttons.StepData, NodeData.Buttons>(
   ({ else: elseData, reprompt, noReply, noMatch, ...baseData }, options) => {

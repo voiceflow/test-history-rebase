@@ -1,7 +1,8 @@
-import { Button, ButtonVariant, FlexApart, SvgIconTypes } from '@voiceflow/ui';
+import type { SvgIconTypes } from '@voiceflow/ui';
+import { Button, ButtonVariant, FlexApart } from '@voiceflow/ui';
 import React from 'react';
 
-import { BlockType } from '@/constants';
+import type { BlockType } from '@/constants';
 import { ManagerContext } from '@/pages/Canvas/contexts';
 import { ClassName } from '@/styles/constants';
 
@@ -30,7 +31,14 @@ export interface EditorControlsProps extends React.PropsWithChildren {
   tutorialTitle?: React.ReactNode;
 }
 
-const EditorControls: React.FC<EditorControlsProps> = ({ tutorial, anchor, tutorialTitle, options = [], menu, children }) => {
+const EditorControls: React.FC<EditorControlsProps> = ({
+  tutorial,
+  anchor,
+  tutorialTitle,
+  options = [],
+  menu,
+  children,
+}) => {
   const getManager = React.useContext(ManagerContext)!;
 
   return (
@@ -52,7 +60,14 @@ const EditorControls: React.FC<EditorControlsProps> = ({ tutorial, anchor, tutor
       <ControlsContainer>
         {menu}
         {options.map(({ label, icon, onClick, variant = ButtonVariant.SECONDARY, disabled = false }) => (
-          <Button className={ClassName.EDITOR_FOOTER_BUTTON} variant={variant} icon={icon} onClick={onClick} key={label} disabled={disabled}>
+          <Button
+            className={ClassName.EDITOR_FOOTER_BUTTON}
+            variant={variant}
+            icon={icon}
+            onClick={onClick}
+            key={label}
+            disabled={disabled}
+          >
             {label}
           </Button>
         ))}

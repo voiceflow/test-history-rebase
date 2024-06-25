@@ -1,7 +1,13 @@
 import { LimitType } from '@/constants/limits';
 
-import { ErrorRenderer, PlanLimit, ToastErrorStaticLimit } from './types';
-import { applyEnterpriseLimits, applyPersonalLimits, applyProLimits, applyStarterLimits, applyTeamLimits } from './utils';
+import type { ErrorRenderer, PlanLimit, ToastErrorStaticLimit } from './types';
+import {
+  applyEnterpriseLimits,
+  applyPersonalLimits,
+  applyProLimits,
+  applyStarterLimits,
+  applyTeamLimits,
+} from './utils';
 
 const toastError: ErrorRenderer = ({ limit }): string => `File size must not exceed ${limit}MBs`;
 

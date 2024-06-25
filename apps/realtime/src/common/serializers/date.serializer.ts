@@ -22,5 +22,6 @@ export class DateSerializer implements BaseSerializer<Record<string, any>, Recor
     return !data ? null : this.serialize(data);
   }
 
-  iterable = <T extends Record<string, any>>(data: T[]): SerializedDates<T>[] => data.map((item) => this.nullable(item));
+  iterable = <T extends Record<string, any>>(data: T[]): SerializedDates<T>[] =>
+    data.map((item) => this.nullable(item));
 }

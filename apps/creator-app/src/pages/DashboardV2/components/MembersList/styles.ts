@@ -3,7 +3,9 @@ import { Input as UIInput, Table } from '@voiceflow/ui';
 import { styled } from '@/hocs/styled';
 
 export const Container = styled(Table.Container)`
-  box-shadow: rgba(17, 49, 96, 0.1) 0px 0px 0px 1px, rgba(17, 49, 96, 0.08) 0px 1px 3px 0px;
+  box-shadow:
+    rgba(17, 49, 96, 0.1) 0px 0px 0px 1px,
+    rgba(17, 49, 96, 0.08) 0px 1px 3px 0px;
   border-radius: 8px;
   overflow: hidden;
   min-width: auto;

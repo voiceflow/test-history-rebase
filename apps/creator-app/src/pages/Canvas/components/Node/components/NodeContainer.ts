@@ -1,7 +1,7 @@
 import { styled } from '@/hocs/styled';
 import BlockContainer from '@/pages/Canvas/components/Block/components/BlockContainer';
 import * as ChipStyles from '@/pages/Canvas/components/Chip/styles';
-import { DragTargetProps } from '@/pages/Canvas/components/DragTarget';
+import type { DragTargetProps } from '@/pages/Canvas/components/DragTarget';
 import { NODE_ACTIVE_CLASSNAME, NODE_MERGE_TARGET_CLASSNAME } from '@/pages/Canvas/constants';
 
 import NodeDragTarget from './NodeDragTarget';

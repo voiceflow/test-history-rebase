@@ -1,10 +1,11 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Errors from '@/config/errors';
 import { waitAsync } from '@/ducks/utils';
-import { ActiveVersionContext, assertVersionContext, getActiveVersionContext } from '@/ducks/versionV2/utils';
-import { Thunk } from '@/store/types';
+import type { ActiveVersionContext } from '@/ducks/versionV2/utils';
+import { assertVersionContext, getActiveVersionContext } from '@/ducks/versionV2/utils';
+import type { Thunk } from '@/store/types';
 
 // side effects
 

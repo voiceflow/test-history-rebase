@@ -1,7 +1,13 @@
 import { BaseNode } from '@voiceflow/base-types';
 
-import { NodeData } from '../../../../models';
-import { createBlockAdapter, createOutPortsAdapter, createOutPortsAdapterV2, nextOnlyOutPortsAdapter, nextOnlyOutPortsAdapterV2 } from '../utils';
+import type { NodeData } from '../../../../models';
+import {
+  createBlockAdapter,
+  createOutPortsAdapter,
+  createOutPortsAdapterV2,
+  nextOnlyOutPortsAdapter,
+  nextOnlyOutPortsAdapterV2,
+} from '../utils';
 
 const intentAdapter = createBlockAdapter<BaseNode.Intent.StepData, NodeData.Intent>(
   ({ intent, mappings, availability }) => ({

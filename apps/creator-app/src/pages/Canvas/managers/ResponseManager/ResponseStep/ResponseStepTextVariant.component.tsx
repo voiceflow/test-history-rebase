@@ -1,9 +1,9 @@
-import { TextResponseVariant } from '@voiceflow/dtos';
+import type { TextResponseVariant } from '@voiceflow/dtos';
 import { isMarkupEmpty } from '@voiceflow/utils-designer';
 import React from 'react';
 
 import { SlatePreviewWithVariables } from '@/components/State/SlatePreviewWithVariables';
-import { HSLShades } from '@/constants';
+import type { HSLShades } from '@/constants';
 import Step from '@/pages/Canvas/components/Step';
 import { markupToSlate } from '@/utils/markup.util';
 

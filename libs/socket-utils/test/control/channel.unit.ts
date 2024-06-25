@@ -131,7 +131,9 @@ describe('Control | Channel', () => {
       channel.setup();
       await server.channel.args[0][1].finally();
 
-      expect(server.logger.error).to.be.calledWithExactly("encountered error in 'finally' handler of channel 'channel/:channelID'");
+      expect(server.logger.error).to.be.calledWithExactly(
+        "encountered error in 'finally' handler of channel 'channel/:channelID'"
+      );
     });
 
     it('catches unauthorized error', async () => {
@@ -173,7 +175,9 @@ describe('Control | Channel', () => {
       channel.setup();
       await server.channel.args[0][1].unsubscribe();
 
-      expect(server.logger.error).to.be.calledWithExactly("encountered error in 'unsubscribe' handler of channel 'channel/:channelID'");
+      expect(server.logger.error).to.be.calledWithExactly(
+        "encountered error in 'unsubscribe' handler of channel 'channel/:channelID'"
+      );
     });
 
     it('catches unauthorized error', async () => {

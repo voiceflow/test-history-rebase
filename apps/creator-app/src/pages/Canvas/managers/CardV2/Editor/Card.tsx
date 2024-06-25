@@ -1,6 +1,6 @@
-import { BaseText } from '@voiceflow/base-types';
+import type { BaseText } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SectionV2, UploadV2 } from '@voiceflow/ui';
 import React from 'react';
 
@@ -10,7 +10,7 @@ import VariablesInput from '@/components/VariablesInput';
 import { useActiveProjectTypeConfig } from '@/hooks';
 import { useImageDimensions } from '@/hooks/file.hook';
 import { FormControl } from '@/pages/Canvas/components/Editor';
-import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
+import type { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 
 import Buttons from './Buttons';
 

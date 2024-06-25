@@ -1,6 +1,6 @@
 import composeRef from '@seznam/compose-react-refs';
 import { Utils } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import { Box, SectionV2, stopPropagation, usePersistFunction, usePopper } from '@voiceflow/ui';
 import React from 'react';
 
@@ -34,7 +34,10 @@ const GPTPrompt: React.FC<GPTPromptProps> = ({
   activeIndex,
   popperDescription,
 }) => {
-  const [ref] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: isActive, options: { block: 'nearest' } }, [isActive, activeIndex]);
+  const [ref] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: isActive, options: { block: 'nearest' } }, [
+    isActive,
+    activeIndex,
+  ]);
 
   const popper = usePopper({
     placement: 'left-start',

@@ -5,9 +5,13 @@ import React from 'react';
 import { NLUConfidenceSliderSection } from '@/components/NLU/NLUConfidenceSliderSection/NLUConfidenceSliderSection.component';
 import { NLU_INTENT_CLASSIFICATION_LEARN_MORE } from '@/constants/link.constant';
 
-import { IIntentClassificationNLUSettings } from './IntentClassificationNLUSettings.interface';
+import type { IIntentClassificationNLUSettings } from './IntentClassificationNLUSettings.interface';
 
-export const IntentClassificationNLUSettings: React.FC<IIntentClassificationNLUSettings> = ({ settings, disabled, onSettingsChange }) => {
+export const IntentClassificationNLUSettings: React.FC<IIntentClassificationNLUSettings> = ({
+  settings,
+  disabled,
+  onSettingsChange,
+}) => {
   const TEST_ID = 'intent-classification-nlu-settings';
 
   const onParamsChange = (value: Partial<IIntentClassificationNLUSettings['settings']['params']>) => {

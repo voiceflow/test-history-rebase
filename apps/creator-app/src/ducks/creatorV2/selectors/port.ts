@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 import { createSelector } from 'reselect';
@@ -14,18 +14,22 @@ export const portByIDSelector = createSelector([creatorStateSelector, idParamSel
 
 export const getPortByIDSelector = createCurriedSelector(portByIDSelector);
 
-export const allPortsByIDsSelector = createSelector([creatorStateSelector, idsParamSelector], ({ ports }, portIDs) => Normal.getMany(ports, portIDs));
+export const allPortsByIDsSelector = createSelector([creatorStateSelector, idsParamSelector], ({ ports }, portIDs) =>
+  Normal.getMany(ports, portIDs)
+);
 
 export const allPortsSelector = createSelector([creatorStateSelector], (state) => state.ports);
 
 const EMPTY_PORTS = Realtime.Utils.port.createEmptyNodePorts();
 
-export const portsByNodeIDSelector = createSelector([creatorStateSelector, idParamSelector], ({ portsByNodeID }, nodeID) =>
-  nodeID ? portsByNodeID[nodeID] ?? EMPTY_PORTS : EMPTY_PORTS
+export const portsByNodeIDSelector = createSelector(
+  [creatorStateSelector, idParamSelector],
+  ({ portsByNodeID }, nodeID) => (nodeID ? portsByNodeID[nodeID] ?? EMPTY_PORTS : EMPTY_PORTS)
 );
 
-export const nodeIDByPortIDSelector = createSelector([creatorStateSelector, idParamSelector], ({ nodeIDByPortID }, portID) =>
-  portID ? nodeIDByPortID[portID] ?? null : null
+export const nodeIDByPortIDSelector = createSelector(
+  [creatorStateSelector, idParamSelector],
+  ({ nodeIDByPortID }, portID) => (portID ? nodeIDByPortID[portID] ?? null : null)
 );
 
 export const builtInPortTypeSelector = createSelector(

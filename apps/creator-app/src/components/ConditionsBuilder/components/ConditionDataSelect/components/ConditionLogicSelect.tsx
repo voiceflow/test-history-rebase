@@ -3,8 +3,8 @@ import { Box, Checkbox } from '@voiceflow/ui';
 import React from 'react';
 
 import { ExpressionDisplayLabel, ExpressionWithNoSecondValue } from '@/components/ConditionsBuilder/constants';
-import { ExpressionDataLogicType } from '@/components/ConditionsBuilder/types';
-import { RadioOption } from '@/components/RadioGroup';
+import type { ExpressionDataLogicType } from '@/components/ConditionsBuilder/types';
+import type { RadioOption } from '@/components/RadioGroup';
 import RadioButtonContainer from '@/components/RadioGroup/components/RadioButtonContainer';
 
 import ConditionValueSelect from '../../ConditionValueSelect';
@@ -64,7 +64,10 @@ export interface ConditionLogicSelectProps {
   logicValue: ExpressionDataLogicType;
   onLogicUpdate: (value: ExpressionDataLogicType) => void;
   conditionValue?: string;
-  onConditionValueUpdate: (data: { value: string; type: BaseNode.Utils.ExpressionTypeV2.VARIABLE | BaseNode.Utils.ExpressionTypeV2.VALUE }) => void;
+  onConditionValueUpdate: (data: {
+    value: string;
+    type: BaseNode.Utils.ExpressionTypeV2.VARIABLE | BaseNode.Utils.ExpressionTypeV2.VALUE;
+  }) => void;
   onClose: () => void;
 }
 

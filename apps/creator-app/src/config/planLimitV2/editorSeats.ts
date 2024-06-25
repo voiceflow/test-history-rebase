@@ -5,8 +5,14 @@ import * as Tracking from '@/ducks/tracking';
 import { editorPlanSeatLimitsSelector } from '@/ducks/workspaceV2/selectors/active';
 import { getLegacyUpgradeModalProps } from '@/utils/upgrade';
 
-import { PlanLimit, UpgradeModalDynamicLimit } from './types';
-import { applyEnterpriseLimits, applyPersonalLimits, applyProLimits, applyStarterLimits, applyTeamLimits } from './utils';
+import type { PlanLimit, UpgradeModalDynamicLimit } from './types';
+import {
+  applyEnterpriseLimits,
+  applyPersonalLimits,
+  applyProLimits,
+  applyStarterLimits,
+  applyTeamLimits,
+} from './utils';
 
 const DEFAULT_MODAL = {
   title: 'Need more Editor seats?',
@@ -19,7 +25,7 @@ const STARTER_PERSONAL_PRO_LIMIT: UpgradeModalDynamicLimit = {
   upgradeModal: () => ({
     ...DEFAULT_MODAL,
     ...getLegacyUpgradeModalProps(PlanType.TEAM, Tracking.UpgradePrompt.EDITOR_SEATS),
-    description: `Upgrade to the teams plan to unlock more editor seats.`,
+    description: 'Upgrade to the teams plan to unlock more editor seats.',
   }),
 };
 

@@ -1,10 +1,12 @@
-import Tooltip, { TooltipProps } from '@ui/components/Tooltip';
+import type { TooltipProps } from '@ui/components/Tooltip';
+import Tooltip from '@ui/components/Tooltip';
 import { stopPropagation } from '@ui/utils';
 import React from 'react';
 
 import { AnchorContainer } from './components';
 
-export interface TutorialTooltipProps extends Pick<TooltipProps, 'children' | 'placement' | 'portalNode' | 'initialOpened'> {
+export interface TutorialTooltipProps
+  extends Pick<TooltipProps, 'children' | 'placement' | 'portalNode' | 'initialOpened'> {
   title?: React.ReactNode;
   helpTitle?: React.ReactNode;
   helpMessage?: React.ReactNode;

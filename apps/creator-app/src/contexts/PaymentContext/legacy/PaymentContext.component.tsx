@@ -1,5 +1,6 @@
 import { Elements, useElements, useStripe } from '@stripe/react-stripe-js';
-import { loadStripe, Source, SourceCreateParams } from '@stripe/stripe-js';
+import type { Source, SourceCreateParams } from '@stripe/stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { isNetworkError, toast, useAsyncEffect, useContextApi, usePersistFunction } from '@voiceflow/ui';
@@ -10,10 +11,10 @@ import { STRIPE_KEY } from '@/config';
 import { PlanPricesContext } from '@/contexts/PlanPricesContext';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector, useSyncDispatch } from '@/hooks';
-import { DBPaymentSource, PlanSubscription } from '@/models';
+import type { DBPaymentSource, PlanSubscription } from '@/models';
 
 import { MAX_POLL_COUNT, POLL_INTERVAL, STRIPE_ELEMENT_OPTIONS } from './PaymentContext.constants';
-import { CardHolderInfo, PaymentAPIContextType } from './PaymentContext.types';
+import type { CardHolderInfo, PaymentAPIContextType } from './PaymentContext.types';
 
 const stripePromise = loadStripe(STRIPE_KEY);
 
@@ -36,34 +37,36 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
   const stripe = useStripe();
   const elements = useElements();
 
-  const checkChargeable = usePersistFunction(async ({ id, client_secret: clientSecret }: Pick<Source, 'id' | 'client_secret'>) => {
-    let pollCount = 0;
+  const checkChargeable = usePersistFunction(
+    async ({ id, client_secret: clientSecret }: Pick<Source, 'id' | 'client_secret'>) => {
+      let pollCount = 0;
 
-    const pollForSourceStatus = async (): Promise<boolean> => {
-      if (!stripe) throw new Error('Stripe not initialized');
+      const pollForSourceStatus = async (): Promise<boolean> => {
+        if (!stripe) throw new Error('Stripe not initialized');
 
-      const { source } = await stripe.retrieveSource({ id, client_secret: clientSecret });
+        const { source } = await stripe.retrieveSource({ id, client_secret: clientSecret });
 
-      if (!source) {
+        if (!source) {
+          throw new Error('Payment not valid - unable to verify card');
+        }
+
+        if (source.status === 'chargeable') return true;
+
+        // Try again in a second, if the Source is still `pending`:
+        if (source.status === 'pending' && pollCount < MAX_POLL_COUNT) {
+          pollCount += 1;
+
+          await Utils.promise.delay(POLL_INTERVAL);
+
+          return pollForSourceStatus();
+        }
+
         throw new Error('Payment not valid - unable to verify card');
-      }
+      };
 
-      if (source.status === 'chargeable') return true;
-
-      // Try again in a second, if the Source is still `pending`:
-      if (source.status === 'pending' && pollCount < MAX_POLL_COUNT) {
-        pollCount += 1;
-
-        await Utils.promise.delay(POLL_INTERVAL);
-
-        return pollForSourceStatus();
-      }
-
-      throw new Error('Payment not valid - unable to verify card');
-    };
-
-    return pollForSourceStatus();
-  });
+      return pollForSourceStatus();
+    }
+  );
 
   const createSource = usePersistFunction(async (): Promise<Source> => {
     if (!stripe || !elements) throw new Error('Stripe not loaded');
@@ -146,7 +149,11 @@ export const PaymentApiProvider: React.FC<React.PropsWithChildren> = ({ children
     try {
       const results = await Promise.allSettled([fetchPlanSubscription(), fetchPaymentSource(), platPrices.get()]);
 
-      if (results.some((result) => result.status === 'rejected' && isNetworkError(result.reason) && result.reason.statusCode !== 404)) {
+      if (
+        results.some(
+          (result) => result.status === 'rejected' && isNetworkError(result.reason) && result.reason.statusCode !== 404
+        )
+      ) {
         toast.error('Something went wrong. Please try again later.');
       }
     } finally {

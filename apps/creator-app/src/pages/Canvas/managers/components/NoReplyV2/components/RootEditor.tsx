@@ -1,6 +1,6 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
@@ -16,7 +16,8 @@ import { EngineContext } from '@/pages/Canvas/contexts';
 import Actions from '../../Actions';
 import { useGenerateBuiltInResponses } from '../../hooks';
 import PathSection from '../../PathSection';
-import PromptsSection, { PromptsSectionRef } from '../../PromptsSection';
+import type { PromptsSectionRef } from '../../PromptsSection';
+import PromptsSection from '../../PromptsSection';
 import { BUILT_IN_NO_REPLIES_BY_LOCALE, DEFAULT_BUILT_IN_NO_REPLIES } from '../constants';
 import HelpTooltip from './HelpTooltip';
 import TimeoutSection from './TimeoutSection';
@@ -50,7 +51,10 @@ const RootEditor: React.FC = () => {
 
   const onChangeReprompts = async (reprompts: Platform.Base.Models.Prompt.Model[]) => {
     if (!reprompts.length) {
-      await onChange({ types: Utils.array.withoutValue(noReply.types, BaseNode.Utils.NoReplyType.REPROMPT), reprompts: [] });
+      await onChange({
+        types: Utils.array.withoutValue(noReply.types, BaseNode.Utils.NoReplyType.REPROMPT),
+        reprompts: [],
+      });
     } else {
       await onChange({
         types: Utils.array.unique([...noReply.types, BaseNode.Utils.NoReplyType.REPROMPT]),
@@ -96,7 +100,9 @@ const RootEditor: React.FC = () => {
   }, []);
 
   const withPath = noReply.types.includes(BaseNode.Utils.NoReplyType.PATH);
-  const maxItems = Realtime.Utils.typeGuards.isAlexaPlatform(editor.platform) ? MAX_ALEXA_REPROMPTS : MAX_SYSTEM_MESSAGES_COUNT;
+  const maxItems = Realtime.Utils.typeGuards.isAlexaPlatform(editor.platform)
+    ? MAX_ALEXA_REPROMPTS
+    : MAX_SYSTEM_MESSAGES_COUNT;
 
   return (
     <EditorV2
@@ -154,7 +160,9 @@ const RootEditor: React.FC = () => {
                 label="response"
                 disabled={!!gptGenPrompt.items.length || gptGenPrompt.fetching || mapManager.size >= maxItems}
                 isLoading={gptGenPrompt.fetching}
-                onGenerate={({ quantity }) => gptGenPrompt.onGenerate({ quantity, examples: promptSectionRef.current?.getCurrentValues() })}
+                onGenerate={({ quantity }) =>
+                  gptGenPrompt.onGenerate({ quantity, examples: promptSectionRef.current?.getCurrentValues() })
+                }
                 pluralLabel="responses"
                 hasExtraContext
               />

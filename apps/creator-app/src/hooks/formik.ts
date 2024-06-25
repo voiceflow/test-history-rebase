@@ -1,4 +1,4 @@
-import { FormikErrors, useFormik } from 'formik';
+import type { FormikErrors, useFormik } from 'formik';
 import React from 'react';
 
 /**
@@ -10,6 +10,9 @@ export const useFormikTouchedErrors = <T extends Record<string, string | number 
   submitCount,
 }: ReturnType<typeof useFormik<T>>): Partial<FormikErrors<T>> =>
   React.useMemo(
-    () => Object.fromEntries(Object.entries(errors).filter(([key]) => !!submitCount || touched[key as keyof T])) as Partial<FormikErrors<T>>,
+    () =>
+      Object.fromEntries(Object.entries(errors).filter(([key]) => !!submitCount || touched[key as keyof T])) as Partial<
+        FormikErrors<T>
+      >,
     [errors, touched, submitCount]
   );

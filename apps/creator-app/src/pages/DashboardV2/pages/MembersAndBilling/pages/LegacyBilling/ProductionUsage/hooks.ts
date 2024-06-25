@@ -1,4 +1,4 @@
-import { SubscriptionBillingPeriod } from '@voiceflow/realtime-sdk';
+import type { SubscriptionBillingPeriod } from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
 import React from 'react';
 

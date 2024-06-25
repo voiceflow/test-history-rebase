@@ -1,6 +1,6 @@
 import { PROJECT_LIST_KEY } from '@realtime-sdk/constants';
-import { ProjectList } from '@realtime-sdk/models';
-import { BaseProjectPayload, BaseWorkspacePayload } from '@realtime-sdk/types';
+import type { ProjectList } from '@realtime-sdk/models';
+import type { BaseProjectPayload, BaseWorkspacePayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 
 import { createCRUDActions } from './utils';
@@ -24,8 +24,12 @@ export interface TransplantProjectBetweenListsPayload extends BaseWorkspacePaylo
 
 export const addProjectToList = Utils.protocol.createAction<AddProjectToListPayload>(projectListType('ADD_PROJECT'));
 
-export const removeProjectFromList = Utils.protocol.createAction<BaseProjectListPayload>(projectListType('REMOVE_PROJECT'));
+export const removeProjectFromList = Utils.protocol.createAction<BaseProjectListPayload>(
+  projectListType('REMOVE_PROJECT')
+);
 
-export const transplantProjectBetweenLists = Utils.protocol.createAction<TransplantProjectBetweenListsPayload>(projectListType('TRANSPLANT_PROJECT'));
+export const transplantProjectBetweenLists = Utils.protocol.createAction<TransplantProjectBetweenListsPayload>(
+  projectListType('TRANSPLANT_PROJECT')
+);
 
 export const crud = createCRUDActions<ProjectList, BaseWorkspacePayload>(projectListType);

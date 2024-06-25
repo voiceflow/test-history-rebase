@@ -7,7 +7,7 @@ import { workflowMapByDiagramIDAtom } from '@/atoms/workflow.atom';
 import { Router } from '@/ducks';
 import { useDispatch } from '@/hooks/store.hook';
 
-import { CMSTableUsedByCellItem } from './CMSTableUsedByCell.interface';
+import type { CMSTableUsedByCellItem } from './CMSTableUsedByCell.interface';
 import { CMSTableUsedByCellItemType } from './CMSTableUsedByCellItemType.enum';
 
 export const useCMSTableUsedByCellGetItem = () => {

@@ -7,7 +7,9 @@ setupEnv();
 const CONFIG = {
   // feature flags
   FEATURE_OVERRIDES: Object.fromEntries(
-    Object.entries(process.env).flatMap(([key, value]) => (key.startsWith('FF_') ? [[key.substring(3).toLowerCase(), value === 'true']] : []))
+    Object.entries(process.env).flatMap(([key, value]) =>
+      key.startsWith('FF_') ? [[key.substring(3).toLowerCase(), value === 'true']] : []
+    )
   ),
 };
 

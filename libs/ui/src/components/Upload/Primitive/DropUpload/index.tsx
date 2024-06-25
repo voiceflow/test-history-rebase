@@ -1,10 +1,11 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import React from 'react';
 import { useDropzone } from 'react-dropzone';
 
 import { useFileTypesToMimeType } from '../../hooks';
-import { BaseInjectedWithUploadProps } from '../../types';
-import LinkUpload, { InputRenderer } from '../LinkUpload';
+import type { BaseInjectedWithUploadProps } from '../../types';
+import type { InputRenderer } from '../LinkUpload';
+import LinkUpload from '../LinkUpload';
 import { UploadMode } from './constants';
 import Error from './Error';
 import { ErrorMessage } from './Error/styles';
@@ -84,7 +85,13 @@ const DropUpload: React.ForwardRefRenderFunction<HTMLDivElement, DropUploadProps
       />
     );
   } else {
-    content = <Neutral onCornerAction={() => setUploadMode(UploadMode.LINK)} cornerIcon={canUseLink ? 'link' : undefined} label={label} />;
+    content = (
+      <Neutral
+        onCornerAction={() => setUploadMode(UploadMode.LINK)}
+        cornerIcon={canUseLink ? 'link' : undefined}
+        label={label}
+      />
+    );
   }
 
   return (

@@ -2,7 +2,7 @@ import { styled } from '@ui/styles';
 import React from 'react';
 
 import { getFormattedLabel } from './getFormattedLabel';
-import { GetOptionLabel, GetOptionValue, RenderOptionLabelConfig, UIOnlyMenuItemOption } from './types';
+import type { GetOptionLabel, GetOptionValue, RenderOptionLabelConfig, UIOnlyMenuItemOption } from './types';
 
 const LabelWrapper = styled.span`
   text-overflow: ellipsis;
@@ -16,7 +16,7 @@ const defaultMenuLabelRenderer = <Option, Value>(
   searchLabel: string,
   getOptionLabel: GetOptionLabel<Value>,
   getOptionValue: GetOptionValue<Option, Value>,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   _config?: RenderOptionLabelConfig
 ): React.ReactElement => {
   const label = getOptionLabel(getOptionValue(option));

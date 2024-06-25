@@ -1,5 +1,6 @@
 import { tid } from '@voiceflow/style';
-import { Box, Button, Divider, Editor, IEditorAPI, Scroll } from '@voiceflow/ui-next';
+import type { IEditorAPI } from '@voiceflow/ui-next';
+import { Box, Button, Divider, Editor, Scroll } from '@voiceflow/ui-next';
 import React, { useRef } from 'react';
 
 import { CMSEditorDescription } from '@/components/CMS/CMSEditor/CMSEditorDescription/CMSEditorDescription.component';

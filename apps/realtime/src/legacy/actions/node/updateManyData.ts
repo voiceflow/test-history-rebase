@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { Context } from '@voiceflow/socket-utils';
+import type { Context } from '@voiceflow/socket-utils';
 import type { Action } from 'typescript-fsa';
 
 import { AbstractVersionDiagramAccessActionControl } from '@/legacy/actions/diagram/utils';

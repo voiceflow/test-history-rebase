@@ -1,12 +1,20 @@
-import { NodeOutPortSchema, NodePorts, NodePortSchema, PortsDescriptor } from '@realtime-sdk/models';
-import { Nullish, Utils } from '@voiceflow/common';
+import type { NodeOutPortSchema, NodePorts, NodePortSchema, PortsDescriptor } from '@realtime-sdk/models';
+import type { Nullish } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 
 export const IN_PORT_KEY = '-in';
 
 export const getInPortID = (nodeID: string): string => `${nodeID}${IN_PORT_KEY}`;
 
-export const createEmptyNodePorts = <T = string>(): NodePortSchema<T> => ({ in: [], out: { byKey: {}, builtIn: {}, dynamic: [] } });
-export const createEmptyNodeOutPorts = <T = string>(): NodeOutPortSchema<T> => ({ byKey: {}, builtIn: {}, dynamic: [] });
+export const createEmptyNodePorts = <T = string>(): NodePortSchema<T> => ({
+  in: [],
+  out: { byKey: {}, builtIn: {}, dynamic: [] },
+});
+export const createEmptyNodeOutPorts = <T = string>(): NodeOutPortSchema<T> => ({
+  byKey: {},
+  builtIn: {},
+  dynamic: [],
+});
 
 export const extractNodePorts = (descriptor: PortsDescriptor): NodePorts => ({
   in: descriptor.in.map(({ id }) => id),
@@ -30,7 +38,14 @@ export const flattenOutPorts = <T>(ports: Nullish<NodePortSchema<T>>, options?: 
     out: { builtIn, dynamic: dynamicPorts, byKey: byKeyPorts },
   } = ports;
 
-  return [...Object.values(builtIn).filter(Boolean), ...dynamicPorts, ...(options?.skipByKeyPorts ? [] : Object.values(byKeyPorts).filter(Boolean))];
+  return [
+    ...Object.values(builtIn).filter(Boolean),
+    ...dynamicPorts,
+    ...(options?.skipByKeyPorts ? [] : Object.values(byKeyPorts).filter(Boolean)),
+  ];
 };
 
-export const flattenAllPorts = <T>(ports: Nullish<NodePortSchema<T>>): T[] => [...flattenInPorts(ports), ...flattenOutPorts(ports)];
+export const flattenAllPorts = <T>(ports: Nullish<NodePortSchema<T>>): T[] => [
+  ...flattenInPorts(ports),
+  ...flattenOutPorts(ports),
+];

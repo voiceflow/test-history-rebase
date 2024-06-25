@@ -1,11 +1,12 @@
 import { PrimaryButton } from '@ui/components/Button';
 import { FlexCenter } from '@ui/components/Flex';
-import { LoadCircle, LoaderProps } from '@ui/components/Loader';
+import type { LoaderProps } from '@ui/components/Loader';
+import { LoadCircle } from '@ui/components/Loader';
 import SvgIcon from '@ui/components/SvgIcon';
 import { css, styled, transition } from '@ui/styles';
 import { space } from 'styled-system';
 
-import { RootDropAreaProps } from '../../types';
+import type { RootDropAreaProps } from '../../types';
 
 interface ContainerProps {
   active?: boolean;

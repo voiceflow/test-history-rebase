@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { Transform } from './types';
+import type { Transform } from './types';
 
 /**
  * some people used "converted to topic" on their root flow,

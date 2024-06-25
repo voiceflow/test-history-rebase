@@ -10,7 +10,9 @@ export const personaOverrideReducer = reducerWithInitialState<PersonaOverrideSta
   .case(Actions.PersonaOverride.DeleteOne, (state, { id }) => removeOne(state, id))
   .case(Actions.PersonaOverride.DeleteMany, (state, { ids }) => removeMany(state, ids))
   .case(Actions.PersonaOverride.Replace, (state, { data }) => ({ ...state, ...normalize(data) }))
-  .caseWithAction(Actions.PersonaOverride.PatchOne, (state, action) => patchOne(state, action.payload.id, patchWithUpdatedFields(action)))
+  .caseWithAction(Actions.PersonaOverride.PatchOne, (state, action) =>
+    patchOne(state, action.payload.id, patchWithUpdatedFields(action))
+  )
   .caseWithAction(Actions.PersonaOverride.PatchMany, (state, action) =>
     patchMany(
       state,

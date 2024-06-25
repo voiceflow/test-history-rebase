@@ -2,7 +2,7 @@ import type { LoguxControl } from '@voiceflow/socket-utils';
 import type { Db, MongoClient } from 'mongodb';
 import Mongo from 'mongodb';
 
-import { BaseOptions } from './types';
+import type { BaseOptions } from './types';
 
 class MongoDB implements LoguxControl {
   private client: MongoClient | undefined;

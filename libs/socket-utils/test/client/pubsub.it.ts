@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import { Utils } from '@voiceflow/common';
 import cbor from 'cbor';
 import { expect } from 'chai';

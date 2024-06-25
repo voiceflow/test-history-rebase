@@ -1,5 +1,6 @@
-import { Nullable } from '@voiceflow/common';
-import { Box, SvgIconTypes, TippyTooltip, TippyTooltipProps } from '@voiceflow/ui';
+import type { Nullable } from '@voiceflow/common';
+import type { SvgIconTypes, TippyTooltipProps } from '@voiceflow/ui';
+import { Box, TippyTooltip } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
 

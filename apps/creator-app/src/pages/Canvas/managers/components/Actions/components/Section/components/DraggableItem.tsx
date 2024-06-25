@@ -1,9 +1,9 @@
-import { EmptyObject } from '@voiceflow/common';
+import type { EmptyObject } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, ContextMenu, Input, OverflowText, OverflowTippyTooltip, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
-import { DragPreviewComponentProps, ItemComponentHandlers, ItemComponentProps } from '@/components/DraggableList';
+import type { DragPreviewComponentProps, ItemComponentHandlers, ItemComponentProps } from '@/components/DraggableList';
 import { BlockType } from '@/constants';
 import { useAutoScrollNodeIntoView, useEnableDisable, useLinkedState } from '@/hooks';
 import type { ManagerGetter } from '@/pages/Canvas/contexts';
@@ -25,7 +25,17 @@ interface DraggableItemProps
 }
 
 const DraggableItem = React.forwardRef<HTMLElement, DraggableItemProps>((props, ref) => {
-  const { item, portID, editor, getManager, onDuplicate, isDragging, lastCreatedStepID, isDraggingPreview, connectedDragRef } = props;
+  const {
+    item,
+    portID,
+    editor,
+    getManager,
+    onDuplicate,
+    isDragging,
+    lastCreatedStepID,
+    isDraggingPreview,
+    connectedDragRef,
+  } = props;
 
   const { icon, isEmpty, defaultName, placeholder } = useItemConfig(getManager, item);
 

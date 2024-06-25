@@ -36,10 +36,17 @@ const Dashboard: React.FC = () => {
       <Route path={[Path.WORKSPACE_PROFILE, Path.WORKSPACE_INTEGRATIONS]} component={Account} />
       <Route path={[Path.WORKSPACE_BILLING, Path.WORKSPACE_MEMBERS]} component={MembersAndBilling} />
       <Route path={Path.WORKSPACE_SETTINGS} component={Settings} />
-      {(canConfigureSSO || canManageOrgMembers) && <Route path={Path.WORKSPACE_ORGANIZATION} component={Organization} />}
+      {(canConfigureSSO || canManageOrgMembers) && (
+        <Route path={Path.WORKSPACE_ORGANIZATION} component={Organization} />
+      )}
       <Route path={Path.WORKSPACE_DASHBOARD} component={TemporaryProjectList} />
     </Switch>
   );
 };
 
-export default withBatchLoadingGate(DashboardGate, WorkspaceSubscriptionGate, OrganizationSubscriptionGate, BillingSubscriptionGate)(Dashboard);
+export default withBatchLoadingGate(
+  DashboardGate,
+  WorkspaceSubscriptionGate,
+  OrganizationSubscriptionGate,
+  BillingSubscriptionGate
+)(Dashboard);

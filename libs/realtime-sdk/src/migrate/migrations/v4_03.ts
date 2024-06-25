@@ -2,7 +2,7 @@
 
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 /**
  * this migration removes components items from the menu items list
@@ -10,7 +10,9 @@ import { Transform } from './types';
 const migrateToV4_03: Transform = ({ diagrams }) => {
   diagrams.forEach((dbDiagram) => {
     dbDiagram.menuItems = dbDiagram.menuItems?.filter(
-      (item) => item.type !== BaseModels.Diagram.MenuItemType.NODE || dbDiagram.nodes[item.sourceID]?.type !== BaseNode.NodeType.COMPONENT
+      (item) =>
+        item.type !== BaseModels.Diagram.MenuItemType.NODE ||
+        dbDiagram.nodes[item.sourceID]?.type !== BaseNode.NodeType.COMPONENT
     );
   });
 };

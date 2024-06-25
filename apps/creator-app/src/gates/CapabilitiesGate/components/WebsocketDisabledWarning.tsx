@@ -10,8 +10,9 @@ const RealtimeDisabledWarning: React.FC = () => (
       title="Browser Not Supported"
       message={
         <>
-          Voiceflow requires your browser to support <Link href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API">WebSocket</Link>{' '}
-          technology for communication.
+          Voiceflow requires your browser to support{' '}
+          <Link href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API">WebSocket</Link> technology for
+          communication.
           <br />
           <br />
           Consider switching to: <br />

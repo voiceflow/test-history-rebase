@@ -12,7 +12,7 @@ import type {
 
 import type { PullOperation, SetOperation } from '@/mongo/common/atomic';
 import { ProjectORM } from '@/mongo/project';
-import { VersionKnowledgeBaseDocument, VersionKnowledgeBasePatchDocument } from '@/mongo/version';
+import type { VersionKnowledgeBaseDocument, VersionKnowledgeBasePatchDocument } from '@/mongo/version';
 
 import { Atomic } from '../common';
 
@@ -95,12 +95,11 @@ export class KnowledgeBaseORM extends ProjectORM {
                 path: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH, 'documents', documentID, key, nestedKey],
                 value: nestedValue,
               }));
-            } 
-              return {
-                path: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH, 'documents', documentID, key],
-                value,
-              };
-            
+            }
+            return {
+              path: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH, 'documents', documentID, key],
+              value,
+            };
           })
           .flat()
       ),

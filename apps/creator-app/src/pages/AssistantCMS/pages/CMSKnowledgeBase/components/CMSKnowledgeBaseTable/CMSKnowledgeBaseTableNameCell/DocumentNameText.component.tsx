@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import { Table, Text, Tooltip } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -15,7 +15,7 @@ interface IDocumentNameText {
 const safeDecodeURIComponent = (str: string) => {
   return str
     .split('%')
-    .map(function (part, index) {
+    .map((part, index) => {
       // We don't want to decode the first part
       if (index === 0) return part;
 
@@ -42,7 +42,14 @@ export const DocumentNameText: React.FC<IDocumentNameText> = ({ id, data, search
     <Tooltip.Overflow
       referenceElement={({ ref, onOpen, onClose }) =>
         data.canEdit ? (
-          <Table.Cell.Text.Highlighted ref={ref} label={nameWithoutNewLines} search={search} overflow onMouseEnter={onOpen} onMouseLeave={onClose} />
+          <Table.Cell.Text.Highlighted
+            ref={ref}
+            label={nameWithoutNewLines}
+            search={search}
+            overflow
+            onMouseEnter={onOpen}
+            onMouseLeave={onClose}
+          />
         ) : (
           <Table.Cell.Link
             ref={ref}

@@ -1,7 +1,8 @@
 import type * as PopperJS from '@popperjs/core';
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import { useState } from 'react';
-import { Modifier, usePopper as usePopperBase } from 'react-popper';
+import type { Modifier } from 'react-popper';
+import { usePopper as usePopperBase } from 'react-popper';
 
 import { useTheme } from './theme';
 
@@ -23,15 +24,21 @@ interface BasePopperAPI {
   forceUpdate: PopperJS.Instance['forceUpdate'] | null;
 }
 
-export interface PopperAPI<TriggerRef extends Nullable<Element | PopperJS.VirtualElement>, PopperRef extends Nullable<HTMLElement>>
-  extends BasePopperAPI {
+export interface PopperAPI<
+  TriggerRef extends Nullable<Element | PopperJS.VirtualElement>,
+  PopperRef extends Nullable<HTMLElement>,
+> extends BasePopperAPI {
   popperElement: Nullable<PopperRef>;
   setPopperElement: React.Dispatch<React.SetStateAction<Nullable<PopperRef>>>;
   referenceElement: Nullable<TriggerRef>;
   setReferenceElement: React.Dispatch<React.SetStateAction<Nullable<TriggerRef>>>;
 }
 
-export const usePopper = <TriggerRef extends Nullable<Element | PopperJS.VirtualElement>, PopperRef extends Nullable<HTMLElement>, Modifiers>(
+export const usePopper = <
+  TriggerRef extends Nullable<Element | PopperJS.VirtualElement>,
+  PopperRef extends Nullable<HTMLElement>,
+  Modifiers,
+>(
   popperOptions?: PopperOptions<Modifiers>
 ): PopperAPI<TriggerRef, PopperRef> => {
   const theme = useTheme();
@@ -62,7 +69,11 @@ interface VirtualPopperAPI<PopperRef extends Nullable<HTMLElement>> extends Base
   setPopperElement: React.Dispatch<React.SetStateAction<Nullable<PopperRef>>>;
 }
 
-export const useVirtualElementPopper = <VirtualElement extends Nullable<PopperJS.VirtualElement>, PopperRef extends Nullable<HTMLElement>, Modifiers>(
+export const useVirtualElementPopper = <
+  VirtualElement extends Nullable<PopperJS.VirtualElement>,
+  PopperRef extends Nullable<HTMLElement>,
+  Modifiers,
+>(
   virtualElement: VirtualElement,
   popperOptions?: PopperOptions<Modifiers>
 ): VirtualPopperAPI<PopperRef> => {

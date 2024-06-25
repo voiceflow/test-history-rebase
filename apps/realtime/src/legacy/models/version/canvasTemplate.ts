@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 
 import { NestedMongoModel } from '../_mongo';
@@ -8,7 +8,10 @@ import type VersionModel from './index';
 class CanvasTemplateModel extends NestedMongoModel<VersionModel> {
   readonly MODEL_PATH = 'canvasTemplates' as const;
 
-  async create(versionID: string, canvasTemplate: BaseModels.Version.CanvasTemplate): Promise<BaseModels.Version.CanvasTemplate> {
+  async create(
+    versionID: string,
+    canvasTemplate: BaseModels.Version.CanvasTemplate
+  ): Promise<BaseModels.Version.CanvasTemplate> {
     await this.model.atomicUpdateByID(versionID, [Atomic.push([{ path: this.MODEL_PATH, value: canvasTemplate }])]);
 
     return canvasTemplate;
@@ -32,15 +35,23 @@ class CanvasTemplateModel extends NestedMongoModel<VersionModel> {
     return canvasTemplate;
   }
 
-  async update(versionID: string, templateID: string, data: Partial<Omit<BaseModels.Version.CanvasTemplate, 'id'>>): Promise<void> {
+  async update(
+    versionID: string,
+    templateID: string,
+    data: Partial<Omit<BaseModels.Version.CanvasTemplate, 'id'>>
+  ): Promise<void> {
     return this.model.atomicUpdateByID(
       versionID,
-      Utils.object.getKeys(data).map((key) => Atomic.set([{ path: [this.MODEL_PATH, { id: templateID }, key], value: data[key] }]))
+      Utils.object
+        .getKeys(data)
+        .map((key) => Atomic.set([{ path: [this.MODEL_PATH, { id: templateID }, key], value: data[key] }]))
     );
   }
 
   async delete(versionID: string, templateID: string): Promise<void> {
-    return this.model.atomicUpdateByID(versionID, [Atomic.pull([{ path: this.MODEL_PATH, match: { id: templateID } }])]);
+    return this.model.atomicUpdateByID(versionID, [
+      Atomic.pull([{ path: this.MODEL_PATH, match: { id: templateID } }]),
+    ]);
   }
 }
 

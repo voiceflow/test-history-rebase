@@ -10,9 +10,13 @@ export const knowledgeBaseSearch = withFolderSearch<CMSKnowledgeBase>((item, { s
   return !!item.data?.name.toLocaleLowerCase().includes(search);
 });
 
-export const sortByName = (left: CMSKnowledgeBase, right: CMSKnowledgeBase) => withOptionalSort(localeCompareSort)(left.data?.name, right.data?.name);
+export const sortByName = (left: CMSKnowledgeBase, right: CMSKnowledgeBase) =>
+  withOptionalSort(localeCompareSort)(left.data?.name, right.data?.name);
 
-const statusSort = (left: BaseModels.Project.KnowledgeBaseDocumentStatus, right: BaseModels.Project.KnowledgeBaseDocumentStatus) => {
+const statusSort = (
+  left: BaseModels.Project.KnowledgeBaseDocumentStatus,
+  right: BaseModels.Project.KnowledgeBaseDocumentStatus
+) => {
   if (left === right) return 0;
 
   if (left === BaseModels.Project.KnowledgeBaseDocumentStatus.ERROR) {
@@ -34,4 +38,5 @@ const statusSort = (left: BaseModels.Project.KnowledgeBaseDocumentStatus, right:
   return 0;
 };
 
-export const sortByStatus = (left: CMSKnowledgeBase, right: CMSKnowledgeBase) => withOptionalSort(statusSort)(left.status, right.status);
+export const sortByStatus = (left: CMSKnowledgeBase, right: CMSKnowledgeBase) =>
+  withOptionalSort(statusSort)(left.status, right.status);

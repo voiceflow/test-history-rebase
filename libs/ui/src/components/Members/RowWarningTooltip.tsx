@@ -1,5 +1,6 @@
 import SvgIcon from '@ui/components/SvgIcon';
-import TippyTooltip, { TippyTooltipProps } from '@ui/components/TippyTooltip';
+import type { TippyTooltipProps } from '@ui/components/TippyTooltip';
+import TippyTooltip from '@ui/components/TippyTooltip';
 import React from 'react';
 
 const RowWarningTooltip: React.FC<Omit<TippyTooltipProps, 'content'>> = ({ children, ...props }) => (

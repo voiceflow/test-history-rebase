@@ -1,8 +1,8 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import ObjectID from 'bson-objectid';
 import dayjs from 'dayjs';
 
-import * as ProjectV2 from '@/ducks/projectV2';
+import type * as ProjectV2 from '@/ducks/projectV2';
 
 import { SortByTypes } from './constants';
 

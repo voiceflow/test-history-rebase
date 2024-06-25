@@ -113,16 +113,17 @@ export class CompletionPrivateHTTPController {
           data: chunk.completion,
         };
       }),
-      finalize(() => this.billing.usagesPrivate
-        .trackUsage({
-          resourceType: BillingResourceType.WORKSPACE,
-          resourceID: String(request.workspaceID),
-          item: TrackUsageItemName.Tokens,
-          value: tokens,
-        })
-        .catch((err) => {
-          this.logger.error('Error tracking usage for workspace: %s (%s) %o', request.workspaceID, tokens, err);
-        })
+      finalize(() =>
+        this.billing.usagesPrivate
+          .trackUsage({
+            resourceType: BillingResourceType.WORKSPACE,
+            resourceID: String(request.workspaceID),
+            item: TrackUsageItemName.Tokens,
+            value: tokens,
+          })
+          .catch((err) => {
+            this.logger.error('Error tracking usage for workspace: %s (%s) %o', request.workspaceID, tokens, err);
+          })
       )
     );
   }
@@ -155,16 +156,17 @@ export class CompletionPrivateHTTPController {
           data: chunk.completion,
         };
       }),
-      finalize(() => this.billing.usagesPrivate
-        .trackUsage({
-          resourceType: BillingResourceType.WORKSPACE,
-          resourceID: String(request.workspaceID),
-          item: TrackUsageItemName.Tokens,
-          value: tokens,
-        })
-        .catch((err) => {
-          this.logger.error('Error tracking token usage for workspace: %s (%s) %o', request.workspaceID, tokens, err);
-        })
+      finalize(() =>
+        this.billing.usagesPrivate
+          .trackUsage({
+            resourceType: BillingResourceType.WORKSPACE,
+            resourceID: String(request.workspaceID),
+            item: TrackUsageItemName.Tokens,
+            value: tokens,
+          })
+          .catch((err) => {
+            this.logger.error('Error tracking token usage for workspace: %s (%s) %o', request.workspaceID, tokens, err);
+          })
       )
     );
   }

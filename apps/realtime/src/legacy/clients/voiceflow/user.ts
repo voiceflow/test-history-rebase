@@ -1,6 +1,6 @@
-import { User } from '@voiceflow/socket-utils';
+import type { User } from '@voiceflow/socket-utils';
 
-import { ExtraOptions } from './types';
+import type { ExtraOptions } from './types';
 
 export interface UserClient {
   get: () => Promise<User | null>;

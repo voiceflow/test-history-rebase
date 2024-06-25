@@ -2,9 +2,9 @@ import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { NodeInstance } from '@/pages/Canvas/engine/entities/nodeEntity';
+import type { NodeInstance } from '@/pages/Canvas/engine/entities/nodeEntity';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
-import { StepAPI } from '@/pages/Canvas/types';
+import type { StepAPI } from '@/pages/Canvas/types';
 import { useEditingMode } from '@/pages/Project/hooks';
 import { Coords } from '@/utils/geometry';
 

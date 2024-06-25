@@ -1,10 +1,11 @@
 import { Logger } from '@nestjs/common';
-import { AIMessage, AIModel, AIParams } from '@voiceflow/dtos';
+import type { AIMessage, AIParams } from '@voiceflow/dtos';
+import { AIModel } from '@voiceflow/dtos';
 
 import { EmptyCompletionOutput } from '../llm-model.constant';
 import type { CompletionOptions } from '../llm-model.dto';
 import { GPTLLMModel } from './gpt.abstract';
-import { OpenAIConfig } from './gpt.interface';
+import type { OpenAIConfig } from './gpt.interface';
 import { getOpenAIResponseError, isAxiosError } from './gpt.util';
 import { GPT3_5_1106 } from './gpt3-5-1106.client';
 

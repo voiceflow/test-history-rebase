@@ -1,4 +1,4 @@
-import { DBNodeStart, Link, Node, NodeData, Port } from '@realtime-sdk/models';
+import type { DBNodeStart, Link, Node, NodeData, Port } from '@realtime-sdk/models';
 import { getInPortID } from '@realtime-sdk/utils/port';
 import {
   isActions,
@@ -9,15 +9,16 @@ import {
   isStart,
   isStep,
 } from '@realtime-sdk/utils/typeGuards';
-import { BaseModels } from '@voiceflow/base-types';
-import { AnyRecord, Utils } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config/backend';
+import type { BaseModels } from '@voiceflow/base-types';
+import type { AnyRecord } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import type * as Platform from '@voiceflow/platform-config/backend';
 import { createMultiAdapter } from 'bidirectional-adapter';
 
 import { BlockType } from '../../constants';
-import { AdapterContext, VersionAdapterContext } from '../types';
+import type { AdapterContext, VersionAdapterContext } from '../types';
 import { noInPortTypes } from './block';
-import { PortData } from './block/utils';
+import type { PortData } from './block/utils';
 import nodeDataAdapter from './nodeData';
 import stepPortsAdapter from './stepPorts';
 import { generateInPort } from './utils';
@@ -45,10 +46,12 @@ interface OutOptions {
 }
 
 const nodeAdapter = createMultiAdapter<BaseModels.BaseDiagramNode, OutData, [InOptions], [OutOptions]>(
-  // eslint-disable-next-line sonarjs/cognitive-complexity
   (dbNode, { parentNode, links, platform, projectType, context }) => {
     const siblingSteps = parentNode?.data.steps ?? [];
-    const data = nodeDataAdapter.fromDB({ data: dbNode.data, type: dbNode.type }, { platform, projectType, nodeID: dbNode.nodeID, context });
+    const data = nodeDataAdapter.fromDB(
+      { data: dbNode.data, type: dbNode.type },
+      { platform, projectType, nodeID: dbNode.nodeID, context }
+    );
 
     const ports: Port[] = [];
 
@@ -115,8 +118,14 @@ const nodeAdapter = createMultiAdapter<BaseModels.BaseDiagramNode, OutData, [InO
         registerInPort(generateInPort(node.id));
       }
 
-      const { dynamic, builtIn, byKey } = stepPortsAdapter.fromDB(dbNode.data, { platform, nodeType: node.type, dbNode });
-      const allPorts = [...Object.values(builtIn), ...Object.values(byKey), ...dynamic].filter(Utils.array.isNotNullish);
+      const { dynamic, builtIn, byKey } = stepPortsAdapter.fromDB(dbNode.data, {
+        platform,
+        nodeType: node.type,
+        dbNode,
+      });
+      const allPorts = [...Object.values(builtIn), ...Object.values(byKey), ...dynamic].filter(
+        Utils.array.isNotNullish
+      );
 
       node.ports.out.dynamic = dynamic.map(({ port }) => port.id);
       node.ports.out.builtIn = Utils.object.mapValue(builtIn, (portData) => portData?.port.id ?? null);

@@ -106,6 +106,7 @@ ace.define('ace/mode/matching_brace_outdent', ['require', 'exports', 'module', '
     return /^\s*}/.test(input);
   };
 
+  // eslint-disable-next-line consistent-return
   MatchingBraceOutdent.prototype.autoOutdent = function (doc, row) {
     const line = doc.getLine(row);
     const match = line.match(/^(\s*})/);
@@ -138,7 +139,9 @@ ace.define(
     // eslint-disable-next-line no-multi-assign
     const FoldMode = (exports.FoldMode = function (commentRegex) {
       if (commentRegex) {
-        this.foldingStartMarker = new RegExp(this.foldingStartMarker.source.replace(/\|[^|]*?$/, `|${commentRegex.start}`));
+        this.foldingStartMarker = new RegExp(
+          this.foldingStartMarker.source.replace(/\|[^|]*?$/, `|${commentRegex.start}`)
+        );
         this.foldingStopMarker = new RegExp(this.foldingStopMarker.source.replace(/\|[^|]*?$/, `|${commentRegex.end}`));
       }
     });
@@ -153,7 +156,11 @@ ace.define(
     FoldMode.prototype.getFoldWidget = function (session, foldStyle, row) {
       const line = session.getLine(row);
 
-      if (this.singleLineBlockCommentRe.test(line) && !this.startRegionRe.test(line) && !this.tripleStarBlockCommentRe.test(line)) {
+      if (
+        this.singleLineBlockCommentRe.test(line) &&
+        !this.startRegionRe.test(line) &&
+        !this.tripleStarBlockCommentRe.test(line)
+      ) {
         return '';
       }
 
@@ -164,6 +171,7 @@ ace.define(
       return fw;
     };
 
+    // eslint-disable-next-line consistent-return
     FoldMode.prototype.getFoldWidgetRange = function (session, foldStyle, row, forceMultiline) {
       const line = session.getLine(row);
 
@@ -186,6 +194,7 @@ ace.define(
         return range;
       }
 
+      // eslint-disable-next-line consistent-return
       if (foldStyle === 'markbegin') return;
 
       match = line.match(this.foldingStopMarker);
@@ -228,6 +237,7 @@ ace.define(
 
       return new Range(startRow, startColumn, endRow, session.getLine(endRow).length);
     };
+    // eslint-disable-next-line consistent-return
     FoldMode.prototype.getCommentRegionBlock = function (session, line, row) {
       const startColumn = line.search(/\s*$/);
       const maxRow = session.getLength();

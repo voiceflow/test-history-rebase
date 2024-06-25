@@ -1,9 +1,9 @@
 import { useConst } from '@voiceflow/ui';
 import React from 'react';
 
-import { EditableTextAPI } from '@/components/EditableText';
+import type { EditableTextAPI } from '@/components/EditableText';
 
-import { CombinedAPI } from '../../types';
+import type { CombinedAPI } from '../../types';
 
 export interface InternalBlockAPI<T extends HTMLElement = HTMLElement> extends CombinedAPI<T> {
   titleRef: React.RefObject<EditableTextAPI>;

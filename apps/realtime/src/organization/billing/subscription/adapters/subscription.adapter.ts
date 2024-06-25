@@ -1,4 +1,4 @@
-import { Subscription, SubscriptionPaymentMethodStatusType } from '@voiceflow/dtos';
+import type { Subscription, SubscriptionPaymentMethodStatusType } from '@voiceflow/dtos';
 import { PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';

@@ -1,4 +1,4 @@
-import { LoguxControlOptions } from '../../control';
+import type { LoguxControlOptions } from '../../control';
 import AddBuiltinPortControl from './addBuiltin';
 import AddByKeyPortControl from './addByKey';
 import AddDynamicPortControl from './addDynamic';

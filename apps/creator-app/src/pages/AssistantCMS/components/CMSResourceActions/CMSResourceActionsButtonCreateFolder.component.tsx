@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Folder } from '@voiceflow/dtos';
+import type { Folder } from '@voiceflow/dtos';
 import { notify, Table } from '@voiceflow/ui-next';
 import { useAtomValue, useSetAtom } from 'jotai';
 import React from 'react';

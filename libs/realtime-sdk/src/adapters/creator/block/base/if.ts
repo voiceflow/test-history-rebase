@@ -1,5 +1,5 @@
 import expressionAdapter from '@realtime-sdk/adapters/expression';
-import { NodeData } from '@realtime-sdk/models';
+import type { NodeData } from '@realtime-sdk/models';
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 
 import {
@@ -41,7 +41,8 @@ export const ifOutPortsAdapter = createOutPortsAdapter<NodeData.IfV2BuiltInPorts
       length: options.node.data?.expressions?.length ?? 0,
     }),
   ({ builtIn: { [BaseModels.PortType.NO_MATCH]: noMatchPortData }, dynamic }, { data }) => [
-    noMatchPortData ? outPortDataToDB(noMatchPortData) : dbBuiltInPortFactory(BaseModels.PortType.NO_MATCH), // should be first for backward compatible
+    // should be first for backward compatible
+    noMatchPortData ? outPortDataToDB(noMatchPortData) : dbBuiltInPortFactory(BaseModels.PortType.NO_MATCH),
     ...outPortsDataToDB(dynamic).map((dbPort, index) => {
       const expressionTitle = data.expressions[index]?.name;
 

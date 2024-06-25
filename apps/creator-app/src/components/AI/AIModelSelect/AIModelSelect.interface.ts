@@ -1,7 +1,7 @@
-import { AIModel } from '@voiceflow/dtos';
-import { BaseProps } from '@voiceflow/ui-next';
+import type { AIModel } from '@voiceflow/dtos';
+import type { BaseProps } from '@voiceflow/ui-next';
 
-import { AIModelConfig } from '@/config/ai-model';
+import type { AIModelConfig } from '@/config/ai-model';
 
 export interface IAIModelSelect {
   label?: string;

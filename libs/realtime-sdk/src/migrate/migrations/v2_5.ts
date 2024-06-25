@@ -1,9 +1,9 @@
 /* eslint-disable no-param-reassign */
 import { BaseModels, BaseNode, BaseUtils } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { Draft } from 'immer';
+import type { Draft } from 'immer';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 const goToNodeFactory = (intent: string | null = null, diagramID: string | null = null): BaseNode.GoTo.Step => ({
   type: BaseNode.NodeType.GOTO,
@@ -19,7 +19,11 @@ const urlFactory = (url: string, target: string | null = null): BaseNode.Url.Ste
   type: BaseNode.NodeType.URL,
   data: {
     url,
-    portsV2: { byKey: {}, dynamic: [], builtIn: { [BaseModels.PortType.NEXT]: { id: Utils.id.objectID(), type: BaseModels.PortType.NEXT, target } } },
+    portsV2: {
+      byKey: {},
+      dynamic: [],
+      builtIn: { [BaseModels.PortType.NEXT]: { id: Utils.id.objectID(), type: BaseModels.PortType.NEXT, target } },
+    },
   },
   nodeID: Utils.id.objectID(),
 });
@@ -30,7 +34,10 @@ const actionsNodeFactory = (stepIDs: string[] = []): BaseModels.BaseActions => (
   nodeID: Utils.id.objectID(),
 });
 
-const migrateButtons = (nodes: Draft<Record<string, BaseModels.BaseDiagramNode>>, node: BaseNode.Buttons.Step): void => {
+const migrateButtons = (
+  nodes: Draft<Record<string, BaseModels.BaseDiagramNode>>,
+  node: BaseNode.Buttons.Step
+): void => {
   node.data.buttons.forEach((button, index) => {
     const { url, intent, actions, diagramID } = button;
 
@@ -72,7 +79,10 @@ const migrateButtons = (nodes: Draft<Record<string, BaseModels.BaseDiagramNode>>
   });
 };
 
-const migrateInteraction = (nodes: Draft<Record<string, BaseModels.BaseDiagramNode>>, node: BaseNode.Interaction.Step): void => {
+const migrateInteraction = (
+  nodes: Draft<Record<string, BaseModels.BaseDiagramNode>>,
+  node: BaseNode.Interaction.Step
+): void => {
   node.data.choices.forEach((choice, index) => {
     const { goTo, action } = choice;
 

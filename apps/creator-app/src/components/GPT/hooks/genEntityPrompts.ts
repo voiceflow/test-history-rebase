@@ -1,5 +1,5 @@
 import { READABLE_VARIABLE_REGEXP, Utils } from '@voiceflow/common';
-import { Entity } from '@voiceflow/dtos';
+import type { Entity } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { serializeToText } from '@voiceflow/slate-serializer/text';
@@ -13,7 +13,8 @@ import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectType, useSelector } from '@/hooks';
 import { slotToString, transformVariablesToReadable } from '@/utils/slot';
 
-import { GenApi, useGen } from './gen';
+import type { GenApi } from './gen';
+import { useGen } from './gen';
 
 export const useGenVoiceEntityPrompts = ({
   entity,
@@ -39,7 +40,8 @@ export const useGenVoiceEntityPrompts = ({
     disabled,
     examples,
 
-    examplesToDB: (items) => items.map((item) => transformVariablesToReadable(item.text, variables.byKey)).filter(Boolean),
+    examplesToDB: (items) =>
+      items.map((item) => transformVariablesToReadable(item.text, variables.byKey)).filter(Boolean),
 
     dbExamplesToTrack: (items) => items,
 
@@ -51,7 +53,9 @@ export const useGenVoiceEntityPrompts = ({
         type: ('type' in entity ? entity.type : entity.classifier) ?? Realtime.CUSTOM_SLOT_TYPE,
         name: entity.name,
         intentName,
-        intentInputs: intentInputs.map((input) => transformVariablesToReadable(input.text, variables.byKey)).filter(Boolean),
+        intentInputs: intentInputs
+          .map((input) => transformVariablesToReadable(input.text, variables.byKey))
+          .filter(Boolean),
       });
 
       return results.map((result) => {
@@ -97,7 +101,8 @@ export const useGenChatEntityPrompts = ({
     disabled,
     examples,
 
-    examplesToDB: (items) => items.map((item) => serializeToText(item.content, { variablesMap: variables.byKey })).filter(Boolean),
+    examplesToDB: (items) =>
+      items.map((item) => serializeToText(item.content, { variablesMap: variables.byKey })).filter(Boolean),
 
     dbExamplesToTrack: (items) => items,
 
@@ -107,7 +112,9 @@ export const useGenChatEntityPrompts = ({
         type: ('type' in entity ? entity.type : entity.classifier) ?? Realtime.CUSTOM_SLOT_TYPE,
         name: entity.name,
         intentName,
-        intentInputs: intentInputs.map((input) => transformVariablesToReadable(input.text, variables.byKey)).filter(Boolean),
+        intentInputs: intentInputs
+          .map((input) => transformVariablesToReadable(input.text, variables.byKey))
+          .filter(Boolean),
       });
 
       const editor = SlateEditor.createEditor([SlateEditor.PluginType.VARIABLES]);

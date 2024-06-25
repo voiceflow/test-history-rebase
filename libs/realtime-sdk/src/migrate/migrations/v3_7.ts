@@ -1,7 +1,7 @@
 import { BaseNode, BaseUtils } from '@voiceflow/base-types';
-import { VoiceflowNode } from '@voiceflow/voiceflow-types';
+import type { VoiceflowNode } from '@voiceflow/voiceflow-types';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 /**
  * this migration transforms the cardV2 data structure

@@ -1,5 +1,7 @@
-import { Nullable, Utils } from '@voiceflow/common';
-import { BaseSelectProps, Menu, Select, System } from '@voiceflow/ui';
+import type { Nullable } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import type { BaseSelectProps } from '@voiceflow/ui';
+import { Menu, Select, System } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Designer from '@/ducks/designer';
@@ -21,7 +23,10 @@ const ComponentSelect: React.FC<ComponentSelectProps> = ({ diagramID, onChange, 
     if (result) onChange(result.diagramID);
   };
 
-  const optionLookup = React.useMemo(() => Utils.array.createMap(flows, Utils.object.selectField('diagramID')), [flows]);
+  const optionLookup = React.useMemo(
+    () => Utils.array.createMap(flows, Utils.object.selectField('diagramID')),
+    [flows]
+  );
 
   return (
     <Select
@@ -40,15 +45,22 @@ const ComponentSelect: React.FC<ComponentSelectProps> = ({ diagramID, onChange, 
       alwaysShowCreate
       clearOnSelectActive
       createInputPlaceholder="components"
-      renderEmpty={({ search }) => <Menu.NotFound>{!search ? 'No components exist in your agent. ' : 'No components found. '}</Menu.NotFound>}
+      renderEmpty={({ search }) => (
+        <Menu.NotFound>{!search ? 'No components exist in your agent. ' : 'No components found. '}</Menu.NotFound>
+      )}
       renderSearchSuffix={({ close, searchLabel }) => (
         <System.IconButtonsGroup.Base>
-          <System.IconButton.Base icon="plus" onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))} />
+          <System.IconButton.Base
+            icon="plus"
+            onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}
+          />
         </System.IconButtonsGroup.Base>
       )}
       renderFooterAction={({ close, searchLabel }) => (
         <Menu.Footer>
-          <Menu.Footer.Action onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}>Create New Component</Menu.Footer.Action>
+          <Menu.Footer.Action onClick={Utils.functional.chainVoid(close, () => onCreate(searchLabel))}>
+            Create New Component
+          </Menu.Footer.Action>
         </Menu.Footer>
       )}
     />

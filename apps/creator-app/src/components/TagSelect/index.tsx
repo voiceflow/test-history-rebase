@@ -1,24 +1,21 @@
-import { Nullish, Utils } from '@voiceflow/common';
+import type { Nullish } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import type { BaseSelectProps, GetOptionLabel, GetOptionValue, Primitive, UIOnlyMenuItemOption } from '@voiceflow/ui';
 import {
-  BaseSelectProps,
   Checkbox,
   defaultMenuLabelRenderer,
   FlexApart,
   FlexStart,
-  GetOptionLabel,
-  GetOptionValue,
   isNotUIOnlyMenuItemOption,
   Menu,
-  Primitive,
   Select,
   SelectInputVariant,
   stopImmediatePropagation,
-  UIOnlyMenuItemOption,
   useDidUpdateEffect,
 } from '@voiceflow/ui';
 import React from 'react';
 
-import { PrimitiveTagSelectProps, TagSelectInternalProps, TagSelectProps } from './types';
+import type { PrimitiveTagSelectProps, TagSelectInternalProps, TagSelectProps } from './types';
 
 const trimNulls = (list: Nullish<string>[]): string[] => list.filter(Boolean) as string[];
 

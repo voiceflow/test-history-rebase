@@ -14,7 +14,11 @@ const SchemaChannelSubscriptionGate: React.FC<SchemaChannelSubscriptionGateProps
   const isSubscribed = useSchemaSubscription({ versionID });
 
   return (
-    <LoadingGate isLoaded={isSubscribed} loader={<WorkspaceOrProjectLoader />} internalName={SchemaChannelSubscriptionGate.name}>
+    <LoadingGate
+      isLoaded={isSubscribed}
+      loader={<WorkspaceOrProjectLoader />}
+      internalName={SchemaChannelSubscriptionGate.name}
+    >
       {children}
     </LoadingGate>
   );

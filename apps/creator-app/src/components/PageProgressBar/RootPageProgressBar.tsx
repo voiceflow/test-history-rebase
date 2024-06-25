@@ -2,7 +2,8 @@ import { useForceUpdate, useRAF, useTeardown, useToggle } from '@voiceflow/ui';
 import React from 'react';
 
 import PageProgressBar from './PageProgressBar';
-import { PageProgress, PageProgressOptions } from './utils';
+import type { PageProgressOptions } from './utils';
+import { PageProgress } from './utils';
 
 export { PageProgress };
 
@@ -87,7 +88,14 @@ const RootPageProgressBar: React.FC = () => {
     clearInterval(intervalRef.current);
   });
 
-  return <PageProgressBar key={forceUpdateKey} easing="cubic-bezier(0.16, 1, 0.3, 1)" progress={progress} duration={duration} />;
+  return (
+    <PageProgressBar
+      key={forceUpdateKey}
+      easing="cubic-bezier(0.16, 1, 0.3, 1)"
+      progress={progress}
+      duration={duration}
+    />
+  );
 };
 
 export default RootPageProgressBar;

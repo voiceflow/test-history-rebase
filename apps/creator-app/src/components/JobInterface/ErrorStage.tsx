@@ -2,7 +2,7 @@ import { Box, logger, Text, ThemeColor } from '@voiceflow/ui';
 import React from 'react';
 
 import { uploadFail } from '@/assets';
-import { StageComponentProps } from '@/platforms/types';
+import type { StageComponentProps } from '@/platforms/types';
 
 const ErrorStage: React.FC<StageComponentProps<any>> = ({ stage }) => {
   React.useEffect(() => {

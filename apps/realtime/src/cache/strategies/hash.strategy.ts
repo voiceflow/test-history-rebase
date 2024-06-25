@@ -1,7 +1,10 @@
 import { BaseStrategy } from './base.strategy';
 import type { BaseHashAdapter, BaseKeyExtractor, HashFromDB, HashToDB, KeyOptions } from './strategy.interface';
 
-export class HashStrategy<K extends BaseKeyExtractor, A extends BaseHashAdapter | undefined = undefined> extends BaseStrategy<K, A> {
+export class HashStrategy<
+  K extends BaseKeyExtractor,
+  A extends BaseHashAdapter | undefined = undefined,
+> extends BaseStrategy<K, A> {
   public async set(keyOptions: KeyOptions<K>, value: HashToDB<A>): Promise<void> {
     const dbKey = this.keyCreator(keyOptions);
     const dbValue = this.adapter?.toDB(value) ?? value;

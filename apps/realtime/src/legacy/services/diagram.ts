@@ -1,11 +1,11 @@
 import { parseId } from '@logux/core';
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import { AnyRecord, Nullish, Utils } from '@voiceflow/common';
+import type { AnyRecord, Nullish } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { ObjectId } from 'bson';
 import _mapValues from 'lodash/mapValues.js';
-import type { Required } from 'utility-types';
-import { Optional } from 'utility-types';
+import type { Optional, Required } from 'utility-types';
 
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '@/constants';
 

@@ -10,22 +10,33 @@ export const buildPort = (nodeID: string) => {
   });
 };
 
-export const buildDBBlock = (nodeID: string, coords: Realtime.Point, data: BaseModels.BaseBlock['data']): BaseModels.BaseBlock => ({
+export const buildDBBlock = (
+  nodeID: string,
+  coords: Realtime.Point,
+  data: BaseModels.BaseBlock['data']
+): BaseModels.BaseBlock => ({
   type: BaseModels.BaseNodeType.BLOCK,
   data,
   coords,
   nodeID,
 });
 
-export const buildDBActions = (nodeID: string, data: BaseModels.BaseActions['data'], coords?: Realtime.Point): BaseModels.BaseActions => ({
+export const buildDBActions = (
+  nodeID: string,
+  data: BaseModels.BaseActions['data'],
+  coords?: Realtime.Point
+): BaseModels.BaseActions => ({
   type: BaseModels.BaseNodeType.ACTIONS,
   data,
   coords,
   nodeID,
 });
 
-export const buildDBStep = <Step extends BaseModels.BaseStep>(nodeID: string, type: Step['type'], data: Step['data']): Step =>
-  ({ nodeID, type, data } as Step);
+export const buildDBStep = <Step extends BaseModels.BaseStep>(
+  nodeID: string,
+  type: Step['type'],
+  data: Step['data']
+): Step => ({ nodeID, type, data }) as Step;
 
 export interface ExtractNodesOptions extends Partial<Pick<Realtime.CreatorDiagram, 'rootNodeIDs' | 'markupNodeIDs'>> {
   data: Record<string, Realtime.NodeDataDescriptor<unknown>>;
@@ -38,8 +49,12 @@ export const extractNodes = (
   schemaVersion: Realtime.SchemaVersion,
   { ports: portDescriptors = {}, data: dataDescriptors, nodes, ...options }: ExtractNodesOptions
 ): BaseModels.BaseDiagramNode[] => {
-  const ports = Object.entries(portDescriptors).flatMap(([nodeID, ports]) => Realtime.Utils.port.flattenAllPorts(ports).map(buildPort(nodeID)));
-  const data = Object.fromEntries(Object.entries(dataDescriptors).map(([nodeID, data]) => [nodeID, { ...data, nodeID }]));
+  const ports = Object.entries(portDescriptors).flatMap(([nodeID, ports]) =>
+    Realtime.Utils.port.flattenAllPorts(ports).map(buildPort(nodeID))
+  );
+  const data = Object.fromEntries(
+    Object.entries(dataDescriptors).map(([nodeID, data]) => [nodeID, { ...data, nodeID }])
+  );
 
   const { nodes: dbNodes } = Realtime.Adapters.creatorAdapter.toDB(
     {

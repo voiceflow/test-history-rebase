@@ -1,4 +1,4 @@
-import { ClientException } from '@voiceflow/exception';
+import type { ClientException } from '@voiceflow/exception';
 import { Response } from 'undici';
 
 export const isFetchResponseError = (error: unknown): error is { response: ClientException<Response> } => {

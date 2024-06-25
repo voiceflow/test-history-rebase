@@ -12,7 +12,13 @@ export const CMSFunctionHeader: React.FC = () => {
   return (
     <CMSHeader
       searchPlaceholder="Search functions"
-      rightActions={<Header.Button.Primary label="New function" onClick={() => onCreate()} testID={tid(HEADER_TEST_ID, 'new-function')} />}
+      rightActions={
+        <Header.Button.Primary
+          label="New function"
+          onClick={() => onCreate()}
+          testID={tid(HEADER_TEST_ID, 'new-function')}
+        />
+      }
     />
   );
 };

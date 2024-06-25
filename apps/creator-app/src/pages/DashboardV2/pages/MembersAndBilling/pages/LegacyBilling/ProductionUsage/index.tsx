@@ -1,10 +1,10 @@
-import { SubscriptionBillingPeriod } from '@voiceflow/realtime-sdk';
+import type { SubscriptionBillingPeriod } from '@voiceflow/realtime-sdk';
 import { Box, Button, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import Page from '@/components/Page';
 import { PRICE_PER_INTERACTION } from '@/constants';
-import { DBPaymentSource } from '@/models/Billing';
+import type { DBPaymentSource } from '@/models/Billing';
 import * as currency from '@/utils/currency';
 
 import CardDetails from '../CardDetails';
@@ -31,7 +31,11 @@ const BillingProductionUsage: React.FC<BillingProductionUsageProps> = ({ data, s
             </SectionV2.Description>
           </Box.FlexAlignStart>
 
-          {source ? <CardDetails last4={source.last4} brand={source.brand} /> : <Button variant={Button.Variant.SECONDARY}>Add Card</Button>}
+          {source ? (
+            <CardDetails last4={source.last4} brand={source.brand} />
+          ) : (
+            <Button variant={Button.Variant.SECONDARY}>Add Card</Button>
+          )}
         </Box.FlexApart>
       </SectionV2.SimpleSection>
 

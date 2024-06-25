@@ -1,11 +1,11 @@
-import { BaseButton } from '@voiceflow/base-types';
-import { Nullable } from '@voiceflow/common';
+import type { BaseButton } from '@voiceflow/base-types';
+import type { Nullable } from '@voiceflow/common';
 import React from 'react';
 
 import { PrototypeStatus } from '@/constants/prototype';
 import { useRAF } from '@/hooks';
 import type { TurnMap } from '@/pages/Conversations/components/TranscriptDialog';
-import { Interaction, Message, OnInteraction, PMStatus } from '@/pages/Prototype/types';
+import type { Interaction, Message, OnInteraction, PMStatus } from '@/pages/Prototype/types';
 
 import Dialog from '../PrototypeDialog';
 import { InnerChatContainer, OutterChatContainer } from './components';

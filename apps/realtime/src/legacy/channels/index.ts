@@ -1,4 +1,4 @@
-import { LoguxControlOptions } from '../control';
+import type { LoguxControlOptions } from '../control';
 import CreatorChannel from './creator';
 import DiagramChannel from './diagram';
 import ProjectChannel from './project';

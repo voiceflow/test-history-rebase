@@ -1,4 +1,5 @@
-import { BlockText, Box, Button, ButtonVariant, Modal } from '@voiceflow/ui';
+import type { ButtonVariant } from '@voiceflow/ui';
+import { BlockText, Box, Button, Modal } from '@voiceflow/ui';
 import React from 'react';
 
 import manager from '../manager';
@@ -15,24 +16,35 @@ export interface Props {
 const Success = manager.create<Props>(
   'Success',
   () =>
-    ({ api, icon, type, header, opened, message, hidden, maxWidth = 400, animated, buttonText = 'Close', buttonVariant = Button.Variant.TERTIARY }) =>
-      (
-        <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={maxWidth}>
-          <Modal.Header>{header}</Modal.Header>
+    ({
+      api,
+      icon,
+      type,
+      header,
+      opened,
+      message,
+      hidden,
+      maxWidth = 400,
+      animated,
+      buttonText = 'Close',
+      buttonVariant = Button.Variant.TERTIARY,
+    }) => (
+      <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={maxWidth}>
+        <Modal.Header>{header}</Modal.Header>
 
-          <Modal.Body centred>
-            <Box as="img" alt="Success" height={80} src={icon} mb={24} />
+        <Modal.Body centred>
+          <Box as="img" alt="Success" height={80} src={icon} mb={24} />
 
-            <BlockText>{message}</BlockText>
-          </Modal.Body>
+          <BlockText>{message}</BlockText>
+        </Modal.Body>
 
-          <Modal.Footer>
-            <Button variant={buttonVariant} onClick={api.onClose} squareRadius>
-              {buttonText}
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      )
+        <Modal.Footer>
+          <Button variant={buttonVariant} onClick={api.onClose} squareRadius>
+            {buttonText}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    )
 );
 
 export default Success;

@@ -7,7 +7,7 @@ import { entitiesVariablesMapsAtom } from '@/atoms/other.atom';
 import { CMSFormListItem } from '@/components/CMS/CMSForm/CMSFormListItem/CMSFormListItem.component';
 
 import { containerStyles } from './CardPopperButtonEditor.css';
-import { ICardPopperButtonEditor } from './CardPopperButtonEditor.interface';
+import type { ICardPopperButtonEditor } from './CardPopperButtonEditor.interface';
 import { CardPopperButtonEditorPopper } from './CardPopperButtonEditorPopper/CardPopperButtonEditorPopper.component';
 
 export const CardPopperButtonEditor: React.FC<ICardPopperButtonEditor> = ({ label, onRemove, onLabelChange }) => {

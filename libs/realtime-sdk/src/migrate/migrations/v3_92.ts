@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { BaseModels } from '@voiceflow/base-types';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 /**
  * this migration fixes projects affected by an old bug where components didn't properly delete

@@ -1,7 +1,7 @@
 import { BaseNode } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import { Utils } from '@voiceflow/realtime-sdk';
-import { SvgIconTypes } from '@voiceflow/ui';
+import type { SvgIconTypes } from '@voiceflow/ui';
 
 export interface DeviceInfo {
   name: string;

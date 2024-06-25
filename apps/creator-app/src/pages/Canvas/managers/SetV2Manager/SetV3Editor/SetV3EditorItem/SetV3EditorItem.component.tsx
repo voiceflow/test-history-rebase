@@ -1,5 +1,5 @@
 import type { Markup } from '@voiceflow/dtos';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, EditorButton, Popper, useConst, usePopperContext } from '@voiceflow/ui-next';
 import { markupToString } from '@voiceflow/utils-designer';
 import { useAtomValue } from 'jotai';

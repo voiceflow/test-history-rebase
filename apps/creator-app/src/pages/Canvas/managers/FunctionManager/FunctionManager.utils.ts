@@ -1,5 +1,6 @@
-import { Markup } from '@voiceflow/dtos';
-import { Descendant, Element, Node } from 'slate';
+import type { Markup } from '@voiceflow/dtos';
+import type { Descendant } from 'slate';
+import { Element, Node } from 'slate';
 
 interface VariableNode {
   type: string;
@@ -9,7 +10,8 @@ interface VariableNode {
 }
 
 // Type guard to check if a Node is a VariableNode
-const isVariableNode = (node: Node): node is VariableNode => Element.isElement(node) && node.type === 'variable' && 'variableID' in node;
+const isVariableNode = (node: Node): node is VariableNode =>
+  Element.isElement(node) && node.type === 'variable' && 'variableID' in node;
 
 // Function to find the first variable in a Descendant array
 export const findFirstVariable = (descendants: Descendant[]): string | null => {
@@ -23,4 +25,5 @@ export const findFirstVariable = (descendants: Descendant[]): string | null => {
   return null;
 };
 
-export const createSlateVariable = (variableID: string | null): Markup => (variableID ? [{ text: [{ variableID }] }] : []);
+export const createSlateVariable = (variableID: string | null): Markup =>
+  variableID ? [{ text: [{ variableID }] }] : [];

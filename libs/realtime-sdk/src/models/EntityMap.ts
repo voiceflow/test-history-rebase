@@ -1,7 +1,7 @@
-import { Link } from './Link';
-import { Node } from './Node';
-import { NodeData } from './NodeData';
-import { Port } from './Port';
+import type { Link } from './Link';
+import type { Node } from './Node';
+import type { NodeData } from './NodeData';
+import type { Port } from './Port';
 
 export interface NodeWithData {
   node: Node;

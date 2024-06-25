@@ -11,8 +11,9 @@ import { createCurriedSelector, creatorIDParamSelector } from '@/ducks/utils';
 import { getAwarenessViewersByIDSelector } from '../awareness';
 import { getProjectByIDSelector } from '../base';
 
-export const projectSelector = createSelector([Session.activeProjectIDSelector, getProjectByIDSelector], (projectID, getProjectByID) =>
-  getProjectByID({ id: projectID })
+export const projectSelector = createSelector(
+  [Session.activeProjectIDSelector, getProjectByIDSelector],
+  (projectID, getProjectByID) => getProjectByID({ id: projectID })
 );
 
 export const hasSelector = createSelector([projectSelector], (project) => !!project);
@@ -27,13 +28,25 @@ export const allAwarenessViewersSelector = createSelector([awarenessViewersSelec
   Object.values(viewersPerDiagram ?? {}).flatMap((viewers) => Normal.denormalize(viewers))
 );
 
-export const allAwarenessViewersCountSelector = createSelector([allAwarenessViewersSelector], (allViewers) => allViewers.length);
+export const allAwarenessViewersCountSelector = createSelector(
+  [allAwarenessViewersSelector],
+  (allViewers) => allViewers.length
+);
 
-export const nluTypeSelector = createSelector([projectSelector], (project) => project?.nlu || Platform.Constants.NLUType.VOICEFLOW);
+export const nluTypeSelector = createSelector(
+  [projectSelector],
+  (project) => project?.nlu || Platform.Constants.NLUType.VOICEFLOW
+);
 
-export const platformSelector = createSelector([projectSelector], (project) => project?.platform || Platform.Constants.PlatformType.VOICEFLOW);
+export const platformSelector = createSelector(
+  [projectSelector],
+  (project) => project?.platform || Platform.Constants.PlatformType.VOICEFLOW
+);
 
-export const projectTypeSelector = createSelector([projectSelector], (project) => project?.type || Platform.Constants.ProjectType.VOICE);
+export const projectTypeSelector = createSelector(
+  [projectSelector],
+  (project) => project?.type || Platform.Constants.ProjectType.VOICE
+);
 
 export const metaSelector = createSelector(
   [nluTypeSelector, projectTypeSelector, platformSelector],
@@ -46,7 +59,10 @@ export const nameSelector = createSelector([projectSelector], (project) => proje
 
 export const idSelector = Session.activeProjectIDSelector;
 
-export const linkTypeSelector = createSelector([projectSelector], (project) => project?.linkType || BaseModels.Project.LinkType.STRAIGHT);
+export const linkTypeSelector = createSelector(
+  [projectSelector],
+  (project) => project?.linkType || BaseModels.Project.LinkType.STRAIGHT
+);
 
 export const aiAssistSettings = createSelector([projectSelector], (project) => project?.aiAssistSettings);
 
@@ -62,13 +78,19 @@ export const isLLMClassifier = createSelector(
 
 export const customThemesSelector = createSelector([projectSelector], (project) => project?.customThemes || []);
 
-export const isStraightLinksSelector = createSelector([linkTypeSelector], (linkType) => linkType === BaseModels.Project.LinkType.STRAIGHT);
+export const isStraightLinksSelector = createSelector(
+  [linkTypeSelector],
+  (linkType) => linkType === BaseModels.Project.LinkType.STRAIGHT
+);
 
 export const isLiveSelector = createSelector([projectSelector], (project) => !!project?.isLive);
 
 export const liveVersionSelector = createSelector([projectSelector], (project) => project?.liveVersion);
 
-export const vfVersionSelector = createSelector([projectSelector], (project) => project?._version ?? Realtime.CURRENT_PROJECT_VERSION);
+export const vfVersionSelector = createSelector(
+  [projectSelector],
+  (project) => project?._version ?? Realtime.CURRENT_PROJECT_VERSION
+);
 
 export const platformDataSelector = createSelector([projectSelector], (project) => project?.platformData ?? {});
 

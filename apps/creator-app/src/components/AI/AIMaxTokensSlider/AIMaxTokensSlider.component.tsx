@@ -1,7 +1,7 @@
 import { Slider } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { IAIMaxTokensWithLimitSlider } from './AIMaxTokensSlider.interface';
+import type { IAIMaxTokensWithLimitSlider } from './AIMaxTokensSlider.interface';
 
 export const AIMaxTokensSlider: React.FC<IAIMaxTokensWithLimitSlider> = ({
   limit,

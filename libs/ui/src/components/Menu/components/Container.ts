@@ -14,7 +14,8 @@ const nativeScrollbarsStyle = css`
   }
 `;
 
-export const getItemsContainer = (itemHeight: number, maxVisibleItems: number = MAX_VISIBLE_ITEMS): number => itemHeight * maxVisibleItems;
+export const getItemsContainer = (itemHeight: number, maxVisibleItems: number = MAX_VISIBLE_ITEMS): number =>
+  itemHeight * maxVisibleItems;
 
 export const getMaxHeight = (
   maxHeight: string | number | undefined,
@@ -92,7 +93,10 @@ const Container = styled.ul<ContainerProps>`
     !inline &&
     css`
       will-change: transform;
-      animation: ${fadeInKeyframes} ${ANIMATION_SPEED}s ease, ${moveInTopKeyframes} ${ANIMATION_SPEED}s ease, ${scaleInYKeyframes} 0.1s ease;
+      animation:
+        ${fadeInKeyframes} ${ANIMATION_SPEED}s ease,
+        ${moveInTopKeyframes} ${ANIMATION_SPEED}s ease,
+        ${scaleInYKeyframes} 0.1s ease;
       transform-origin: top;
 
       &[data-placement^='top'] {

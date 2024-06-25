@@ -1,8 +1,15 @@
-export const buildCMSTabularEntitiesUpdatedFieldsMap = <Resource extends { id: string; updatedAt: Date; updatedByID: number }>(
+export const buildCMSTabularEntitiesUpdatedFieldsMap = <
+  Resource extends { id: string; updatedAt: Date; updatedByID: number },
+>(
   resources: Resource[]
-) => Object.fromEntries(resources.map((resource) => [resource.id, { updatedAt: resource.updatedAt, updatedByID: resource.updatedByID }]));
+) =>
+  Object.fromEntries(
+    resources.map((resource) => [resource.id, { updatedAt: resource.updatedAt, updatedByID: resource.updatedByID }])
+  );
 
-export const adjustCMSTabularEntitiesUpdatedFieldsMap = <Reference extends { updatedAt: Date; updatedByID: number | null }>(
+export const adjustCMSTabularEntitiesUpdatedFieldsMap = <
+  Reference extends { updatedAt: Date; updatedByID: number | null },
+>(
   map: Partial<Record<string, { updatedAt: Date; updatedByID: number }>>,
   references: Reference[],
   getRootID: (reference: Reference) => string
@@ -23,7 +30,9 @@ export const adjustCMSTabularEntitiesUpdatedFieldsMap = <Reference extends { upd
   }
 };
 
-export const updateCMSTabularResourcesWithUpdatedFields = <Resource extends { id: string; updatedAt: string; updatedByID: number }>(
+export const updateCMSTabularResourcesWithUpdatedFields = <
+  Resource extends { id: string; updatedAt: string; updatedByID: number },
+>(
   map: Partial<Record<string, { updatedAt: Date; updatedByID: number }>>,
   resources: Resource[]
 ) =>

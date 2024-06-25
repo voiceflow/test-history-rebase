@@ -1,14 +1,14 @@
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Dispatch } from 'redux';
+import type { Dispatch } from 'redux';
 
 import * as NLU from '@/config/nlu';
 import { NLUImportOrigin } from '@/constants';
 import * as Tracking from '@/ducks/tracking';
 import * as TrackingEvents from '@/ducks/tracking/events';
-import { EventTracker } from '@/ducks/tracking/types';
-import { NLUImportModel } from '@/models';
+import type { EventTracker } from '@/ducks/tracking/types';
+import type { NLUImportModel } from '@/models';
 
 import { useSessionStorageState } from './storage.hook';
 
@@ -16,7 +16,10 @@ const wrapDispatch = <T extends Record<string, (...args: any[]) => any>>(
   dispatch: Dispatch,
   obj: T
 ): { [key in keyof T]: (...args: Parameters<T[key]>) => ReturnType<T[key]> } =>
-  Object.keys(obj).reduce((acc, key) => Object.assign(acc, { [key]: (...args: any[]) => dispatch(obj[key](...args)) }), {} as any);
+  Object.keys(obj).reduce(
+    (acc, key) => Object.assign(acc, { [key]: (...args: any[]) => dispatch(obj[key](...args)) }),
+    {} as any
+  );
 
 export const useTrackingEvents = () => {
   const dispatch = useDispatch();
@@ -25,7 +28,11 @@ export const useTrackingEvents = () => {
   type Events = typeof events;
 
   const wrapper = React.useCallback(
-    <T extends (...args: any[]) => any, A extends keyof Events>(callback: T | null, action: A, ...actionArgs: Parameters<Events[A]>) =>
+    <T extends (...args: any[]) => any, A extends keyof Events>(
+      callback: T | null,
+      action: A,
+      ...actionArgs: Parameters<Events[A]>
+    ) =>
       (...args: Parameters<T>) => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
@@ -42,7 +49,15 @@ export const useTrackingEvents = () => {
 export const useModelTracking = () => {
   const [trackEvents] = useTrackingEvents();
 
-  return ({ nluType, projectID, importedModel }: { nluType: Platform.Constants.NLUType; projectID?: string; importedModel: NLUImportModel }) => {
+  return ({
+    nluType,
+    projectID,
+    importedModel,
+  }: {
+    nluType: Platform.Constants.NLUType;
+    projectID?: string;
+    importedModel: NLUImportModel;
+  }) => {
     const isImportingIntents = importedModel.intents?.length > 0;
     const isImportingEntities = importedModel.slots?.length > 0;
 

@@ -1,4 +1,4 @@
-import { BoxProps } from '@voiceflow/ui';
+import type { BoxProps } from '@voiceflow/ui';
 import React from 'react';
 
 import * as S from './styles';

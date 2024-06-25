@@ -1,9 +1,10 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { tid } from '@voiceflow/style';
-import { MarkupToolbar, MoveOptions, notify } from '@voiceflow/ui-next';
+import type { MoveOptions } from '@voiceflow/ui-next';
+import { MarkupToolbar, notify } from '@voiceflow/ui-next';
 import React, { memo } from 'react';
 
-import { ControlScheme } from '@/components/Canvas/constants';
+import type { ControlScheme } from '@/components/Canvas/constants';
 import { BlockType } from '@/constants';
 import { Permission } from '@/constants/permissions';
 import { SearchContext } from '@/contexts/SearchContext';

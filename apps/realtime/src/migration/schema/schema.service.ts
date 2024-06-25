@@ -9,7 +9,11 @@ import { AsyncActionError } from '@/utils/logux.util';
 
 import { MigrationState } from '../migration.enum';
 import { MigrationService } from '../migration.service';
-import { INTERNAL_ERROR_MESSAGE, MIGRATION_IN_PROGRESS_MESSAGE, SCHEMA_VERSION_NOT_SUPPORTED_MESSAGE } from './schema.constants';
+import {
+  INTERNAL_ERROR_MESSAGE,
+  MIGRATION_IN_PROGRESS_MESSAGE,
+  SCHEMA_VERSION_NOT_SUPPORTED_MESSAGE,
+} from './schema.constants';
 
 @Injectable()
 export class SchemaService {
@@ -45,12 +49,20 @@ export class SchemaService {
     const skipResult = { workspaceID, projectID: version.projectID, schemaVersion: currentSchemaVersion };
 
     if (targetSchemaVersion > proposedSchemaVersion) {
-      throw new AsyncActionError({ message: SCHEMA_VERSION_NOT_SUPPORTED_MESSAGE, code: Realtime.ErrorCode.SCHEMA_VERSION_NOT_SUPPORTED });
+      throw new AsyncActionError({
+        message: SCHEMA_VERSION_NOT_SUPPORTED_MESSAGE,
+        code: Realtime.ErrorCode.SCHEMA_VERSION_NOT_SUPPORTED,
+      });
     }
 
     const migrateResult = { ...skipResult, schemaVersion: targetSchemaVersion };
 
-    const migrator = this.migration.migrateSchema({ creatorID, clientNodeID: ctx.clientId, version, targetSchemaVersion });
+    const migrator = this.migration.migrateSchema({
+      creatorID,
+      clientNodeID: ctx.clientId,
+      version,
+      targetSchemaVersion,
+    });
 
     try {
       const result = await this.applySchemaMigrations(ctx, { versionID, migrateResult, skipResult, migrator });
@@ -95,10 +107,16 @@ export class SchemaService {
           return skipResult;
 
         case MigrationState.NOT_ALLOWED:
-          throw new AsyncActionError({ message: MIGRATION_IN_PROGRESS_MESSAGE, code: Realtime.ErrorCode.MIGRATION_IN_PROGRESS });
+          throw new AsyncActionError({
+            message: MIGRATION_IN_PROGRESS_MESSAGE,
+            code: Realtime.ErrorCode.MIGRATION_IN_PROGRESS,
+          });
 
         case MigrationState.NOT_SUPPORTED:
-          throw new AsyncActionError({ message: SCHEMA_VERSION_NOT_SUPPORTED_MESSAGE, code: Realtime.ErrorCode.SCHEMA_VERSION_NOT_SUPPORTED });
+          throw new AsyncActionError({
+            message: SCHEMA_VERSION_NOT_SUPPORTED_MESSAGE,
+            code: Realtime.ErrorCode.SCHEMA_VERSION_NOT_SUPPORTED,
+          });
 
         case MigrationState.STARTED:
           await ctx.sendBack(Realtime.version.schema.migrate.started({ versionID }));

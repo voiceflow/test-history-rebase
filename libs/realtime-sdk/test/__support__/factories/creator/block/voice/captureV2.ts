@@ -1,5 +1,5 @@
-import { NodeData } from '@realtime-sdk/models';
-import { VoiceNode } from '@voiceflow/voice-types';
+import type { NodeData } from '@realtime-sdk/models';
+import type { VoiceNode } from '@voiceflow/voice-types';
 import { define } from 'cooky-cutter';
 
 import { VoiceNodeDataNoMatch, VoiceNodeDataNoReply, VoiceStepNoMatch, VoiceStepNoReply } from '../shared';

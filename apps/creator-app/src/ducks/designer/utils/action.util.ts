@@ -3,7 +3,8 @@ import { Utils } from '@voiceflow/common';
 
 export const extractUpdatedByIDFromMeta = (meta?: unknown): number | null => {
   const clientID =
-    Utils.object.isObject(meta) && (Utils.object.hasProperty(meta, 'origin') || Utils.object.hasProperty(meta, 'clientID'))
+    Utils.object.isObject(meta) &&
+    (Utils.object.hasProperty(meta, 'origin') || Utils.object.hasProperty(meta, 'clientID'))
       ? meta.origin || meta.clientID
       : undefined;
 

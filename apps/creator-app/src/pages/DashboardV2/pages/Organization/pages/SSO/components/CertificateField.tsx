@@ -12,7 +12,12 @@ interface CertificateFieldProps {
   onEditCertificate: VoidFunction;
 }
 
-const CertificateField: React.FC<CertificateFieldProps> = ({ editCertificate, certificate, onChange, onEditCertificate }) => {
+const CertificateField: React.FC<CertificateFieldProps> = ({
+  editCertificate,
+  certificate,
+  onChange,
+  onEditCertificate,
+}) => {
   return (
     <SectionV2.SimpleSection>
       <Box.FlexAlignStart fullWidth>
@@ -25,11 +30,19 @@ const CertificateField: React.FC<CertificateFieldProps> = ({ editCertificate, ce
                 </SectionV2.Title>
               </Box>
 
-              <TextArea minRows={4} maxRows={4} value={certificate} placeholder="Paste X.509 certificate" onChange={withTargetValue(onChange)} />
+              <TextArea
+                minRows={4}
+                maxRows={4}
+                value={certificate}
+                placeholder="Paste X.509 certificate"
+                onChange={withTargetValue(onChange)}
+              />
             </Box.FlexAlignStart>
 
             <Box flex={1} ml={24} mt={25}>
-              <SectionV2.Description secondary>Your valid X.509 Certificate from a certification authority.</SectionV2.Description>
+              <SectionV2.Description secondary>
+                Your valid X.509 Certificate from a certification authority.
+              </SectionV2.Description>
             </Box>
           </>
         ) : (

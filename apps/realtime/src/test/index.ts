@@ -1,12 +1,13 @@
-import { ModuleMetadata } from '@nestjs/common';
+import type { ModuleMetadata } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { Test } from '@nestjs/testing';
 import { HashedIDModule, HashedIDService, InternalExceptionFilter } from '@voiceflow/nestjs-common';
 import { ENVIRONMENT_VARIABLES, EnvModule } from '@voiceflow/nestjs-env';
 import { AuthGuard, AuthModule, AuthService } from '@voiceflow/sdk-auth/nestjs';
-import { createMock, DeepMocked } from '@voiceflow/test-common/vitest';
+import type { DeepMocked } from '@voiceflow/test-common/vitest';
+import { createMock } from '@voiceflow/test-common/vitest';
 
-import { EnvironmentVariables } from '@/app.env';
+import type { EnvironmentVariables } from '@/app.env';
 
 export const mockEncoding = (hash: DeepMocked<HashedIDService>) => {
   hash.encodeID.mockImplementation((rawID) => `hash(${rawID})`);

@@ -81,7 +81,13 @@ const TranscriptActions: React.FC = () => {
         selected={isSaved}
       />
 
-      <ActionButton id={Identifier.DELETE_TRANSCRIPT_BUTTON} onClick={handleDelete} icon="trash" label="Delete" color={THEME.colors.tertiary} />
+      <ActionButton
+        id={Identifier.DELETE_TRANSCRIPT_BUTTON}
+        onClick={handleDelete}
+        icon="trash"
+        label="Delete"
+        color={THEME.colors.tertiary}
+      />
     </Container>
   );
 };

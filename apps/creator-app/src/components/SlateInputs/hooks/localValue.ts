@@ -1,8 +1,9 @@
-import { Nullish } from '@voiceflow/common';
+import type { Nullish } from '@voiceflow/common';
 import { useCreateConst, useLinkedState, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
-import { SlateEditableProps, SlateEditorAPI, SlateValue } from '@/components/SlateEditable';
+import type { SlateEditableProps, SlateValue } from '@/components/SlateEditable';
+import { SlateEditorAPI } from '@/components/SlateEditable';
 
 export const useSlateLocalValue = (
   value?: Nullish<SlateEditableProps['value']>,

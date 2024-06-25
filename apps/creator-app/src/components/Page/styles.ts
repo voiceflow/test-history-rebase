@@ -1,6 +1,6 @@
 import { css, styled } from '@/hocs/styled';
 
-import * as T from './types';
+import type * as T from './types';
 
 export const Container = styled.section`
   flex-direction: column;

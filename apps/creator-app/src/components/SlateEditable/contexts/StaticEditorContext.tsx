@@ -1,5 +1,5 @@
 import React from 'react';
-import { Editor } from 'slate';
+import type { Editor } from 'slate';
 
 import { EditorContextProvider } from './EditorContext';
 

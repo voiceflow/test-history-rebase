@@ -25,7 +25,14 @@ export const CMSFormDescription: React.FC<ICMSFormDescription> = ({
   return (
     <Box direction="column">
       <InputFormControl id={input.id} label="Description" errorMessage={input.errorMessage}>
-        <TextArea {...input.attributes} testID={testID} minRows={minRows} maxRows={maxRows} disabled={disabled} placeholder={placeholder} />
+        <TextArea
+          {...input.attributes}
+          testID={testID}
+          minRows={minRows}
+          maxRows={maxRows}
+          disabled={disabled}
+          placeholder={placeholder}
+        />
       </InputFormControl>
     </Box>
   );

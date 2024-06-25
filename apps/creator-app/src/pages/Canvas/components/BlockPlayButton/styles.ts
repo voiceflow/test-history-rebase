@@ -9,7 +9,10 @@ import {
 } from '../../constants';
 
 export const Container = styled.div`
-  transition: max-width 0.12s ease, margin-right 0.12s ease, opacity 0.12s ease;
+  transition:
+    max-width 0.12s ease,
+    margin-right 0.12s ease,
+    opacity 0.12s ease;
   max-width: 0;
   margin-right: 0;
   opacity: 0;

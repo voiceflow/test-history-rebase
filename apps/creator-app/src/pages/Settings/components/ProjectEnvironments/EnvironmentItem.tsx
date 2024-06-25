@@ -6,7 +6,7 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
 
 import * as S from './styles';
-import { EnvironmentRef } from './types';
+import type { EnvironmentRef } from './types';
 
 interface EnvironmentItemProps {
   environmentRef: EnvironmentRef;

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import { SyncService } from '@socket-utils/service/sync';
 import { Utils } from '@voiceflow/common';
 import { expect } from 'chai';

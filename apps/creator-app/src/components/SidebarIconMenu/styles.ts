@@ -17,7 +17,8 @@ export const Item = styled(Box.FlexCenter)<ItemProps>`
   ${transition('color, opacity')}
 
   width: 100%;
-  height: ${({ theme, small }) => (small ? theme.components.sidebarIconMenu.smallItemHeight : theme.components.sidebarIconMenu.itemHeight)}px;
+  height: ${({ theme, small }) =>
+    small ? theme.components.sidebarIconMenu.smallItemHeight : theme.components.sidebarIconMenu.itemHeight}px;
   cursor: ${({ cursor }) => cursor || 'pointer'};
   color: rgba(110, 131, 153, 0.85);
   flex-direction: column;
@@ -78,7 +79,11 @@ export const Status = styled.div`
   color: #132144;
   font-size: 11px;
   font-weight: 600;
-  text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
+  text-shadow:
+    -1px -1px 0 #fff,
+    1px -1px 0 #fff,
+    -1px 1px 0 #fff,
+    1px 1px 0 #fff;
 `;
 
 export const Divider = styled.div`

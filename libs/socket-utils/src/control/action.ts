@@ -1,15 +1,17 @@
 /* eslint-disable max-classes-per-file */
 import type { ServerMeta } from '@logux/server';
-import { ActionAccessor, BaseContextData, Context, Resender } from '@socket-utils/types';
-import { Eventual, Utils } from '@voiceflow/common';
+import type { ActionAccessor, BaseContextData, Context, Resender } from '@socket-utils/types';
+import type { Eventual } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import type { Action, ActionCreator, AsyncActionCreators } from 'typescript-fsa';
 
-import { AbstractLoguxControl, AsyncRejectionError, isUnauthorizedError, LoguxControlOptions } from './utils';
+import type { LoguxControlOptions } from './utils';
+import { AbstractLoguxControl, AsyncRejectionError, isUnauthorizedError } from './utils';
 
 export abstract class AbstractActionControl<
   T extends LoguxControlOptions,
   P,
-  D extends BaseContextData = BaseContextData
+  D extends BaseContextData = BaseContextData,
 > extends AbstractLoguxControl<T> {
   private static extractClientData<D extends BaseContextData>(ctx: Context<D>, action: Action<unknown>) {
     if (ctx.data.creatorID) return;
@@ -40,7 +42,9 @@ export abstract class AbstractActionControl<
       try {
         const result = await process(ctx, action, meta);
 
-        await ctx.sendBack(actionCreators.done({ params: action.payload, result }, { actionID: action.meta?.actionID }));
+        await ctx.sendBack(
+          actionCreators.done({ params: action.payload, result }, { actionID: action.meta?.actionID })
+        );
       } catch (err) {
         let errorPayload: E;
 
@@ -52,7 +56,9 @@ export abstract class AbstractActionControl<
           errorPayload = { message: `unhandled error: ${JSON.stringify(err)}` } as E;
         }
 
-        await ctx.sendBack(actionCreators.failed({ params: action.payload, error: errorPayload }, { actionID: action.meta?.actionID }));
+        await ctx.sendBack(
+          actionCreators.failed({ params: action.payload, error: errorPayload }, { actionID: action.meta?.actionID })
+        );
       }
     };
   }
@@ -121,7 +127,11 @@ export abstract class AbstractActionControl<
     }
   };
 
-  #finally: AbstractActionControl<T, P, D>['finally'] = async (ctx: Context<D>, action: Action<P>, meta: ServerMeta): Promise<void> => {
+  #finally: AbstractActionControl<T, P, D>['finally'] = async (
+    ctx: Context<D>,
+    action: Action<P>,
+    meta: ServerMeta
+  ): Promise<void> => {
     try {
       // eslint-disable-next-line promise/valid-params
       await this.finally?.(ctx, action, meta);
@@ -153,7 +163,11 @@ export const noAccess = (self: any): ActionAccessor<any, any> =>
     // eslint-disable-next-line no-extra-bind
   }.bind(self);
 
-export abstract class AbstractNoopActionControl<T extends LoguxControlOptions, P> extends AbstractActionControl<T, P, BaseContextData> {
+export abstract class AbstractNoopActionControl<T extends LoguxControlOptions, P> extends AbstractActionControl<
+  T,
+  P,
+  BaseContextData
+> {
   protected access = noAccess(this);
 
   protected process = Utils.functional.noop;

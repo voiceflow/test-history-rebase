@@ -1,7 +1,7 @@
 import Badge from '@ui/components/Badge';
 import Input from '@ui/components/Input';
 import { stopPropagation } from '@ui/utils';
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import React from 'react';
 import validUrl from 'valid-url';
 
@@ -75,9 +75,16 @@ const LinkUpload: React.FC<LinkUploadProps> = ({ onUpdate, onBack, validate = va
           ref: variablesRef,
           creatable: false,
           rightAction: (
-            <Badge onClick={() => validateAndUpdate(transformVariablesToReadable(variablesRef.current?.getCurrentValue().text))}>Enter</Badge>
+            <Badge
+              onClick={() =>
+                validateAndUpdate(transformVariablesToReadable(variablesRef.current?.getCurrentValue().text))
+              }
+            >
+              Enter
+            </Badge>
           ),
-          onEnterPress: () => validateAndUpdate(transformVariablesToReadable(variablesRef.current?.getCurrentValue().text)),
+          onEnterPress: () =>
+            validateAndUpdate(transformVariablesToReadable(variablesRef.current?.getCurrentValue().text)),
           onEditorStateChange: error ? () => setError(null) : undefined,
         })
       ) : (

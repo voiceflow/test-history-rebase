@@ -43,7 +43,13 @@ const Searchbar: React.FC<SearchbarProps> = ({ value, placeholder = 'Search', on
         </StyledSvgIconContainer>
       </Box>
 
-      <MenuInput value={value} onChange={({ target }) => onSearch(target.value)} autoFocus $fullWidth placeholder={placeholder} />
+      <MenuInput
+        value={value}
+        onChange={({ target }) => onSearch(target.value)}
+        autoFocus
+        $fullWidth
+        placeholder={placeholder}
+      />
     </SearchContainer>
   );
 };

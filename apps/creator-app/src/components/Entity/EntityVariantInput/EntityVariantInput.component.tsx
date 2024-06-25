@@ -2,7 +2,8 @@ import { tid } from '@voiceflow/style';
 import { FocusIndicator, Input } from '@voiceflow/ui-next';
 import React, { useMemo } from 'react';
 
-import { InputAPI, useInput } from '@/hooks/input.hook';
+import type { InputAPI } from '@/hooks/input.hook';
+import { useInput } from '@/hooks/input.hook';
 import { withEnterPress } from '@/utils/dom';
 
 import type { IEntityVariantInput } from './EntityVariantInput.interface';

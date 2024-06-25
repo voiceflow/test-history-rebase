@@ -2,7 +2,7 @@
 import { SYSTEM_VARIABLE_DESCRIPTION_MAP, SYSTEM_VARIABLE_TYPE_MAP, SystemVariable } from '@voiceflow/dtos';
 import { isSystemVariableName } from '@voiceflow/utils-designer';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 // updates system variables description, adds VF_MEMORY system variable
 const migrateToV6_01: Transform = ({ cms }, { project, creatorID }) => {

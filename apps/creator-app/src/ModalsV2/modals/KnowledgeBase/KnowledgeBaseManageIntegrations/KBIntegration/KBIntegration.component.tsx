@@ -21,7 +21,7 @@ import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useConfirmV2Modal } from '@/hooks/modal.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 
-import { IKBIntegration } from './KBIntegration.interface';
+import type { IKBIntegration } from './KBIntegration.interface';
 import { formatFromNow } from './KBIntegration.utils';
 
 const { colors } = Tokens;

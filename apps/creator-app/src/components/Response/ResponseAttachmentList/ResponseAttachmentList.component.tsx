@@ -4,7 +4,12 @@ import React from 'react';
 import { ResponseAttachment } from '../ResponseAttachment/ResponseAttachment.component';
 import type { IResponseAttachmentList } from './ResponseAttachmentList.interface';
 
-export const ResponseAttachmentList: React.FC<IResponseAttachmentList> = ({ onRemove, attachments, onAttachmentSelect, onAttachmentDuplicate }) => {
+export const ResponseAttachmentList: React.FC<IResponseAttachmentList> = ({
+  onRemove,
+  attachments,
+  onAttachmentSelect,
+  onAttachmentDuplicate,
+}) => {
   if (!attachments.length) return null;
 
   return (

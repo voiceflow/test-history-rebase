@@ -18,7 +18,7 @@ import {
 } from './components';
 import { withGoBack, withRedirectToRoot } from './hocs';
 import { useEditor, useEditorDefaultActions, useParentMatch, useSyncDynamicPorts } from './hooks';
-import * as T from './types';
+import type * as T from './types';
 
 export * as EditorV2Types from './types';
 

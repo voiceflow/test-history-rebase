@@ -13,7 +13,11 @@ const Invite = manager.create('WorkspaceInvite', () => (props) => {
   const isFree = !useSelector(WorkspaceV2.active.isOnPaidPlanSelector);
   const isTrial = useSelector(WorkspaceV2.active.isOnTrialSelector);
 
-  return isEnterprise || isFree || isTrial || subscription?.id ? <DoubleModal {...props} /> : <SingleModal {...props} />;
+  return isEnterprise || isFree || isTrial || subscription?.id ? (
+    <DoubleModal {...props} />
+  ) : (
+    <SingleModal {...props} />
+  );
 });
 
 export default Invite;

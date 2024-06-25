@@ -22,9 +22,15 @@ export const stepIDsSelector = createSelector([creatorStateSelector], ({ nodes, 
   nodes.allKeys.filter((nodeID) => !!parentNodeIDByStepID[nodeID])
 );
 
-export const isBlockSelector = createSelector([blockIDsSelector, idParamSelector], (blockIDs, nodeID) => !!nodeID && blockIDs.includes(nodeID));
+export const isBlockSelector = createSelector(
+  [blockIDsSelector, idParamSelector],
+  (blockIDs, nodeID) => !!nodeID && blockIDs.includes(nodeID)
+);
 
-export const isStepSelector = createSelector([stepIDsSelector, idParamSelector], (stepIDs, nodeID) => !!nodeID && stepIDs.includes(nodeID));
+export const isStepSelector = createSelector(
+  [stepIDsSelector, idParamSelector],
+  (stepIDs, nodeID) => !!nodeID && stepIDs.includes(nodeID)
+);
 
 export const startNodeIDSelector = createSelector([creatorStateSelector], ({ blockIDs, nodes }) => {
   const blocks = Normal.getMany(nodes, blockIDs);
@@ -44,7 +50,9 @@ export const blockColorSelector = createSelector([nodeDataByIDSelector], (data) 
 
 export const getNodeDataByIDSelector = createCurriedSelector(nodeDataByIDSelector);
 
-export const nodeDataByIDsSelector = createSelector([creatorStateSelector, idsParamSelector], ({ nodes }, nodeIDs) => Normal.getMany(nodes, nodeIDs));
+export const nodeDataByIDsSelector = createSelector([creatorStateSelector, idsParamSelector], ({ nodes }, nodeIDs) =>
+  Normal.getMany(nodes, nodeIDs)
+);
 
 export const allNodeDataSelector = createSelector([creatorStateSelector], ({ nodes }) => Normal.denormalize(nodes));
 
@@ -52,21 +60,24 @@ export const nodeDataMapSelector = createSelector([creatorStateSelector], ({ nod
 
 export const nodeTypeByIDSelector = createSelector([nodeDataByIDSelector], (data) => data?.type ?? null);
 
-export const parentNodeIDByStepIDSelector = createSelector([creatorStateSelector, idParamSelector], ({ parentNodeIDByStepID }, stepID) =>
-  stepID ? parentNodeIDByStepID[stepID] ?? null : null
+export const parentNodeIDByStepIDSelector = createSelector(
+  [creatorStateSelector, idParamSelector],
+  ({ parentNodeIDByStepID }, stepID) => (stepID ? parentNodeIDByStepID[stepID] ?? null : null)
 );
 
 export const nodeCoordsMapSelector = createSelector([creatorStateSelector], ({ coordsByNodeID }) => coordsByNodeID);
 
-export const nodeCoordsByIDSelector = createSelector([nodeCoordsMapSelector, idParamSelector], (coordsByNodeID, nodeID) =>
-  nodeID ? coordsByNodeID[nodeID] ?? null : null
+export const nodeCoordsByIDSelector = createSelector(
+  [nodeCoordsMapSelector, idParamSelector],
+  (coordsByNodeID, nodeID) => (nodeID ? coordsByNodeID[nodeID] ?? null : null)
 );
 
 // for shallow comparison equality
 const EMPTY_STEP_IDS: string[] = [];
 
-export const stepIDsByParentNodeIDSelector = createSelector([creatorStateSelector, idParamSelector], ({ stepIDsByParentNodeID }, nodeID) =>
-  nodeID ? stepIDsByParentNodeID[nodeID] ?? EMPTY_STEP_IDS : EMPTY_STEP_IDS
+export const stepIDsByParentNodeIDSelector = createSelector(
+  [creatorStateSelector, idParamSelector],
+  ({ stepIDsByParentNodeID }, nodeID) => (nodeID ? stepIDsByParentNodeID[nodeID] ?? EMPTY_STEP_IDS : EMPTY_STEP_IDS)
 );
 
 export const stepDataByParentNodeIDSelector = createSelector(
@@ -75,7 +86,14 @@ export const stepDataByParentNodeIDSelector = createSelector(
 );
 
 export const nodeByIDSelector = createCachedSelector(
-  [parentNodeIDByStepIDSelector, nodeCoordsByIDSelector, portsByNodeIDSelector, stepIDsByParentNodeIDSelector, nodeTypeByIDSelector, idParamSelector],
+  [
+    parentNodeIDByStepIDSelector,
+    nodeCoordsByIDSelector,
+    portsByNodeIDSelector,
+    stepIDsByParentNodeIDSelector,
+    nodeTypeByIDSelector,
+    idParamSelector,
+  ],
   // eslint-disable-next-line max-params
   (parentNode, coords, ports, combinedNodes, type, nodeID): Realtime.Node | null => {
     if (!nodeID || !type) return null;
@@ -94,8 +112,9 @@ export const nodeByIDSelector = createCachedSelector(
 
 export const getNodeByIDSelector = createCurriedSelector(nodeByIDSelector);
 
-export const nodeByPortIDSelector = createSelector([getNodeByIDSelector, nodeIDByPortIDSelector], (getNodeByID, nodeID) =>
-  getNodeByID({ id: nodeID })
+export const nodeByPortIDSelector = createSelector(
+  [getNodeByIDSelector, nodeIDByPortIDSelector],
+  (getNodeByID, nodeID) => getNodeByID({ id: nodeID })
 );
 
 export const targetNodeByPortID = createSelector([linksByPortIDSelector, getNodeByIDSelector], (links, getNodeByID) =>
@@ -114,40 +133,43 @@ export const nodesByIDsSelector = createSelector([getNodeByIDSelector, idsParamS
   }, [])
 );
 
-export const intentIDNodeIDMapSelector = createSelector([allNodeDataSelector, DesignerIntentSelectors.getOneByID], (nodesData, getCMSIntentByID) => {
-  const result: Record<string, string> = {};
+export const intentIDNodeIDMapSelector = createSelector(
+  [allNodeDataSelector, DesignerIntentSelectors.getOneByID],
+  (nodesData, getCMSIntentByID) => {
+    const result: Record<string, string> = {};
 
-  for (const data of nodesData) {
-    if (Realtime.Utils.typeGuards.isIntentNodeData(data)) {
-      if (!data.intent || !!result[data.intent]) continue;
+    for (const data of nodesData) {
+      if (Realtime.Utils.typeGuards.isIntentNodeData(data)) {
+        if (!data.intent || !!result[data.intent]) continue;
 
-      const intent = getCMSIntentByID({ id: data.intent });
+        const intent = getCMSIntentByID({ id: data.intent });
 
-      if (!intent) continue;
-
-      result[intent.id] = data.nodeID;
-    } else if (Realtime.Utils.typeGuards.isTriggerNodeData(data)) {
-      data.items.forEach((item) => {
-        if (item.type !== TriggerNodeItemType.INTENT || !item.resourceID) return;
-
-        const intent = getCMSIntentByID({ id: item.resourceID });
-
-        if (!intent) return;
+        if (!intent) continue;
 
         result[intent.id] = data.nodeID;
-      });
-    } else if (Realtime.Utils.typeGuards.isStartNodeData(data)) {
-      data.triggers.forEach((item) => {
-        if (item.type !== TriggerNodeItemType.INTENT || !item.resourceID) return;
+      } else if (Realtime.Utils.typeGuards.isTriggerNodeData(data)) {
+        data.items.forEach((item) => {
+          if (item.type !== TriggerNodeItemType.INTENT || !item.resourceID) return;
 
-        const intent = getCMSIntentByID({ id: item.resourceID });
+          const intent = getCMSIntentByID({ id: item.resourceID });
 
-        if (!intent) return;
+          if (!intent) return;
 
-        result[intent.id] = data.nodeID;
-      });
+          result[intent.id] = data.nodeID;
+        });
+      } else if (Realtime.Utils.typeGuards.isStartNodeData(data)) {
+        data.triggers.forEach((item) => {
+          if (item.type !== TriggerNodeItemType.INTENT || !item.resourceID) return;
+
+          const intent = getCMSIntentByID({ id: item.resourceID });
+
+          if (!intent) return;
+
+          result[intent.id] = data.nodeID;
+        });
+      }
     }
-  }
 
-  return result;
-});
+    return result;
+  }
+);

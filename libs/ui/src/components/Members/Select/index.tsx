@@ -1,12 +1,13 @@
 import Menu from '@ui/components/Menu';
 import { defaultMenuLabelRenderer } from '@ui/components/NestedMenu';
-import Select, { BaseSelectProps } from '@ui/components/Select';
+import type { BaseSelectProps } from '@ui/components/Select';
+import Select from '@ui/components/Select';
 import SvgIcon from '@ui/components/SvgIcon';
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 
 import Option from './Option';
-import { MemberItem } from './types';
+import type { MemberItem } from './types';
 
 interface MemberSelectProps
   extends Omit<

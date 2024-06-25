@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { BaseModels } from '@voiceflow/base-types';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 /**
  * this migration adds root diagram into topics, for some reason previous migration skipped it
  */

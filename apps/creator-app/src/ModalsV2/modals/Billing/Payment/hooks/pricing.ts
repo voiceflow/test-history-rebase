@@ -1,4 +1,4 @@
-import { BillingPeriodUnit, PlanName } from '@voiceflow/dtos';
+import type { BillingPeriodUnit, PlanName } from '@voiceflow/dtos';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 
 import * as atoms from '../Payment.atoms';

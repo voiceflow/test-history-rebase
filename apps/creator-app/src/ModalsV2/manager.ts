@@ -1,5 +1,6 @@
-import { AnyRecord, EmptyObject, Utils } from '@voiceflow/common';
-import { Enum } from '@voiceflow/dtos';
+import type { AnyRecord, EmptyObject } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import type { Enum } from '@voiceflow/dtos';
 import { usePersistFunction } from '@voiceflow/ui-next';
 import EventEmitter from 'eventemitter3';
 import React from 'react';
@@ -7,7 +8,7 @@ import React from 'react';
 import { IS_DEVELOPMENT } from '@/config';
 import logger from '@/utils/logger';
 
-import * as T from './types';
+import type * as T from './types';
 
 export const Event = {
   OPEN: 'OPEN',
@@ -76,7 +77,8 @@ interface OpenedModal {
 class Manager extends EventEmitter<Events> {
   private registry = new Map<
     string,
-    T.RegisteredModal<T.VoidInternalProps<AnyRecord>, AnyRecord> | T.RegisteredModal<T.ResultInternalProps<any, AnyRecord>, AnyRecord, any>
+    | T.RegisteredModal<T.VoidInternalProps<AnyRecord>, AnyRecord>
+    | T.RegisteredModal<T.ResultInternalProps<any, AnyRecord>, AnyRecord, any>
   >();
 
   private openedModals = new Map<string, OpenedModal>();
@@ -93,17 +95,28 @@ class Manager extends EventEmitter<Events> {
     return this.registry.get(type) ?? null;
   }
 
-  register<Props extends EmptyObject>(type: string, Component: T.RegisteredModal<T.VoidInternalProps<Props>, Props>): void;
+  register<Props extends EmptyObject>(
+    type: string,
+    Component: T.RegisteredModal<T.VoidInternalProps<Props>, Props>
+  ): void;
 
-  register<Props extends void, Result>(type: string, Component: T.RegisteredModal<T.ResultInternalProps<Result, Props>, Props, Result>): void;
+  register<Props extends void, Result>(
+    type: string,
+    Component: T.RegisteredModal<T.ResultInternalProps<Result, Props>, Props, Result>
+  ): void;
 
-  register<Props extends EmptyObject, Result>(type: string, Component: T.RegisteredModal<T.ResultInternalProps<Result, Props>, Props, Result>): void;
+  register<Props extends EmptyObject, Result>(
+    type: string,
+    Component: T.RegisteredModal<T.ResultInternalProps<Result, Props>, Props, Result>
+  ): void;
 
   register(type: string, component: T.RegisteredModal<T.VoidInternalProps<AnyRecord>, AnyRecord>): void;
 
   register(
     type: string,
-    component: T.RegisteredModal<T.VoidInternalProps<AnyRecord>, AnyRecord> | T.RegisteredModal<T.ResultInternalProps<any, AnyRecord>, AnyRecord, any>
+    component:
+      | T.RegisteredModal<T.VoidInternalProps<AnyRecord>, AnyRecord>
+      | T.RegisteredModal<T.ResultInternalProps<any, AnyRecord>, AnyRecord, any>
   ): void {
     logger.log(type, component);
 
@@ -128,7 +141,11 @@ class Manager extends EventEmitter<Events> {
 
   // needs to use factory to make HMR work
 
-  create(type: string, factory: () => React.FC<T.VoidInternalProps>, options?: T.CreateModalOptions): T.RegisteredModal<T.VoidInternalProps>;
+  create(
+    type: string,
+    factory: () => React.FC<T.VoidInternalProps>,
+    options?: T.CreateModalOptions
+  ): T.RegisteredModal<T.VoidInternalProps>;
 
   create<Props extends EmptyObject>(
     type: string,
@@ -150,13 +167,19 @@ class Manager extends EventEmitter<Events> {
 
   create(
     type: string,
-    factory: () => React.FC<T.VoidInternalProps> | React.FC<T.VoidInternalProps<AnyRecord>> | React.FC<T.ResultInternalProps<any, AnyRecord>>,
+    factory: () =>
+      | React.FC<T.VoidInternalProps>
+      | React.FC<T.VoidInternalProps<AnyRecord>>
+      | React.FC<T.ResultInternalProps<any, AnyRecord>>,
     options?: T.CreateModalOptions
   ):
     | T.RegisteredModal<T.VoidInternalProps>
     | T.RegisteredModal<T.ResultInternalProps<AnyRecord, any>>
     | T.RegisteredModal<T.VoidInternalProps<AnyRecord>> {
-    const MemoizedComponent = Object.assign(React.memo(factory()), { __vfModalType: type, __vfModalOptions: options } as any);
+    const MemoizedComponent = Object.assign(React.memo(factory()), {
+      __vfModalType: type,
+      __vfModalOptions: options,
+    } as any);
 
     this.register(type, MemoizedComponent);
 
@@ -165,9 +188,17 @@ class Manager extends EventEmitter<Events> {
 
   open<Result>(id: string, type: string, options?: { options?: T.OpenOptions }): Promise<Result>;
 
-  open<Result>(id: string, modal: T.RegisteredModal<T.VoidInternalProps>, options?: { options?: T.OpenOptions }): Promise<Result>;
+  open<Result>(
+    id: string,
+    modal: T.RegisteredModal<T.VoidInternalProps>,
+    options?: { options?: T.OpenOptions }
+  ): Promise<Result>;
 
-  open<Props extends EmptyObject>(id: string, type: string, options: { props: Props; options?: T.OpenOptions }): Promise<void>;
+  open<Props extends EmptyObject>(
+    id: string,
+    type: string,
+    options: { props: Props; options?: T.OpenOptions }
+  ): Promise<void>;
 
   open<Props extends EmptyObject>(
     id: string,
@@ -175,7 +206,11 @@ class Manager extends EventEmitter<Events> {
     options: { props: Props; options?: T.OpenOptions }
   ): Promise<void>;
 
-  open<Props extends EmptyObject, Result>(id: string, type: string, options: { props: Props; options?: T.OpenOptions }): Promise<Result>;
+  open<Props extends EmptyObject, Result>(
+    id: string,
+    type: string,
+    options: { props: Props; options?: T.OpenOptions }
+  ): Promise<Result>;
 
   open<Props extends EmptyObject, Result>(
     id: string,
@@ -190,12 +225,16 @@ class Manager extends EventEmitter<Events> {
   open(
     ...args:
       | [id: string, type: string, options?: { props?: never; options?: T.OpenOptions }]
-      | [id: string, modal: T.RegisteredModal<T.VoidInternalProps, any>, options?: { props?: never; options?: T.OpenOptions }]
+      | [
+          id: string,
+          modal: T.RegisteredModal<T.VoidInternalProps, any>,
+          options?: { props?: never; options?: T.OpenOptions },
+        ]
       | [id: string, type: string, options: { props: AnyRecord; options?: T.OpenOptions }]
       | [
           id: string,
           modal: T.RegisteredModal<T.ResultInternalProps<unknown, unknown>, any, any>,
-          options: { props: AnyRecord; options?: T.OpenOptions }
+          options: { props: AnyRecord; options?: T.OpenOptions },
         ]
   ): Promise<unknown> {
     const [id, modal, { props = {}, options = {} } = {}] = args;
@@ -277,7 +316,9 @@ class Manager extends EventEmitter<Events> {
   close(id: string, modal: T.RegisteredModal<any>, source: T.CloseSource): Promise<void>;
 
   close(
-    ...args: [id: string, type: string, source: T.CloseSource] | [id: string, modal: T.RegisteredModal<any>, source: T.CloseSource]
+    ...args:
+      | [id: string, type: string, source: T.CloseSource]
+      | [id: string, modal: T.RegisteredModal<any>, source: T.CloseSource]
   ): Promise<void> {
     const [id, modal, source] = args;
     const type = typeof modal === 'string' ? modal : modal.__vfModalType;
@@ -295,7 +336,12 @@ class Manager extends EventEmitter<Events> {
     return this.openedModals.get(combinedID)!.promise.then(Utils.functional.noop, Utils.functional.noop);
   }
 
-  update<Props extends EmptyObject>(id: string, type: string, props: Partial<Props>, options?: { reopen?: boolean }): void;
+  update<Props extends EmptyObject>(
+    id: string,
+    type: string,
+    props: Partial<Props>,
+    options?: { reopen?: boolean }
+  ): void;
 
   update<Props extends EmptyObject>(
     id: string,
@@ -307,7 +353,12 @@ class Manager extends EventEmitter<Events> {
   update(
     ...args:
       | [id: string, type: string, props: AnyRecord, options?: { reopen?: boolean }]
-      | [id: string, modal: T.RegisteredModal<T.VoidInternalProps<AnyRecord>>, props: AnyRecord, options?: { reopen?: boolean }]
+      | [
+          id: string,
+          modal: T.RegisteredModal<T.VoidInternalProps<AnyRecord>>,
+          props: AnyRecord,
+          options?: { reopen?: boolean },
+        ]
   ): void {
     const [id, modal, props = {}, options] = args;
     const type = typeof modal === 'string' ? modal : modal.__vfModalType;

@@ -1,7 +1,8 @@
-import { EmptyObject, Utils } from '@voiceflow/common';
+import type { EmptyObject } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import { Double, ObjectId } from 'bson';
 
-import { KeyRemap } from './types';
+import type { KeyRemap } from './types';
 
 export type StringToDate<Model extends EmptyObject, Key extends keyof Model> = KeyRemap<Model, Key, Date>;
 

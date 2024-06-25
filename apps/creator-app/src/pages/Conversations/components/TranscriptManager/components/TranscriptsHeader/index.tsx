@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Container, TranscriptFilters, TranscriptFiltersProps } from './components';
+import type { TranscriptFiltersProps } from './components';
+import { Container, TranscriptFilters } from './components';
 
 export interface TranscriptsHeaderProps extends TranscriptFiltersProps {
   resultCount: number;

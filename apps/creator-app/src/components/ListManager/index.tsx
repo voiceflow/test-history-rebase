@@ -1,7 +1,8 @@
 import { Box, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
-import { MapManaged, MapManagedSimpleAPI, useMapManager } from '@/hooks/mapManager';
+import type { MapManaged, MapManagedSimpleAPI } from '@/hooks/mapManager';
+import { useMapManager } from '@/hooks/mapManager';
 
 interface RenderForm<I> {
   value?: I | null;
@@ -83,7 +84,12 @@ function ListManager<I>({
   const itemRenderer = (item: I, options: ItemOptions<I>) => (
     <Box key={options.key} mb={options.isLast ? 0 : 12} width="100%">
       <SectionV2.ListItem
-        action={<SectionV2.RemoveButton onClick={() => mapManager.onRemove(options.key)} disabled={options.index === requiredItemIndex} />}
+        action={
+          <SectionV2.RemoveButton
+            onClick={() => mapManager.onRemove(options.key)}
+            disabled={options.index === requiredItemIndex}
+          />
+        }
       >
         {renderItem(item, options)}
       </SectionV2.ListItem>

@@ -1,7 +1,8 @@
-import { BaseModels } from '@voiceflow/base-types';
-import { AnyRecord, Utils } from '@voiceflow/common';
+import type { BaseModels } from '@voiceflow/base-types';
+import type { AnyRecord } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import { createSmartMultiAdapter } from 'bidirectional-adapter';
-import { MatchKeysAndValues } from 'mongodb';
+import type { MatchKeysAndValues } from 'mongodb';
 
 import AbstractModel from '../_mongo';
 import { Bson, HashID } from '../utils';
@@ -24,7 +25,11 @@ type DBProjectModel = HashID.HashIDToNumber<
 >;
 
 // TODO: add other methods like get, patch, delete, etc.
-class ProjectModel extends AbstractModel<DBProjectModel, BaseModels.Project.Model<AnyRecord, AnyRecord>, (typeof READ_ONLY_KEYS)[number]> {
+class ProjectModel extends AbstractModel<
+  DBProjectModel,
+  BaseModels.Project.Model<AnyRecord, AnyRecord>,
+  (typeof READ_ONLY_KEYS)[number]
+> {
   READ_ONLY_KEYS = READ_ONLY_KEYS;
 
   public collectionName = 'projects';

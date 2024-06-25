@@ -1,12 +1,15 @@
 import * as Base from '@platform-config/configs/base';
 import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { BaseVersion } from '@voiceflow/base-types';
-import { VoiceModels } from '@voiceflow/voice-types';
-import { createSimpleAdapter, SimpleAdapter } from 'bidirectional-adapter';
+import type { VoiceModels } from '@voiceflow/voice-types';
+import type { SimpleAdapter } from 'bidirectional-adapter';
+import { createSimpleAdapter } from 'bidirectional-adapter';
 
-import * as Models from '../../models';
+import type * as Models from '../../models';
 
-export type DBSession<Voice extends string = string> = Base.Adapters.Version.Session.DBSession<VoiceModels.Prompt<Voice>>;
+export type DBSession<Voice extends string = string> = Base.Adapters.Version.Session.DBSession<
+  VoiceModels.Prompt<Voice>
+>;
 export type FromAndToDBOptions = Base.Adapters.Version.Session.FromAndToDBOptions;
 
 export const simple = createSimpleAdapter<DBSession, Models.Version.Session, FromAndToDBOptions, FromAndToDBOptions>(
@@ -60,4 +63,9 @@ export const validate = ConfigUtils.validateFactory<Config>(CONFIG);
  * Should not be used in the configs, only in the adapters to share the logic and fix TS voice related typings
  */
 export const simpleFactory = <Voice extends string>() =>
-  simple as unknown as SimpleAdapter<DBSession<Voice>, Models.Version.Session<Voice>, FromAndToDBOptions, FromAndToDBOptions>;
+  simple as unknown as SimpleAdapter<
+    DBSession<Voice>,
+    Models.Version.Session<Voice>,
+    FromAndToDBOptions,
+    FromAndToDBOptions
+  >;

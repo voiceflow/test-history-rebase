@@ -10,10 +10,10 @@ import { z } from 'zod';
 export const ResponseExportImportDataDTO = z
   .object({
     responses: ResponseDTO.array(),
+    responseMessages: ResponseMessageDTO.array().optional(),
     responseVariants: AnyResponseVariantDTO.array(),
     responseAttachments: AnyResponseAttachmentDTO.array(),
     responseDiscriminators: ResponseDiscriminatorDTO.array(),
-    responseMessages: ResponseMessageDTO.array().optional(),
   })
   .strict();
 

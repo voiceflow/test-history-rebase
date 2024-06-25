@@ -17,7 +17,10 @@ export const useInitialValueSelector = <T, A extends any[]>(selector: Selector<T
   return useCreateConst(() => selector(store.getState(), ...args));
 };
 
-export const useBoundValue = <T>(selector: Selector<T>, createAction: (value: NonNullable<T>) => Dispatchable | null) => {
+export const useBoundValue = <T>(
+  selector: Selector<T>,
+  createAction: (value: NonNullable<T>) => Dispatchable | null
+) => {
   const store = useStore();
   const stateValue = useSelector(selector);
   const [localValue, setLocalValue] = useLinkedState(stateValue);

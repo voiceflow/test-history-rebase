@@ -1,7 +1,7 @@
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import { Popper } from '@voiceflow/ui';
 
-import { AnyStageType } from '@/constants/platforms';
+import type { AnyStageType } from '@/constants/platforms';
 import { styled } from '@/hocs/styled';
 
 export interface PopupContainerProps {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { HSLShades } from '@/constants';
+import type { HSLShades } from '@/constants';
 import Step from '@/pages/Canvas/components/Step';
 
 export interface IResponseStepPlaceholderProps {

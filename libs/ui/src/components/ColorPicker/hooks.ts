@@ -1,4 +1,5 @@
-import { createShadesFromHueWithDynamicSaturation, HSLShades } from '@ui/utils/colors/hsl';
+import type { HSLShades } from '@ui/utils/colors/hsl';
+import { createShadesFromHueWithDynamicSaturation } from '@ui/utils/colors/hsl';
 import { hexToHsluv } from '@ui/utils/colors/hsluv';
 import React from 'react';
 

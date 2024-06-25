@@ -16,7 +16,13 @@ interface DialogHeaderProps {
   showIntentConfidence: boolean;
 }
 
-const DialogHeader: React.FC<DialogHeaderProps> = ({ showDebugs, showIntentConfidence, toggleDebugs, toggleIntentConf, isScrolling }) => {
+const DialogHeader: React.FC<DialogHeaderProps> = ({
+  showDebugs,
+  showIntentConfidence,
+  toggleDebugs,
+  toggleIntentConf,
+  isScrolling,
+}) => {
   const renderLabel = (label: string, checked: boolean, onToggle: VoidFunction) => (
     <Checkbox checked={checked} onChange={onToggle}>
       <LabelContainer>{label}</LabelContainer>

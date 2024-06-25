@@ -1,5 +1,5 @@
-import { BlockType } from '@voiceflow/realtime-sdk';
-import { ITreeData } from '@voiceflow/ui-next/build/cjs/components/Navigation/TreeView/types';
+import type { BlockType } from '@voiceflow/realtime-sdk';
+import type { ITreeData } from '@voiceflow/ui-next/build/cjs/components/Navigation/TreeView/types';
 
 export interface DiagramSidebarFolderMetadata {
   id: string;
@@ -27,7 +27,10 @@ export interface DiagramSidebarNodeMetadata {
 
 export type DiagramSidebarAnyFlowMetadata = DiagramSidebarFolderMetadata | DiagramSidebarFlowMetadata;
 
-export type DiagramSidebarAnyWorkflowMetadata = DiagramSidebarFolderMetadata | DiagramSidebarWorkflowMetadata | DiagramSidebarNodeMetadata;
+export type DiagramSidebarAnyWorkflowMetadata =
+  | DiagramSidebarFolderMetadata
+  | DiagramSidebarWorkflowMetadata
+  | DiagramSidebarNodeMetadata;
 
 export type DiagramSidebarFlowTreeData = ITreeData<DiagramSidebarAnyFlowMetadata>;
 

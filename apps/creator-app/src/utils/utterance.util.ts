@@ -10,7 +10,8 @@ export const utteranceTextFactory = (text = ''): UtteranceText => [text];
 
 export const isUtteranceTextEmpty = (utteranceText: UtteranceText): boolean => isMarkupEmpty(utteranceText);
 
-export const isUtteranceLikeEmpty = (utterance: Pick<Utterance, 'text'>): boolean => isUtteranceTextEmpty(utterance.text);
+export const isUtteranceLikeEmpty = (utterance: Pick<Utterance, 'text'>): boolean =>
+  isUtteranceTextEmpty(utterance.text);
 
 interface UtteranceTextToStringFromOptions {
   entitiesMapByID: Partial<Record<string, Entity>>;
@@ -21,13 +22,20 @@ interface UtteranceTextToStringToOptions {
   entitiesMapByName: Partial<Record<string, Entity>>;
 }
 
-export const utteranceTextToString: MultiAdapter<UtteranceText, string, [UtteranceTextToStringFromOptions], [UtteranceTextToStringToOptions]> =
-  createMultiAdapter<UtteranceText, string, [UtteranceTextToStringFromOptions], [UtteranceTextToStringToOptions]>(
-    (value, options) => markupToString.fromDB(value, { ...options, variablesMapByID: {}, ignoreMissingVariables: true }),
-    (value, options) => markupToString.toDB(value, { ...options, variablesMapByName: {} }) as UtteranceText
-  );
+export const utteranceTextToString: MultiAdapter<
+  UtteranceText,
+  string,
+  [UtteranceTextToStringFromOptions],
+  [UtteranceTextToStringToOptions]
+> = createMultiAdapter<UtteranceText, string, [UtteranceTextToStringFromOptions], [UtteranceTextToStringToOptions]>(
+  (value, options) => markupToString.fromDB(value, { ...options, variablesMapByID: {}, ignoreMissingVariables: true }),
+  (value, options) => markupToString.toDB(value, { ...options, variablesMapByName: {} }) as UtteranceText
+);
 
-export const utteranceTextToSlate: MultiAdapter<UtteranceText, Descendant[]> = createMultiAdapter<UtteranceText, Descendant[]>(
+export const utteranceTextToSlate: MultiAdapter<UtteranceText, Descendant[]> = createMultiAdapter<
+  UtteranceText,
+  Descendant[]
+>(
   (value) => markupToSlate.fromDB(value),
   (value) => markupToSlate.toDB(value) as UtteranceText
 );

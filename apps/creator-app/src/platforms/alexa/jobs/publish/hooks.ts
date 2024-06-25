@@ -3,11 +3,12 @@ import React from 'react';
 
 import { JobStatus } from '@/constants';
 import { AlexaStageType } from '@/constants/platforms';
-import { PublishContext, PublishContextValue } from '@/contexts/PublishContext';
+import type { PublishContextValue } from '@/contexts/PublishContext';
+import { PublishContext } from '@/contexts/PublishContext';
 import * as Account from '@/ducks/account';
 import { useDispatch, useSetup, useStore } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
-import { AlexaPublishJob } from '@/models';
+import type { AlexaPublishJob } from '@/models';
 
 export const useAlexaPublishContext = ({ submit }: { submit?: boolean } = {}) => {
   const store = useStore();
@@ -44,7 +45,10 @@ export const useAlexaPublishContext = ({ submit }: { submit?: boolean } = {}) =>
 
       if (!amazon) {
         // set a "fake" job and get the user to login before continuing
-        publishContext.setJob({ id: 'login', stage: { type: AlexaStageType.WAIT_ACCOUNT, data: {} }, status: JobStatus.FINISHED }, startingOptions);
+        publishContext.setJob(
+          { id: 'login', stage: { type: AlexaStageType.WAIT_ACCOUNT, data: {} }, status: JobStatus.FINISHED },
+          startingOptions
+        );
         await resetSelectedVendor();
         return;
       }

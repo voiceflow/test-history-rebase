@@ -36,7 +36,9 @@ const CircularHandle = styled.div`
     bottom: 4px;
     background: #fff;
     border-radius: 50%;
-    box-shadow: 0 1px 3px 0 rgba(19, 33, 68, 0.08), 0 0 1px 1px rgba(17, 49, 96, 0.16);
+    box-shadow:
+      0 1px 3px 0 rgba(19, 33, 68, 0.08),
+      0 0 1px 1px rgba(17, 49, 96, 0.16);
 
     content: '';
   }

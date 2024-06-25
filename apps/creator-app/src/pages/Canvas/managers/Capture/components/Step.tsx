@@ -1,14 +1,18 @@
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { StepLabelVariant } from '@/constants/canvas';
 import Step, { Item, NoReplyItem, Section, VariableLabel } from '@/pages/Canvas/components/Step';
-import { ConnectedStep } from '@/pages/Canvas/managers/types';
+import type { ConnectedStep } from '@/pages/Canvas/managers/types';
 
 import { NODE_CONFIG } from '../constants';
 
-const ConnectedCaptureStep: ConnectedStep<Realtime.NodeData.Capture, Realtime.NodeData.CaptureBuiltInPorts> = ({ ports, data, palette }) => (
+const ConnectedCaptureStep: ConnectedStep<Realtime.NodeData.Capture, Realtime.NodeData.CaptureBuiltInPorts> = ({
+  ports,
+  data,
+  palette,
+}) => (
   <Step nodeID={data.nodeID}>
     <Section>
       <Item
@@ -16,7 +20,8 @@ const ConnectedCaptureStep: ConnectedStep<Realtime.NodeData.Capture, Realtime.No
           data.slot &&
           data.variable && (
             <>
-              Capture <VariableLabel>{`{${data.slot}}`}</VariableLabel> to <VariableLabel>{`{${data.variable}}`}</VariableLabel>
+              Capture <VariableLabel>{`{${data.slot}}`}</VariableLabel> to{' '}
+              <VariableLabel>{`{${data.variable}}`}</VariableLabel>
             </>
           )
         }

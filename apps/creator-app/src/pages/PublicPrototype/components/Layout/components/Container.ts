@@ -15,7 +15,8 @@ const Container = styled.div<ContainerProps>`
   display: flex;
   width: 100%;
   height: 100%;
-  background-color: ${({ isMobile, isVisuals, splashScreenPassed }) => (!isMobile && (!isVisuals || splashScreenPassed) ? '#f6f6f6' : '#fff')};
+  background-color: ${({ isMobile, isVisuals, splashScreenPassed }) =>
+    !isMobile && (!isVisuals || splashScreenPassed) ? '#f6f6f6' : '#fff'};
 
   ${({ isMobile, isVisuals }) =>
     !isMobile &&

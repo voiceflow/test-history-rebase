@@ -44,7 +44,13 @@ const PrototypeStart: React.FC<PrototypeStartProps> = ({ onClick, color }) => {
   if (!allowPersonaSelection) {
     return (
       <FlexCenter fullWidth style={{ marginBottom: '8px' }}>
-        <S.RunTestButton withIconButton variant={ButtonVariant.PRIMARY} onClick={onClick} id={Identifier.PROTOTYPE_START} color={color}>
+        <S.RunTestButton
+          withIconButton
+          variant={ButtonVariant.PRIMARY}
+          onClick={onClick}
+          id={Identifier.PROTOTYPE_START}
+          color={color}
+        >
           Start Conversation
         </S.RunTestButton>
       </FlexCenter>
@@ -56,7 +62,13 @@ const PrototypeStart: React.FC<PrototypeStartProps> = ({ onClick, color }) => {
       <PersonaSelectMenu
         render={({ ref, isOpen, toggleSelectMenuOpen }) => (
           <FlexCenter fullWidth style={{ marginBottom: '8px' }}>
-            <S.RunTestButton withIconButton variant={ButtonVariant.PRIMARY} onClick={onClick} id={Identifier.PROTOTYPE_START} color={color}>
+            <S.RunTestButton
+              withIconButton
+              variant={ButtonVariant.PRIMARY}
+              onClick={onClick}
+              id={Identifier.PROTOTYPE_START}
+              color={color}
+            >
               Start Conversation
             </S.RunTestButton>
 
@@ -67,7 +79,11 @@ const PrototypeStart: React.FC<PrototypeStartProps> = ({ onClick, color }) => {
                 isActive={isOpen}
                 variant={ButtonVariant.PRIMARY}
                 onClick={onClickIconButton(toggleSelectMenuOpen)}
-                iconProps={selectedPersonaID ? { size: 20, color: '#fff', marginTop: '1px', marginLeft: '1px' } : { size: 10, color: '#fff' }}
+                iconProps={
+                  selectedPersonaID
+                    ? { size: 20, color: '#fff', marginTop: '1px', marginLeft: '1px' }
+                    : { size: 10, color: '#fff' }
+                }
                 color={color}
               />
             </TippyTooltip>

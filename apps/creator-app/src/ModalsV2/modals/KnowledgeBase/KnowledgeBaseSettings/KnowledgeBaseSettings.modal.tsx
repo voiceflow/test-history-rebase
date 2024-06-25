@@ -1,4 +1,4 @@
-import { BaseModels, BaseUtils } from '@voiceflow/base-types';
+import type { BaseModels, BaseUtils } from '@voiceflow/base-types';
 import { tid } from '@voiceflow/style';
 import { Box, notify, Scroll } from '@voiceflow/ui-next';
 import React, { useState } from 'react';

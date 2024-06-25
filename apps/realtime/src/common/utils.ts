@@ -1,13 +1,17 @@
 import type { DesignerActionContext, LegacyVersionActionContext } from '@voiceflow/sdk-logux-designer/build/types';
 
-import { CMSContext } from '@/types';
+import type { CMSContext } from '@/types';
 
 export const toPostgresEntityID = <ID extends string | number>(entityOrID: ID | { id: ID }): ID =>
   typeof entityOrID === 'object' ? entityOrID.id : entityOrID;
 
-export const toPostgresEntityIDs = <ID extends string | number>(entities: Array<ID | { id: ID }>): ID[] => entities.map(toPostgresEntityID);
+export const toPostgresEntityIDs = <ID extends string | number>(entities: Array<ID | { id: ID }>): ID[] =>
+  entities.map(toPostgresEntityID);
 
-export const toCMSEntityCompositeID = <Entity extends { id: string; environmentID: string }>({ id, environmentID }: Entity) => ({
+export const toCMSEntityCompositeID = <Entity extends { id: string; environmentID: string }>({
+  id,
+  environmentID,
+}: Entity) => ({
   id,
   environmentID,
 });

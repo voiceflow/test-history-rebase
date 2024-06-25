@@ -11,6 +11,9 @@ export const trackCustomBlockPointerCreated = createProjectEventTracker((eventIn
   client.analytics.track(createProjectEvent(EventName.CUSTOM_BLOCK_POINTER_CREATED, eventInfo))
 );
 
-export const trackCustomBlockPrototyped = createProjectEventTracker<{ prototypeID: string }>(({ prototypeID, ...eventInfo }) =>
-  client.analytics.track(createProjectEvent(EventName.CUSTOM_BLOCK_PROTOTYPED, { ...eventInfo, prototype_id: prototypeID }))
+export const trackCustomBlockPrototyped = createProjectEventTracker<{ prototypeID: string }>(
+  ({ prototypeID, ...eventInfo }) =>
+    client.analytics.track(
+      createProjectEvent(EventName.CUSTOM_BLOCK_PROTOTYPED, { ...eventInfo, prototype_id: prototypeID })
+    )
 );

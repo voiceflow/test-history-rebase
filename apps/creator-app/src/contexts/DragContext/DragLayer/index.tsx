@@ -1,7 +1,8 @@
 import React from 'react';
 import { useDragLayer } from 'react-dnd';
 
-import { Container, Preview, PreviewOptions } from './components';
+import type { PreviewOptions } from './components';
+import { Container, Preview } from './components';
 
 export type { PreviewOptions };
 
@@ -11,7 +12,7 @@ interface DragLayerProps<I> {
   renderPreview: (type: string, item: I) => React.ReactNode;
 }
 
-const DragLayer = <I extends any>({ isRegistered, renderPreview, getOptions }: DragLayerProps<I>) => {
+const DragLayer = <I,>({ isRegistered, renderPreview, getOptions }: DragLayerProps<I>) => {
   const { isDragging, itemType } = useDragLayer((monitor) => ({
     itemType: monitor.getItemType(),
     isDragging: monitor.isDragging(),

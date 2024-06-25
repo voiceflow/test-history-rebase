@@ -1,13 +1,23 @@
 import { COLOR_PICKER_CONSTANTS, Input, isHexColor, removeHashFromHex } from '@voiceflow/ui';
 import { parseToRgb, rgba } from 'polished';
 import React from 'react';
-import { RGBColor } from 'react-color';
+import type { RGBColor } from 'react-color';
 import Alpha from 'react-color/lib/components/common/Alpha';
-import ColorWrap, { InjectedColorProps } from 'react-color/lib/components/common/ColorWrap';
+import type { InjectedColorProps } from 'react-color/lib/components/common/ColorWrap';
+import ColorWrap from 'react-color/lib/components/common/ColorWrap';
 import Hue from 'react-color/lib/components/common/Hue';
 import Saturation from 'react-color/lib/components/common/Saturation';
 
-import { AlphaContainer, Colors, Container, HueContainer, InputAction, InputContainer, PickerPointer, SaturationContainer } from './components';
+import {
+  AlphaContainer,
+  Colors,
+  Container,
+  HueContainer,
+  InputAction,
+  InputContainer,
+  PickerPointer,
+  SaturationContainer,
+} from './components';
 import withHexColor from './withHexColor';
 
 export interface ColorPickerProps {

@@ -1,17 +1,17 @@
-import { Eventual } from '@voiceflow/common';
+import type { Eventual } from '@voiceflow/common';
 import { useCreateConst } from '@voiceflow/ui';
 import React from 'react';
 
 import { useCancellable, useLinkedRef } from '@/hooks';
-import { EditableCommentRef } from '@/pages/Canvas/components/ThreadEditor';
+import type { EditableCommentRef } from '@/pages/Canvas/components/ThreadEditor';
 import { EngineContext, ThreadEntityContext } from '@/pages/Canvas/contexts';
 import { useElementInstance } from '@/pages/Canvas/engine/entities/utils';
 import { useVectorDragTranslate } from '@/pages/Canvas/hooks/drag';
-import { CommentDraftValue } from '@/pages/Canvas/types';
-import { Pair } from '@/types';
+import type { CommentDraftValue } from '@/pages/Canvas/types';
+import type { Pair } from '@/types';
 import MouseMovement from '@/utils/mouseMovement';
 
-import { InternalThreadInstance } from './types';
+import type { InternalThreadInstance } from './types';
 
 enum CommentState {
   IDLE = 'idle',

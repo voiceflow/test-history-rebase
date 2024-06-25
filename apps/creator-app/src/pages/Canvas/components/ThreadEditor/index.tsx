@@ -1,4 +1,4 @@
-import { Thread } from '@voiceflow/dtos';
+import type { Thread } from '@voiceflow/dtos';
 import { stopPropagation, useDidUpdateEffect, useOnClickOutside } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
@@ -11,14 +11,8 @@ import { EngineContext, FocusThreadContext } from '@/pages/Canvas/contexts';
 import { useCommentingMode } from '@/pages/Project/hooks';
 import { ClassName } from '@/styles/constants';
 
-import {
-  CommentEditor,
-  Container,
-  EditableCommentRef,
-  NewComment,
-  ReplySection,
-  ThreadCommentContainer,
-} from './components';
+import type { EditableCommentRef } from './components';
+import { CommentEditor, Container, NewComment, ReplySection, ThreadCommentContainer } from './components';
 import { NEW_THREAD_EDITOR } from './constants';
 
 export type { EditableCommentRef } from './components';

@@ -1,6 +1,7 @@
 /* eslint-disable dot-notation, @typescript-eslint/ban-ts-comment */
 
-import { BaseNode, BaseTrace } from '@voiceflow/base-types';
+import type { BaseTrace } from '@voiceflow/base-types';
+import { BaseNode } from '@voiceflow/base-types';
 
 import { createSuite } from '@/../test/_suite';
 import MessageController from '@/pages/Prototype/PrototypeTool/Message';

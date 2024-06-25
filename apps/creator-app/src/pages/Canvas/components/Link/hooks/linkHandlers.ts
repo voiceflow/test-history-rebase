@@ -1,5 +1,5 @@
-import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { BaseModels } from '@voiceflow/base-types';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { swallowEvent, useCache } from '@voiceflow/ui';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
@@ -8,7 +8,7 @@ import { useRAF, useToggle } from '@/hooks';
 import { EngineContext, LinkEntityContext } from '@/pages/Canvas/contexts';
 
 import { STRAIGHT_PATH_OFFSET } from '../constants';
-import { InternalLinkInstance } from '../types';
+import type { InternalLinkInstance } from '../types';
 import {
   clonePoint,
   getActiveLine,
@@ -79,10 +79,15 @@ const useLinkHandlers = (instance: InternalLinkInstance) => {
         : getPointsOffset(getPointX(activeLine[0]), getPointX(activeLine[1]))
     );
 
-    if (STRAIGHT_PATH_OFFSET >= offset && (isFirstLine(points.current, activeLine) || isLastLine(points.current, activeLine))) {
+    if (
+      STRAIGHT_PATH_OFFSET >= offset &&
+      (isFirstLine(points.current, activeLine) || isLastLine(points.current, activeLine))
+    ) {
       cache.current.instance.hiddenPathRef.current.style.cursor = 'pointer';
     } else {
-      cache.current.instance.hiddenPathRef.current.style.cursor = isVerticalLine(activeLine) ? 'col-resize' : 'row-resize';
+      cache.current.instance.hiddenPathRef.current.style.cursor = isVerticalLine(activeLine)
+        ? 'col-resize'
+        : 'row-resize';
     }
   }, []);
 
@@ -110,7 +115,10 @@ const useLinkHandlers = (instance: InternalLinkInstance) => {
   const onMouseLeave = React.useCallback((event: React.MouseEvent) => {
     if (cache.current.mouseDown || cache.current.isActive) return;
 
-    if (event.relatedTarget instanceof Node && !cache.current.instance.containerRef.current?.contains(event.relatedTarget)) {
+    if (
+      event.relatedTarget instanceof Node &&
+      !cache.current.instance.containerRef.current?.contains(event.relatedTarget)
+    ) {
       engine.highlight.reset();
     }
   }, []);

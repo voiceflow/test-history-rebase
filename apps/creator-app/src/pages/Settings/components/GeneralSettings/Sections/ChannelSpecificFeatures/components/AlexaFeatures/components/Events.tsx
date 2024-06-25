@@ -39,9 +39,11 @@ const AlexaEvents: React.FC = () => {
     <Settings.SubSection header="Alexa Skill Events">
       <Box fullWidth>
         <Settings.SubSection.Description mb={16}>
-          <Link href="https://developer.amazon.com/en-US/docs/alexa/smapi/skill-events-in-alexa-skills.html">Alexa Skill Events</Link> can be used to
-          notify you if a certain event occurs, such as a user linking their account. The notification comes in form of a request to your Skill, which
-          you can then act on.
+          <Link href="https://developer.amazon.com/en-US/docs/alexa/smapi/skill-events-in-alexa-skills.html">
+            Alexa Skill Events
+          </Link>{' '}
+          can be used to notify you if a certain event occurs, such as a user linking their account. The notification
+          comes in form of a request to your Skill, which you can then act on.
         </Settings.SubSection.Description>
 
         {alexaEventError && (

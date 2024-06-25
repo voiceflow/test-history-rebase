@@ -1,11 +1,11 @@
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { HSLShades } from '@/constants';
+import type { HSLShades } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import Step, { Item, Section, VariableLabel } from '@/pages/Canvas/components/Step';
-import { ConnectedStep } from '@/pages/Canvas/managers/types';
+import type { ConnectedStep } from '@/pages/Canvas/managers/types';
 
 import { NODE_CONFIG, PERMISSION_LABELS } from '../constants';
 
@@ -40,7 +40,10 @@ export const PermissionStep: React.FC<PermissionStepProps> = ({ permissions, nod
   );
 };
 
-const ConnectedPermissionStep: ConnectedStep<Realtime.NodeData.Permission, Realtime.NodeData.PermissionBuiltInPorts> = ({ ports, data, palette }) => (
+const ConnectedPermissionStep: ConnectedStep<
+  Realtime.NodeData.Permission,
+  Realtime.NodeData.PermissionBuiltInPorts
+> = ({ ports, data, palette }) => (
   <PermissionStep
     nodeID={data.nodeID}
     permissions={data.permissions.map((permissionID) => PERMISSION_LABELS[permissionID])}

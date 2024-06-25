@@ -1,9 +1,9 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Editor, Scroll } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { EditorV3HeaderActions } from '@/pages/Canvas/components/EditorV3/EditorV3HeaderActions.component';
-import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
+import type { NodeEditorV2 } from '@/pages/Canvas/managers/types';
 
 import { TriggersSection } from '../../components/Triggers/TriggersSection/TriggersSection.component';
 

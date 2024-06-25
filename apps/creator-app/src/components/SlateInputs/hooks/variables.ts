@@ -1,8 +1,8 @@
-import { Normalized } from '@voiceflow/common';
+import type { Normalized } from '@voiceflow/common';
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
-import { SlatePluginsOptions, SlatePluginType, SlateVariableItem } from '@/components/SlateEditable';
+import type { SlatePluginsOptions, SlatePluginType, SlateVariableItem } from '@/components/SlateEditable';
 import * as DiagramV2 from '@/ducks/diagramV2';
 import { useVariableCreateModal } from '@/hooks/modal.hook';
 import { useSelector } from '@/hooks/redux';
@@ -20,7 +20,9 @@ export const useSlateVariables = ({
 }: SlateVariablesOptions): SlatePluginsOptions[SlatePluginType.VARIABLES] | undefined => {
   const variableCreateModal = useVariableCreateModal();
 
-  const variables = useSelector((state) => propVariables ?? DiagramV2.active.allSlotsAndVariablesNormalizedSelector(state));
+  const variables = useSelector(
+    (state) => propVariables ?? DiagramV2.active.allSlotsAndVariablesNormalizedSelector(state)
+  );
 
   const onCreate = React.useCallback(
     async (name: string) => {

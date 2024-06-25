@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 
 import { designerClient } from '@/client/designer';
 import { CREATOR_APP_ENDPOINT } from '@/config';

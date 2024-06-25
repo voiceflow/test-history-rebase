@@ -1,6 +1,6 @@
 import { Node } from '@voiceflow/base-types';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 /**
  * remove the pattern of storing step data inside the ports

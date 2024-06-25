@@ -4,7 +4,7 @@ import { Types } from '@platform-config/utils';
 import { AlexaVersion } from '@voiceflow/alexa-types';
 import { createSimpleAdapter, createSmartSimpleAdapter } from 'bidirectional-adapter';
 
-import * as Models from '../../models';
+import type * as Models from '../../models';
 
 const SHARED_FIELDS = Types.satisfies<keyof AlexaVersion.Publishing>()([
   'hasAds',
@@ -44,7 +44,9 @@ export const smart = createSmartSimpleAdapter<
   (publishing, options) => ({
     ...Common.Voice.Adapters.Version.Publishing.smart.toDB(publishing, options),
     ...Config.pickNonEmptyFields(publishing, SHARED_FIELDS),
-    ...(Config.hasValue(publishing, 'locales') && { locales: publishing.locales as AlexaVersion.Publishing['locales'] }),
+    ...(Config.hasValue(publishing, 'locales') && {
+      locales: publishing.locales as AlexaVersion.Publishing['locales'],
+    }),
     ...(Config.hasValue(publishing, 'invocationName') && { invocationName: publishing.invocationName }),
     ...(Config.hasValue(publishing, 'invocationNameSamples') && { invocations: publishing.invocationNameSamples }),
   })

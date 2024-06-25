@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 

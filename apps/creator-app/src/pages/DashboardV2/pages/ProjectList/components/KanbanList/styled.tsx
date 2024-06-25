@@ -6,7 +6,8 @@ import DragPlaceholder from '@/components/DragPlaceholder';
 import EditableText from '@/components/EditableText';
 import { css, styled } from '@/hocs/styled';
 
-import Link, { LinkProps } from './Link';
+import type { LinkProps } from './Link';
+import Link from './Link';
 
 export const ProjectNameWrapper = styled.div`
   display: flex;
@@ -53,7 +54,9 @@ export const ProjectListDragZone = styled(DragPlaceholder)`
 
 export const ProjectListItemActions = styled.div<{ active?: boolean; locked?: boolean }>`
   display: none;
-  box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);
+  box-shadow:
+    0 0 0 1px rgba(17, 49, 96, 0.04),
+    0 2px 4px 0 rgba(17, 49, 96, 0.16);
   transition: all 0.15s linear;
   border-radius: 50%;
   border: 1px solid #fff;
@@ -104,11 +107,16 @@ export const ProjectListItem = styled(({ hasOptions, ...props }: ProjectListItem
   border: 1px solid #eaeff4;
   border-radius: 7px;
   cursor: ${({ locked }) => (locked ? 'default' : 'pointer')};
-  transition: background-color 0.12s linear, box-shadow 0.12s linear, border-color 0.12s linear;
+  transition:
+    background-color 0.12s linear,
+    box-shadow 0.12s linear,
+    border-color 0.12s linear;
 
   &:hover {
     border-color: transparent;
-    box-shadow: 0 0 1px 1px rgba(17, 49, 96, 0.06), 0 2px 4px 0 rgba(17, 49, 96, 0.12);
+    box-shadow:
+      0 0 1px 1px rgba(17, 49, 96, 0.06),
+      0 2px 4px 0 rgba(17, 49, 96, 0.12);
   }
 
   &:focus {
@@ -197,7 +205,9 @@ export const ListContainer = styled.div`
   }
 
   .main-list-header.__scrolling {
-    box-shadow: 0 0 1px 1px rgba(17, 49, 96, 0.08), 0 1px 3px 0 rgba(17, 49, 96, 0.08);
+    box-shadow:
+      0 0 1px 1px rgba(17, 49, 96, 0.08),
+      0 1px 3px 0 rgba(17, 49, 96, 0.08);
   }
 
   .main-list-body {
@@ -255,7 +265,9 @@ export const ListContainer = styled.div`
     -o-transition: box-shadow 0.12s linear;
     transition: -webkit-box-shadow 0.12s linear;
     transition: box-shadow 0.12s linear;
-    transition: box-shadow 0.12s linear, -webkit-box-shadow 0.12s linear;
+    transition:
+      box-shadow 0.12s linear,
+      -webkit-box-shadow 0.12s linear;
     -webkit-box-flex: 0;
     -webkit-box-pack: end;
     -ms-flex-pack: end;
@@ -322,14 +334,21 @@ export const ListContainer = styled.div`
     border: 1px solid #eaeff4;
     border-radius: 7px;
     cursor: pointer;
-    transition: background-color 0.12s linear, box-shadow 0.12s linear, border-color 0.12s linear;
+    transition:
+      background-color 0.12s linear,
+      box-shadow 0.12s linear,
+      border-color 0.12s linear;
   }
 
   .main-list-body.still .project-list__item:hover {
     background-color: #fff;
     border-color: transparent;
-    -webkit-box-shadow: 0 0 1px 1px rgba(17, 49, 96, 0.06), 0 2px 4px 0 rgba(17, 49, 96, 0.12);
-    box-shadow: 0 0 1px 1px rgba(17, 49, 96, 0.06), 0 2px 4px 0 rgba(17, 49, 96, 0.12);
+    -webkit-box-shadow:
+      0 0 1px 1px rgba(17, 49, 96, 0.06),
+      0 2px 4px 0 rgba(17, 49, 96, 0.12);
+    box-shadow:
+      0 0 1px 1px rgba(17, 49, 96, 0.06),
+      0 2px 4px 0 rgba(17, 49, 96, 0.12);
   }
 
   .main-list-body.still .project-list__item:hover .project-list__item-image,
@@ -340,7 +359,9 @@ export const ListContainer = styled.div`
   .project-list__item:hover .project-list__item-action {
     border: 1px solid #fff;
     border-radius: 50%;
-    box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.04), 0 2px 4px 0 rgba(17, 49, 96, 0.16);
+    box-shadow:
+      0 0 0 1px rgba(17, 49, 96, 0.04),
+      0 2px 4px 0 rgba(17, 49, 96, 0.16);
   }
 
   .main-list-body.still .project-list__item:hover .project-list__item-actions,
@@ -363,7 +384,9 @@ export const ListContainer = styled.div`
     position: relative;
     display: inline-block;
     border-radius: 50%;
-    box-shadow: 0 0 0 2px #fff, 0 1px 2px 2px rgba(17, 49, 96, 0.16);
+    box-shadow:
+      0 0 0 2px #fff,
+      0 1px 2px 2px rgba(17, 49, 96, 0.16);
   }
 
   .project-list__item-status {

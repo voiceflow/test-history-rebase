@@ -84,8 +84,8 @@ export type ToForeignKeys<T extends AnyRecord> = {
   [K in keyof T as K extends RelationKeys<T> ? `${K & string}ID` : K]: T[K] extends Ref<any>
     ? T[K]['id']
     : T[K] extends Ref<any> | null
-    ? NonNullable<T[K]>['id'] | null
-    : T[K];
+      ? NonNullable<T[K]>['id'] | null
+      : T[K];
 };
 
 export type ResolvedForeignKeys<T extends AnyRecord, D extends AnyRecord> = {
@@ -107,14 +107,15 @@ export type ExcludeCreateKeys =
   | 'toJSON'
   | typeof PrimaryKeyType;
 
-export type Ref<T, PK extends keyof T | unknown = PrimaryProperty<T>> = true extends IsUnknown<PK>
-  ? Reference<T>
-  : // check if PK is a object or record
-  T extends { [PrimaryKeyType]?: infer K }
-  ? K & Reference<T>
-  : {
-      [K in Cast<PK, keyof T>]: T[K];
-    } & Reference<T>;
+export type Ref<T, PK extends keyof T | unknown = PrimaryProperty<T>> =
+  true extends IsUnknown<PK>
+    ? Reference<T>
+    : // check if PK is a object or record
+      T extends { [PrimaryKeyType]?: infer K }
+      ? K & Reference<T>
+      : {
+          [K in Cast<PK, keyof T>]: T[K];
+        } & Reference<T>;
 
 export type WithAdditionalProperties<T extends AnyRecord> = T & Struct;
 
@@ -125,14 +126,14 @@ export type JSONStringRemapTypes = ObjectId | Date;
 export type JSONTypeRemap<Type> = Type extends JSONStringRemapTypes
   ? JSONRemap<string, Type>
   : Type extends Markup
-  ? Type
-  : Type extends UtteranceText
-  ? Type
-  : Type extends Array<infer Item>
-  ? { [key in keyof Type]: JSONTypeRemap<Item> }
-  : Type extends object
-  ? ToJSON<Type>
-  : Type;
+    ? Type
+    : Type extends UtteranceText
+      ? Type
+      : Type extends Array<infer Item>
+        ? { [key in keyof Type]: JSONTypeRemap<Item> }
+        : Type extends object
+          ? ToJSON<Type>
+          : Type;
 
 export type ToObject<Type extends AnyRecord> = ToForeignKeys<{
   [Key in keyof Type as Exclude<ExcludeFunctions<Type, Key>, CollectionKeys<Type>>]: Type[Key];
@@ -142,8 +143,9 @@ export type ToJSON<Type> = {
   [Key in keyof Type as Exclude<ExcludeFunctions<Type, Key>, CollectionKeys<Type>>]: JSONTypeRemap<Type[Key]>;
 };
 
-export type PrimaryObject<Entity extends BasePKEntity> = Primary<Entity> extends string
-  ? Entity extends { _id: ObjectId }
-    ? { _id: ObjectId }
-    : { id: string }
-  : Primary<Entity>;
+export type PrimaryObject<Entity extends BasePKEntity> =
+  Primary<Entity> extends string
+    ? Entity extends { _id: ObjectId }
+      ? { _id: ObjectId }
+      : { id: string }
+    : Primary<Entity>;

@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import type * as Realtime from '@voiceflow/realtime-sdk/backend';
 import queryString from 'query-string';
 
 import type { FetchClient } from '../../common/fetch';

@@ -32,7 +32,10 @@ const LayoutSelect: React.FC = () => {
     updateSettings({ buttonsOnly: !buttonsOnly });
   };
 
-  const layoutOptions = React.useMemo(() => getLayoutOptions(projectType).filter((option) => option !== layout), [layout, projectType]);
+  const layoutOptions = React.useMemo(
+    () => getLayoutOptions(projectType).filter((option) => option !== layout),
+    [layout, projectType]
+  );
 
   return (
     <Box pr={32}>

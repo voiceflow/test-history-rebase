@@ -6,7 +6,7 @@ import type { MutableORM } from './mutable-orm.interface';
 
 export interface CMSObjectORM<
   BaseEntity extends PostgresPKEntity,
-  DiscriminatorEntity extends Omit<BaseEntity, typeof DEFAULT_OR_NULL_COLUMN>
+  DiscriminatorEntity extends Omit<BaseEntity, typeof DEFAULT_OR_NULL_COLUMN>,
 > extends MutableORM<BaseEntity, DiscriminatorEntity> {
   createOneForUser(
     userID: number,

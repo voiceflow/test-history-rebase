@@ -3,7 +3,7 @@ import { useAtomValue } from 'jotai';
 import React from 'react';
 
 import { useKnowledgeBaseCMSManager } from '../../../CMSKnowledgeBase.hook';
-import { ICMSKnowledgeBaseTableNameCell } from './CMSKnowledgeBaseTableNameCell.interface';
+import type { ICMSKnowledgeBaseTableNameCell } from './CMSKnowledgeBaseTableNameCell.interface';
 import { DocumentNameDocx } from './DocumentNameDocx.component';
 import { DocumentNamePdf } from './DocumentNamePdf.component';
 import { DocumentNameTable } from './DocumentNameTable.component';

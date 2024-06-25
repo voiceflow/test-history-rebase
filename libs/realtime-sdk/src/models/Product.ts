@@ -1,4 +1,5 @@
-import { AlexaConstants, AlexaProject } from '@voiceflow/alexa-types';
+/* eslint-disable @typescript-eslint/no-namespace */
+import type { AlexaConstants, AlexaProject } from '@voiceflow/alexa-types';
 
 export interface ProductMarketPlace {
   price: number;

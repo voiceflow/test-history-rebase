@@ -47,7 +47,14 @@ const Upgrade = manager.create<UpgradeModal>(
       });
 
       return (
-        <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={maxWidth}>
+        <Modal
+          type={type}
+          opened={opened}
+          hidden={hidden}
+          animated={animated}
+          onExited={api.remove}
+          maxWidth={maxWidth}
+        >
           <Modal.Header actions={<Modal.Header.CloseButtonAction onClick={api.onClose} />}>{header}</Modal.Header>
 
           <Modal.Body centred style={{ paddingTop: '16px' }}>
@@ -69,7 +76,11 @@ const Upgrade = manager.create<UpgradeModal>(
               {cancelButtonText}
             </Button>
 
-            <Button onClick={Utils.functional.chainVoid(api.onClose, () => onUpgrade(store.dispatch))} variant={Button.Variant.PRIMARY} squareRadius>
+            <Button
+              onClick={Utils.functional.chainVoid(api.onClose, () => onUpgrade(store.dispatch))}
+              variant={Button.Variant.PRIMARY}
+              squareRadius
+            >
               {upgradeButtonText}
             </Button>
           </Modal.Footer>

@@ -23,10 +23,20 @@ const PrototypeSettings: React.FC<PrototypeSettingsProps> = ({ showTitle }) => {
       <SettingsSection header="Debug Mode" toggle={toggleSetting('debug')} value={config.debug}>
         Show the paths, variables and components you're using while you test.
       </SettingsSection>
-      <SettingsSection header="Intent Confidence Score" toggle={toggleSetting('intent')} value={config.intent} isDividerNested>
+      <SettingsSection
+        header="Intent Confidence Score"
+        toggle={toggleSetting('intent')}
+        value={config.intent}
+        isDividerNested
+      >
         Show the natural language model's confidence out of 1.00 when matching trained intents.
       </SettingsSection>
-      <SettingsSection header="Guided Navigation" toggle={toggleSetting('isGuided')} value={config.isGuided} isDividerNested>
+      <SettingsSection
+        header="Guided Navigation"
+        toggle={toggleSetting('isGuided')}
+        value={config.isGuided}
+        isDividerNested
+      >
         Stop and wait for path selection on IF and Custom Action steps.
       </SettingsSection>
     </Box>

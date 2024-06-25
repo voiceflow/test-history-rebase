@@ -1,4 +1,4 @@
-import { BaseTraceFrame, V1Trace } from '@/models';
+import type { BaseTraceFrame, V1Trace } from '@/models';
 
 export * from './paths';
 

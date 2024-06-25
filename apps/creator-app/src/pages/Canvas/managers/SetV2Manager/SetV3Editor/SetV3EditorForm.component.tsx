@@ -1,11 +1,11 @@
 import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Divider, Scroll, SortableList, SquareButton, Text } from '@voiceflow/ui-next';
 import { Tokens } from '@voiceflow/ui-next/styles';
 import React from 'react';
 
-import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
+import type { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 
 import { SetV3EditorItem } from './SetV3EditorItem/SetV3EditorItem.component';
 

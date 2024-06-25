@@ -12,7 +12,11 @@ const WorkspaceSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children
   const isSubscribed = useWorkspaceSubscription({ workspaceID }, [workspaceID]);
 
   return (
-    <LoadingGate isLoaded={isSubscribed} loader={<WorkspaceOrProjectLoader />} internalName={WorkspaceSubscriptionGate.name}>
+    <LoadingGate
+      isLoaded={isSubscribed}
+      loader={<WorkspaceOrProjectLoader />}
+      internalName={WorkspaceSubscriptionGate.name}
+    >
       {children}
     </LoadingGate>
   );

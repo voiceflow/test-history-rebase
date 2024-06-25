@@ -9,7 +9,8 @@ import { useASR, useCanASR, useSpeechRecognition } from '@/hooks/speech-recognit
 import { UncontrolledSpeechBar } from '@/pages/Prototype/components/PrototypeSpeechBar';
 import ASRSpeechBar from '@/pages/Prototype/components/PrototypeSpeechBar/components/ASRSpeechBar';
 import { usePrototype, useResetPrototype, useStartPublicPrototype } from '@/pages/Prototype/hooks';
-import { OnInteraction, PMStatus, PrototypeAllTypes } from '@/pages/Prototype/types';
+import type { OnInteraction, PrototypeAllTypes } from '@/pages/Prototype/types';
+import { PMStatus } from '@/pages/Prototype/types';
 import ChatDialog from '@/pages/PublicPrototype/components/ChatDialog';
 
 import Footer from '../Footer';

@@ -30,9 +30,11 @@ const ModelSensitivity: React.FC = () => {
       />
 
       <Settings.SubSection.Description>
-        As you increase the sensitivity, AMAZON.FallbackIntent captures more user utterances that aren't supported by your custom intents. By default,
-        this is set to low.
-        <Link href="https://developer.amazon.com/en-US/docs/alexa/custom-skills/standard-built-in-intents.html#adjust-sensitivity">Learn more.</Link>
+        As you increase the sensitivity, AMAZON.FallbackIntent captures more user utterances that aren't supported by
+        your custom intents. By default, this is set to low.
+        <Link href="https://developer.amazon.com/en-US/docs/alexa/custom-skills/standard-built-in-intents.html#adjust-sensitivity">
+          Learn more.
+        </Link>
       </Settings.SubSection.Description>
     </Settings.SubSection>
   );

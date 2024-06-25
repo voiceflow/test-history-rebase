@@ -1,4 +1,4 @@
-import { IntentClassificationNLUSettings } from '@voiceflow/dtos';
+import type { IntentClassificationNLUSettings } from '@voiceflow/dtos';
 
 export interface IIntentClassificationNLUSettings {
   settings: Omit<IntentClassificationNLUSettings, 'type'>;

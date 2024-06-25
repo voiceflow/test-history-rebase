@@ -1,18 +1,18 @@
 import { WorkflowStatus } from '@voiceflow/dtos';
 import { tid } from '@voiceflow/style';
+import type { IEditorAPI } from '@voiceflow/ui-next';
 import {
   Box,
   Button,
   Divider,
   Editor,
-  IEditorAPI,
   IndicatorStatus,
   notify,
   Scroll,
   Text,
   WorkflowManager,
 } from '@voiceflow/ui-next';
-import { IAssignee } from '@voiceflow/ui-next/build/next/components/Other/WorkflowManager/types';
+import type { IAssignee } from '@voiceflow/ui-next/build/next/components/Other/WorkflowManager/types';
 import React, { useMemo, useRef } from 'react';
 import { match } from 'ts-pattern';
 

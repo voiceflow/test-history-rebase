@@ -3,9 +3,11 @@ const LIGHT_MEMBER_COLORS = ['base', 'fern', 'hibiscus', 'copper', 'havelock'] a
 
 type MemberColorVariant = 'dark' | 'light';
 
-const getMemberColorList = (variant: MemberColorVariant = 'dark') => (variant === 'dark' ? DARK_MEMBER_COLORS : LIGHT_MEMBER_COLORS);
+const getMemberColorList = (variant: MemberColorVariant = 'dark') =>
+  variant === 'dark' ? DARK_MEMBER_COLORS : LIGHT_MEMBER_COLORS;
 
-export const isMemberColorImage = (image?: string | null): image is string => image?.length === 13 && image.includes('|');
+export const isMemberColorImage = (image?: string | null): image is string =>
+  image?.length === 13 && image.includes('|');
 
 export const getMemberColorByCreatorID = (creatorID: number, variant: MemberColorVariant = 'dark') => {
   const list = getMemberColorList(variant);

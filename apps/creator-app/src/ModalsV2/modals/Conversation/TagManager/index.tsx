@@ -6,7 +6,7 @@ import React from 'react';
 
 import { allReportTagsSelector, createTag, deleteTag } from '@/ducks/reportTag';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
-import { ReportTag } from '@/models';
+import type { ReportTag } from '@/models';
 import { isBuiltInTag } from '@/utils/reportTag';
 
 import manager from '../../../manager';

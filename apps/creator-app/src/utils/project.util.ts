@@ -1,7 +1,7 @@
-import { BaseModels } from '@voiceflow/base-types';
-import { AnyRecord } from '@voiceflow/common';
-import { Project } from '@voiceflow/dtos';
-import { AssistantPublicHTTPControllerImportFile201Project } from '@voiceflow/sdk-http-designer/generated';
+import type { BaseModels } from '@voiceflow/base-types';
+import type { AnyRecord } from '@voiceflow/common';
+import type { Project } from '@voiceflow/dtos';
+import type { AssistantPublicHTTPControllerImportFile201Project } from '@voiceflow/sdk-http-designer/generated';
 
 type AnyBaseProject = BaseModels.Project.Model<AnyRecord, AnyRecord>;
 

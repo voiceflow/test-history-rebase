@@ -7,7 +7,7 @@ import { modalsManager } from '@/ModalsV2/manager';
 
 import { ModalBackdrop } from '../ModalBackdrop/ModalBackdrop.component';
 import { ModalHistoryPopState } from '../ModalHistoryPopState.component';
-import { IModalPlaceholder } from './ModalPlaceholder.interface';
+import type { IModalPlaceholder } from './ModalPlaceholder.interface';
 
 export const ModalPlaceholder = memo<IModalPlaceholder>(({ scope }) => {
   const { state, animated } = useContext(ModalsContext);

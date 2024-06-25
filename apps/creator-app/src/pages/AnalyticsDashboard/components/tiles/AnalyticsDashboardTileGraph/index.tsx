@@ -1,9 +1,9 @@
 import { AreaChart, Box, SectionV2, Switch, Text } from '@voiceflow/ui';
-import { BaseProps } from '@voiceflow/ui-next';
+import type { BaseProps } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { QueryState } from '../../../constants';
-import { GraphResult, QueryResult } from '../../../types';
+import type { GraphResult, QueryResult } from '../../../types';
 import AnalyticsDashboardChartEmpty from '../AnalyticsDashboardTileEmpty';
 import DeltaLabel from './DeltaLabel';
 import { getGraphColor, periodToAreaChartFormatter } from './utils';
@@ -65,7 +65,11 @@ const AnalyticsDashboardTileGraph: React.FC<AnalyticsDashboardChartGraphProps> =
       </Switch.Pane>
 
       <Switch.Pane value={QueryState.SUCCESS}>
-        {query.data ? <Chart query={query} size={size} testID={testID} /> : <AnalyticsDashboardChartEmpty query={query} />}
+        {query.data ? (
+          <Chart query={query} size={size} testID={testID} />
+        ) : (
+          <AnalyticsDashboardChartEmpty query={query} />
+        )}
       </Switch.Pane>
     </Switch>
   );

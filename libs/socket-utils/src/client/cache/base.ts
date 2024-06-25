@@ -1,6 +1,6 @@
-import { ChainableCommander, Redis } from 'ioredis';
+import type { ChainableCommander, Redis } from 'ioredis';
 
-import { AnyAdapter, BaseKeyExtractor, CacheOptions, KeyOptions } from './types';
+import type { AnyAdapter, BaseKeyExtractor, CacheOptions, KeyOptions } from './types';
 
 abstract class BaseCache<K extends BaseKeyExtractor, A extends AnyAdapter | undefined = undefined> {
   protected redis: Redis;

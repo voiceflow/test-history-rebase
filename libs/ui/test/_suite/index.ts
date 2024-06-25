@@ -1,4 +1,4 @@
-import { EmptyObject } from '@voiceflow/common';
+import type { EmptyObject } from '@voiceflow/common';
 import { afterEach } from 'vitest';
 
 import * as mocks from './mocks';

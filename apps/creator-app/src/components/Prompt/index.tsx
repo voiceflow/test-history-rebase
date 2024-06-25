@@ -2,11 +2,11 @@ import * as Platform from '@voiceflow/platform-config';
 import React from 'react';
 
 import SystemMessage from '@/components/SystemMessage';
-import { ChatMessageProps, ChatMessageRef } from '@/components/SystemMessage/types';
+import type { ChatMessageProps, ChatMessageRef } from '@/components/SystemMessage/types';
 import { useActiveProjectType } from '@/hooks';
 
 import { VoicePrompt } from './components';
-import { PromptProps, PromptRef, VoicePromptProps, VoicePromptRef } from './types';
+import type { PromptProps, PromptRef, VoicePromptProps, VoicePromptRef } from './types';
 
 const Prompt = React.forwardRef<PromptRef, PromptProps>((props, ref) => {
   const projectType = useActiveProjectType();

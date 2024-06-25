@@ -28,7 +28,11 @@ export class ProjectLegacyService {
     await client.project.updatePlatformData(projectID, data);
   }
 
-  public async patch(creatorID: number, projectID: string, { _id, ...data }: Partial<Realtime.DBProject>): Promise<void> {
+  public async patch(
+    creatorID: number,
+    projectID: string,
+    { _id, ...data }: Partial<Realtime.DBProject>
+  ): Promise<void> {
     const client = await this.creator.client.getByUserID(creatorID);
     await client.project.update(projectID, data);
   }
@@ -43,7 +47,9 @@ export class ProjectLegacyService {
     projectID: string,
     data: Optional<Pick<Realtime.DBProject, 'teamID' | 'name' | '_version' | 'platform'>, 'name' | 'platform'>
   ): Promise<Realtime.AnyDBProject> {
-    const platform = data.platform ? Realtime.legacyPlatformToProjectType(data.platform).platform : await this.getPlatform(creatorID, projectID);
+    const platform = data.platform
+      ? Realtime.legacyPlatformToProjectType(data.platform).platform
+      : await this.getPlatform(creatorID, projectID);
     const client = await this.projectPlatform.getClient(platform).getByUserID(creatorID);
 
     // do not pass platform to duplicate to do not migrate projects from "chat" to "voice"

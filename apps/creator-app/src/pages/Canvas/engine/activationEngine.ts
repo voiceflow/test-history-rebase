@@ -1,6 +1,7 @@
 import { CANVAS_ACTIVATION_CLASSNAME } from '@/pages/Canvas/constants';
 
-import { ActivationMode, EntityType } from './constants';
+import type { ActivationMode } from './constants';
+import { EntityType } from './constants';
 import { EngineConsumer } from './utils';
 
 class ActivationEngine extends EngineConsumer {

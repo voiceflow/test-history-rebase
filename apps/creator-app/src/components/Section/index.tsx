@@ -4,7 +4,7 @@ import React from 'react';
 import { styled } from '@/hocs/styled';
 
 import { ContentContainer, UncontrolledSection } from './components';
-import { UncontrolledSectionProps } from './components/UncontrolledSection';
+import type { UncontrolledSectionProps } from './components/UncontrolledSection';
 
 export * from './components';
 export * from './constants';
@@ -26,7 +26,15 @@ const Section: React.ForwardRefRenderFunction<HTMLDivElement, SectionProps> = (
     }
   }, [isCollapsed]);
 
-  return <UncontrolledSection {...props} isCollapsed={isCollapsed} collapseVariant={collapseVariant} toggle={toggle} ref={ref} />;
+  return (
+    <UncontrolledSection
+      {...props}
+      isCollapsed={isCollapsed}
+      collapseVariant={collapseVariant}
+      toggle={toggle}
+      ref={ref}
+    />
+  );
 };
 
 const RefForwardedSection = React.forwardRef<HTMLDivElement, SectionProps>(Section);

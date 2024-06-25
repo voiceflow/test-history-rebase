@@ -14,7 +14,7 @@ import * as VersionV2 from '@/ducks/versionV2';
 import { useDispatch, useSelector } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 
-import { ProtoConfigType, PrototypeActions, PrototypeAllTypes, PrototypeRuntimeState } from './types';
+import type { ProtoConfigType, PrototypeActions, PrototypeAllTypes, PrototypeRuntimeState } from './types';
 
 const defaultPrototypeContext: PrototypeAllTypes = {
   config: {

@@ -2,7 +2,7 @@ import * as Platform from '@voiceflow/platform-config/backend';
 import { createMultiAdapter } from 'bidirectional-adapter';
 
 import { DialogType } from '../constants';
-import { SpeakData } from '../models';
+import type { SpeakData } from '../models';
 
 export const voicePromptToSpeakDataAdapter = createMultiAdapter<Platform.Common.Voice.Models.Prompt.Model, SpeakData>(
   (reprompt) =>

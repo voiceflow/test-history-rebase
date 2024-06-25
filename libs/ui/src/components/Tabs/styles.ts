@@ -31,7 +31,9 @@ export const Tab = styled.button<{ isActive?: boolean }>`
           color: #132144;
           background-color: #ffffff;
           background-image: linear-gradient(to bottom, var(--white), #fdfdfd);
-          box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.03);
+          box-shadow:
+            0 1px 3px 0 rgba(0, 0, 0, 0.08),
+            0 0 0 1px rgba(0, 0, 0, 0.03);
         `
       : css`
           color: rgb(19 33 68 / 80%);

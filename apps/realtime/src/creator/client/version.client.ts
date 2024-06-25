@@ -6,7 +6,10 @@ export class VersionClient {
   constructor(private readonly client: FetchClient) {}
 
   // TODO: remove with new backup system
-  public async snapshot(versionID: string, options: { manualSave?: boolean; name?: string; autoSaveFromRestore?: boolean } = {}) {
+  public async snapshot(
+    versionID: string,
+    options: { manualSave?: boolean; name?: string; autoSaveFromRestore?: boolean } = {}
+  ) {
     const query = new URLSearchParams();
 
     if (options.name) query.set('saveVersionName', options.name);

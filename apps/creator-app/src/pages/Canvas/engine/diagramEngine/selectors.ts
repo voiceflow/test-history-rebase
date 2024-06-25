@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
@@ -18,7 +18,9 @@ export const entityMapSelector = createSelector(
       return {
         ports: Realtime.Utils.port.flattenAllPorts(node?.ports).map((portID) => getPort({ id: portID })!),
         links: [],
-        nodesWithData: [{ node: { ...node, ...nodeOverrides }, data: rename ? { ...data, name: `${data?.name} copy` } : data }],
+        nodesWithData: [
+          { node: { ...node, ...nodeOverrides }, data: rename ? { ...data, name: `${data?.name} copy` } : data },
+        ],
       };
     }
 );
@@ -31,7 +33,11 @@ export const parentEntityMapSelector = createSelector(
       const data = getNodeData({ id: nodeID })!;
       const newNodeID = Utils.id.objectID();
 
-      const inPorts = node.ports.in.map((portID) => ({ ...getPort({ id: portID })!, id: Utils.id.objectID(), nodeID: newNodeID }));
+      const inPorts = node.ports.in.map((portID) => ({
+        ...getPort({ id: portID })!,
+        id: Utils.id.objectID(),
+        nodeID: newNodeID,
+      }));
       const outDynamicPorts = node.ports.out.dynamic.map((portID) => ({
         ...getPort({ id: portID })!,
         id: Utils.id.objectID(),
@@ -72,7 +78,10 @@ export const parentEntityMapSelector = createSelector(
                 out: {
                   byKey: byKeyPorts.reduce((acc, [key, port]) => Object.assign(acc, { [key]: port.id }), {}),
                   dynamic: outDynamicPorts.map(({ id }) => id),
-                  builtIn: outBuiltInPortsEntities.reduce((acc, [type, port]) => Object.assign(acc, { [type]: port.id }), {}),
+                  builtIn: outBuiltInPortsEntities.reduce(
+                    (acc, [type, port]) => Object.assign(acc, { [type]: port.id }),
+                    {}
+                  ),
                 },
               },
             },
@@ -83,7 +92,12 @@ export const parentEntityMapSelector = createSelector(
             },
           },
         ],
-        ports: [...inPorts, ...outDynamicPorts, ...outBuiltInPortsEntities.map(([, port]) => port), ...byKeyPorts.map(([, port]) => port)],
+        ports: [
+          ...inPorts,
+          ...outDynamicPorts,
+          ...outBuiltInPortsEntities.map(([, port]) => port),
+          ...byKeyPorts.map(([, port]) => port),
+        ],
         links: [],
       };
     }
@@ -103,6 +117,8 @@ export const childEntityMapSelector = createSelector(
         };
       }
 
-      return node.combinedNodes.map((childNodeID) => getEntityMap(childNodeID, false, { x: node.x, y: node.y })).reduce(mergeEntityMaps);
+      return node.combinedNodes
+        .map((childNodeID) => getEntityMap(childNodeID, false, { x: node.x, y: node.y }))
+        .reduce(mergeEntityMaps);
     }
 );

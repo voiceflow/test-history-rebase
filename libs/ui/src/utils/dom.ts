@@ -1,5 +1,5 @@
 import { KeyName } from '@ui/constants';
-import { Point } from '@ui/types';
+import type { Point } from '@ui/types';
 
 export enum DataTypes {
   TEXT = 'text/plain;charset=utf-8',
@@ -56,7 +56,9 @@ export const stopPropagation = withHandler<React.SyntheticEvent, boolean>((e, st
   }
 });
 
-export const stopImmediatePropagation = withHandler<React.SyntheticEvent>((e) => e.nativeEvent.stopImmediatePropagation());
+export const stopImmediatePropagation = withHandler<React.SyntheticEvent>((e) =>
+  e.nativeEvent.stopImmediatePropagation()
+);
 
 export const preventDefault = withHandler((e) => e.preventDefault());
 
@@ -72,7 +74,11 @@ export const swallowEvent = withHandler<Event | React.SyntheticEvent, boolean>((
 
 export const withTargetValue =
   (cb: (value: string) => void) =>
-  (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>): void =>
+  (
+    event:
+      | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      | React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>
+  ): void =>
     cb(event.currentTarget.value);
 
 export const withKeyPress =

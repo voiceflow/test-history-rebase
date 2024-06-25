@@ -1,14 +1,19 @@
 import { Utils } from '@voiceflow/common';
-import { AnySimpleAdapter } from 'bidirectional-adapter';
+import type { AnySimpleAdapter } from 'bidirectional-adapter';
 
-import fetch, * as Fetch from '@/client/fetch';
+import type fetch from '@/client/fetch';
+import * as Fetch from '@/client/fetch';
 
 import { createSuite } from '../_suite';
 
 export default createSuite((utils) => ({
   ...utils,
 
-  stubAdapter: <T extends AnySimpleAdapter>(adapter: T, method: keyof T, factory: () => any = Utils.generate.object) => {
+  stubAdapter: <T extends AnySimpleAdapter>(
+    adapter: T,
+    method: keyof T,
+    factory: () => any = Utils.generate.object
+  ) => {
     const transformed: any = factory();
 
     const adapterStub = vi.spyOn(adapter, method as any).mockReturnValue(transformed);

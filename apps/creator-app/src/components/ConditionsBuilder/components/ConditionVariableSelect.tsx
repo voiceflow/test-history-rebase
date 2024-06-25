@@ -1,4 +1,5 @@
-import React, { SyntheticEvent } from 'react';
+import type { SyntheticEvent } from 'react';
+import React from 'react';
 
 import Label from '@/components/Label';
 import VariableSelect from '@/components/VariableSelect';

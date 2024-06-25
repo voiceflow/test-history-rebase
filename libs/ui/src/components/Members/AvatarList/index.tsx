@@ -1,7 +1,8 @@
 import Flex from '@ui/components/Flex';
 import SvgIcon from '@ui/components/SvgIcon';
 import TippyTooltip from '@ui/components/TippyTooltip';
-import User, { UserProps } from '@ui/components/User';
+import type { UserProps } from '@ui/components/User';
+import User from '@ui/components/User';
 import { Identifier } from '@ui/styles/constants';
 import React from 'react';
 

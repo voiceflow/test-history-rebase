@@ -1,4 +1,4 @@
-import { AlexaProject } from '@voiceflow/alexa-types';
+import type { AlexaProject } from '@voiceflow/alexa-types';
 import { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
@@ -83,10 +83,13 @@ const MOCK_STATE: Project.ProjectState = {
   awareness: {
     viewers: {
       [PROJECT_ID]: {
-        [DIAGRAM_ID]: Normal.normalize([DIAGRAM_VIEWER, { creatorID: 10, creator_id: 10, name: 'gray', color: '#777' }], (viewer) =>
+        [DIAGRAM_ID]: Normal.normalize(
+          [DIAGRAM_VIEWER, { creatorID: 10, creator_id: 10, name: 'gray', color: '#777' }],
+          (viewer) => String(viewer.creatorID)
+        ),
+        abc: Normal.normalize([{ creatorID: 1000, creator_id: 1000, name: 'caleb', color: '#aaa' }], (viewer) =>
           String(viewer.creatorID)
         ),
-        abc: Normal.normalize([{ creatorID: 1000, creator_id: 1000, name: 'caleb', color: '#aaa' }], (viewer) => String(viewer.creatorID)),
       },
     },
   },
@@ -102,10 +105,17 @@ suite(Project, MOCK_STATE)('Ducks - Project V2', ({ describeReducerV2, createSta
       const skillID = 'bar skill';
 
       it('update the active vendor', () => {
-        const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, creatorID: CREATOR_ID, vendorID: VENDOR_ID, skillID });
+        const result = applyAction(MOCK_STATE, {
+          ...ACTION_CONTEXT,
+          creatorID: CREATOR_ID,
+          vendorID: VENDOR_ID,
+          skillID,
+        });
 
         expect(result.byKey[PROJECT_ID].platformMembers.byKey[CREATOR_ID]).toEqual(
-          expect.objectContaining({ platformData: { selectedVendor: VENDOR_ID, vendors: [{ skillID, products: {}, vendorID: 'vendorID' }] } })
+          expect.objectContaining({
+            platformData: { selectedVendor: VENDOR_ID, vendors: [{ skillID, products: {}, vendorID: 'vendorID' }] },
+          })
         );
       });
 
@@ -119,7 +129,13 @@ suite(Project, MOCK_STATE)('Ducks - Project V2', ({ describeReducerV2, createSta
       });
 
       it('do nothing if project does not exist', () => {
-        const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, projectID: 'foo', creatorID: CREATOR_ID, vendorID: VENDOR_ID, skillID });
+        const result = applyAction(MOCK_STATE, {
+          ...ACTION_CONTEXT,
+          projectID: 'foo',
+          creatorID: CREATOR_ID,
+          vendorID: VENDOR_ID,
+          skillID,
+        });
 
         expect(result).toBe(MOCK_STATE);
       });
@@ -135,25 +151,35 @@ suite(Project, MOCK_STATE)('Ducks - Project V2', ({ describeReducerV2, createSta
       it('adds viewers to new diagram', () => {
         const diagramID = 'foo';
 
-        const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, diagramID, viewers: [{ creatorID: CREATOR_ID, name: 'bar' }] });
+        const result = applyAction(MOCK_STATE, {
+          ...ACTION_CONTEXT,
+          diagramID,
+          viewers: [{ creatorID: CREATOR_ID, name: 'bar' }],
+        });
 
         expect(result.awareness.viewers).toEqual({
           ...MOCK_STATE.awareness.viewers,
           [PROJECT_ID]: {
             ...MOCK_STATE.awareness.viewers[PROJECT_ID],
-            [diagramID]: Normal.normalize([{ creatorID: CREATOR_ID, creator_id: CREATOR_ID, name: 'bar', color: '4A9B57|D0E9D5' }], (viewer) =>
-              String(viewer.creatorID)
+            [diagramID]: Normal.normalize(
+              [{ creatorID: CREATOR_ID, creator_id: CREATOR_ID, name: 'bar', color: '4A9B57|D0E9D5' }],
+              (viewer) => String(viewer.creatorID)
             ),
           },
         });
       });
 
       it('replace viewers of known diagram', () => {
-        const result = applyAction(MOCK_STATE, { ...ACTION_CONTEXT, viewers: [{ creatorID: CREATOR_ID, name: 'bar' }], diagramID: DIAGRAM_ID });
+        const result = applyAction(MOCK_STATE, {
+          ...ACTION_CONTEXT,
+          viewers: [{ creatorID: CREATOR_ID, name: 'bar' }],
+          diagramID: DIAGRAM_ID,
+        });
 
         expect(result.awareness.viewers[PROJECT_ID][DIAGRAM_ID]).toEqual(
-          Normal.normalize([{ creatorID: CREATOR_ID, creator_id: CREATOR_ID, name: 'bar', color: '4A9B57|D0E9D5' }], (viewer) =>
-            String(viewer.creatorID)
+          Normal.normalize(
+            [{ creatorID: CREATOR_ID, creator_id: CREATOR_ID, name: 'bar', color: '4A9B57|D0E9D5' }],
+            (viewer) => String(viewer.creatorID)
           )
         );
       });
@@ -175,11 +201,13 @@ suite(Project, MOCK_STATE)('Ducks - Project V2', ({ describeReducerV2, createSta
           ...MOCK_STATE.awareness.viewers,
           [PROJECT_ID]: {
             ...MOCK_STATE.awareness.viewers[PROJECT_ID],
-            [DIAGRAM_ID]: Normal.normalize([{ creatorID: 456, creator_id: 456, name: 'bar', color: '4A9B57|D0E9D5' }], (viewer) =>
-              String(viewer.creatorID)
+            [DIAGRAM_ID]: Normal.normalize(
+              [{ creatorID: 456, creator_id: 456, name: 'bar', color: '4A9B57|D0E9D5' }],
+              (viewer) => String(viewer.creatorID)
             ),
-            [diagramID]: Normal.normalize([{ creatorID: 789, creator_id: 789, name: 'cat', color: 'D6528A|FBDBEB' }], (viewer) =>
-              String(viewer.creatorID)
+            [diagramID]: Normal.normalize(
+              [{ creatorID: 789, creator_id: 789, name: 'cat', color: 'D6528A|FBDBEB' }],
+              (viewer) => String(viewer.creatorID)
             ),
           },
         });

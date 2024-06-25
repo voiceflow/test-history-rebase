@@ -16,7 +16,11 @@ const SelectedVariableStateText: React.FC = () => {
       render={({ ref, toggleSelectMenuOpen }) => (
         <Text fontSize={13} color="#62778c" lineHeight={1.54} textAlign="center">
           Running test in{' '}
-          <Link onClick={toggleSelectMenuOpen} style={{ borderBottom: '1px dotted #5d9df5' }} ref={ref as React.RefObject<HTMLAnchorElement>}>
+          <Link
+            onClick={toggleSelectMenuOpen}
+            style={{ borderBottom: '1px dotted #5d9df5' }}
+            ref={ref as React.RefObject<HTMLAnchorElement>}
+          >
             {selectedVariableStateName}
           </Link>{' '}
           state

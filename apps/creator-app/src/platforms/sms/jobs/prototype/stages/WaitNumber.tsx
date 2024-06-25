@@ -1,9 +1,9 @@
 import { ProjectSecretTag } from '@voiceflow/schema-types';
 import React from 'react';
 
-import { TwilioPrototypeJob } from '@/models';
+import type { TwilioPrototypeJob } from '@/models';
 import { WaitNumberModal } from '@/platforms/sms/components';
-import { StageComponentProps } from '@/platforms/types';
+import type { StageComponentProps } from '@/platforms/types';
 
 const WaitNumberStage: React.FC<StageComponentProps<TwilioPrototypeJob.WaitNumberStage>> = ({ restart, cancel }) => (
   <WaitNumberModal

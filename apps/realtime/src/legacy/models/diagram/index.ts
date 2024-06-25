@@ -1,14 +1,16 @@
 /* eslint-disable sonarjs/no-nested-template-literals */
-import { BaseModels } from '@voiceflow/base-types';
-import { Nullish, Struct, Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import type { BaseModels } from '@voiceflow/base-types';
+import type { Nullish, Struct } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import type * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { createSmartMultiAdapter } from 'bidirectional-adapter';
 import { ObjectId } from 'bson';
 import _ from 'lodash';
-import { Filter } from 'mongodb';
+import type { Filter } from 'mongodb';
 
 import AbstractModel from '../_mongo';
-import { Atomic, AtomicEntity, Bson } from '../utils';
+import type { Atomic } from '../utils';
+import { AtomicEntity, Bson } from '../utils';
 
 interface ManyNodeDataUpdate extends Atomic.Update {
   nodeID: string;

@@ -1,5 +1,5 @@
 import composeRefs from '@seznam/compose-react-refs';
-import { TriggerNodeItem, TriggerNodeItemSettings } from '@voiceflow/dtos';
+import type { TriggerNodeItem, TriggerNodeItemSettings } from '@voiceflow/dtos';
 import { tid } from '@voiceflow/style';
 import {
   Box,

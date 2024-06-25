@@ -1,8 +1,9 @@
-import { AnyRecord, Utils } from '@voiceflow/common';
+import type { AnyRecord } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import * as UI from '@voiceflow/ui';
-import { Action, AnyAction } from 'typescript-fsa';
+import type { Action, AnyAction } from 'typescript-fsa';
 
-import { Dispatch, Dispatchable, Store } from './types';
+import type { Dispatch, Dispatchable, Store } from './types';
 
 const ORIGIN_KEY = 'origin';
 const LOGUX_ACTION_PREFIX = 'logux/';
@@ -29,7 +30,9 @@ export const extendMeta = <T extends Action<any>>(action: T, meta: AnyRecord): T
 });
 
 export const wrapOwnAction = <T extends Action<any>>(action: T, origin: string, actionID = Utils.id.cuid()) =>
-  action.type.startsWith(LOGUX_ACTION_PREFIX) ? action : extendMeta(action, { [ORIGIN_KEY]: origin, [ACTION_ID_KEY]: actionID });
+  action.type.startsWith(LOGUX_ACTION_PREFIX)
+    ? action
+    : extendMeta(action, { [ORIGIN_KEY]: origin, [ACTION_ID_KEY]: actionID });
 
 export const getActionOrigin = (action: Action<any>): string | null => action.meta?.[ORIGIN_KEY] ?? null;
 

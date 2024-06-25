@@ -1,9 +1,10 @@
-import { Logger } from '@voiceflow/logger';
+import type { Logger } from '@voiceflow/logger';
 import cbor from 'cbor';
-import IORedis, { Redis } from 'ioredis';
+import type { Redis } from 'ioredis';
+import IORedis from 'ioredis';
 
-import { RedisConfig } from './redis';
-import { BaseClientOptions } from './types';
+import type { RedisConfig } from './redis';
+import type { BaseClientOptions } from './types';
 
 export interface PubSubOptions extends BaseClientOptions<RedisConfig> {
   redis: Redis;

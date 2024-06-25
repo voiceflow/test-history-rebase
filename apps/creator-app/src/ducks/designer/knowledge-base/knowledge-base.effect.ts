@@ -1,5 +1,5 @@
-import { BaseModels } from '@voiceflow/base-types';
-import { KnowledgeBaseSettings } from '@voiceflow/dtos';
+import type { BaseModels } from '@voiceflow/base-types';
+import type { KnowledgeBaseSettings } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { notify } from '@voiceflow/ui-next';
 

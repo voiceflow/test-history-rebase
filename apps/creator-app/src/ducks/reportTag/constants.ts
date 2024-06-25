@@ -1,6 +1,6 @@
 import { createCRUDState } from '@/ducks/utils/crudV2';
 
-import { ReportTagState } from './types';
+import type { ReportTagState } from './types';
 
 export const STATE_KEY = 'reportTag';
 

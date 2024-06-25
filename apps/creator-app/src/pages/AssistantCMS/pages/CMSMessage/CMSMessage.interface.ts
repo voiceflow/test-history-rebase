@@ -1,5 +1,5 @@
 import type { Nullish } from '@voiceflow/common';
-import { Entity, ResponseMessage, Variable } from '@voiceflow/dtos';
+import type { Entity, ResponseMessage, Variable } from '@voiceflow/dtos';
 
 import type { CMSResourceSearchContext } from '../../contexts/CMSManager/CMSManager.interface';
 

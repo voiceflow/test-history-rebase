@@ -10,7 +10,10 @@ export const Container = styled.div<{ isActive: boolean }>`
   border-radius: 6px;
   box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
   cursor: text;
-  transition: border-color 0.12s linear, box-shadow 0.12s linear, max-height 0.12s linear;
+  transition:
+    border-color 0.12s linear,
+    box-shadow 0.12s linear,
+    max-height 0.12s linear;
 
   &:focus-within {
     ${Input.focusStyle}

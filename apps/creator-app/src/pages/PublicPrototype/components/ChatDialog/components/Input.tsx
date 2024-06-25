@@ -48,7 +48,10 @@ const UserInput: React.FC<UserInputProps> = ({
     }
   }, [isMobile]);
 
-  React.useEffect(() => () => document.querySelector('#root')!.removeEventListener('touchmove', preventIOSBodyScrolling), []);
+  React.useEffect(
+    () => () => document.querySelector('#root')!.removeEventListener('touchmove', preventIOSBodyScrolling),
+    []
+  );
 
   React.useEffect(() => {
     (document.activeElement as HTMLElement)?.blur();

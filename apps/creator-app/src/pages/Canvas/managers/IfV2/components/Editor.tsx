@@ -1,9 +1,9 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { Actions, NoMatchV2 } from '@/pages/Canvas/managers/components';
-import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
+import type { NodeEditorV2 } from '@/pages/Canvas/managers/types';
 
 import NoMatchEditor from './NoMatchEditor';
 import RootEditor from './RootEditor';

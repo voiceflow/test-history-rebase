@@ -1,6 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { Context } from '@voiceflow/socket-utils';
-import { Action } from 'typescript-fsa';
+import type { Context } from '@voiceflow/socket-utils';
+import type { Action } from 'typescript-fsa';
 
 import { AbstractWorkspaceChannelControl } from '../utils';
 
@@ -14,7 +14,11 @@ class RemoveWorkspaceMember extends AbstractWorkspaceChannelControl<Realtime.wor
     await Promise.all([
       this.services.workspace.member.remove(creatorID, payload.workspaceID, payload.creatorID),
       this.server.process(
-        Realtime.workspace.member.eject({ workspaceID: payload.workspaceID, workspaceName: workspace.name, creatorID: payload.creatorID })
+        Realtime.workspace.member.eject({
+          workspaceID: payload.workspaceID,
+          workspaceName: workspace.name,
+          creatorID: payload.creatorID,
+        })
       ),
     ]);
   };

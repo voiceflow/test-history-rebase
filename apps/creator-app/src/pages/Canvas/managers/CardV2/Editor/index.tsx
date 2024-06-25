@@ -1,10 +1,10 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
 import { Actions, Entity, NoMatchV2, NoReplyV2 } from '../../components';
-import { NodeEditorV2 } from '../../types';
+import type { NodeEditorV2 } from '../../types';
 import Buttons from './Buttons';
 import Root from './Root';
 

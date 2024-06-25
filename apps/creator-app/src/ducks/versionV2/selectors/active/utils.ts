@@ -1,5 +1,5 @@
-import { Nullable } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config';
+import type { Nullable } from '@voiceflow/common';
+import type * as Platform from '@voiceflow/platform-config';
 import { createSelector } from 'reselect';
 
 import * as Session from '@/ducks/session';
@@ -17,8 +17,17 @@ export const platformSelectorsFactory = <Version extends Platform.Base.Models.Ve
 
   return {
     versionSelector,
-    sessionSelector: createSelector([versionSelector], (version): Nullable<Version['session']> => version?.session ?? null),
-    settingsSelector: createSelector([versionSelector], (version): Nullable<Version['settings']> => version?.settings ?? null),
-    publishingSelector: createSelector([versionSelector], (version): Nullable<Version['publishing']> => version?.publishing ?? null),
+    sessionSelector: createSelector(
+      [versionSelector],
+      (version): Nullable<Version['session']> => version?.session ?? null
+    ),
+    settingsSelector: createSelector(
+      [versionSelector],
+      (version): Nullable<Version['settings']> => version?.settings ?? null
+    ),
+    publishingSelector: createSelector(
+      [versionSelector],
+      (version): Nullable<Version['publishing']> => version?.publishing ?? null
+    ),
   };
 };

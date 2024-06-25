@@ -1,15 +1,21 @@
 import * as Voiceflow from '@voiceflow/api-sdk';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
-import ExtraDiagramClient, { DiagramClient } from './diagram';
-import ExtraOrganizationClient, { OrganizationClient } from './organization';
+import type { DiagramClient } from './diagram';
+import ExtraDiagramClient from './diagram';
+import type { OrganizationClient } from './organization';
+import ExtraOrganizationClient from './organization';
 import ExtraProjectClient from './project';
-import ExtraThreadClient, { ThreadClient } from './thread';
-import { ExtraOptions, Options } from './types';
-import ExtraUserClient, { UserClient } from './user';
-import ExtraVariableStateClient, { VariableStateClient } from './variableState';
+import type { ThreadClient } from './thread';
+import ExtraThreadClient from './thread';
+import type { ExtraOptions, Options } from './types';
+import type { UserClient } from './user';
+import ExtraUserClient from './user';
+import type { VariableStateClient } from './variableState';
+import ExtraVariableStateClient from './variableState';
 import ExtraVersionClient from './version';
-import ExtraWorkspaceClient, { WorkspaceClient } from './workspace';
+import type { WorkspaceClient } from './workspace';
+import ExtraWorkspaceClient from './workspace';
 
 interface ExtraClient {
   organization: OrganizationClient;

@@ -1,5 +1,5 @@
-import { Nullable } from '@voiceflow/common';
-import { ThreadComment } from '@voiceflow/dtos';
+import type { Nullable } from '@voiceflow/common';
+import type { ThreadComment } from '@voiceflow/dtos';
 import { Box, KeyName, useCache } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,7 +8,7 @@ import MentionEditor from '@/components/MentionEditor';
 import { UI } from '@/ducks';
 import { useLinkedState, useTheme, useToggle } from '@/hooks';
 import { useSelector } from '@/hooks/store.hook';
-import { CommentDraftValue } from '@/pages/Canvas/types';
+import type { CommentDraftValue } from '@/pages/Canvas/types';
 
 import { COMMENT_CLASSNAME, COMMENT_EDITOR_CLASSNAME } from '../constants';
 import ThreadEditorHeader from './ThreadEditorHeader';

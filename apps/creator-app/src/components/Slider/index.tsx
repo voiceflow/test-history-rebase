@@ -1,6 +1,6 @@
 import 'rc-slider/assets/index.css';
 
-import { SliderProps as RCSliderProps } from 'rc-slider';
+import type { SliderProps as RCSliderProps } from 'rc-slider';
 import React from 'react';
 
 import StyledSlider from './components/StyledSlider';

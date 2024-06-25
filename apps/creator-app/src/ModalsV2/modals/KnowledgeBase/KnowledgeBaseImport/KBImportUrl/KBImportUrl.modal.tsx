@@ -15,7 +15,12 @@ import manager from '@/ModalsV2/manager';
 
 import { KBRefreshRateSelect } from '../components/KBRefreshRateSelect/KBRefreshRateSelect.component';
 import { DEFAULT_DOCUMENT_LIMIT } from '../KnowledgeBaseImport.constant';
-import { filterWhitespace, sanitizeURLsWithDataFormatting, urlsValidator, useDocumentLimitError } from '../KnowledgeBaseImport.utils';
+import {
+  filterWhitespace,
+  sanitizeURLsWithDataFormatting,
+  urlsValidator,
+  useDocumentLimitError,
+} from '../KnowledgeBaseImport.utils';
 import { textareaStyles } from './KBImportUrl.css';
 
 export const KBImportUrl = manager.create(
@@ -57,13 +62,7 @@ export const KBImportUrl = manager.create(
       const onSave = (value: string) => {
         inputState.setValue(value);
 
-        const validate = validator.container(
-          () => {},
-          () => ({
-            limit: planConfig?.limit || DEFAULT_DOCUMENT_LIMIT,
-          })
-        );
-        validate({ urls: value });
+        validator.validate({ urls: value }, { limit: planConfig?.limit || DEFAULT_DOCUMENT_LIMIT });
       };
 
       const onSubmit = () => {
@@ -128,7 +127,13 @@ export const KBImportUrl = manager.create(
           </Scroll>
 
           <Modal.Footer>
-            <Modal.Footer.Button label="Cancel" variant="secondary" onClick={api.onClose} disabled={closePrevented} testID={tid(TEST_ID, 'cancel')} />
+            <Modal.Footer.Button
+              label="Cancel"
+              variant="secondary"
+              onClick={api.onClose}
+              disabled={closePrevented}
+              testID={tid(TEST_ID, 'cancel')}
+            />
 
             <Modal.Footer.Button
               label="Import"

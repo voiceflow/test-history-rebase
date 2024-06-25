@@ -1,7 +1,8 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
 
-import { PageMeta, SeoPage } from '@/constants/seo';
+import type { SeoPage } from '@/constants/seo';
+import { PageMeta } from '@/constants/seo';
 
 interface SeoHelmetInterface {
   page: SeoPage;

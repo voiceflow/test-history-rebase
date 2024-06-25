@@ -1,9 +1,9 @@
-import { SvgIconTypes } from '@ui/components/SvgIcon';
-import { Nullable } from '@voiceflow/common';
-import React from 'react';
-import { Scrollbars } from 'react-custom-scrollbars-2';
+import type { SvgIconTypes } from '@ui/components/SvgIcon';
+import type { Nullable } from '@voiceflow/common';
+import type React from 'react';
+import type { Scrollbars } from 'react-custom-scrollbars-2';
 
-import { ItemProps } from './components';
+import type { ItemProps } from './components';
 
 export type { ItemProps };
 

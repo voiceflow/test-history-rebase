@@ -16,11 +16,15 @@ export interface TopicWithSubscription {
 
 export const DEFAULT_REQUEST_TIMEOUT = 60 * 4 * 1000;
 
-export const createSubscriptionName = (topicName: string, subscriberID: string): string => `ml-gateway-${topicName}-${subscriberID}`;
+export const createSubscriptionName = (topicName: string, subscriberID: string): string =>
+  `ml-gateway-${topicName}-${subscriberID}`;
 
 export const createEventName = (topicName: string, reqGUID: string): string => `${topicName}.${reqGUID}`;
 
-export const chooseABTestVersion = (chance: Chance.Chance, versions: ModelVersionConfiguration[]): ModelVersionConfiguration =>
+export const chooseABTestVersion = (
+  chance: Chance.Chance,
+  versions: ModelVersionConfiguration[]
+): ModelVersionConfiguration =>
   chance.weighted(
     versions,
     versions.map(({ traffic }) => traffic)
@@ -39,12 +43,16 @@ export class InteractionService {
   private cache = new Map<string, TopicWithSubscription>();
 
   deleteSubscription = (topicName: string, subscription: Subscription) =>
-    subscription.delete().catch((error) => this.logger.error({ message: `failed to delete subscription to topic: ${topicName}`, error }));
+    subscription
+      .delete()
+      .catch((error) => this.logger.error({ message: `failed to delete subscription to topic: ${topicName}`, error }));
 
   closeSubscription = (topicName: string, subscription: Subscription): Promise<void> =>
     subscription
       .close()
-      .catch((error) => this.logger.error({ message: `failed to teardown the expired subscription for topic: ${topicName}`, error }));
+      .catch((error) =>
+        this.logger.error({ message: `failed to teardown the expired subscription for topic: ${topicName}`, error })
+      );
 
   constructor(
     @Inject(GoogleCloudService)
@@ -65,14 +73,18 @@ export class InteractionService {
     const requestTopic = this.gcloud.pubsub.topic(topicName);
     const responseTopic = this.gcloud.pubsub.topic(responseTopicName);
 
-    const [responseSubscription] = await responseTopic.createSubscription(createSubscriptionName(responseTopicName, subscriberID));
+    const [responseSubscription] = await responseTopic.createSubscription(
+      createSubscriptionName(responseTopicName, subscriberID)
+    );
 
     // last minute check to avoid replacing a subscription that was created on-demand
     const existingResponseTopic = this.cache.get(responseTopicName);
     if (existingResponseTopic) {
       responseSubscription
         .close()
-        .catch((error) => this.logger.warn({ message: `failed to cleanup subscription to topic: ${responseTopicName}`, error }));
+        .catch((error) =>
+          this.logger.warn({ message: `failed to cleanup subscription to topic: ${responseTopicName}`, error })
+        );
 
       return existingResponseTopic;
     }
@@ -170,7 +182,9 @@ export class InteractionService {
 
       // teardown the expired clients
       await Promise.all(
-        Array.from(cache.entries()).map(([topicName, { responseSubscription }]) => this.closeSubscription(topicName, responseSubscription))
+        Array.from(cache.entries()).map(([topicName, { responseSubscription }]) =>
+          this.closeSubscription(topicName, responseSubscription)
+        )
       );
     }
   }
@@ -184,12 +198,19 @@ export class InteractionService {
     const eventName = createEventName(topicName, request.reqGUID);
     const topic = await this.getRequestTopic(subscriberID, topicName);
 
-    const [, response] = await Promise.all([topic.publishMessage({ json: request }), this.createResponseListener<Result>(eventName, timeout)]);
+    const [, response] = await Promise.all([
+      topic.publishMessage({ json: request }),
+      this.createResponseListener<Result>(eventName, timeout),
+    ]);
 
     return response;
   }
 
-  private async sendShadowRequestToTopic(subscriberID: string, topicName: string, request: BasePubSubPayload): Promise<void> {
+  private async sendShadowRequestToTopic(
+    subscriberID: string,
+    topicName: string,
+    request: BasePubSubPayload
+  ): Promise<void> {
     try {
       const topic = await this.getRequestTopic(subscriberID, topicName);
 
@@ -213,9 +234,11 @@ export class InteractionService {
     );
 
     const sendShadowTraffic = () =>
-      Promise.all(shadowTrafficVersions.map(async (version) => this.sendShadowRequestToTopic(subscriberID, version.topic, request))).catch(() =>
-        this.logger.error('failed to send shadow traffic')
-      );
+      Promise.all(
+        shadowTrafficVersions.map(async (version) =>
+          this.sendShadowRequestToTopic(subscriberID, version.topic, request)
+        )
+      ).catch(() => this.logger.error('failed to send shadow traffic'));
 
     const abTestVersions = versions.filter((version) => version.trafficType === ModelFlag.AB_TEST);
 
@@ -236,7 +259,7 @@ export class InteractionService {
     const normalVersion = versions.find((version) => version.trafficType === ModelFlag.NORMAL);
 
     if (!normalVersion) {
-      throw new Error(`unable to find a valid version of the model`);
+      throw new Error('unable to find a valid version of the model');
     }
 
     const response = await this.sendRequestToTopic<Result>(
@@ -252,7 +275,9 @@ export class InteractionService {
 
   async stop(): Promise<void> {
     await Promise.allSettled(
-      Array.from(this.cache.entries()).map(([topicName, { responseSubscription }]) => this.deleteSubscription(topicName, responseSubscription))
+      Array.from(this.cache.entries()).map(([topicName, { responseSubscription }]) =>
+        this.deleteSubscription(topicName, responseSubscription)
+      )
     );
   }
 }

@@ -1,4 +1,4 @@
-import { IconName } from '@voiceflow/icons';
+import type { IconName } from '@voiceflow/icons';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { useMemo } from 'react';
@@ -9,7 +9,8 @@ import { Permission } from '@/constants/permissions';
 import { Project, Router, Session } from '@/ducks';
 import { useOnAssistantCopyCloneLink, useOnAssistantDuplicate } from '@/hooks/assistant.hook';
 import { useFeature } from '@/hooks/feature.hook';
-import { HotkeyItem, useHotkeyList } from '@/hooks/hotkeys';
+import type { HotkeyItem } from '@/hooks/hotkeys';
+import { useHotkeyList } from '@/hooks/hotkeys';
 import { useModal } from '@/hooks/modal.hook';
 import { useGetResolvedPath } from '@/hooks/navigation.hook';
 import { useIsLockedProjectViewer, useIsPreviewer, usePermission } from '@/hooks/permission';
@@ -17,7 +18,7 @@ import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { Modals } from '@/ModalsV2';
 import { conditionalArrayItems } from '@/utils/array.util';
 
-import { IAssistantNavigationItem } from './AssistantNavigation.interface';
+import type { IAssistantNavigationItem } from './AssistantNavigation.interface';
 
 type NavigationLogoItem =
   | { key: string; divider: true }

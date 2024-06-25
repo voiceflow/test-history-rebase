@@ -1,5 +1,5 @@
 import { AWARENESS_KEY } from '@realtime-sdk/constants';
-import { BaseProjectPayload, BaseWorkspacePayload, Viewer } from '@realtime-sdk/types';
+import type { BaseProjectPayload, BaseWorkspacePayload, Viewer } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 
 import { projectType } from './utils';
@@ -21,4 +21,6 @@ export interface UpdateDiagramViewersPayload extends BaseProjectPayload {
 
 export const loadViewers = Utils.protocol.createAction<LoadViewersPayload>(awarenessType('LOAD_VIEWERS'));
 export const updateViewers = Utils.protocol.createAction<UpdateViewersPayload>(awarenessType('UPDATE_VIEWERS'));
-export const updateDiagramViewers = Utils.protocol.createAction<UpdateDiagramViewersPayload>(awarenessType('UPDATE_DIAGRAM_VIEWERS'));
+export const updateDiagramViewers = Utils.protocol.createAction<UpdateDiagramViewersPayload>(
+  awarenessType('UPDATE_DIAGRAM_VIEWERS')
+);

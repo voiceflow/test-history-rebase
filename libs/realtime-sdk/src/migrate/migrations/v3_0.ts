@@ -1,11 +1,10 @@
 /* eslint-disable no-param-reassign */
 import * as Utils from '@realtime-sdk/utils';
 import { BaseModels, BaseNode, BaseUtils } from '@voiceflow/base-types';
-import { AnyRecord } from '@voiceflow/common';
-import { Draft } from 'immer';
+import type { AnyRecord } from '@voiceflow/common';
+import type { Draft } from 'immer';
 
-import type { DiagramUpdateData, VersionUpdateData } from './types';
-import { Transform } from './types';
+import type { DiagramUpdateData, Transform, VersionUpdateData } from './types';
 
 const createDiagramFolderItem = (diagram: Draft<DiagramUpdateData>) => ({
   type: BaseModels.Version.FolderItemType.DIAGRAM,

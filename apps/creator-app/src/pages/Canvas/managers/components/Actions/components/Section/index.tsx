@@ -21,8 +21,17 @@ interface ActionsSectionProps {
 const ActionsSection: React.FC<ActionsSectionProps> = ({ portID, editor }) => {
   const getManager = React.useContext(ManagerContext)!;
 
-  const { options, onRemove, onRename, onReorder, hasURLStep, targetNodeSteps, hasNavigationStep, lastCreatedStepID, targetNodeIsActions } =
-    useActions({ editor, portID });
+  const {
+    options,
+    onRemove,
+    onRename,
+    onReorder,
+    hasURLStep,
+    targetNodeSteps,
+    hasNavigationStep,
+    lastCreatedStepID,
+    targetNodeIsActions,
+  } = useActions({ editor, portID });
 
   const withActions = targetNodeIsActions && !!targetNodeSteps.length;
 
@@ -51,12 +60,15 @@ const ActionsSection: React.FC<ActionsSectionProps> = ({ portID, editor }) => {
             type={DRAG_TYPE}
             items={targetNodeSteps}
             canDrag={({ item }) =>
-              !Realtime.Utils.typeGuards.isNavigationBlockType(item.type) && !Realtime.Utils.typeGuards.isURLBlockType(item.type)
+              !Realtime.Utils.typeGuards.isNavigationBlockType(item.type) &&
+              !Realtime.Utils.typeGuards.isURLBlockType(item.type)
             }
             onDelete={onRemove}
             onReorder={onReorder}
             itemProps={{ portID, editor, onRename, getManager, lastCreatedStepID }}
-            canReorder={(_, toIndex) => (!hasNavigationStep || toIndex !== targetNodeSteps.length - 1) && (!hasURLStep || toIndex !== 0)}
+            canReorder={(_, toIndex) =>
+              (!hasNavigationStep || toIndex !== targetNodeSteps.length - 1) && (!hasURLStep || toIndex !== 0)
+            }
             getItemKey={(item) => item.nodeID}
             itemComponent={DraggableItem}
             partialDragItem

@@ -6,7 +6,7 @@ import React from 'react';
 import * as Settings from '@/components/Settings';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useActiveProjectTypeConfig, useDispatch, useHasPremiumVoice, useSelector } from '@/hooks';
-import { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
+import type { PlatformSettingsMetaProps } from '@/pages/Settings/constants';
 import { getPlatformVoiceOptions, prettifyVoice } from '@/utils/voice';
 
 import AssistantConversationLogic from './AssistantConversationLogic';

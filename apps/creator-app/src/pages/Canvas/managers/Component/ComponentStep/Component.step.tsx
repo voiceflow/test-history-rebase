@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,11 +8,15 @@ import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
 import Step, { Item, Section, StepButton } from '@/pages/Canvas/components/Step';
 import { FlowMapByDiagramIDContext } from '@/pages/Canvas/contexts';
-import { ConnectedStep } from '@/pages/Canvas/managers/types';
+import type { ConnectedStep } from '@/pages/Canvas/managers/types';
 
 import { NODE_CONFIG } from '../ComponentManager.constants';
 
-const ComponentStep: ConnectedStep<Realtime.NodeData.Component, Realtime.NodeData.ComponentBuiltInPorts> = ({ ports, data, palette }) => {
+const ComponentStep: ConnectedStep<Realtime.NodeData.Component, Realtime.NodeData.ComponentBuiltInPorts> = ({
+  ports,
+  data,
+  palette,
+}) => {
   const flowMapByDiagramID = React.useContext(FlowMapByDiagramIDContext)!;
   const goToDiagramHistoryPush = useDispatch(Router.goToDiagramHistoryPush);
 

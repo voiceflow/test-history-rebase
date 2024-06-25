@@ -1,9 +1,9 @@
 import { Modal, Switch, System } from '@voiceflow/ui';
 import React from 'react';
 
-import * as CardForm from '../../Billing/components/CardForm';
+import type * as CardForm from '../../Billing/components/CardForm';
 import { Step } from '../constants';
-import { PaymentModalAPIProps, PaymentModalState, PaymentModalStateAPI, ProPrices } from '../types';
+import type { PaymentModalAPIProps, PaymentModalState, PaymentModalStateAPI, ProPrices } from '../types';
 import BillingStep from './BillingStep';
 import PaymentStep from './PaymentStep';
 import PlanStep from './PlanStep';
@@ -45,7 +45,10 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
 }) => {
   return (
     <Modal type={type} opened={opened} hidden={hidden} animated={animated} onExited={api.remove} maxWidth={500}>
-      <Modal.Header actions={<Modal.Header.CloseButtonAction disabled={closePrevented} onClick={api.onClose} />} capitalizeText={false}>
+      <Modal.Header
+        actions={<Modal.Header.CloseButtonAction disabled={closePrevented} onClick={api.onClose} />}
+        capitalizeText={false}
+      >
         {state.step !== Step.PLAN && (
           <System.IconButtonsGroup.Base mr={12}>
             <System.IconButton.Base icon="largeArrowLeft" disabled={closePrevented} onClick={onBack} />
@@ -87,7 +90,13 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
         </Switch.Pane>
 
         <Switch.Pane value={Step.PAYMENT}>
-          <PaymentStep period={state.period} price={price} onClose={api.onClose} onSubmit={onSubmitCard} editorSeats={state.editorSeats} />
+          <PaymentStep
+            period={state.period}
+            price={price}
+            onClose={api.onClose}
+            onSubmit={onSubmitCard}
+            editorSeats={state.editorSeats}
+          />
         </Switch.Pane>
       </Switch>
     </Modal>

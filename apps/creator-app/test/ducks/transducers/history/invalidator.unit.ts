@@ -4,7 +4,7 @@ import suite from '@/../test/_suite';
 import { MOCK_STATE } from '@/../test/ducks/_fixtures';
 import * as History from '@/ducks/history';
 import invalidatorTransducer from '@/ducks/transducers/history/invalidator';
-import { State } from '@/store/types';
+import type { State } from '@/store/types';
 import { wrapOwnAction } from '@/store/utils';
 
 suite('Transducers - History - Invalidator', () => {
@@ -45,7 +45,10 @@ suite('Transducers - History - Invalidator', () => {
       invalidatorTransducer(() => clientNodeID, invalidators)(reducer)(rootState, action);
 
       expect(reducer).toBeCalledTimes(2);
-      expect(reducer).toBeCalledWith(rootState, History.dropTransactions({ transactionIDs: ['transaction1', 'transaction4'] }));
+      expect(reducer).toBeCalledWith(
+        rootState,
+        History.dropTransactions({ transactionIDs: ['transaction1', 'transaction4'] })
+      );
     });
 
     it('ignores own actions from causing invalidation', () => {
@@ -98,7 +101,10 @@ suite('Transducers - History - Invalidator', () => {
       })(reducer)(rootState, action);
 
       expect(reducer).toBeCalledTimes(2);
-      expect(reducer).toBeCalledWith(rootState, History.dropTransactions({ transactionIDs: ['transaction1', 'transaction4'] }));
+      expect(reducer).toBeCalledWith(
+        rootState,
+        History.dropTransactions({ transactionIDs: ['transaction1', 'transaction4'] })
+      );
     });
   });
 });

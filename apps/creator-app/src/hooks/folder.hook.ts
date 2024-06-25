@@ -1,4 +1,4 @@
-import { Folder, FolderScope } from '@voiceflow/dtos';
+import type { Folder, FolderScope } from '@voiceflow/dtos';
 import { useMemo } from 'react';
 import { generatePath } from 'react-router';
 
@@ -11,7 +11,7 @@ export const useFolderTree = <
   T extends { id: string; folderID: string | null },
   FR extends { id: string },
   DR extends { id: string } = FR,
-  SR extends { id: string } = FR
+  SR extends { id: string } = FR,
 >({
   data,
   dataSorter,
@@ -28,7 +28,6 @@ export const useFolderTree = <
   dataSorter?: (a: DR, b: DR) => number;
 
   folderSorter?: (a: FR, b: FR) => number;
-
 
   /**
    * should be memoized function (useCallback)
@@ -97,9 +96,9 @@ export const useFolderTree = <
         optionMap[tree.id] = tree;
 
         return [tree];
-      })
+      });
 
-      return dataSorter ? dataResult.sort(dataSorter) :dataResult;
+      return dataSorter ? dataResult.sort(dataSorter) : dataResult;
     };
 
     const buildChildrenWithSeparators = (folderTrees: FR[], dataTrees: DR[]) => {
@@ -129,7 +128,7 @@ export const useFolderTree = <
     };
 
     const buildFolders = (folders: Folder[], parentID: string | null) => {
-      const folderResult =  folders.reduce<FR[]>((acc, folder) => {
+      const folderResult = folders.reduce<FR[]>((acc, folder) => {
         const children = buildChildrenWithSeparators(
           buildFolders(foldersParentIDMap.get(folder.id) ?? [], folder.id),
           buildData(dataFolderIDMap.get(folder.id) ?? [], folder.id)
@@ -145,9 +144,8 @@ export const useFolderTree = <
         return acc;
       }, []);
 
-
       return folderSorter ? folderResult.sort(folderSorter) : folderResult;
-    }
+    };
 
     const children = buildChildrenWithSeparators(
       buildFolders(foldersParentIDMap.get(null) ?? [], null),

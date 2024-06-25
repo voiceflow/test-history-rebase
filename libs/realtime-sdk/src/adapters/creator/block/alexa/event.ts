@@ -1,7 +1,13 @@
-import { NodeData } from '@realtime-sdk/models';
-import { AlexaNode } from '@voiceflow/alexa-types';
+import type { NodeData } from '@realtime-sdk/models';
+import type { AlexaNode } from '@voiceflow/alexa-types';
 
-import { createBlockAdapter, createOutPortsAdapter, createOutPortsAdapterV2, nextOnlyOutPortsAdapter, nextOnlyOutPortsAdapterV2 } from '../utils';
+import {
+  createBlockAdapter,
+  createOutPortsAdapter,
+  createOutPortsAdapterV2,
+  nextOnlyOutPortsAdapter,
+  nextOnlyOutPortsAdapterV2,
+} from '../utils';
 
 const eventAdapter = createBlockAdapter<AlexaNode.Event.StepData, NodeData.Event>(
   ({ mappings, requestName }) => ({ mappings, requestName }),

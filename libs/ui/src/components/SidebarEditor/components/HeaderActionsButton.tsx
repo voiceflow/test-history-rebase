@@ -4,7 +4,7 @@ import React from 'react';
 
 import type { OptionsMenuOption } from '../../OptionsMenu';
 import Select from '../../Select';
-import * as T from '../types';
+import type * as T from '../types';
 
 const HeaderActionsButton: React.FC<T.HeaderActionsButtonProps> = ({ actions, placement = 'bottom-end' }) => {
   const options = actions.filter(Utils.array.isNotNullish);
@@ -19,7 +19,12 @@ const HeaderActionsButton: React.FC<T.HeaderActionsButtonProps> = ({ actions, pl
       placement={placement}
       getOptionKey={(_, index) => String(index)}
       renderTrigger={({ ref, isOpen, onClick }) => (
-        <System.IconButton.Base ref={ref as React.RefObject<HTMLButtonElement>} icon="systemMore" active={isOpen} onClick={onClick} />
+        <System.IconButton.Base
+          ref={ref as React.RefObject<HTMLButtonElement>}
+          icon="systemMore"
+          active={isOpen}
+          onClick={onClick}
+        />
       )}
       getOptionLabel={(option) => option?.label}
     />

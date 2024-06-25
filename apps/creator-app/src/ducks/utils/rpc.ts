@@ -1,6 +1,7 @@
-import { ActionCreator, isType } from 'typescript-fsa';
+import type { ActionCreator } from 'typescript-fsa';
+import { isType } from 'typescript-fsa';
 
-import { RPCHandler, SyncThunk, Thunk } from '@/store/types';
+import type { RPCHandler, SyncThunk, Thunk } from '@/store/types';
 
 export const createRPC =
   <T>(createAction: ActionCreator<T>, sideEffect: (payload: T) => Thunk | SyncThunk): RPCHandler =>

@@ -6,4 +6,5 @@ import { STATE_KEY } from './persona-override.state';
 
 const root = createSubSelector(PersonaSelect.root, STATE_KEY);
 
-export const { hasOneByID, hasAllByIDs, oneByID, getOneByID, allByIDs, getAllByIDs, all, map, count, isEmpty } = createDesignerCRUDSelectors(root);
+export const { hasOneByID, hasAllByIDs, oneByID, getOneByID, allByIDs, getAllByIDs, all, map, count, isEmpty } =
+  createDesignerCRUDSelectors(root);

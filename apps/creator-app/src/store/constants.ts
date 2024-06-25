@@ -1,6 +1,6 @@
 import { allReverters } from '@/ducks';
 
-import { InvalidatorLookup, ReverterLookup } from './types';
+import type { InvalidatorLookup, ReverterLookup } from './types';
 
 export const ACTION_REVERTERS = allReverters.reduce<ReverterLookup>((acc, reverter) => {
   const { type } = reverter.actionCreator;

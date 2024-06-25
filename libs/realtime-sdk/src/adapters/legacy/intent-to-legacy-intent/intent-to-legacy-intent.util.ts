@@ -19,12 +19,17 @@ interface MarkupSpanLink extends MarkupSpan {
 
 export const markupFactory = (text = ''): Markup => [{ text: [text] }];
 
-export const isMarkupSpan = (value: MarkupItem): value is MarkupSpan => Utils.object.isObject(value) && Utils.object.hasProperty(value, 'text');
+export const isMarkupSpan = (value: MarkupItem): value is MarkupSpan =>
+  Utils.object.isObject(value) && Utils.object.hasProperty(value, 'text');
 
 export const isMarkupSpanText = (value: MarkupSpan): value is MarkupSpanText =>
-  value.attributes?.__type === 'text' && Array.isArray(value.text) && value.text.length === 1 && typeof value.text[0] === 'string';
+  value.attributes?.__type === 'text' &&
+  Array.isArray(value.text) &&
+  value.text.length === 1 &&
+  typeof value.text[0] === 'string';
 
-export const isMarkupSpanLink = (value: MarkupSpan): value is MarkupSpanLink => value.attributes?.__type === 'link' && !!value.attributes.url;
+export const isMarkupSpanLink = (value: MarkupSpan): value is MarkupSpanLink =>
+  value.attributes?.__type === 'link' && !!value.attributes.url;
 
 export const isMarkupEntity = (value: MarkupItem): value is { entityID: string } =>
   Utils.object.isObject(value) && Utils.object.hasProperty(value, 'entityID');
@@ -36,7 +41,9 @@ export const isMarkupVariable = (value: MarkupItem): value is { variableID: stri
 
 export const isMarkupEmpty = (markup: Markup): boolean =>
   !markup.length ||
-  markup.every((text) => (isMarkupString(text) ? !text.trim() : !isMarkupEntity(text) && !isMarkupVariable(text) && isMarkupEmpty(text.text)));
+  markup.every((text) =>
+    isMarkupString(text) ? !text.trim() : !isMarkupEntity(text) && !isMarkupVariable(text) && isMarkupEmpty(text.text)
+  );
 
 export const isMarkupWithEntities = (markup: Markup): boolean => {
   return markup.some((item) => {
@@ -96,7 +103,10 @@ const getMarkupAllVariableIDs = (markup: Markup): string[] =>
 
 export const getMarkupVariableIDs = (markup: Markup) => Utils.array.unique(getMarkupAllVariableIDs(markup));
 
-export const replaceMarkupEntity = (markup: Markup, { oldEntityID, newEntityID }: { oldEntityID: string; newEntityID: string }): Markup => {
+export const replaceMarkupEntity = (
+  markup: Markup,
+  { oldEntityID, newEntityID }: { oldEntityID: string; newEntityID: string }
+): Markup => {
   return markup.reduce<Markup>((acc, item) => {
     if (isMarkupEntity(item) && item.entityID === oldEntityID) {
       return [...acc, { entityID: newEntityID }];
@@ -117,85 +127,90 @@ export const fillMarkupWithVariablesValues = (promptText: string, variables: Rec
   return s;
 };
 
-export const markupToString: MultiAdapter<Markup, string, [MarkupToStringFromOptions], [MarkupToStringToOptions] | []> = createMultiAdapter<
-  Markup,
-  string,
-  [MarkupToStringFromOptions],
-  [MarkupToStringToOptions] | []
->(
-  (markup, { entitiesMapByID }) =>
-    markup.reduce<string>(
-      (acc, item) =>
-        acc +
-        match(item)
-          .when(isMarkupSpan, ({ text }) => markupToString.fromDB(text, { entitiesMapByID }))
-          .when(isMarkupString, (item) => item)
-          .when(isMarkupEntity, ({ entityID }) => `{{[${entitiesMapByID[entityID]?.name ?? 'unknown'}].${entityID}}}`)
-          .when(isMarkupVariable, ({ variableID }) => `{{[${variableID}].${variableID}}}`)
-          .exhaustive(),
-      ''
-    ),
-  (text, { entitiesOnly } = {}) => {
-    const matches = [...text.matchAll(SLOT_REGEXP)];
+export const markupToString: MultiAdapter<Markup, string, [MarkupToStringFromOptions], [MarkupToStringToOptions] | []> =
+  createMultiAdapter<Markup, string, [MarkupToStringFromOptions], [MarkupToStringToOptions] | []>(
+    (markup, { entitiesMapByID }) =>
+      markup.reduce<string>(
+        (acc, item) =>
+          acc +
+          match(item)
+            .when(isMarkupSpan, ({ text }) => markupToString.fromDB(text, { entitiesMapByID }))
+            .when(isMarkupString, (item) => item)
+            .when(isMarkupEntity, ({ entityID }) => `{{[${entitiesMapByID[entityID]?.name ?? 'unknown'}].${entityID}}}`)
+            .when(isMarkupVariable, ({ variableID }) => `{{[${variableID}].${variableID}}}`)
+            .exhaustive(),
+        ''
+      ),
+    (text, { entitiesOnly } = {}) => {
+      const matches = [...text.matchAll(SLOT_REGEXP)];
 
-    if (!matches.length) return [{ text: [text] }];
+      if (!matches.length) return [{ text: [text] }];
 
-    const span: MarkupSpan = { text: [] };
+      const span: MarkupSpan = { text: [] };
 
-    let prevMatch: RegExpMatchArray | null = null;
+      let prevMatch: RegExpMatchArray | null = null;
 
-    for (const match of matches) {
-      const entityID = match[2];
-      const entityName = match[1];
-      const isVariable = !entitiesOnly && entityID === entityName;
+      for (const match of matches) {
+        const entityID = match[2];
+        const entityName = match[1];
+        const isVariable = !entitiesOnly && entityID === entityName;
 
-      let substring: string;
+        let substring: string;
+
+        if (!prevMatch) {
+          substring = text.substring(0, match.index);
+        } else {
+          substring = text.substring(prevMatch.index! + prevMatch[0].length, match.index);
+        }
+
+        if (substring) {
+          span.text.push(substring);
+        }
+
+        if (isVariable) {
+          span.text.push({ variableID: entityID });
+        } else {
+          span.text.push({ entityID });
+        }
+
+        prevMatch = match;
+      }
 
       if (!prevMatch) {
-        substring = text.substring(0, match.index);
-      } else {
-        substring = text.substring(prevMatch.index! + prevMatch[0].length, match.index);
+        return [span];
       }
+
+      const substring = text.substring(prevMatch.index! + prevMatch[0].length, text.length);
 
       if (substring) {
         span.text.push(substring);
       }
 
-      if (isVariable) {
-        span.text.push({ variableID: entityID });
-      } else {
-        span.text.push({ entityID });
-      }
-
-      prevMatch = match;
-    }
-
-    if (!prevMatch) {
       return [span];
     }
-
-    const substring = text.substring(prevMatch.index! + prevMatch[0].length, text.length);
-
-    if (substring) {
-      span.text.push(substring);
-    }
-
-    return [span];
-  }
-);
+  );
 
 const isEmptyState = (nodes: BaseText.SlateTextValue): boolean =>
-  nodes.every((element) => (Text.isText(element) ? !element.text.trim() : (element as any).type !== 'variable' && isEmptyState(element.children)));
+  nodes.every((element) =>
+    Text.isText(element) ? !element.text.trim() : (element as any).type !== 'variable' && isEmptyState(element.children)
+  );
 
 export const markupToSlate = createMultiAdapter<
   Markup,
   BaseText.SlateTextValue,
-  [{ iteration?: number; entitiesMapByID: Partial<Record<string, Entity>>; variablesMapByID: Partial<Record<string, Variable>> }]
+  [
+    {
+      iteration?: number;
+      entitiesMapByID: Partial<Record<string, Entity>>;
+      variablesMapByID: Partial<Record<string, Variable>>;
+    },
+  ]
 >(
   (markup, { iteration = 0, entitiesMapByID, variablesMapByID }): BaseText.SlateTextValue => {
     if (!markup?.length) return iteration === 0 ? [{ children: [{ text: '' }] }] : [{ text: '' }];
 
-    if (markup.length === 1 && typeof markup[0] === 'string') return iteration === 0 ? [{ children: [{ text: markup[0] }] }] : [{ text: markup[0] }];
+    if (markup.length === 1 && typeof markup[0] === 'string')
+      return iteration === 0 ? [{ children: [{ text: markup[0] }] }] : [{ text: markup[0] }];
 
     return markup.reduce<BaseText.SlateTextValue>(
       (acc, item) => [
@@ -224,7 +239,10 @@ export const markupToSlate = createMultiAdapter<
           )
           .when(isMarkupSpan, (span) =>
             match(span)
-              .when(isMarkupSpanText, ({ text: [text], attributes: { __type, ...attrs } }): BaseText.Text => ({ ...attrs, text }))
+              .when(
+                isMarkupSpanText,
+                ({ text: [text], attributes: { __type, ...attrs } }): BaseText.Text => ({ ...attrs, text })
+              )
               .when(
                 isMarkupSpanLink,
                 ({ text, attributes: { url } }): BaseText.LinkElement => ({
@@ -246,7 +264,7 @@ export const markupToSlate = createMultiAdapter<
       []
     );
   },
-  // eslint-disable-next-line sonarjs/cognitive-complexity
+
   (slate) => {
     if (isEmptyState(slate)) return markupFactory();
 
@@ -263,7 +281,8 @@ export const markupToSlate = createMultiAdapter<
             }
           )
           .when(
-            (value): value is BaseText.VariableElement => !Text.isText(value) && value.type === BaseText.ElementType.VARIABLE,
+            (value): value is BaseText.VariableElement =>
+              !Text.isText(value) && value.type === BaseText.ElementType.VARIABLE,
             (item): { variableID: string } | { entityID: string } => {
               const { id, name } = item;
 

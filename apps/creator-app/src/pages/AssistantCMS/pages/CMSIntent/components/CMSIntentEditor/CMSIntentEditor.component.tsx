@@ -1,5 +1,6 @@
 import { tid } from '@voiceflow/style';
-import { Box, DataNotification, Divider, Editor, IEditorAPI, PopperProvider, Scroll } from '@voiceflow/ui-next';
+import type { IEditorAPI } from '@voiceflow/ui-next';
+import { Box, DataNotification, Divider, Editor, PopperProvider, Scroll } from '@voiceflow/ui-next';
 import { useAtomValue } from 'jotai';
 import React, { useMemo, useRef } from 'react';
 
@@ -10,7 +11,12 @@ import { useIntentDescriptionPlaceholder } from '@/hooks/intent.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { EDITOR_TEST_ID } from '@/pages/AssistantCMS/AssistantCMS.constant';
 import { transformCMSResourceName } from '@/utils/cms.util';
-import { getIntentConfidenceLevel, getIntentConfidenceMessage, getIntentConfidenceProgress, isIntentBuiltIn } from '@/utils/intent.util';
+import {
+  getIntentConfidenceLevel,
+  getIntentConfidenceMessage,
+  getIntentConfidenceProgress,
+  isIntentBuiltIn,
+} from '@/utils/intent.util';
 import { isUtteranceTextEmpty } from '@/utils/utterance.util';
 
 import { CMSEditorMoreButton } from '../../../../components/CMSEditorMoreButton/CMSEditorMoreButton.components';
@@ -35,7 +41,10 @@ export const CMSIntentEditor: React.FC = () => {
 
   const patchIntent = useDispatch(Designer.Intent.effect.patchOne, intentID);
 
-  const notEmptyUtterances = useMemo(() => utterances.filter((utterance) => !isUtteranceTextEmpty(utterance.text)), [utterances]);
+  const notEmptyUtterances = useMemo(
+    () => utterances.filter((utterance) => !isUtteranceTextEmpty(utterance.text)),
+    [utterances]
+  );
 
   if (!intent) return null;
 
@@ -48,7 +57,9 @@ export const CMSIntentEditor: React.FC = () => {
         readOnly={isIntentBuiltIn(intent.id)}
         onTitleChange={(name) => patchIntent({ name: name.trim() })}
         titleTransform={transformCMSResourceName}
-        headerActions={<CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: intentID, onClose })}</CMSEditorMoreButton>}
+        headerActions={
+          <CMSEditorMoreButton>{({ onClose }) => getMoreMenu({ id: intentID, onClose })}</CMSEditorMoreButton>
+        }
         testID={EDITOR_TEST_ID}
       >
         <Scroll style={{ display: 'block' }}>

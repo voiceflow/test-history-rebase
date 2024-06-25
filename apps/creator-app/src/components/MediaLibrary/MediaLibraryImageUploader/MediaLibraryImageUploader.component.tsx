@@ -13,7 +13,12 @@ import { containsVariable } from '@/utils/string.util';
 import type { IMediaLibraryImageUploader } from './MediaLibraryImageUploader.interface';
 import { MediaLibraryImageUploadURLSection } from './MediaLibraryImageUploadURLSection/MediaLibraryImageUploadURLSection.component';
 
-export const MediaLibraryImageUploader: React.FC<IMediaLibraryImageUploader> = ({ onClose, imageUrl, onImageSelect, onLibraryClick }) => {
+export const MediaLibraryImageUploader: React.FC<IMediaLibraryImageUploader> = ({
+  onClose,
+  imageUrl,
+  onImageSelect,
+  onLibraryClick,
+}) => {
   const uploadImage = useDispatch(Designer.Attachment.effect.uploadImage);
   const createImageFromURL = useDispatch(Designer.Attachment.effect.createImageFromURL);
 
@@ -69,7 +74,12 @@ export const MediaLibraryImageUploader: React.FC<IMediaLibraryImageUploader> = (
   return (
     <>
       <Box gap={16} width="100%" mb={16}>
-        <TabGroup tabs={[{ label: 'Upload' }, { label: 'Link' }]} width="fill" activeTab={activeTab} onChange={setActiveTab} />
+        <TabGroup
+          tabs={[{ label: 'Upload' }, { label: 'Link' }]}
+          width="fill"
+          activeTab={activeTab}
+          onChange={setActiveTab}
+        />
 
         {onLibraryClick && (
           <Box mr={-8}>
@@ -93,7 +103,12 @@ export const MediaLibraryImageUploader: React.FC<IMediaLibraryImageUploader> = (
         </Switch.Pane>
 
         <Switch.Pane value={1}>
-          <MediaLibraryImageUploadURLSection error={urlError} imageUrl={imageUrl} isLoading={uploading} onUrlSubmit={onUrlSubmit} />
+          <MediaLibraryImageUploadURLSection
+            error={urlError}
+            imageUrl={imageUrl}
+            isLoading={uploading}
+            onUrlSubmit={onUrlSubmit}
+          />
         </Switch.Pane>
       </Switch>
     </>

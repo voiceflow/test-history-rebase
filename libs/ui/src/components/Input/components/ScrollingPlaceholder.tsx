@@ -17,7 +17,9 @@ const getTextScrollKeyframe = ({ length, transition, duration }: TextScrollKeyfr
   const percentageDiff = offset * (transition / duration);
 
   for (let i = 0; i < length; i++) {
-    animation.push(`${i * offset}%, ${i * offset + offset - percentageDiff}% { transform: translateY(-${i * HEIGHT}px) translate3d(0, 0, 0); }`);
+    animation.push(
+      `${i * offset}%, ${i * offset + offset - percentageDiff}% { transform: translateY(-${i * HEIGHT}px) translate3d(0, 0, 0); }`
+    );
   }
   animation.push(`${100}% { transform: translateY(-${length * HEIGHT}px) translate3d(0, 0, 0); }`);
 
@@ -66,12 +68,20 @@ const Container = styled.div`
   }
 `;
 
-export interface ScrollingPlaceholderProps extends React.PropsWithChildren, Partial<Omit<TextScrollKeyframeProps, 'length'>> {
+export interface ScrollingPlaceholderProps
+  extends React.PropsWithChildren,
+    Partial<Omit<TextScrollKeyframeProps, 'length'>> {
   hasContent: boolean;
   placeholders: string[];
 }
 
-const ScrollingPlaceholder: React.FC<ScrollingPlaceholderProps> = ({ children, placeholders, hasContent, transition = 150, duration = 3000 }) => {
+const ScrollingPlaceholder: React.FC<ScrollingPlaceholderProps> = ({
+  children,
+  placeholders,
+  hasContent,
+  transition = 150,
+  duration = 3000,
+}) => {
   const elements = React.useMemo(() => [...placeholders, placeholders[0]], [placeholders]);
   return (
     <Container>

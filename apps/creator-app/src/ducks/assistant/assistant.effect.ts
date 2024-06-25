@@ -1,5 +1,5 @@
-import { AnyRecord, BaseModels, BaseVersion } from '@voiceflow/base-types';
-import { AnyAttachment, AnyResponseVariant, CardButton, Diagram, Thread } from '@voiceflow/dtos';
+import type { AnyRecord, BaseModels, BaseVersion } from '@voiceflow/base-types';
+import type { AnyAttachment, AnyResponseVariant, CardButton, Diagram, Thread } from '@voiceflow/dtos';
 import * as Platform from '@voiceflow/platform-config';
 import type { DBVersion } from '@voiceflow/platform-config/build/common/configs/base/adapters/version';
 import * as Realtime from '@voiceflow/realtime-sdk';

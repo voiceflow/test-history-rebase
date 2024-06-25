@@ -24,7 +24,15 @@ const CloseButtonAction: React.FC<Omit<System.IconButton.I.Props, 'icon' | 'clas
   </System.IconButtonsGroup.Base>
 );
 
-const Header: React.FC<HeaderProps> = ({ border, actions, children, infoTooltip, capitalizeText = true, sticky = true, style }) => (
+const Header: React.FC<HeaderProps> = ({
+  border,
+  actions,
+  children,
+  infoTooltip,
+  capitalizeText = true,
+  sticky = true,
+  style,
+}) => (
   <S.Container border={border} capitalizeText={capitalizeText} sticky={sticky} style={style}>
     <Box.Flex gap={8} height="100%">
       <Box.Flex height="100%" className={ClassName.MODAL_TITLE_CONTAINER}>

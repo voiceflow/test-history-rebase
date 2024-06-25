@@ -1,4 +1,5 @@
-import { Input, Popper, preventDefault, SvgIconTypes, TippyTooltip, useToggle, withHandler, withInputBlur } from '@voiceflow/ui';
+import type { SvgIconTypes } from '@voiceflow/ui';
+import { Input, Popper, preventDefault, TippyTooltip, useToggle, withHandler, withInputBlur } from '@voiceflow/ui';
 import React from 'react';
 
 import { PopperContent, PopperTitle } from '@/components/SlateEditable';

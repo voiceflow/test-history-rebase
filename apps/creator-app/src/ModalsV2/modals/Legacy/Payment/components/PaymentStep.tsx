@@ -45,7 +45,14 @@ const PaymentStep: React.FC<PaymentStepProps> = ({ price, onSubmit, period, onCl
           Cancel
         </Button>
 
-        <Button width={144} type="submit" variant={Button.Variant.PRIMARY} disabled={form.isSubmitting} squareRadius isLoading={form.isSubmitting}>
+        <Button
+          width={144}
+          type="submit"
+          variant={Button.Variant.PRIMARY}
+          disabled={form.isSubmitting}
+          squareRadius
+          isLoading={form.isSubmitting}
+        >
           Confirm & Pay
         </Button>
       </Modal.Footer>

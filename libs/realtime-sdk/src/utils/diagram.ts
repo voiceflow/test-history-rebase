@@ -1,6 +1,7 @@
 import { BlockType, START_NODE_COLOR, START_NODE_POSITION } from '@realtime-sdk/constants';
 import { BaseModels } from '@voiceflow/base-types';
-import { AnyRecord, Utils } from '@voiceflow/common';
+import type { AnyRecord } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 
 export interface DiagramFactoryOptions {
   name: string;

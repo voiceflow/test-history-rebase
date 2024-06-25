@@ -1,7 +1,7 @@
-import { InputTypes, SvgIconTypes } from '@voiceflow/ui';
-import { EditorState } from 'draft-js';
+import type { InputTypes, SvgIconTypes } from '@voiceflow/ui';
+import type { EditorState } from 'draft-js';
 
-import { PluginType } from './plugins';
+import type { PluginType } from './plugins';
 
 export interface TextEditorBlurData {
   text: string;

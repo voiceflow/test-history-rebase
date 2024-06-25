@@ -1,4 +1,4 @@
-import { SubscriptionPaymentMethod } from '@voiceflow/dtos';
+import type { SubscriptionPaymentMethod } from '@voiceflow/dtos';
 import { Box, Button, Link, SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
@@ -13,7 +13,8 @@ const PaymentDetails: React.FC<PaymentDetailsProps> = ({ paymentMethod }) => {
   const addCardModal = ModalsV2.useModal(ModalsV2.Billing.AddCard);
 
   const card = paymentMethod?.card;
-  const cardExpires = card?.expiryMonth && card.expiryYear ? `, card expires ${card.expiryMonth}/${card.expiryYear}` : '';
+  const cardExpires =
+    card?.expiryMonth && card.expiryYear ? `, card expires ${card.expiryMonth}/${card.expiryYear}` : '';
   const cardDetails = card ? `...${card.last4}${cardExpires}` : '...';
 
   const onClickAddCard = async () => {

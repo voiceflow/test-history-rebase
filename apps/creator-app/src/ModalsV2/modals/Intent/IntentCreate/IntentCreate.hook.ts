@@ -1,8 +1,13 @@
 import { Utils } from '@voiceflow/common';
-import type { Intent, Utterance, UtteranceText } from '@voiceflow/dtos';
-import { AttachmentType, CardLayout, Language, ResponseVariantType, TextResponseVariant } from '@voiceflow/dtos';
+import type { Intent, TextResponseVariant, Utterance, UtteranceText } from '@voiceflow/dtos';
+import { AttachmentType, CardLayout, Language, ResponseVariantType } from '@voiceflow/dtos';
 import { notify, useCreateConst } from '@voiceflow/ui-next';
-import { intentDescriptionValidator, intentNameValidator, intentUtterancesValidator, markupFactory } from '@voiceflow/utils-designer';
+import {
+  intentDescriptionValidator,
+  intentNameValidator,
+  intentUtterancesValidator,
+  markupFactory,
+} from '@voiceflow/utils-designer';
 import { useMemo, useState } from 'react';
 import { match } from 'ts-pattern';
 
@@ -15,7 +20,13 @@ import { useValidators } from '@/hooks/validate.hook';
 import type { ResultInternalAPI } from '@/ModalsV2/types';
 import { isUtteranceLikeEmpty, utteranceTextFactory } from '@/utils/utterance.util';
 
-import type { EntityRepromptAttachment, EntityRepromptForm, IIntentCreateModal, RequiredEntityForm, UtteranceForm } from './IntentCreate.interface';
+import type {
+  EntityRepromptAttachment,
+  EntityRepromptForm,
+  IIntentCreateModal,
+  RequiredEntityForm,
+  UtteranceForm,
+} from './IntentCreate.interface';
 
 export const useRequiredEntitiesForm = () => {
   const entitiesMap = useSelector(Designer.selectors.slateEntitiesMapByID);
@@ -72,7 +83,9 @@ export const useRequiredEntitiesForm = () => {
   };
 
   const onEntityReplace = (oldEntityID: string, newEntityID: string) => {
-    setRequiredEntityForms((prev) => prev.map((item) => (item.entityID === oldEntityID ? { ...item, entityID: newEntityID } : item)));
+    setRequiredEntityForms((prev) =>
+      prev.map((item) => (item.entityID === oldEntityID ? { ...item, entityID: newEntityID } : item))
+    );
     setEntityRepromptsOrder(({ [oldEntityID]: order, ...prev }) => ({ ...prev, [newEntityID]: order }));
   };
 
@@ -87,7 +100,10 @@ export const useRequiredEntitiesForm = () => {
     const reprompts = responses.map(({ text }) => textRepromptFactory(text));
 
     setRepromptsMap((prev) => ({ ...prev, ...Utils.array.createMap(reprompts, (reprompt) => reprompt.id) }));
-    setEntityRepromptsOrder((prev) => ({ ...prev, [entityID]: [...(prev[entityID] ?? []), ...reprompts.map(Utils.object.selectID)] }));
+    setEntityRepromptsOrder((prev) => ({
+      ...prev,
+      [entityID]: [...(prev[entityID] ?? []), ...reprompts.map(Utils.object.selectID)],
+    }));
   };
 
   const onRepromptChange = (repromptID: string, data: Partial<Omit<EntityRepromptForm, 'id'>>) => {
@@ -96,7 +112,10 @@ export const useRequiredEntitiesForm = () => {
 
   const onRepromptRemove = (entityID: string, repromptID: string) => {
     setRepromptsMap((prev) => Utils.object.omit(prev, [repromptID]));
-    setEntityRepromptsOrder((prev) => ({ ...prev, [entityID]: Utils.array.withoutValue(prev[entityID] ?? [], repromptID) }));
+    setEntityRepromptsOrder((prev) => ({
+      ...prev,
+      [entityID]: Utils.array.withoutValue(prev[entityID] ?? [], repromptID),
+    }));
   };
 
   const onRepromptAttachmentSelect = (repromptID: string, { id, type }: { id: string; type: AttachmentType }) => {
@@ -108,14 +127,20 @@ export const useRequiredEntitiesForm = () => {
     setAttachmentsMap((prev) => ({ ...prev, [attachment.id]: attachment }));
     setRepromptsMap((prev) => ({
       ...prev,
-      [repromptID]: { ...prev[repromptID], attachmentOrder: Utils.array.append(prev[repromptID].attachmentOrder, attachment.id) },
+      [repromptID]: {
+        ...prev[repromptID],
+        attachmentOrder: Utils.array.append(prev[repromptID].attachmentOrder, attachment.id),
+      },
     }));
   };
 
   const onRepromptsAttachmentRemove = (repromptID: string, responseAttachmentID: string) => {
     setRepromptsMap((prev) => ({
       ...prev,
-      [repromptID]: { ...prev[repromptID], attachmentOrder: Utils.array.withoutValue(prev[repromptID].attachmentOrder, responseAttachmentID) },
+      [repromptID]: {
+        ...prev[repromptID],
+        attachmentOrder: Utils.array.withoutValue(prev[repromptID].attachmentOrder, responseAttachmentID),
+      },
     }));
     setAttachmentsMap(({ [responseAttachmentID]: _, ...prev }) => prev);
   };
@@ -139,7 +164,10 @@ export const useRequiredEntitiesForm = () => {
   };
 
   const repromptsByEntityID = useMemo(
-    () => Object.fromEntries(Object.entries(entityRepromptsOrder).map(([entityID, order]) => [entityID, order.map((id) => repromptsMap[id])])),
+    () =>
+      Object.fromEntries(
+        Object.entries(entityRepromptsOrder).map(([entityID, order]) => [entityID, order.map((id) => repromptsMap[id])])
+      ),
     [repromptsMap, entityRepromptsOrder]
   );
 

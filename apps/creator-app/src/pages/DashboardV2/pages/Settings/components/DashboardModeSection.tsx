@@ -33,7 +33,10 @@ const DashboardModeSection: React.FC = () => {
 
   const [dashboardMode] = useLinkedState(mode);
 
-  const isCardOnly = React.useMemo(() => !workspace || dayjs(workspace.created).isAfter(DASHBOARD_V2_RELEASE_DATE), [workspace?.created]);
+  const isCardOnly = React.useMemo(
+    () => !workspace || dayjs(workspace.created).isAfter(DASHBOARD_V2_RELEASE_DATE),
+    [workspace?.created]
+  );
 
   const handleToggle = (type: DashboardTypes) => {
     const kanban = type === DashboardTypes.KANBAN;
@@ -55,7 +58,14 @@ const DashboardModeSection: React.FC = () => {
       >
         <Settings.SubSection header="Dashboard Styles" splitView>
           <Settings.SubSection.RadioGroupContainer>
-            <RadioGroup column options={OPTIONS} checked={dashboardMode} onChange={handleToggle} activeBar noPaddingLastItem={false} />
+            <RadioGroup
+              column
+              options={OPTIONS}
+              checked={dashboardMode}
+              onChange={handleToggle}
+              activeBar
+              noPaddingLastItem={false}
+            />
           </Settings.SubSection.RadioGroupContainer>
 
           <Settings.SubSection.RadioGroupDescription offset={dashboardMode === DashboardTypes.KANBAN}>

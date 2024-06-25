@@ -1,8 +1,8 @@
-import { BaseModels } from '@voiceflow/base-types';
-import { IntegrationData } from '@voiceflow/dtos';
+import type { BaseModels } from '@voiceflow/base-types';
+import type { IntegrationData } from '@voiceflow/dtos';
 import { createMultiAdapter } from 'bidirectional-adapter';
 
-import { DBKnowledgeBaseIntegration, KnowledgeBaseIntegration } from '@/models/KnowledgeBase.model';
+import type { DBKnowledgeBaseIntegration, KnowledgeBaseIntegration } from '@/models/KnowledgeBase.model';
 
 export const integrationAdapter = createMultiAdapter<DBKnowledgeBaseIntegration, KnowledgeBaseIntegration>(
   ({ ...rest }) => ({

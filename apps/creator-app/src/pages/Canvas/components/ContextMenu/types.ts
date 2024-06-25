@@ -1,10 +1,10 @@
-import { MenuItemMultilevel } from '@voiceflow/ui';
+import type { MenuItemMultilevel } from '@voiceflow/ui';
 
-import { usePaymentModal } from '@/hooks/modal.hook';
-import { ContextMenuValue } from '@/pages/Canvas/contexts';
-import { ClipboardContextValue } from '@/pages/Canvas/contexts/ClipboardContext';
+import type { usePaymentModal } from '@/hooks/modal.hook';
+import type { ContextMenuValue } from '@/pages/Canvas/contexts';
+import type { ClipboardContextValue } from '@/pages/Canvas/contexts/ClipboardContext';
 import type Engine from '@/pages/Canvas/engine';
-import { MarkupContextType } from '@/pages/Project/contexts';
+import type { MarkupContextType } from '@/pages/Project/contexts';
 
 export interface OptionProps {
   engine: Engine;

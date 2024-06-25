@@ -73,7 +73,14 @@ export const useGenOptions = () => {
   }, []);
 };
 
-export const useGen = <T, D = string>({ onAccept, generate, disabled, examples, examplesToDB, dbExamplesToTrack }: GenOptions<T, D>): GenApi<T> => {
+export const useGen = <T, D = string>({
+  onAccept,
+  generate,
+  disabled,
+  examples,
+  examplesToDB,
+  dbExamplesToTrack,
+}: GenOptions<T, D>): GenApi<T> => {
   const [, hotkeysAPI] = React.useContext(HotkeysContext)!;
   const [trackingEvents] = useTrackingEvents();
 

@@ -3,7 +3,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { createReverter } from '@/ducks/utils';
 
 import { builtInPortTypeSelector } from '../selectors';
-import { CreatorState } from '../types';
+import type { CreatorState } from '../types';
 import { createActiveDiagramReducer, DIAGRAM_INVALIDATORS } from './utils';
 
 const importNode =

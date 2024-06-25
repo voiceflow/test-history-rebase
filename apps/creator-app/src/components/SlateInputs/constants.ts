@@ -1,6 +1,6 @@
 import { Base } from '@voiceflow/platform-config';
 
-import { ToolbarIcons } from './types';
+import type { ToolbarIcons } from './types';
 
 const { ToolbarOption } = Base.Project.Chat;
 

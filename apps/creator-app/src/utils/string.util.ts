@@ -152,7 +152,11 @@ export const isHTTPsURL = (str: string): boolean => {
 
 export const containsVariable = (str: string): boolean => !!str.match(SLOT_REGEXP);
 
-export const matchAllAndProcess = (text: string, regexp: RegExp, processor: (result: string | RegExpMatchArray) => void): void => {
+export const matchAllAndProcess = (
+  text: string,
+  regexp: RegExp,
+  processor: (result: string | RegExpMatchArray) => void
+): void => {
   let prevMatch: Nullable<RegExpMatchArray> = null;
 
   for (const match of text.matchAll(regexp)) {

@@ -1,6 +1,7 @@
-import { Logger } from '@voiceflow/logger';
-import { AbstractControl as BaseAbstractControl, SocketServer } from '@voiceflow/socket-utils';
-import { Server as IOServer } from 'socket.io';
+import type { Logger } from '@voiceflow/logger';
+import type { SocketServer } from '@voiceflow/socket-utils';
+import { AbstractControl as BaseAbstractControl } from '@voiceflow/socket-utils';
+import type { Server as IOServer } from 'socket.io';
 
 import type { Config } from '@/types';
 

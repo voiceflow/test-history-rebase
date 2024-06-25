@@ -1,6 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { Context } from '@voiceflow/socket-utils';
-import { Action } from 'typescript-fsa';
+import type { Context } from '@voiceflow/socket-utils';
+import type { Action } from 'typescript-fsa';
 
 import { AbstractVersionResourceControl } from './utils';
 
@@ -18,7 +18,10 @@ class PatchVersionSettings extends AbstractVersionResourceControl<Realtime.versi
     });
   };
 
-  protected finally = async (ctx: Context, { payload }: Action<Realtime.version.PatchSettingsPayload>): Promise<void> => {
+  protected finally = async (
+    ctx: Context,
+    { payload }: Action<Realtime.version.PatchSettingsPayload>
+  ): Promise<void> => {
     await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
   };
 }

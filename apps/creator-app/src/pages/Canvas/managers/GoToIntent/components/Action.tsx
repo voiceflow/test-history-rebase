@@ -1,13 +1,20 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Canvas, Popper, swallowEvent, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
-import { ConnectedAction } from '../../types';
+import type { ConnectedAction } from '../../types';
 import { NODE_CONFIG } from '../constants';
 import ActionPreview from './ActionPreview';
 import { useGoToIntentMeta } from './hooks';
 
-const Action: ConnectedAction<Realtime.NodeData.GoToIntent> = ({ data, engine, reversed, isActive, onRemove, onOpenEditor }) => {
+const Action: ConnectedAction<Realtime.NodeData.GoToIntent> = ({
+  data,
+  engine,
+  reversed,
+  isActive,
+  onRemove,
+  onOpenEditor,
+}) => {
   const { goToIntent, goToNodeID, goToIntentName } = useGoToIntentMeta(data.intent ?? null, data.diagramID);
   const isEmpty = !goToIntent || !goToNodeID;
 
@@ -35,7 +42,11 @@ const Action: ConnectedAction<Realtime.NodeData.GoToIntent> = ({ data, engine, r
               <Canvas.Action.Icon icon={isEmpty && !isActive ? 'warning' : NODE_CONFIG.icon!} />
             </TippyTooltip>
           }
-          label={<Canvas.Action.Label secondary={isEmpty}>{isEmpty ? 'Select intent' : data.name || goToIntentName}</Canvas.Action.Label>}
+          label={
+            <Canvas.Action.Label secondary={isEmpty}>
+              {isEmpty ? 'Select intent' : data.name || goToIntentName}
+            </Canvas.Action.Label>
+          }
           nodeID={data.nodeID}
           active={isOpened || isActive}
           onClick={swallowEvent(onToggle)}

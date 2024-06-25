@@ -1,9 +1,9 @@
-import * as Base from '@platform-config/configs/base';
+import type * as Base from '@platform-config/configs/base';
 import * as Common from '@platform-config/configs/common';
-import { VoiceflowVersion } from '@voiceflow/voiceflow-types';
+import type { VoiceflowVersion } from '@voiceflow/voiceflow-types';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 
-import * as Models from '../../models';
+import type * as Models from '../../models';
 import * as Session from './session';
 import * as Settings from './settings';
 

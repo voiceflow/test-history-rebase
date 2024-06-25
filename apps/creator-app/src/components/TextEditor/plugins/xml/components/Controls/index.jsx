@@ -25,10 +25,13 @@ export default function Controls({
   const onAddTag = React.useCallback(
     (data, optionsPath) => {
       if (optionsPath) {
-        const { path } = optionsPath.reduce(({ path, options }, i) => ({ path: [...path, options[i]], options: options[i].options }), {
-          path: [],
-          options: addOptions,
-        });
+        const { path } = optionsPath.reduce(
+          ({ path, options }, i) => ({ path: [...path, options[i]], options: options[i].options }),
+          {
+            path: [],
+            options: addOptions,
+          }
+        );
 
         const prevItem = path[path.length - 2];
         const historyLabel = prevItem ? `${prevItem.name}: ${data.name}` : data.name;
@@ -64,7 +67,10 @@ export default function Controls({
 
     if (store.getEditorState() && fakeSelectionKey) {
       store.set('fakeSelectionKey', null);
-      setTimeout(() => store.setEditorState(removeFakeSelection(store.getEditorState(), fakeSelectionKey)), FAKE_SELECTION_CLEAR_TIMEOUT);
+      setTimeout(
+        () => store.setEditorState(removeFakeSelection(store.getEditorState(), fakeSelectionKey)),
+        FAKE_SELECTION_CLEAR_TIMEOUT
+      );
     }
   }, [store, globalStore]);
 

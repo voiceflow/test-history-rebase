@@ -21,7 +21,10 @@ export const useLinkedRef = <T>(externalValue: T): React.MutableRefObject<T> => 
  * local state value that is reset when the external value changes
  * without additional side-effects or state changes
  */
-export const useLinkedState = <T>(externalValue: T, resetKey?: string): [T, React.Dispatch<React.SetStateAction<T>>] => {
+export const useLinkedState = <T>(
+  externalValue: T,
+  resetKey?: string
+): [T, React.Dispatch<React.SetStateAction<T>>] => {
   const [stateValue, setState] = React.useState(externalValue);
   const cache = React.useRef({
     resetKey,

@@ -1,4 +1,4 @@
-import { UtteranceText } from '@voiceflow/dtos';
+import type { UtteranceText } from '@voiceflow/dtos';
 import { tid } from '@voiceflow/style';
 import { Divider, notify, Scroll, Text } from '@voiceflow/ui-next';
 import React from 'react';

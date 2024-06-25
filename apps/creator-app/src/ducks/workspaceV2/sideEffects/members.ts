@@ -10,7 +10,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import { trackInvitationAccepted } from '@/ducks/tracking';
 import { waitAsync } from '@/ducks/utils';
-import { Thunk } from '@/store/types';
+import type { Thunk } from '@/store/types';
 import { getErrorMessage } from '@/utils/error';
 import { getLimitConfig } from '@/utils/planLimitV3.util';
 import { isAdminUserRole, isEditorUserRole } from '@/utils/role';

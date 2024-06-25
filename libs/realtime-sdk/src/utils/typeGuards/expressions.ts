@@ -1,6 +1,6 @@
 import { BaseNode } from '@voiceflow/base-types';
 
-import {
+import type {
   AndExpressionV2,
   ContainsExpression,
   EndsWithExpression,
@@ -27,20 +27,44 @@ const createExpressionTypeGuard =
     typeof expression !== 'string' && expression?.type === type;
 
 export const isAndExpressionV2 = createExpressionTypeGuard<AndExpressionV2>(BaseNode.Utils.ExpressionTypeV2.AND);
-export const isContainsExpression = createExpressionTypeGuard<ContainsExpression>(BaseNode.Utils.ExpressionTypeV2.CONTAINS);
-export const isEndsWithExpression = createExpressionTypeGuard<EndsWithExpression>(BaseNode.Utils.ExpressionTypeV2.ENDS_WITH);
-export const isEqualsExpressionV2 = createExpressionTypeGuard<EqualsExpressionV2>(BaseNode.Utils.ExpressionTypeV2.EQUALS);
-export const isGreaterExpressionV2 = createExpressionTypeGuard<GreaterExpressionV2>(BaseNode.Utils.ExpressionTypeV2.GREATER);
-export const isGreaterOrEqualExpression = createExpressionTypeGuard<GreaterOrEqualExpression>(BaseNode.Utils.ExpressionTypeV2.GREATER_OR_EQUAL);
-export const isHasValueExpression = createExpressionTypeGuard<HasValueExpression>(BaseNode.Utils.ExpressionTypeV2.HAS_VALUE);
-export const isIsEmptyExpression = createExpressionTypeGuard<IsEmptyExpression>(BaseNode.Utils.ExpressionTypeV2.IS_EMPTY);
+export const isContainsExpression = createExpressionTypeGuard<ContainsExpression>(
+  BaseNode.Utils.ExpressionTypeV2.CONTAINS
+);
+export const isEndsWithExpression = createExpressionTypeGuard<EndsWithExpression>(
+  BaseNode.Utils.ExpressionTypeV2.ENDS_WITH
+);
+export const isEqualsExpressionV2 = createExpressionTypeGuard<EqualsExpressionV2>(
+  BaseNode.Utils.ExpressionTypeV2.EQUALS
+);
+export const isGreaterExpressionV2 = createExpressionTypeGuard<GreaterExpressionV2>(
+  BaseNode.Utils.ExpressionTypeV2.GREATER
+);
+export const isGreaterOrEqualExpression = createExpressionTypeGuard<GreaterOrEqualExpression>(
+  BaseNode.Utils.ExpressionTypeV2.GREATER_OR_EQUAL
+);
+export const isHasValueExpression = createExpressionTypeGuard<HasValueExpression>(
+  BaseNode.Utils.ExpressionTypeV2.HAS_VALUE
+);
+export const isIsEmptyExpression = createExpressionTypeGuard<IsEmptyExpression>(
+  BaseNode.Utils.ExpressionTypeV2.IS_EMPTY
+);
 export const isLessExpressionV2 = createExpressionTypeGuard<LessExpressionV2>(BaseNode.Utils.ExpressionTypeV2.LESS);
-export const isLessOrEqualExpression = createExpressionTypeGuard<LessOrEqualExpression>(BaseNode.Utils.ExpressionTypeV2.LESS_OR_EQUAL);
-export const isNotContainExpression = createExpressionTypeGuard<NotContainExpression>(BaseNode.Utils.ExpressionTypeV2.NOT_CONTAIN);
-export const isNotEqualExpression = createExpressionTypeGuard<NotEqualExpression>(BaseNode.Utils.ExpressionTypeV2.NOT_EQUAL);
+export const isLessOrEqualExpression = createExpressionTypeGuard<LessOrEqualExpression>(
+  BaseNode.Utils.ExpressionTypeV2.LESS_OR_EQUAL
+);
+export const isNotContainExpression = createExpressionTypeGuard<NotContainExpression>(
+  BaseNode.Utils.ExpressionTypeV2.NOT_CONTAIN
+);
+export const isNotEqualExpression = createExpressionTypeGuard<NotEqualExpression>(
+  BaseNode.Utils.ExpressionTypeV2.NOT_EQUAL
+);
 export const isOrExpressionV2 = createExpressionTypeGuard<OrExpressionV2>(BaseNode.Utils.ExpressionTypeV2.OR);
-export const isStartsWithExpression = createExpressionTypeGuard<StartsWithExpression>(BaseNode.Utils.ExpressionTypeV2.STARTS_WITH);
-export const isVariableExpressionV2 = createExpressionTypeGuard<VariableExpressionV2>(BaseNode.Utils.ExpressionTypeV2.VARIABLE);
+export const isStartsWithExpression = createExpressionTypeGuard<StartsWithExpression>(
+  BaseNode.Utils.ExpressionTypeV2.STARTS_WITH
+);
+export const isVariableExpressionV2 = createExpressionTypeGuard<VariableExpressionV2>(
+  BaseNode.Utils.ExpressionTypeV2.VARIABLE
+);
 export const isValueExpressionV2 = createExpressionTypeGuard<ValueExpressionV2>(BaseNode.Utils.ExpressionTypeV2.VALUE);
 
 export const isTuppleExpression = (expression?: ExpressionV2 | string): expression is TuppleExpression => {

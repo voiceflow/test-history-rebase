@@ -3,7 +3,7 @@ import React, { useRef } from 'react';
 
 import { LoadingGate } from '@/components/LoadingGate';
 import { SearchProvider } from '@/contexts/SearchContext';
-import { DiagramNodeDatabaseMap } from '@/contexts/SearchContext/types';
+import type { DiagramNodeDatabaseMap } from '@/contexts/SearchContext/types';
 import { buildSearchDatabase } from '@/contexts/SearchContext/utils';
 import { Assistant, Session } from '@/ducks';
 import { useAssistantSubscription, useDispatch, useRealtimeClient, useSelector } from '@/hooks';

@@ -4,7 +4,7 @@ import React from 'react';
 import { testingGraphic } from '@/assets';
 import * as Documentation from '@/config/documentation';
 import * as Prototype from '@/ducks/prototype';
-import { PrototypeConfig } from '@/ducks/recent';
+import type { PrototypeConfig } from '@/ducks/recent';
 import { useSelector, useTrackingEvents } from '@/hooks';
 import { IdleContainer } from '@/pages/Prototype/components/PrototypeContainer';
 import { Identifier } from '@/styles/constants';
@@ -44,14 +44,17 @@ const PrototypeStart: React.FC<PrototypeStartProps> = ({ isPublic, onStart, debu
           </Text>
 
           <Text fontSize={13} color="#62778c" mt={8} mb={16} lineHeight={1.54}>
-            Start a test to interact with your agent using text, voice or buttons. <Link href={Documentation.TEST_TOOL}>See more.</Link>
+            Start a test to interact with your agent using text, voice or buttons.{' '}
+            <Link href={Documentation.TEST_TOOL}>See more.</Link>
           </Text>
 
           {isModelTraining ? (
             <TippyTooltip
               trigger="mouseenter"
               content={
-                <div style={{ textAlign: 'left', width: '179px', height: '36px' }}>Once training is complete you'll be able to start a test</div>
+                <div style={{ textAlign: 'left', width: '179px', height: '36px' }}>
+                  Once training is complete you'll be able to start a test
+                </div>
               }
               position="bottom"
             >

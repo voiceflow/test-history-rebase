@@ -1,7 +1,7 @@
 import { Flex, MemberIcon } from '@voiceflow/ui';
 
 import EditableText from '@/components/EditableText';
-import { HSLShades } from '@/constants';
+import type { HSLShades } from '@/constants';
 import { styled, transition } from '@/hocs/styled';
 import {
   CANVAS_COMMENTING_ENABLED_CLASSNAME,
@@ -72,11 +72,17 @@ export const Container = styled.div<PaletteProps>`
   .${NODE_HIGHLIGHTED_CLASSNAME} &,
   .${NODE_THREAD_TARGET_CLASSNAME} &,
   .${CANVAS_CREATING_LINK_CLASSNAME} .${NODE_HOVERED_CLASSNAME}:not(.${NODE_DISABLED_CLASSNAME}) & {
-    box-shadow: inset 0 -1px 0 0 rgba(0, 0, 0, 0.32), 0 0 0 2px #fff, 0 0 0 4px #3d82e2;
+    box-shadow:
+      inset 0 -1px 0 0 rgba(0, 0, 0, 0.32),
+      0 0 0 2px #fff,
+      0 0 0 4px #3d82e2;
   }
 
   &.${NODE_ACTIVE_CLASSNAME} {
-    box-shadow: inset 0 -1px 0 0 rgba(0, 0, 0, 0.32), 0 0 0 2px #fff, 0 0 0 4px #3d82e2;
+    box-shadow:
+      inset 0 -1px 0 0 rgba(0, 0, 0, 0.32),
+      0 0 0 2px #fff,
+      0 0 0 4px #3d82e2;
   }
 
   .${CANVAS_CREATING_LINK_CLASSNAME} .${NODE_DISABLED_CLASSNAME} & {

@@ -8,12 +8,20 @@ import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { ResponseCardAttachment } from '../ResponseCardAttachment/ResponseCardAttachment.component';
 import type { IResponseEditCardAttachment } from './ResponseEditCardAttachment.interface';
 
-export const ResponseEditCardAttachment: React.FC<IResponseEditCardAttachment> = ({ onRemove, variantID, attachment, responseAttachmentID }) => {
+export const ResponseEditCardAttachment: React.FC<IResponseEditCardAttachment> = ({
+  onRemove,
+  variantID,
+  attachment,
+  responseAttachmentID,
+}) => {
   const getOneByID = useSelector(Designer.Attachment.selectors.getOneByID);
 
   const replaceOneCard = useDispatch(Designer.Response.ResponseAttachment.effect.replaceOneCard, variantID);
   const createAttachmentCard = useDispatch(Designer.Attachment.effect.createOneCard);
-  const createResponseAttachmentCard = useDispatch(Designer.Response.ResponseAttachment.effect.createOneCard, variantID);
+  const createResponseAttachmentCard = useDispatch(
+    Designer.Response.ResponseAttachment.effect.createOneCard,
+    variantID
+  );
 
   const onDuplicate = async (attachmentID: string) => {
     const duplicateAttachment = getOneByID({ id: attachmentID });

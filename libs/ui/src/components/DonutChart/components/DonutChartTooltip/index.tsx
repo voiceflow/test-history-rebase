@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { DonutChartDatum } from '../../types';
+import type { DonutChartDatum } from '../../types';
 import * as S from './styles';
 
 export interface DonutChartTooltipProps {

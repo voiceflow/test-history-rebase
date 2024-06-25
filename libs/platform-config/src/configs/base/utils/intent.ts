@@ -1,9 +1,9 @@
 import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { Types } from '@platform-config/utils';
 import { Utils } from '@voiceflow/common';
-import { DeepPartial, Required } from 'utility-types';
+import type { DeepPartial, Required } from 'utility-types';
 
-import * as Models from '../models';
+import type * as Models from '../models';
 
 export const isPrompt = (_value?: unknown): _value is unknown => false;
 
@@ -28,7 +28,11 @@ export const slotDialogSanitizer = ({
   confirmEnabled,
 });
 
-export const slotSanitizer = ({ id, dialog, required = false }: Required<DeepPartial<Models.Intent.Slot>, 'id'>): Models.Intent.Slot => ({
+export const slotSanitizer = ({
+  id,
+  dialog,
+  required = false,
+}: Required<DeepPartial<Models.Intent.Slot>, 'id'>): Models.Intent.Slot => ({
   id,
   dialog: slotDialogSanitizer(dialog),
   required,

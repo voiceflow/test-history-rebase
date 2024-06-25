@@ -1,3 +1,4 @@
+/* eslint-disable import/export */
 export { default as addTag } from './addTag';
 export { default as changeHandler } from './changeHandler';
 export * from './fakeSelection';

@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 
-import Strategy, { Context } from './strategy';
+import type { Context } from './strategy';
+import Strategy from './strategy';
 
 class WithWorkspaceCreatedAfterStrategy extends Strategy {
   constructor() {
@@ -9,7 +10,9 @@ class WithWorkspaceCreatedAfterStrategy extends Strategy {
 
   isEnabled(parameters: { workspaceCreatedAfter: string }, { workspaceCreatedAt }: Context): boolean {
     const workspaceCreatedAtDate = workspaceCreatedAt ? new Date(workspaceCreatedAt) : null;
-    const workspaceCreatedAfterDate = parameters.workspaceCreatedAfter ? new Date(parameters.workspaceCreatedAfter) : null;
+    const workspaceCreatedAfterDate = parameters.workspaceCreatedAfter
+      ? new Date(parameters.workspaceCreatedAfter)
+      : null;
 
     return (
       !!workspaceCreatedAtDate &&

@@ -2,12 +2,11 @@ import { Utils } from '@voiceflow/common';
 import compositeReducer from 'composite-reducer';
 
 import { localPersistor, persistReducer, rehydrateReducer, sessionPersistor } from '@/ducks/utils/persist';
-import { Reducer, RootReducer } from '@/store/types';
+import type { Reducer, RootReducer } from '@/store/types';
 import * as Cookies from '@/utils/cookies';
 
-import {
+import type {
   AnySessionAction,
-  SessionAction,
   SetActiveDiagramID,
   SetActiveProjectID,
   SetActiveVersionID,
@@ -15,8 +14,9 @@ import {
   SetAuthToken,
   SetPrototypeSidebarVisible,
 } from './actions';
+import { SessionAction } from './actions';
 import { INITIAL_STATE, STATE_KEY } from './constants';
-import { SessionState } from './types';
+import type { SessionState } from './types';
 
 export * from './actions';
 export * from './constants';

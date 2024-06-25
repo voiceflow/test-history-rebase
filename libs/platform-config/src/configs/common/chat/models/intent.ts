@@ -1,7 +1,7 @@
-import * as Base from '@platform-config/configs/base';
-import { Normalized } from 'normal-store';
+import type * as Base from '@platform-config/configs/base';
+import type { Normalized } from 'normal-store';
 
-import * as Prompt from './prompt';
+import type * as Prompt from './prompt';
 
 export interface SlotDialog extends Base.Models.Intent.SlotDialog {
   prompt: Prompt.Model[];

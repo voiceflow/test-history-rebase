@@ -1,11 +1,11 @@
-import { NonNullishRecord } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config';
+import type { NonNullishRecord } from '@voiceflow/common';
+import type * as Platform from '@voiceflow/platform-config';
 import { createStructuredSelector } from 'reselect';
 
 import * as Errors from '@/config/errors';
 import { nluTypeSelector, platformSelector, projectTypeSelector } from '@/ducks/projectV2/selectors/active';
 import * as Session from '@/ducks/session';
-import { State } from '@/store/types';
+import type { State } from '@/store/types';
 
 export interface ActiveVersionContext {
   workspaceID: string | null;

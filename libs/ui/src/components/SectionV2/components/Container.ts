@@ -1,5 +1,6 @@
 import { css, styled, transition, units } from '@ui/styles';
-import { color, ColorProps, layout, LayoutProps } from 'styled-system';
+import type { ColorProps, LayoutProps } from 'styled-system';
+import { color, layout } from 'styled-system';
 
 import Header from './Header';
 import LinkArrowIcon from './LinkArrowIcon';
@@ -75,8 +76,11 @@ const Container = styled.section<ContainerProps>`
     isDraggingPreview &&
     css`
       margin: 0 ${units(2)}px;
-      background: linear-gradient(180deg, rgba(238, 244, 246, 0.3) 0%, rgba(238, 244, 246, 0.45) 100%), rgba(255, 255, 255, 0.8);
-      box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.06), 0 ${units()}px ${units(2)}px 0 rgba(17, 49, 96, 0.16);
+      background: linear-gradient(180deg, rgba(238, 244, 246, 0.3) 0%, rgba(238, 244, 246, 0.45) 100%),
+        rgba(255, 255, 255, 0.8);
+      box-shadow:
+        0 0 0 1px rgba(17, 49, 96, 0.06),
+        0 ${units()}px ${units(2)}px 0 rgba(17, 49, 96, 0.16);
       border-radius: 7px;
     `}
 

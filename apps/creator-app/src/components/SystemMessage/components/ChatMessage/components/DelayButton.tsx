@@ -47,7 +47,12 @@ const DelayButton: React.FC<DelayButtonProps> = ({ delay, onChange }) => {
     >
       {({ ref, isOpened }) => (
         <TippyTooltip content="Message Delay" placement="top">
-          <SlateEditable.IconButton ref={ref} icon="systemMessageDelay" active={isOpened || !!messageDelay} onClick={preventDefault(toggleOpen)} />
+          <SlateEditable.IconButton
+            ref={ref}
+            icon="systemMessageDelay"
+            active={isOpened || !!messageDelay}
+            onClick={preventDefault(toggleOpen)}
+          />
         </TippyTooltip>
       )}
     </Popper>

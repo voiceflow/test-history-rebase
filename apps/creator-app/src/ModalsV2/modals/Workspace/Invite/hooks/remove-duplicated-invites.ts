@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
-import { Members, usePersistFunction } from '@voiceflow/ui';
+import type { Members } from '@voiceflow/ui';
+import { usePersistFunction } from '@voiceflow/ui';
 
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';

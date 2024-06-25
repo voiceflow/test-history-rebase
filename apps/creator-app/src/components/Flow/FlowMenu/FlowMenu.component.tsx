@@ -1,5 +1,5 @@
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { Flow } from '@voiceflow/dtos';
+import type { Flow } from '@voiceflow/dtos';
 import { tid } from '@voiceflow/style';
 import { ActionButtons, Menu, MENU_ITEM_MIN_HEIGHT, Search, VirtualizedContent } from '@voiceflow/ui-next';
 import React, { useMemo, useState } from 'react';
@@ -11,7 +11,13 @@ import { useSelector } from '@/hooks/store.hook';
 
 import type { IFlowMenu } from './FlowMenu.interface';
 
-export const FlowMenu: React.FC<IFlowMenu> = ({ width = 'fit-content', maxWidth, onClose, onSelect: onSelectProp, excludeIDs }) => {
+export const FlowMenu: React.FC<IFlowMenu> = ({
+  width = 'fit-content',
+  maxWidth,
+  onClose,
+  onSelect: onSelectProp,
+  excludeIDs,
+}) => {
   const TEST_ID = 'flow-menu';
 
   const storeFlows = useSelector(Designer.Flow.selectors.all);
@@ -66,7 +72,14 @@ export const FlowMenu: React.FC<IFlowMenu> = ({ width = 'fit-content', maxWidth,
       listRef={setListNode}
       minWidth={search.hasItems ? maxWidth : 0}
       maxHeight={310}
-      searchSection={<Search value={search.value} placeholder="Search" onValueChange={search.setValue} testID={tid(TEST_ID, 'search')} />}
+      searchSection={
+        <Search
+          value={search.value}
+          placeholder="Search"
+          onValueChange={search.setValue}
+          testID={tid(TEST_ID, 'search')}
+        />
+      }
       actionButtons={
         search.hasItems && (
           <ActionButtons
@@ -103,7 +116,12 @@ export const FlowMenu: React.FC<IFlowMenu> = ({ width = 'fit-content', maxWidth,
           })}
         </VirtualizedContent>
       ) : (
-        <Menu.CreateItem label={search.value} onClick={onCreate} disabled={isCreating} testID={tid(TEST_ID, 'item', 'add')} />
+        <Menu.CreateItem
+          label={search.value}
+          onClick={onCreate}
+          disabled={isCreating}
+          testID={tid(TEST_ID, 'item', 'add')}
+        />
       )}
     </Menu>
   );

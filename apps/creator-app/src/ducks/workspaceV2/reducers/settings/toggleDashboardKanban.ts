@@ -3,12 +3,17 @@ import * as Normal from 'normal-store';
 
 import { createReducer } from '../utils';
 
-const toggleDashboardKanbanReducer = createReducer(Realtime.workspace.settings.toggleDashboardKanban, (state, { workspaceID, enabled }) => {
-  const workspace = Normal.getOne(state, workspaceID);
+const toggleDashboardKanbanReducer = createReducer(
+  Realtime.workspace.settings.toggleDashboardKanban,
+  (state, { workspaceID, enabled }) => {
+    const workspace = Normal.getOne(state, workspaceID);
 
-  if (!workspace) return;
+    if (!workspace) return;
 
-  workspace.settings = workspace.settings ? { ...workspace.settings, dashboardKanban: enabled } : { dashboardKanban: enabled };
-});
+    workspace.settings = workspace.settings
+      ? { ...workspace.settings, dashboardKanban: enabled }
+      : { dashboardKanban: enabled };
+  }
+);
 
 export default toggleDashboardKanbanReducer;

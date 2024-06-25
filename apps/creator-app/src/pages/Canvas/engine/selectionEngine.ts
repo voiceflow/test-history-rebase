@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 
-import { SelectionSetTargetsContextValue } from '@/pages/Project/contexts';
+import type { SelectionSetTargetsContextValue } from '@/pages/Project/contexts';
 
 import { ActivationMode, EntityType } from './constants';
 import { EngineConsumer } from './utils';
@@ -80,7 +80,11 @@ class SelectionEngine extends EngineConsumer<{ selectionSetTargetsContext: Selec
     }
 
     const isSelected = this.isTarget(EntityType.NODE, nodeID);
-    this.log.info(this.log.success('toggled selection of node'), this.log.slug(nodeID), this.log.diff(!isSelected, isSelected));
+    this.log.info(
+      this.log.success('toggled selection of node'),
+      this.log.slug(nodeID),
+      this.log.diff(!isSelected, isSelected)
+    );
   }
 
   /**
@@ -89,7 +93,12 @@ class SelectionEngine extends EngineConsumer<{ selectionSetTargetsContext: Selec
   replaceNode(targets: string[] = [], force = false): void {
     const currentTargets = this.getTargets(EntityType.NODE);
 
-    if ((!force && this.engine.isCanvasBusy) || this.engine.comment.isModeActive || Utils.array.hasIdenticalMembers(targets, currentTargets)) return;
+    if (
+      (!force && this.engine.isCanvasBusy) ||
+      this.engine.comment.isModeActive ||
+      Utils.array.hasIdenticalMembers(targets, currentTargets)
+    )
+      return;
 
     this.log.debug(this.log.pending('replacing selection'), targets);
     this.engine.focus.reset();

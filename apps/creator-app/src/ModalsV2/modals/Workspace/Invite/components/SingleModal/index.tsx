@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { UserRole } from '@voiceflow/dtos';
+import type { UserRole } from '@voiceflow/dtos';
 import { BillingPeriod } from '@voiceflow/internal';
 import { Box, Button, ButtonVariant, Members, Modal, Spinner, System, Text, toast, withProvider } from '@voiceflow/ui';
 import pluralize from 'pluralize';
@@ -10,7 +10,7 @@ import * as Payment from '@/contexts/PaymentContext';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { useDispatch } from '@/hooks/realtime';
 import { useSelector } from '@/hooks/redux';
-import { VoidInternalProps } from '@/ModalsV2/types';
+import type { VoidInternalProps } from '@/ModalsV2/types';
 import CardDetails from '@/pages/DashboardV2/pages/MembersAndBilling/pages/LegacyBilling/CardDetails';
 import * as currency from '@/utils/currency';
 import { isEditorUserRole } from '@/utils/role';

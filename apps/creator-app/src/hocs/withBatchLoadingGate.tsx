@@ -1,7 +1,8 @@
 import React from 'react';
 import { setDisplayName, wrapDisplayName } from 'recompose';
 
-import BatchLoadingGate, { Gate } from '@/components/BatchLoadingGate';
+import type { Gate } from '@/components/BatchLoadingGate';
+import BatchLoadingGate from '@/components/BatchLoadingGate';
 
 export const withBatchLoadingGate =
   (...gates: Gate[]) =>

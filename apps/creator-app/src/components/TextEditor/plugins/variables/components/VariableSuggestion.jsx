@@ -27,7 +27,10 @@ function VariableSuggestion({
   const mentionRef = React.useRef();
 
   const sortedVariables = React.useMemo(() => _sortBy(variables, 'name'), [variables]);
-  const variablesMap = React.useMemo(() => sortedVariables.reduce((obj, slot) => Object.assign(obj, { [slot.name]: slot }), {}), [sortedVariables]);
+  const variablesMap = React.useMemo(
+    () => sortedVariables.reduce((obj, slot) => Object.assign(obj, { [slot.name]: slot }), {}),
+    [sortedVariables]
+  );
 
   const variableReplaceRegexp = React.useMemo(() => new RegExp(`[^\\w${characters}_ :]`, 'g'), [characters]);
 
@@ -96,7 +99,10 @@ function VariableSuggestion({
     const savedVariablesMap = store.get('variablesMap');
 
     // recreate whet the variable is updated or deleted, not created
-    if (variablesMap !== store.get('variablesMap') && Object.keys(variablesMap).length <= Object.keys(savedVariablesMap).length) {
+    if (
+      variablesMap !== store.get('variablesMap') &&
+      Object.keys(variablesMap).length <= Object.keys(savedVariablesMap).length
+    ) {
       store.merge({ variablesMap, recreateEditorState: true });
       globalStore.get('forceUpdate')?.();
     }

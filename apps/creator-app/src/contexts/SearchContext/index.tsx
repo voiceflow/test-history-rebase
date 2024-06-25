@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { useAsyncEffect, useContextApi } from '@voiceflow/ui';
 import React from 'react';
@@ -9,7 +9,7 @@ import * as Diagram from '@/ducks/diagramV2';
 import * as Session from '@/ducks/session';
 import { useSelector, useStore } from '@/hooks/redux';
 
-import { DiagramNodeDatabaseMap, Filters, NodeDatabaseEntry } from './types';
+import type { DiagramNodeDatabaseMap, Filters, NodeDatabaseEntry } from './types';
 import { buildSearchDatabase } from './utils';
 
 export * as SearchTypes from './types';

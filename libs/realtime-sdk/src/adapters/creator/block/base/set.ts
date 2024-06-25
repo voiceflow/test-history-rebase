@@ -1,8 +1,8 @@
-import { BaseNode } from '@voiceflow/base-types';
+import type { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { createMultiAdapter } from 'bidirectional-adapter';
 
-import { NodeData } from '../../../../models';
+import type { NodeData } from '../../../../models';
 import { sanitizeSetValue } from '../../../../utils/expression';
 import {
   createBlockAdapter,

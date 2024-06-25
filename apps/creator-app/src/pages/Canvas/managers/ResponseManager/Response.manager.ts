@@ -1,8 +1,8 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
 import { CMS_RESPONSE_LEARN_MORE } from '@/constants/link.constant';
 
-import { NodeManagerConfigV3 } from '../types';
+import type { NodeManagerConfigV3 } from '../types';
 import { ResponseEditor } from './ResponseEditor/Response.editor';
 import { NODE_CONFIG } from './ResponseManager.constants';
 import { ResponseStep } from './ResponseStep/Response.step';

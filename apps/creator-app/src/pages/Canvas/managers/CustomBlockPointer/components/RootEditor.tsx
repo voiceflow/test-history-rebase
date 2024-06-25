@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
@@ -34,7 +34,8 @@ const RootEditor: React.FC = () => {
   const headerActions = useHeaderActions(customBlock);
 
   const validParameters = React.useMemo(
-    () => Object.fromEntries(customBlock?.parameters.map((paramName) => [paramName, parameters[paramName] ?? '']) ?? []),
+    () =>
+      Object.fromEntries(customBlock?.parameters.map((paramName) => [paramName, parameters[paramName] ?? '']) ?? []),
     [customBlock, parameters]
   );
 

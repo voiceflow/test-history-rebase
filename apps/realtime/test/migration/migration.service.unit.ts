@@ -1,18 +1,19 @@
-import { EntityManager } from '@mikro-orm/core';
-import { BaseVersion } from '@voiceflow/base-types';
+import type { EntityManager } from '@mikro-orm/core';
+import type { BaseVersion } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
-import { createMock, DeepMocked } from '@/../test/utils/create-mock.util';
-import { AssistantSerializer } from '@/assistant/assistant.serializer';
-import { AssistantService } from '@/assistant/assistant.service';
-import { BackupService } from '@/backup/backup.service';
-import { EnvironmentService } from '@/environment/environment.service';
-import { LegacyService } from '@/legacy/legacy.service';
+import type { DeepMocked } from '@/../test/utils/create-mock.util';
+import { createMock } from '@/../test/utils/create-mock.util';
+import type { AssistantSerializer } from '@/assistant/assistant.serializer';
+import type { AssistantService } from '@/assistant/assistant.service';
+import type { BackupService } from '@/backup/backup.service';
+import type { EnvironmentService } from '@/environment/environment.service';
+import type { LegacyService } from '@/legacy/legacy.service';
 import { MigrationState } from '@/legacy/services/migrate/constants';
-import { MigrationCacheService } from '@/migration/cache/cache.service';
+import type { MigrationCacheService } from '@/migration/cache/cache.service';
 import { MigrationService } from '@/migration/migration.service';
-import { ProjectLegacyService } from '@/project/project-legacy/project-legacy.service';
+import type { ProjectLegacyService } from '@/project/project-legacy/project-legacy.service';
 
 describe('Migrate service unit tests', () => {
   let legacyService: DeepMocked<LegacyService>;

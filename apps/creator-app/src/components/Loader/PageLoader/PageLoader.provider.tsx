@@ -10,7 +10,9 @@ export const PageLoaderProvider: React.FC<IPageLoaderProvider> = memo(({ childre
   const [loaders, setLoaders] = useState<Record<string, boolean>>({ [loaderID]: false });
   const [loaderVisible, setLoaderVisible] = useState(true);
 
-  const parentLoaded = useCreateConst(() => !parentLoaders || Object.values(parentLoaders).every((val) => val === true));
+  const parentLoaded = useCreateConst(
+    () => !parentLoaders || Object.values(parentLoaders).every((val) => val === true)
+  );
 
   const combinedLoaders = useMemo(() => {
     if (parentLoaded) return loaders;

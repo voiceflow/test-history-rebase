@@ -1,11 +1,11 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { normalize } from 'normal-store';
 
 import { ROOT_DIAGRAM_LABEL, ROOT_DIAGRAM_NAME } from '@/constants';
 import { BLOCK_WIDTH } from '@/styles/theme';
-import { Point } from '@/types';
+import type { Point } from '@/types';
 
 import { getNodesGroupCenter } from './node';
 
@@ -31,8 +31,12 @@ const getDiagramToCreate = ({
   allNodesLinks: Realtime.Link[];
 }) => {
   const nodeIDMap = nodes.reduce<Record<string, boolean>>((acc, node) => Object.assign(acc, { [node.id]: true }), {});
-  const incomingLinks = allNodesLinks.filter(({ source, target }) => nodeIDMap[target.nodeID] && !nodeIDMap[source.nodeID]);
-  const outgoingLinks = allNodesLinks.filter(({ source, target }) => !nodeIDMap[target.nodeID] && nodeIDMap[source.nodeID]);
+  const incomingLinks = allNodesLinks.filter(
+    ({ source, target }) => nodeIDMap[target.nodeID] && !nodeIDMap[source.nodeID]
+  );
+  const outgoingLinks = allNodesLinks.filter(
+    ({ source, target }) => !nodeIDMap[target.nodeID] && nodeIDMap[source.nodeID]
+  );
 
   const { center, minX } = getNodesGroupCenter(
     nodes.map((node) => ({ data: data[node.id], node })),
@@ -49,7 +53,9 @@ const getDiagramToCreate = ({
 
   const adjustedNodes = nodes.map((node) => ({ ...node, x: node.x + adjustX, y: node.y + adjustY }));
   const adjustedPorts = ports.map((port) =>
-    port.linkData?.points ? { ...port, linkData: { ...port.linkData, points: port.linkData.points.map(adjustPathPoint) } } : port
+    port.linkData?.points
+      ? { ...port, linkData: { ...port.linkData, points: port.linkData.points.map(adjustPathPoint) } }
+      : port
   );
   const adjustedLinks = links.map((link) =>
     link.data?.points ? { ...link, data: { ...link.data, points: link.data.points.map(adjustPathPoint) } } : link
@@ -65,7 +71,13 @@ const getDiagramToCreate = ({
       rootNodeIDs: [],
       markupNodeIDs: [],
     },
-    { nodes: normalize(adjustedNodes), ports: normalize(adjustedPorts), platform, projectType, context: { schemaVersion } }
+    {
+      nodes: normalize(adjustedNodes),
+      ports: normalize(adjustedPorts),
+      platform,
+      projectType,
+      context: { schemaVersion },
+    }
   );
 
   return {
@@ -134,5 +146,6 @@ export const isTemplateDiagram = (
   diagramType: BaseModels.Diagram.DiagramType | null | undefined
 ): diagramType is BaseModels.Diagram.DiagramType.TEMPLATE => diagramType === BaseModels.Diagram.DiagramType.TEMPLATE;
 
-export const isTopicDiagram = (diagramType: BaseModels.Diagram.DiagramType | null | undefined): diagramType is BaseModels.Diagram.DiagramType.TOPIC =>
-  diagramType === BaseModels.Diagram.DiagramType.TOPIC;
+export const isTopicDiagram = (
+  diagramType: BaseModels.Diagram.DiagramType | null | undefined
+): diagramType is BaseModels.Diagram.DiagramType.TOPIC => diagramType === BaseModels.Diagram.DiagramType.TOPIC;

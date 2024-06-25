@@ -1,10 +1,11 @@
-import { BillingPeriod, PlanType } from '@voiceflow/internal';
+import type { BillingPeriod, PlanType } from '@voiceflow/internal';
 
 export interface Billing {
   invoices: Billing.PastInvoice[] | null;
   upcoming: Billing.Invoice | null;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace Billing {
   export interface Invoice {
     items: string[];
@@ -59,6 +60,7 @@ export interface DBBilling {
   upcoming?: DBBilling.Invoice;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace DBBilling {
   export interface Invoice {
     id: string;
@@ -107,7 +109,6 @@ export interface SubscriptionBillingPeriod {
   items: InvoiceLineItem[];
 }
 
-// eslint-disable-next-line no-restricted-syntax
 export enum ChargebeeSubscriptionStatus {
   FUTURE = 'future',
   INTRIAL = 'in_trial',
@@ -118,7 +119,6 @@ export enum ChargebeeSubscriptionStatus {
   TRANSFERRED = 'transferred',
 }
 
-// eslint-disable-next-line no-restricted-syntax
 export enum ChargebeeBillingPeriod {
   MONTH = 'month',
   YEAR = 'year',

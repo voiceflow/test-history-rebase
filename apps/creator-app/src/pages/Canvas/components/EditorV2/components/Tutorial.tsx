@@ -1,4 +1,5 @@
-import { TutorialTooltip, TutorialTooltipProps } from '@voiceflow/ui';
+import type { TutorialTooltipProps } from '@voiceflow/ui';
+import { TutorialTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import { useEditor } from '../hooks';
@@ -9,7 +10,11 @@ const Tutorial: React.FC<TutorialProps> = ({ title, children, anchorRenderer, ..
   const editor = useEditor();
 
   return (
-    <TutorialTooltip {...tooltipProps} title={title || `${editor.label} Block Tutorial`} anchorRenderer={anchorRenderer ?? (() => 'How it works?')}>
+    <TutorialTooltip
+      {...tooltipProps}
+      title={title || `${editor.label} Block Tutorial`}
+      anchorRenderer={anchorRenderer ?? (() => 'How it works?')}
+    >
       {children}
     </TutorialTooltip>
   );

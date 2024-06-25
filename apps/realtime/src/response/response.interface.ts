@@ -9,8 +9,8 @@ import type {
 
 import type { CMSCreateForUserData } from '@/common/types';
 
-import { ResponseMessageCreateWithSubResourcesData } from './response-message/response-message.interface';
-import { ResponseTextVariantCreateWithSubResourcesData } from './response-variant/response-variant.interface';
+import type { ResponseMessageCreateWithSubResourcesData } from './response-message/response-message.interface';
+import type { ResponseTextVariantCreateWithSubResourcesData } from './response-variant/response-variant.interface';
 
 export interface ResponseCreateWithSubResourcesData extends CMSCreateForUserData<ResponseORM> {
   variants: Array<ResponseTextVariantCreateWithSubResourcesData<'discriminatorID'>>;

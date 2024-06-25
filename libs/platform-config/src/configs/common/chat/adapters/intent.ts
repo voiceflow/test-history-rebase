@@ -1,13 +1,19 @@
 import * as Base from '@platform-config/configs/base';
 import { Config as ConfigUtils } from '@platform-config/configs/utils';
-import { ChatModels } from '@voiceflow/chat-types';
+import type { ChatModels } from '@voiceflow/chat-types';
 import { createMultiAdapter, createSmartMultiAdapter } from 'bidirectional-adapter';
 import { denormalize, normalize } from 'normal-store';
 
-import * as Models from '../models';
+import type * as Models from '../models';
 import * as Utils from '../utils';
 
-export const smart = createSmartMultiAdapter<ChatModels.Intent, Models.Intent.Model, [], [], Base.Adapters.Intent.KeyRemap>(
+export const smart = createSmartMultiAdapter<
+  ChatModels.Intent,
+  Models.Intent.Model,
+  [],
+  [],
+  Base.Adapters.Intent.KeyRemap
+>(
   ({ slots, ...dbIntent }) => ({
     ...Base.Adapters.Intent.smart.fromDB(dbIntent),
     ...(slots !== undefined && { slots: normalize(slots.map(Utils.Intent.slotSanitizer)) }),

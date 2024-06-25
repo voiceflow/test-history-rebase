@@ -17,7 +17,9 @@ export const Content = styled.div<{ $animateFill?: boolean }>`
   ${({ $animateFill }) =>
     $animateFill &&
     css`
-      transition: opacity 0.37s, transform 0.22s;
+      transition:
+        opacity 0.37s,
+        transform 0.22s;
       transition-delay: 0.005s;
       transition-timing-function: ease;
 

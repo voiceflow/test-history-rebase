@@ -1,15 +1,19 @@
 import * as Common from '@platform-config/configs/common';
-import { DFESVersion } from '@voiceflow/google-dfes-types';
+import type { DFESVersion } from '@voiceflow/google-dfes-types';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 
-import * as Models from '../../models';
+import type * as Models from '../../models';
 import * as Publishing from './publishing';
 import * as Session from './session';
 import * as Settings from './settings';
 
 export { Publishing, Session, Settings };
 
-export const simple = createMultiAdapter<DFESVersion.VoiceVersion, Models.Version.Model, Common.Voice.Adapters.Version.FromDBOptions>(
+export const simple = createMultiAdapter<
+  DFESVersion.VoiceVersion,
+  Models.Version.Model,
+  Common.Voice.Adapters.Version.FromDBOptions
+>(
   (version, options) => ({
     ...Common.Voice.Adapters.Version.simple.fromDB(version, {
       ...options,

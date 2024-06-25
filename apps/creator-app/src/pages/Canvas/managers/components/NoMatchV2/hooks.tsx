@@ -1,5 +1,5 @@
-import { EmptyObject, Nullable } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { EmptyObject, Nullable } from '@voiceflow/common';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { createDividerMenuItemOption } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,7 +8,7 @@ import * as Tracking from '@/ducks/tracking';
 import * as VersionV2 from '@/ducks/versionV2';
 import { useSelector, useTrackingEvents } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import { OptionalSectionConfig } from '@/pages/Canvas/managers/types';
+import type { OptionalSectionConfig } from '@/pages/Canvas/managers/types';
 import { getPlatformNoMatchFactory } from '@/utils/noMatch';
 
 import { Section } from './components';
@@ -42,7 +42,10 @@ export const useConfig = ({ canRemove = true, step }: NoMatchConfigOptions = {})
     });
 
     await editor.onChange({
-      noMatch: getPlatformNoMatchFactory(editor.projectType)({ defaultVoice, reprompts: locationState?.autogenerate ? [] : [''] }),
+      noMatch: getPlatformNoMatchFactory(editor.projectType)({
+        defaultVoice,
+        reprompts: locationState?.autogenerate ? [] : [''],
+      }),
     });
 
     onOpen(locationState);

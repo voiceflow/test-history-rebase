@@ -1,7 +1,7 @@
 import { createUseJobInterfaceContent } from '@/components/JobInterface';
 import { ErrorStage } from '@/components/PlatformUploadPopup/components';
 import { TwilioPrototypeStageType } from '@/constants/platforms';
-import { TwilioPrototypeJob } from '@/models';
+import type { TwilioPrototypeJob } from '@/models';
 
 import MessagingStage from './MessagingStage';
 import WaitNumber from './WaitNumber';
@@ -18,4 +18,5 @@ export const TwilioPrototypeStageContent = {
   },
 };
 
-export const useTwilioPrototypeStageContent = createUseJobInterfaceContent<TwilioPrototypeJob.AnyJob>(TwilioPrototypeStageContent);
+export const useTwilioPrototypeStageContent =
+  createUseJobInterfaceContent<TwilioPrototypeJob.AnyJob>(TwilioPrototypeStageContent);

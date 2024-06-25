@@ -1,4 +1,4 @@
-import { AIModel } from '@voiceflow/dtos';
+import type { AIModel } from '@voiceflow/dtos';
 import { SectionV2, TippyTooltip } from '@voiceflow/ui';
 import React, { useEffect } from 'react';
 
@@ -11,7 +11,11 @@ export interface IAIPromptSettingsMaxTokensSlider {
   onValueChange: (value: number) => void;
 }
 
-export const AIPromptSettingsMaxTokensSlider: React.FC<IAIPromptSettingsMaxTokensSlider> = ({ model, value, onValueChange }) => {
+export const AIPromptSettingsMaxTokensSlider: React.FC<IAIPromptSettingsMaxTokensSlider> = ({
+  model,
+  value,
+  onValueChange,
+}) => {
   const modelConfig = AI_MODEL_CONFIG_MAP[model];
 
   useEffect(() => {

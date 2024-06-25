@@ -1,11 +1,11 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
 import { emptyNoMatchFactory } from '@/utils/noMatch';
 
-import { NodeConfig } from '../types';
+import type { NodeConfig } from '../types';
 
 export const choiceFactory = (): Realtime.NodeData.InteractionChoice => ({
   id: Utils.id.cuid.slug(),

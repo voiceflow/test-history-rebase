@@ -11,7 +11,9 @@ export interface ResponseMediaAttachmentCreateOneData extends CMSCreateData<Resp
   type: typeof AttachmentType.MEDIA;
 }
 
-export type ResponseAnyAttachmentCreateData = ResponseCardAttachmentCreateOneData | ResponseMediaAttachmentCreateOneData;
+export type ResponseAnyAttachmentCreateData =
+  | ResponseCardAttachmentCreateOneData
+  | ResponseMediaAttachmentCreateOneData;
 
 interface ResponseBaseAttachmentReplaceData {
   variantID: string;

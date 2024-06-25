@@ -1,6 +1,7 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import { isLinkElement } from '@voiceflow/slate-serializer';
-import { Descendant, Editor, Element, Location, Node, Point, Range, Text, Transforms } from 'slate';
+import type { Descendant, Location } from 'slate';
+import { Editor, Element, Node, Point, Range, Text, Transforms } from 'slate';
 
 import { isValidURLMatch } from '@/utils/string';
 import { ALL_URLS_REGEX } from '@/utils/string.util';
@@ -69,10 +70,10 @@ export const withLinksPlugin: Plugin = (EditorAPI: EditorAPIType) => (editor: Ed
         return createLinkFromTextNode(node);
       }
 
-      return matchAndProcessTextNodeToElement({ type: ElementType.LINK, node, next, regexp: ALL_URLS_REGEX }, (match, textNode) => [
-        ...next([textNode]),
-        createLinkFromTextNode({ text: match[0] }),
-      ]);
+      return matchAndProcessTextNodeToElement(
+        { type: ElementType.LINK, node, next, regexp: ALL_URLS_REGEX },
+        (match, textNode) => [...next([textNode]), createLinkFromTextNode({ text: match[0] })]
+      );
     });
   });
 
@@ -88,7 +89,11 @@ export const withLinksPlugin: Plugin = (EditorAPI: EditorAPIType) => (editor: Ed
       // eslint-disable-next-line promise/catch-or-return, promise/always-return
       Promise.resolve().then(() => {
         const rangeRef = EditorAPI.rangeRef(editor, linkRange[1]);
-        Transforms.wrapNodes(editor, { url: linkRange[0], type: ElementType.LINK, children: [] }, { at: linkRange[1], split: true });
+        Transforms.wrapNodes(
+          editor,
+          { url: linkRange[0], type: ElementType.LINK, children: [] },
+          { at: linkRange[1], split: true }
+        );
         EditorAPI.applyLinkStyles(editor, rangeRef.current!);
         rangeRef.unref();
       });
@@ -227,7 +232,9 @@ export const withLinksEditorApi: APIPlugin = (EditorAPI: EditorAPIType): EditorA
             {
               at: selectionRef.current!,
               split: true,
-              match: (node) => (Text.isText(node) && !editor.isFakeSelectionApplied()) || !!(node as Text)[EditorAPI.FAKE_SELECTION_PROPERTY_NAME],
+              match: (node) =>
+                (Text.isText(node) && !editor.isFakeSelectionApplied()) ||
+                !!(node as Text)[EditorAPI.FAKE_SELECTION_PROPERTY_NAME],
             }
           );
 
@@ -297,7 +304,11 @@ export const withLinksEditorApi: APIPlugin = (EditorAPI: EditorAPIType): EditorA
 
       const startOfTextNode = Editor.point(editor, currentNodePath, { edge: 'start' });
 
-      while (start && Editor.string(editor, Editor.range(editor, start, end)) !== ' ' && !Point.isBefore(start, startOfTextNode)) {
+      while (
+        start &&
+        Editor.string(editor, Editor.range(editor, start, end)) !== ' ' &&
+        !Point.isBefore(start, startOfTextNode)
+      ) {
         end = start;
         start = Editor.before(editor, end, { unit: 'character' }) ?? null;
       }

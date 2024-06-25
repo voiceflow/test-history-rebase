@@ -1,8 +1,9 @@
-import { stopPropagation, SvgIcon, SvgIconTypes, useDragTrap, usePersistFunction } from '@voiceflow/ui';
+import type { SvgIconTypes } from '@voiceflow/ui';
+import { stopPropagation, SvgIcon, useDragTrap, usePersistFunction } from '@voiceflow/ui';
 import React from 'react';
 
-import { EditableTextAPI } from '@/components/EditableText';
-import { HSLShades } from '@/constants';
+import type { EditableTextAPI } from '@/components/EditableText';
+import type { HSLShades } from '@/constants';
 import { useLinkedState } from '@/hooks';
 import { BLOCK_SECTION_TITLE_CLASSNAME } from '@/pages/Canvas/constants';
 import { useEditingMode } from '@/pages/Project/hooks';
@@ -31,7 +32,16 @@ export interface BlockHeaderProps {
   canEditTitle?: boolean;
 }
 
-const BlockHeader: React.FC<BlockHeaderProps> = ({ name, icon, palette, actions, titleRef, onRename, isDisabled, canEditTitle }) => {
+const BlockHeader: React.FC<BlockHeaderProps> = ({
+  name,
+  icon,
+  palette,
+  actions,
+  titleRef,
+  onRename,
+  isDisabled,
+  canEditTitle,
+}) => {
   const isEditingMode = useEditingMode();
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const [editing, setEditing] = React.useState(false);

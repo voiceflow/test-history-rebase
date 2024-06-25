@@ -4,8 +4,10 @@ import React from 'react';
 import * as ProjectV2 from '@/ducks/projectV2';
 import { useSelector } from '@/hooks/redux';
 
-import TextBasedEditor, { PromptInputTextEditorProps } from './TextEditor';
-import VoiceBasedEditor, { PromptInputVoiceEditorProps } from './VoiceEditor';
+import type { PromptInputTextEditorProps } from './TextEditor';
+import TextBasedEditor from './TextEditor';
+import type { PromptInputVoiceEditorProps } from './VoiceEditor';
+import VoiceBasedEditor from './VoiceEditor';
 
 interface PromptInputProps {
   value: Platform.Base.Models.Prompt.Model;

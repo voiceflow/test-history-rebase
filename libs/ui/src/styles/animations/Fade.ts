@@ -1,6 +1,7 @@
 import { css, keyframes, styled } from '@ui/styles';
 import { ANIMATION_SPEED } from '@ui/styles/constants';
-import { space, SpaceProps } from 'styled-system';
+import type { SpaceProps } from 'styled-system';
+import { space } from 'styled-system';
 
 import { moveInKeyframesFactory } from './Move';
 
@@ -35,12 +36,13 @@ export const fadeAndMoveStyleFactory =
     distance = defaultDistance,
     duration = defaultDuration,
     animationFunction = defaultAnimationFunction,
-  }: FadeInProps) =>
-    css`
-      animation: ${fadeInKeyframes} ${duration}s ${animationFunction}, ${moveInKeyframesFactory(distance, height)} ${duration}s ${animationFunction};
-      animation-delay: ${delay}s;
-      animation-fill-mode: both;
-    `;
+  }: FadeInProps) => css`
+    animation:
+      ${fadeInKeyframes} ${duration}s ${animationFunction},
+      ${moveInKeyframesFactory(distance, height)} ${duration}s ${animationFunction};
+    animation-delay: ${delay}s;
+    animation-fill-mode: both;
+  `;
 
 export const fadeInStyle = css<FadeInProps>`
   ${fadeAndMoveStyleFactory()}

@@ -1,15 +1,21 @@
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Popper, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
 import Step, { FailureStepItemV2, Item, Section, StepButton, SuccessStepItemV2 } from '@/pages/Canvas/components/Step';
-import { ConnectedStep } from '@/pages/Canvas/managers/types';
+import type { ConnectedStep } from '@/pages/Canvas/managers/types';
 
 import { NODE_CONFIG } from '../constants';
 import StepPreview from './StepPreview';
 
-const CodeStep: ConnectedStep<Realtime.NodeData.Code, Realtime.NodeData.CodeBuiltInPorts> = ({ ports, data, withPorts, palette, engine }) => (
+const CodeStep: ConnectedStep<Realtime.NodeData.Code, Realtime.NodeData.CodeBuiltInPorts> = ({
+  ports,
+  data,
+  withPorts,
+  palette,
+  engine,
+}) => (
   <Step nodeID={data.nodeID}>
     <Section v2 withIcon>
       <Item
@@ -22,10 +28,16 @@ const CodeStep: ConnectedStep<Realtime.NodeData.Code, Realtime.NodeData.CodeBuil
             <Popper
               placement="right-start"
               renderContent={({ onClose }) => (
-                <StepPreview codeData={data.code} onClose={onClose} onOpenEditor={() => engine.setActive(data.nodeID)} />
+                <StepPreview
+                  codeData={data.code}
+                  onClose={onClose}
+                  onOpenEditor={() => engine.setActive(data.nodeID)}
+                />
               )}
             >
-              {({ onToggle, ref, isOpened }) => <StepButton ref={ref} onClick={stopPropagation(onToggle)} icon="preview" isActive={isOpened} />}
+              {({ onToggle, ref, isOpened }) => (
+                <StepButton ref={ref} onClick={stopPropagation(onToggle)} icon="preview" isActive={isOpened} />
+              )}
             </Popper>
           )
         }
@@ -35,9 +47,7 @@ const CodeStep: ConnectedStep<Realtime.NodeData.Code, Realtime.NodeData.CodeBuil
       {withPorts && (
         <>
           <SuccessStepItemV2 label="Default" portID={ports.out.builtIn[BaseModels.PortType.NEXT]} />
-          {data.paths?.map((path) => (
-            <Item key={path.key} label={path.label} portID={ports.out.byKey[path.key]} />
-          ))}
+          {data.paths?.map((path) => <Item key={path.key} label={path.label} portID={ports.out.byKey[path.key]} />)}
           <FailureStepItemV2 label="Fail" portID={ports.out.builtIn[BaseModels.PortType.FAIL]} />
         </>
       )}

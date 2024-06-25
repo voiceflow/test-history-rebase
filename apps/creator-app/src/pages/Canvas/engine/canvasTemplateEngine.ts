@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Errors from '@/config/errors';
@@ -11,7 +11,7 @@ import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as TrackingEvents from '@/ducks/tracking/events';
 import * as VersionV2 from '@/ducks/versionV2';
-import { Coords } from '@/utils/geometry';
+import type { Coords } from '@/utils/geometry';
 
 import { EngineConsumer } from './utils';
 

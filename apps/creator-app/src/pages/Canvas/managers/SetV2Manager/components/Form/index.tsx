@@ -1,12 +1,13 @@
 import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import DraggableList, { DeleteComponent } from '@/components/DraggableList';
-import { MapManagedFactoryAPI, useMapManager, useToggle } from '@/hooks';
+import type { MapManagedFactoryAPI } from '@/hooks';
+import { useMapManager, useToggle } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
+import type { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 
 import DraggableItem from '../DraggableItem';
 import { Footer } from './components';

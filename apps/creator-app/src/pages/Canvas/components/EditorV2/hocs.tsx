@@ -1,8 +1,8 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
-import { NodeEditorV2Props } from '../../managers/types';
+import type { NodeEditorV2Props } from '../../managers/types';
 import { EditorSidebarProvider } from '../EditorSidebarV2/context';
 import { RedirectToRoot } from './components';
 import { useEditor } from './hooks';

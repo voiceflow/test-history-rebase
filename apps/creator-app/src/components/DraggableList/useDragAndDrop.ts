@@ -1,13 +1,14 @@
 import { usePersistFunction } from '@voiceflow/ui';
 import _throttle from 'lodash/throttle';
 import React from 'react';
-import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
+import type { DropTargetMonitor } from 'react-dnd';
+import { useDrag, useDrop } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 
 import { HOVER_THROTTLE_TIMEOUT } from '@/constants';
-import { DragContextPreviewProps } from '@/contexts/DragContext';
+import type { DragContextPreviewProps } from '@/contexts/DragContext';
 
-import { DnDHandlers, DnDItem, InternalItem } from './types';
+import type { DnDHandlers, DnDItem, InternalItem } from './types';
 
 interface CollectedProps {
   isDragging: boolean;
@@ -41,9 +42,14 @@ const useDragAndDrop = <I extends { id: string } | any>(
     canDrop: handlers.current.canDrop,
     accept: type,
     hover: _throttle((item: DnDItem<I>, monitor: DropTargetMonitor) => {
+      // eslint-disable-next-line no-param-reassign
       item.deleteHovered = false;
 
-      if (!rootRef.current || !handlers.current.onReorder || (disableReorderingWhileDraggingX && item.isDraggingXEnabled)) {
+      if (
+        !rootRef.current ||
+        !handlers.current.onReorder ||
+        (disableReorderingWhileDraggingX && item.isDraggingXEnabled)
+      ) {
         return;
       }
 
@@ -66,11 +72,14 @@ const useDragAndDrop = <I extends { id: string } | any>(
 
       handlers.current.onReorder(dragIndex, hoverIndex);
 
+      // eslint-disable-next-line no-param-reassign
       item.index = hoverIndex;
     }, HOVER_THROTTLE_TIMEOUT),
   });
 
-  const persistedSetIsDraggingXEnabled = usePersistFunction((value: boolean) => dragItemsMap.get(cacheRef.current.key)?.(value));
+  const persistedSetIsDraggingXEnabled = usePersistFunction((value: boolean) =>
+    dragItemsMap.get(cacheRef.current.key)?.(value)
+  );
 
   const dragItem = {
     ...props,
@@ -114,7 +123,8 @@ const useDragAndDrop = <I extends { id: string } | any>(
 
     canDrag:
       typeof handlers.current.canDrag === 'function'
-        ? (monitor) => (handlers.current.canDrag as Function)(dragItem, monitor)
+        ? // eslint-disable-next-line @typescript-eslint/ban-types
+          (monitor) => (handlers.current.canDrag as Function)(dragItem, monitor)
         : handlers.current.canDrag,
 
     isDragging: unmountableDuringDrag

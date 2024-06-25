@@ -41,8 +41,10 @@ export default class MouseMovement {
     const { clientWidth, clientHeight } = document.body;
     const [mouseX, mouseY] = mouseEventOffset(this.event!, document.body);
 
-    const offsetX = mouseX <= MOUSE_BOUNDING_TOLERANCE || mouseX >= clientWidth - MOUSE_BOUNDING_TOLERANCE ? 0 : this.movementX!;
-    const offsetY = mouseY <= MOUSE_BOUNDING_TOLERANCE || mouseY >= clientHeight - MOUSE_BOUNDING_TOLERANCE ? 0 : this.movementY!;
+    const offsetX =
+      mouseX <= MOUSE_BOUNDING_TOLERANCE || mouseX >= clientWidth - MOUSE_BOUNDING_TOLERANCE ? 0 : this.movementX!;
+    const offsetY =
+      mouseY <= MOUSE_BOUNDING_TOLERANCE || mouseY >= clientHeight - MOUSE_BOUNDING_TOLERANCE ? 0 : this.movementY!;
 
     return [offsetX, offsetY] as const;
   }

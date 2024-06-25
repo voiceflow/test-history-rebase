@@ -1,5 +1,5 @@
-import { CustomBlock } from '@realtime-sdk/models';
-import { BaseModels } from '@voiceflow/base-types';
+import type { CustomBlock } from '@realtime-sdk/models';
+import type { BaseModels } from '@voiceflow/base-types';
 import { createMultiAdapter } from 'bidirectional-adapter';
 
 export const customBlockAdapter = createMultiAdapter<

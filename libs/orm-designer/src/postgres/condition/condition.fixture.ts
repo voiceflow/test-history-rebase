@@ -19,8 +19,8 @@ export const expressionCondition: EntityDTO<ExpressionConditionEntity> = {
     {
       lhs: ['test'],
       rhs: ['test'],
-      operation: ConditionOperation.IS
-    }
+      operation: ConditionOperation.IS,
+    },
   ],
   environmentID: 'environment-1',
 };

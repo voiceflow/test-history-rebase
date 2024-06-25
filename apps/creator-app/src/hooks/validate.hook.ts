@@ -1,11 +1,19 @@
 import { type AnyRecord } from '@voiceflow/common';
 import { notify, usePersistFunction } from '@voiceflow/ui-next';
 import type { Options as NotifyOptions } from '@voiceflow/ui-next/build/esm/contexts/Notify/Notify.context';
-import { IValidator, IValidatorErrorResult, IValidatorSuccessResult, IValidatorWithContext } from '@voiceflow/utils-designer';
+import type {
+  IValidator,
+  IValidatorErrorResult,
+  IValidatorSuccessResult,
+  IValidatorWithContext,
+} from '@voiceflow/utils-designer';
 import { useEffect } from 'react';
-import { UnionToIntersection } from 'utility-types';
+import type { UnionToIntersection } from 'utility-types';
 
-type ValidatorErrorSetterTuple = [validator: IValidator<any> | IValidatorWithContext<any, any>, setError: (error: null | string) => void];
+type ValidatorErrorSetterTuple = [
+  validator: IValidator<any> | IValidatorWithContext<any, any>,
+  setError: (error: null | string) => void,
+];
 
 type ValidatorsData<InputStates extends { [key: string]: ValidatorErrorSetterTuple }> = {
   [Key in keyof InputStates]: Required<InputStates[Key][0]>['_input'];
@@ -28,7 +36,10 @@ interface ValidatorsOptions {
 interface ValidatorsAPI<InputStates extends { [key: string]: ValidatorErrorSetterTuple }> {
   validate: ValidatorsContext<InputStates> extends void
     ? (data: ValidatorsData<InputStates>, context?: ValidatorsOptions) => ValidateResult<InputStates>
-    : (data: ValidatorsData<InputStates>, context: ValidatorsContext<InputStates> & ValidatorsOptions) => ValidateResult<InputStates>;
+    : (
+        data: ValidatorsData<InputStates>,
+        context: ValidatorsContext<InputStates> & ValidatorsOptions
+      ) => ValidateResult<InputStates>;
 
   container: ValidatorsContext<InputStates> extends void
     ? (callback: (fields: ValidatorsData<InputStates>) => void) => (fields: ValidatorsData<InputStates>) => void
@@ -72,13 +83,14 @@ export const useValidators: IUseValidators = (validatorsMap) => {
     return success ? { success, data } : { success, errors };
   };
 
-  const container = (callback: (fields: AnyRecord) => unknown, getContext?: () => ValidatorsOptions) => (fields: AnyRecord) => {
-    const validator = validate(fields, getContext?.());
+  const container =
+    (callback: (fields: AnyRecord) => unknown, getContext?: () => ValidatorsOptions) => (fields: AnyRecord) => {
+      const validator = validate(fields, getContext?.());
 
-    if (!validator.success) return;
+      if (!validator.success) return;
 
-    callback(validator.data);
-  };
+      callback(validator.data);
+    };
 
   return { validate, container } as any;
 };

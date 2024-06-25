@@ -3,7 +3,8 @@ import { useSelector } from 'react-redux';
 import * as Recent from '@/ducks/recent';
 import { useDebug, usePublic } from '@/pages/Prototype/hooks';
 
-import { Message, MessageType, TranscriptMessageType } from '../../types';
+import type { Message } from '../../types';
+import { MessageType, TranscriptMessageType } from '../../types';
 
 type Filter = (message: Message) => boolean;
 

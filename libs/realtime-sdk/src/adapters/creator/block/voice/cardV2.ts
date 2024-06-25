@@ -1,4 +1,4 @@
-import { NodeData } from '../../../../models';
+import type { NodeData } from '../../../../models';
 import { baseCardV2Adapter } from '../base';
 import { createBlockAdapter, voiceNoMatchAdapter, voiceNoReplyAdapter } from '../utils';
 

@@ -1,16 +1,17 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import type { LoguxUnsubscribeAction } from '@logux/actions';
-import { SendBackActions } from '@logux/server';
-import { ChannelContext, ChannelSubscribeAction } from '@socket-utils/types';
-import { Eventual, Utils } from '@voiceflow/common';
+import type { SendBackActions } from '@logux/server';
+import type { ChannelContext, ChannelSubscribeAction } from '@socket-utils/types';
+import type { Eventual, Utils } from '@voiceflow/common';
 
-import { AbstractLoguxControl, isUnauthorizedError, LoguxControlOptions } from './utils';
+import type { LoguxControlOptions } from './utils';
+import { AbstractLoguxControl, isUnauthorizedError } from './utils';
 
 export abstract class AbstractChannelControl<
   T extends LoguxControlOptions,
   P extends object,
   E extends object = {},
-  D extends object = {}
+  D extends object = {},
 > extends AbstractLoguxControl<T> {
   protected abstract channel: Utils.protocol.Channel<Extract<keyof P, string>>;
 

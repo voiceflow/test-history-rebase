@@ -50,7 +50,7 @@ export class AssistantPublicHTTPController {
     private readonly projectSerializer: ProjectSerializer,
     @Inject(EnvironmentService)
     private readonly environment: EnvironmentService
-  ) { }
+  ) {}
 
   @Get(':assistantID/environments')
   @Authorize.Permissions<Request<{ assistantID: string }>>([Permission.PROJECT_READ], (request) => ({

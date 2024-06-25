@@ -116,7 +116,6 @@ export enum ClassName {
   THREAD_EDITOR_REPLY = 'vf-thread-editor__reply',
   THREAD_EDITOR_NEW = 'vf-thread-editor--new',
   THREAD_EDITOR_COMMENT = 'vf-thread-editor__comment-editor',
-  THREAD = 'vf-canvas__thread',
   THREAD_INDICATOR = 'vf-canvas__thread__indicator',
   COLLABORATOR_LINE_ITEM = 'vf-collaborator-line-item',
   INVITE_ROLE_BUTTON = 'vf-invite-role-button',

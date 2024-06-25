@@ -1,7 +1,10 @@
-import { Mock } from 'vitest';
+import type { Mock } from 'vitest';
 
 export interface Storage {
-  (name: 'localStorage' | 'sessionStorage', getter?: (key: string) => string): {
+  (
+    name: 'localStorage' | 'sessionStorage',
+    getter?: (key: string) => string
+  ): {
     getItem: Mock<[key: string], string | undefined>;
     setItem: Mock<[key: string, value: string], undefined>;
   };

@@ -17,16 +17,21 @@ export class ResponseDiscriminatorLoguxController {
   ) {}
 
   @Action.Async(Actions.ResponseDiscriminator.CreateOne)
-  @Authorize.Permissions<Actions.ResponseDiscriminator.CreateOne.Request>([Permission.PROJECT_UPDATE], ({ context }) => ({
-    id: context.environmentID,
-    kind: 'version',
-  }))
+  @Authorize.Permissions<Actions.ResponseDiscriminator.CreateOne.Request>(
+    [Permission.PROJECT_UPDATE],
+    ({ context }) => ({
+      id: context.environmentID,
+      kind: 'version',
+    })
+  )
   @UseRequestContext()
   async createOne(
     @Payload() { data, context }: Actions.ResponseDiscriminator.CreateOne.Request,
     @AuthMeta() auth: AuthMetaPayload
   ): Promise<Actions.ResponseDiscriminator.CreateOne.Response> {
-    return this.service.createManyAndBroadcast([data], { auth, context }).then(([result]) => ({ data: this.service.toJSON(result), context }));
+    return this.service
+      .createManyAndBroadcast([data], { auth, context })
+      .then(([result]) => ({ data: this.service.toJSON(result), context }));
   }
 
   @Action(Actions.ResponseDiscriminator.PatchOne)
@@ -64,11 +69,17 @@ export class ResponseDiscriminatorLoguxController {
   @Broadcast<Actions.ResponseDiscriminator.DeleteOne>(({ context }) => ({ channel: Channels.assistant.build(context) }))
   @BroadcastOnly()
   @UseRequestContext()
-  async deleteOne(@Payload() { id, context }: Actions.ResponseDiscriminator.DeleteOne, @AuthMeta() auth: AuthMetaPayload) {
+  async deleteOne(
+    @Payload() { id, context }: Actions.ResponseDiscriminator.DeleteOne,
+    @AuthMeta() auth: AuthMetaPayload
+  ) {
     const result = await this.service.deleteManyAndSync([id], context);
 
     // overriding discriminators cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, responseDiscriminators: [] } }, { auth, context });
+    await this.service.broadcastDeleteMany(
+      { ...result, delete: { ...result.delete, responseDiscriminators: [] } },
+      { auth, context }
+    );
   }
 
   @Action(Actions.ResponseDiscriminator.DeleteMany)
@@ -81,11 +92,17 @@ export class ResponseDiscriminatorLoguxController {
   }))
   @BroadcastOnly()
   @UseRequestContext()
-  async deleteMany(@Payload() { ids, context }: Actions.ResponseDiscriminator.DeleteMany, @AuthMeta() auth: AuthMetaPayload) {
+  async deleteMany(
+    @Payload() { ids, context }: Actions.ResponseDiscriminator.DeleteMany,
+    @AuthMeta() auth: AuthMetaPayload
+  ) {
     const result = await this.service.deleteManyAndSync(ids, context);
 
     // overriding discriminators cause it's broadcasted by decorator
-    await this.service.broadcastDeleteMany({ ...result, delete: { ...result.delete, responseDiscriminators: [] } }, { auth, context });
+    await this.service.broadcastDeleteMany(
+      { ...result, delete: { ...result.delete, responseDiscriminators: [] } },
+      { auth, context }
+    );
   }
 
   @Action(Actions.ResponseDiscriminator.AddOne)

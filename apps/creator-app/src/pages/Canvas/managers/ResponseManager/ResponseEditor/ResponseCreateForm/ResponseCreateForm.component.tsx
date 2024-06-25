@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
-import { ResponseVariantType, TextResponseVariantCreate } from '@voiceflow/dtos';
+import type { TextResponseVariantCreate } from '@voiceflow/dtos';
+import { ResponseVariantType } from '@voiceflow/dtos';
 import { Box, Divider, Section } from '@voiceflow/ui-next';
 import React, { Fragment } from 'react';
 
@@ -16,7 +17,7 @@ import { useIsListEmpty } from '@/hooks/list.hook';
 import { isTextResponseVariantEmpty, responseTextVariantCreateDataFactory } from '@/utils/response.util';
 
 import { ResponseCreateTextVariant } from '../ResponseCreateTextVariant/ResponseCreateTextVariant.component';
-import { IResponseCreateForm } from './ResponseCreateForm.interface';
+import type { IResponseCreateForm } from './ResponseCreateForm.interface';
 
 const initialState: Array<TextResponseVariantCreate & { tempID?: string }> = [responseTextVariantCreateDataFactory()];
 

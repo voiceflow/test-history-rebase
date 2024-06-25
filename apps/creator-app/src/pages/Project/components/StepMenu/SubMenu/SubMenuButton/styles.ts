@@ -45,7 +45,9 @@ export const SubMenuButtonContainer = styled(Box.FlexStart)<SubMenuButtonContain
       : !isContextMenuOpen &&
         css`
           &:hover {
-            box-shadow: 0 2px 3px 0 rgba(19, 33, 68, 0.08), 0 0 0 1px rgba(19, 33, 68, 0.06);
+            box-shadow:
+              0 2px 3px 0 rgba(19, 33, 68, 0.08),
+              0 0 0 1px rgba(19, 33, 68, 0.06);
             background-color: #fdfdfd;
           }
         `}
@@ -86,8 +88,11 @@ export const SubMenuButtonContainer = styled(Box.FlexStart)<SubMenuButtonContain
     css`
       width: auto;
       transform: rotate(-2deg);
-      box-shadow: 0 4px 8px 0 rgba(17, 49, 96, 0.08), 0 0 0 1px rgba(17, 49, 96, 0.08);
-      background-image: linear-gradient(to bottom, rgba(238, 244, 246, 0.3), rgba(238, 244, 246, 0.6)), linear-gradient(to bottom, #ffffff, #ffffff);
+      box-shadow:
+        0 4px 8px 0 rgba(17, 49, 96, 0.08),
+        0 0 0 1px rgba(17, 49, 96, 0.08);
+      background-image: linear-gradient(to bottom, rgba(238, 244, 246, 0.3), rgba(238, 244, 246, 0.6)),
+        linear-gradient(to bottom, #ffffff, #ffffff);
       cursor: grabbing;
     `}
 

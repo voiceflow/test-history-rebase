@@ -3,7 +3,7 @@ import React from 'react';
 
 import { css, styled } from '@/hocs/styled';
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { Point } from '@/types';
+import type { Point } from '@/types';
 
 import { useSwallowZoom } from '../hooks';
 import CircularHandle from './CircularHandle';
@@ -31,7 +31,15 @@ const VertexHandle: React.FC<VertexHandleProps> = ({ point: [left, right], onDra
   const engine = React.useContext(EngineContext)!;
   const zoom = engine.canvas!.getZoom();
 
-  return <VertexCircularHandle draggable point={[left * zoom, right * zoom]} onMouseDown={stopPropagation()} onDragStart={onDragStart} ref={ref} />;
+  return (
+    <VertexCircularHandle
+      draggable
+      point={[left * zoom, right * zoom]}
+      onMouseDown={stopPropagation()}
+      onDragStart={onDragStart}
+      ref={ref}
+    />
+  );
 };
 
 export default VertexHandle;

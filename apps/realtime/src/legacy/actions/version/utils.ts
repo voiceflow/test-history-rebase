@@ -1,7 +1,7 @@
 /* eslint-disable max-classes-per-file */
-import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { ActionAccessor, BaseContextData, Context } from '@voiceflow/socket-utils';
-import { Action } from 'typescript-fsa';
+import type * as Realtime from '@voiceflow/realtime-sdk/backend';
+import type { ActionAccessor, BaseContextData, Context } from '@voiceflow/socket-utils';
+import type { Action } from 'typescript-fsa';
 
 import { resendProjectChannel } from '@/legacy/actions/project/utils';
 import { AbstractActionControl } from '@/legacy/actions/utils';

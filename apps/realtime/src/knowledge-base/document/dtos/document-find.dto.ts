@@ -1,4 +1,10 @@
-import { KBDocumentChunkDTO, KBDocumentDataDTO, KBDocumentStatus, KnowledgeBaseDocumentDTO, KnowledgeBaseDocumentType } from '@voiceflow/dtos';
+import {
+  KBDocumentChunkDTO,
+  KBDocumentDataDTO,
+  KBDocumentStatus,
+  KnowledgeBaseDocumentDTO,
+  KnowledgeBaseDocumentType,
+} from '@voiceflow/dtos';
 import { z } from 'zod';
 
 export const DocumentFindManyRequest = z.object({

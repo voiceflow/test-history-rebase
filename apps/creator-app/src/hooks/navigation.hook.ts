@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { ExtractRouteParams } from 'react-router';
+import type { ExtractRouteParams } from 'react-router';
 import { generatePath, useHistory, useLocation, useRouteMatch } from 'react-router-dom';
 
 /**
@@ -10,7 +10,8 @@ export const useGetResolvedPath = () => {
   const { pathname: locationPathname } = useLocation();
 
   return useCallback(
-    <S extends string>(to: S, params?: ExtractRouteParams<S>): string => generatePath(to, { ...match?.params, ...params } as any),
+    <S extends string>(to: S, params?: ExtractRouteParams<S>): string =>
+      generatePath(to, { ...match?.params, ...params } as any),
     [match, locationPathname]
   );
 };
@@ -25,7 +26,10 @@ interface LinkClickOptions<S extends string> {
 }
 
 interface OnLinkClick {
-  <S extends string>(to: S, options?: LinkClickOptions<S>): <Elm extends Element>(event: React.MouseEvent<Elm, MouseEvent>) => void;
+  <S extends string>(
+    to: S,
+    options?: LinkClickOptions<S>
+  ): <Elm extends Element>(event: React.MouseEvent<Elm, MouseEvent>) => void;
 }
 
 /**

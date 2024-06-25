@@ -1,5 +1,5 @@
 import client from '@/client';
-import { ExportFormat } from '@/constants';
+import type { ExportFormat } from '@/constants';
 
 import { EventName } from '../constants';
 import { createVersionEvent, createVersionEventTracker } from '../utils';

@@ -61,7 +61,9 @@ export class ConfigurationService {
       this.unsubscribe = this.gcloud.firestore.collection(this.env.FIRESTORE_MODEL_COLLECTION).onSnapshot(
         async (snapshot) => {
           if (!snapshot.docs.length) {
-            this.logger.error(`no documents found in the firestore collection '${this.env.FIRESTORE_MODEL_COLLECTION}'`);
+            this.logger.error(
+              `no documents found in the firestore collection '${this.env.FIRESTORE_MODEL_COLLECTION}'`
+            );
           }
 
           this.cache = ConfigurationService.buildCache(snapshot);

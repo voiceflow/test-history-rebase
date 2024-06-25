@@ -47,7 +47,9 @@ const ContentContainer = styled.div<ContentContainerProps>`
       margin: ${MARGIN}px;
       max-width: 1100px;
       max-height: 804px;
-      box-shadow: 0 8px 16px 0 rgba(17, 49, 96, 0.08), 0 0 0 1px rgba(17, 49, 96, 0.06);
+      box-shadow:
+        0 8px 16px 0 rgba(17, 49, 96, 0.08),
+        0 0 0 1px rgba(17, 49, 96, 0.06);
       border-radius: 12px;
       overflow: hidden;
       background-color: #fff;

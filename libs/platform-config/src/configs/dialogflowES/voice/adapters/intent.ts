@@ -1,5 +1,5 @@
 import * as Common from '@platform-config/configs/common';
-import { GoogleConstants } from '@voiceflow/google-types';
+import type { GoogleConstants } from '@voiceflow/google-types';
 
 export const smart = Common.Voice.Adapters.Intent.smartFactory<GoogleConstants.Voice>();
 

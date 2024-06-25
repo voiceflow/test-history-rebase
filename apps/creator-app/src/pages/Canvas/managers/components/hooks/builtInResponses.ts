@@ -1,4 +1,4 @@
-import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
+import type { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import _sampleSize from 'lodash/sampleSize';
 
 import * as VersionV2 from '@/ducks/versionV2';
@@ -9,7 +9,10 @@ interface GenerateBuiltInResponsesOptions {
   responsesByLocale: Partial<Record<VoiceflowConstants.Locale, readonly string[]>>;
 }
 
-export const useGenerateBuiltInResponses = ({ defaultResponses, responsesByLocale }: GenerateBuiltInResponsesOptions) => {
+export const useGenerateBuiltInResponses = ({
+  defaultResponses,
+  responsesByLocale,
+}: GenerateBuiltInResponsesOptions) => {
   const projectTypeConfig = useActiveProjectTypeConfig();
   const [trackingEvents] = useTrackingEvents();
 
@@ -18,7 +21,8 @@ export const useGenerateBuiltInResponses = ({ defaultResponses, responsesByLocal
   return ({ quantity }: { quantity: number }) => {
     const voiceflowLocales = locales.map(projectTypeConfig.utils.locale.toVoiceflowLocale);
 
-    const builtInNoMatches = voiceflowLocales.map((locale) => responsesByLocale[locale]).find(Boolean) ?? defaultResponses;
+    const builtInNoMatches =
+      voiceflowLocales.map((locale) => responsesByLocale[locale]).find(Boolean) ?? defaultResponses;
     const generatedNoMatches = _sampleSize(builtInNoMatches, quantity);
 
     if (generatedNoMatches.length < quantity) {

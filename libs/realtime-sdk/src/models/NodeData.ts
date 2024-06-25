@@ -1,17 +1,23 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import { BlockType } from '@realtime-sdk/constants';
-import { AlexaNode } from '@voiceflow/alexa-types';
-import { BaseButton, BaseModels, BaseNode } from '@voiceflow/base-types';
-import { ChatNode } from '@voiceflow/chat-types';
-import { EmptyObject, Nullable } from '@voiceflow/common';
-import { FunctionNodeData, MessageNodeData, ResponseNodeData, StartNodeData, TriggerNodeData } from '@voiceflow/dtos';
-import * as Platform from '@voiceflow/platform-config/backend';
-import { VoiceNode } from '@voiceflow/voice-types';
-import { VoiceflowNode } from '@voiceflow/voiceflow-types';
+import type { BlockType } from '@realtime-sdk/constants';
+import type { AlexaNode } from '@voiceflow/alexa-types';
+import type { BaseButton, BaseModels, BaseNode } from '@voiceflow/base-types';
+import type { ChatNode } from '@voiceflow/chat-types';
+import type { EmptyObject, Nullable } from '@voiceflow/common';
+import type {
+  FunctionNodeData,
+  MessageNodeData,
+  ResponseNodeData,
+  StartNodeData,
+  TriggerNodeData,
+} from '@voiceflow/dtos';
+import type * as Platform from '@voiceflow/platform-config/backend';
+import type { VoiceNode } from '@voiceflow/voice-types';
+import type { VoiceflowNode } from '@voiceflow/voiceflow-types';
 
-import { ExpressionData } from './Expression';
+import type { ExpressionData } from './Expression';
 import type { Markup } from './Markup';
-import { SpeakData } from './Speak';
+import type { SpeakData } from './Speak';
 
 export type NodeData<T> = T & {
   nodeID: string;

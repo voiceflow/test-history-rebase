@@ -3,14 +3,18 @@ import { Badge, Box, swallowEvent, useDebouncedCallback } from '@voiceflow/ui';
 import isEmpty from 'lodash/isEmpty';
 import React from 'react';
 
-import VariablesInput, { VariablesInputRef } from '@/components/VariablesInput';
+import type { VariablesInputRef } from '@/components/VariablesInput';
+import VariablesInput from '@/components/VariablesInput';
 import { useEnableDisable } from '@/hooks';
 
 import { isValidExpressionValue, isVariable } from '../utils';
 
 export interface ConditionValueSelectProps {
   value?: string;
-  onChange: (data: { value: string; type: BaseNode.Utils.ExpressionTypeV2.VARIABLE | BaseNode.Utils.ExpressionTypeV2.VALUE }) => void;
+  onChange: (data: {
+    value: string;
+    type: BaseNode.Utils.ExpressionTypeV2.VARIABLE | BaseNode.Utils.ExpressionTypeV2.VALUE;
+  }) => void;
   onClose?: () => void;
 }
 
@@ -83,7 +87,9 @@ const ConditionValueSelect: React.FC<ConditionValueSelectProps> = ({ value = '',
       />
       {error && (
         <Box fontSize={13} color="#BD425F" mt={16}>
-          {isEmpty(value) ? 'This is a required input' : 'Input can only contain values or a variable, not both. No empty values.'}
+          {isEmpty(value)
+            ? 'This is a required input'
+            : 'Input can only contain values or a variable, not both. No empty values.'}
         </Box>
       )}
     </>

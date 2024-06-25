@@ -60,13 +60,19 @@ const ControlCenter: React.FC<ControlCenterProps> = ({
   return (
     <ControlsContainer>
       <TippyTooltip content="Text" position="top">
-        <ControlButton active={inputMode === PrototypeInputMode.TEXT} onClick={() => setInputMode(PrototypeInputMode.TEXT)}>
+        <ControlButton
+          active={inputMode === PrototypeInputMode.TEXT}
+          onClick={() => setInputMode(PrototypeInputMode.TEXT)}
+        >
           <SvgIcon icon="text" size={16} color={ICON_COLOR} />
         </ControlButton>
       </TippyTooltip>
 
       <TippyTooltip content="Voice" position="top">
-        <ControlButton active={inputMode === PrototypeInputMode.VOICE} onClick={() => setInputMode(PrototypeInputMode.VOICE)}>
+        <ControlButton
+          active={inputMode === PrototypeInputMode.VOICE}
+          onClick={() => setInputMode(PrototypeInputMode.VOICE)}
+        >
           <SvgIcon icon="microphone" size={16} color={ICON_COLOR} />
         </ControlButton>
       </TippyTooltip>
@@ -80,7 +86,12 @@ const ControlCenter: React.FC<ControlCenterProps> = ({
       <ButtonGroupSplitter />
 
       <TippyTooltip content="Back" position="top">
-        <ControlButton active={false} disabled={goBackDisabled} onClick={handleOnBackward} style={{ transform: 'scaleX(-1)' }}>
+        <ControlButton
+          active={false}
+          disabled={goBackDisabled}
+          onClick={handleOnBackward}
+          style={{ transform: 'scaleX(-1)' }}
+        >
           <SvgIcon icon="forward" size={16} color={ICON_COLOR} />
         </ControlButton>
       </TippyTooltip>

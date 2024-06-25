@@ -22,7 +22,12 @@ export const EntityColorPicker: React.FC<IEntityColorPicker> = ({ name, value, d
 
   return (
     <Box mb={8} gap={15} direction="column" justify="start" align="end" alignSelf="baseline" overflow="hidden">
-      <Entity label={name} color={value} className={entityStyles({ isVisible: !!name })} testID={tid(TEST_ID, 'preview')} />
+      <Entity
+        label={name}
+        color={value}
+        className={entityStyles({ isVisible: !!name })}
+        testID={tid(TEST_ID, 'preview')}
+      />
 
       <ColorPickerForm
         onChange={onValueChange}

@@ -1,4 +1,4 @@
-import { Entity } from '@voiceflow/dtos';
+import type { Entity } from '@voiceflow/dtos';
 
 export interface IEntityMenuEmpty {
   width?: number;

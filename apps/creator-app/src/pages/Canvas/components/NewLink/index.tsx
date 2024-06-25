@@ -1,7 +1,15 @@
 import React from 'react';
 
 import { useRegistration, useTeardown } from '@/hooks';
-import { buildHeadMarker, buildPath, getMarkerAttrs, getPathPoints, HeadMarker, Path, STROKE_DEFAULT_COLOR } from '@/pages/Canvas/components/Link';
+import {
+  buildHeadMarker,
+  buildPath,
+  getMarkerAttrs,
+  getPathPoints,
+  HeadMarker,
+  Path,
+  STROKE_DEFAULT_COLOR,
+} from '@/pages/Canvas/components/Link';
 import LinkStepMenu from '@/pages/Canvas/components/LinkStepMenu';
 import { EngineContext, IsStraightLinksContext, LinkStepMenuContext } from '@/pages/Canvas/contexts';
 import { useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks/canvas';
@@ -47,7 +55,13 @@ const NewLink: React.FC = () => {
 
   return (
     <Container>
-      <HeadMarker id={NEW_LINK_ID} ref={api.markerRef} isHighlighted {...markerAttrs} blockViaLinkMode={stepMenuContext.isOpen} />
+      <HeadMarker
+        id={NEW_LINK_ID}
+        ref={api.markerRef}
+        isHighlighted
+        {...markerAttrs}
+        blockViaLinkMode={stepMenuContext.isOpen}
+      />
 
       <LinkStepMenu />
 

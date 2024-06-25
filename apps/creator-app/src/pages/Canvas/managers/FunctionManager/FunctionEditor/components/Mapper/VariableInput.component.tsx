@@ -1,4 +1,4 @@
-import { Markup } from '@voiceflow/dtos';
+import type { Markup } from '@voiceflow/dtos';
 import React from 'react';
 
 import { InputWithVariables } from '@/components/Input/InputWithVariables/InputWithVariables.component';

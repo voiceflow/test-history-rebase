@@ -1,7 +1,7 @@
 import { createUseJobInterfaceContent } from '@/components/JobInterface';
 import { ErrorStage } from '@/components/PlatformUploadPopup/components';
 import { AlexaStageType } from '@/constants/platforms';
-import { AlexaPublishJob } from '@/models';
+import type { AlexaPublishJob } from '@/models';
 
 import SelectVendorStage from './SelectVendorStage';
 import SuccessStage from './SuccessStage';

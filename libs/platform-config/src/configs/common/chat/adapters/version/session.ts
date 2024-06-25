@@ -1,10 +1,10 @@
 import * as Base from '@platform-config/configs/base';
 import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { BaseVersion } from '@voiceflow/base-types';
-import { ChatModels } from '@voiceflow/chat-types';
+import type { ChatModels } from '@voiceflow/chat-types';
 import { createSimpleAdapter } from 'bidirectional-adapter';
 
-import * as Models from '../../models';
+import type * as Models from '../../models';
 import * as Prompt from '../prompt';
 
 export type DBSession = Base.Adapters.Version.Session.DBSession<ChatModels.Prompt>;

@@ -1,11 +1,11 @@
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import * as Normal from 'normal-store';
 
 import * as Diagram from '@/ducks/diagramV2';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
-import { State } from '@/store/types';
+import type { State } from '@/store/types';
 
 import { MOCK_STATE as INITIAL_ROOT_MOCK_STATE } from './_fixtures';
 import suite from './_suite';

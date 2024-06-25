@@ -1,5 +1,5 @@
 import BaseCache from './base';
-import { BaseAdapter, BaseKeyExtractor, KeyOptions, StringFromDB, StringToDB } from './types';
+import type { BaseAdapter, BaseKeyExtractor, KeyOptions, StringFromDB, StringToDB } from './types';
 
 class KeyValueCache<K extends BaseKeyExtractor, A extends BaseAdapter | undefined = undefined> extends BaseCache<K, A> {
   private formatValue = (value: string | null): StringFromDB<A> | null => {
@@ -22,7 +22,11 @@ class KeyValueCache<K extends BaseKeyExtractor, A extends BaseAdapter | undefine
     return values.map(this.formatValue);
   }
 
-  public async set(keyOptions: KeyOptions<K>, value: StringToDB<A>, { expire = this.expire }: { expire?: number } = {}): Promise<void> {
+  public async set(
+    keyOptions: KeyOptions<K>,
+    value: StringToDB<A>,
+    { expire = this.expire }: { expire?: number } = {}
+  ): Promise<void> {
     const dbKey = this.keyCreator(keyOptions);
     const dbValue = this.adapter?.toDB(value) ?? value;
 
@@ -35,8 +39,13 @@ class KeyValueCache<K extends BaseKeyExtractor, A extends BaseAdapter | undefine
     }
   }
 
-  public async setMany(sets: [keyOptions: KeyOptions<K>, value: StringToDB<A>][], { expire = this.expire }: { expire?: number } = {}): Promise<void> {
-    const setsRecord = Object.fromEntries(sets.map(([key, value]) => [this.keyCreator(key), this.adapter?.toDB(value) ?? value]));
+  public async setMany(
+    sets: [keyOptions: KeyOptions<K>, value: StringToDB<A>][],
+    { expire = this.expire }: { expire?: number } = {}
+  ): Promise<void> {
+    const setsRecord = Object.fromEntries(
+      sets.map(([key, value]) => [this.keyCreator(key), this.adapter?.toDB(value) ?? value])
+    );
 
     if (expire) {
       const pipeline = this.redis.pipeline().mset(setsRecord);

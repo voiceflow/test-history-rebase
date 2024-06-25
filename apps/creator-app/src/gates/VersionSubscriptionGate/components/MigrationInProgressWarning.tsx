@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, FlexCenter, PageError, Spinner } from '@voiceflow/ui';
 import React from 'react';
 
@@ -21,7 +21,11 @@ const MigrationInProgressWarning: React.FC<MigrationInProgressWarningProps> = ({
 
   return (
     <FlexCenter style={{ height: '100%' }} fullWidth>
-      <PageError icon={<Spinner />} title="Migration in Progress" message="The agent will load automatically when the migration is complete">
+      <PageError
+        icon={<Spinner />}
+        title="Migration in Progress"
+        message="The agent will load automatically when the migration is complete"
+      >
         <Box mt={16}>
           <Button onClick={goToDashboard}>Go to Dashboard</Button>
         </Box>

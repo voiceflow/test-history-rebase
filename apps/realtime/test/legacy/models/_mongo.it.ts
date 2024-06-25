@@ -1,5 +1,6 @@
 import { ObjectId } from 'bson';
-import { Db, MongoClient } from 'mongodb';
+import type { Db } from 'mongodb';
+import { MongoClient } from 'mongodb';
 
 import AbstractModel from '@/legacy/models/_mongo';
 import config from '@/old_config';

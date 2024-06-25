@@ -11,7 +11,8 @@ import {
   markupFactory,
 } from '@voiceflow/utils-designer';
 import createMultiAdapter from 'bidirectional-adapter';
-import { Descendant, Text } from 'slate';
+import type { Descendant } from 'slate';
+import { Text } from 'slate';
 import { match } from 'ts-pattern';
 
 export const markupToSlate = createMultiAdapter<Markup, Descendant[], [] | [{ iteration?: number }]>(
@@ -46,7 +47,10 @@ export const markupToSlate = createMultiAdapter<Markup, Descendant[], [] | [{ it
           )
           .when(isMarkupSpan, (span) =>
             match(span)
-              .when(isMarkupSpanText, ({ text: [text], attributes: { __type, ...attrs } }): SlateEditor.Text => ({ ...attrs, text }))
+              .when(
+                isMarkupSpanText,
+                ({ text: [text], attributes: { __type, ...attrs } }): SlateEditor.Text => ({ ...attrs, text })
+              )
               .when(
                 isMarkupSpanLink,
                 ({ text, attributes: { url } }): SlateEditor.LinkElementType => ({
@@ -68,7 +72,7 @@ export const markupToSlate = createMultiAdapter<Markup, Descendant[], [] | [{ it
       []
     );
   },
-  // eslint-disable-next-line sonarjs/cognitive-complexity
+
   (slate) => {
     if (SlateEditor.StaticEditor.isEmptyState(slate)) return markupFactory();
 
@@ -87,11 +91,14 @@ export const markupToSlate = createMultiAdapter<Markup, Descendant[], [] | [{ it
           .when(SlateEditor.StaticEditor.isVariable, (item): { variableID: string } | { entityID: string } => {
             const { variableID, variableVariant } = item;
 
-            return variableVariant === SlateEditor.VariableElementVariant.VARIABLE ? { variableID } : { entityID: variableID };
+            return variableVariant === SlateEditor.VariableElementVariant.VARIABLE
+              ? { variableID }
+              : { entityID: variableID };
           })
           .when(Text.isText, (item): string | MarkupSpanText => {
             // TODO: fix any
-            const { text, color, italic, underline, fontWeight, fontFamily, strikeThrough, backgroundColor } = item as any;
+            const { text, color, italic, underline, fontWeight, fontFamily, strikeThrough, backgroundColor } =
+              item as any;
 
             if (!color && !italic && !underline && !fontWeight && !fontFamily && !strikeThrough && !backgroundColor) {
               return text;

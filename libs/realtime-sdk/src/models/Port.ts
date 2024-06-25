@@ -1,6 +1,6 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 
-import { LinkData } from './Link';
+import type { LinkData } from './Link';
 
 export interface Port {
   id: string;

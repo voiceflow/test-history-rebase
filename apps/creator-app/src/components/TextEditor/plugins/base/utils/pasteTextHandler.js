@@ -29,7 +29,11 @@ export default (globalStore, fromPastedTextConvertor) => (store) => (text) => {
 
   const pastedContent = convertFromRaw(createRowState(text, fromPastedTextConvertor(globalStore.get('pluginsProps'))));
 
-  const nextContent = Modifier.replaceWithFragment(editorState.getCurrentContent(), editorState.getSelection(), pastedContent.getBlockMap());
+  const nextContent = Modifier.replaceWithFragment(
+    editorState.getCurrentContent(),
+    editorState.getSelection(),
+    pastedContent.getBlockMap()
+  );
   const nextEditorSTate = EditorState.push(editorState, nextContent, 'insert-fragment');
 
   store.setEditorState(nextEditorSTate);

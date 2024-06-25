@@ -1,6 +1,6 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
-import { FeatureState } from './types';
+import type { FeatureState } from './types';
 
 export const STATE_KEY = 'feature';
 

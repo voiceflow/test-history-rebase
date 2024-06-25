@@ -3,7 +3,7 @@ import { tid } from '@voiceflow/style';
 import { Menu, Popper, SquareButton } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { IModalHeaderMore } from './ModalHeaderMore.interface';
+import type { IModalHeaderMore } from './ModalHeaderMore.interface';
 
 export const ModalHeaderMore: React.FC<IModalHeaderMore> = ({ width = 83, options, testID }) => (
   <Popper

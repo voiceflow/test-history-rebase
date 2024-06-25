@@ -1,6 +1,6 @@
 import { ProjectSecretTag } from '@voiceflow/schema-types';
 
-import { SecretField } from '../components';
+import type { SecretField } from '../components';
 
 export const secretsConfig: SecretField[] = [
   {

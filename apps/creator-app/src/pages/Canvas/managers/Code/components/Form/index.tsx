@@ -1,14 +1,18 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { useLinkedState } from '@voiceflow/ui';
 import React from 'react';
 
 import AceEditor, { ACE_EDITOR_COLORS, ACE_EDITOR_OPTIONS_V2, InputMode } from '@/components/AceEditor';
-import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
+import type { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 
 import { Header } from './components';
 import { useAceEditor } from './hooks';
 
-const Form: React.FC<NodeEditorV2Props<Realtime.NodeData.Code, Realtime.NodeData.CodeBuiltInPorts>> = ({ data, onChange, isFullscreen }) => {
+const Form: React.FC<NodeEditorV2Props<Realtime.NodeData.Code, Realtime.NodeData.CodeBuiltInPorts>> = ({
+  data,
+  onChange,
+  isFullscreen,
+}) => {
   const [editorState, onUpdateEditorState] = useLinkedState(data.code);
 
   const aceEditorRef = useAceEditor(isFullscreen);

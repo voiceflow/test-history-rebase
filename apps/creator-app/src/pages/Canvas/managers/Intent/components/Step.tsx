@@ -1,11 +1,11 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { HSLShades } from '@/constants';
+import type { HSLShades } from '@/constants';
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
 import { IntentMapContext } from '@/pages/Canvas/contexts';
-import { ConnectedStep } from '@/pages/Canvas/managers/types';
+import type { ConnectedStep } from '@/pages/Canvas/managers/types';
 
 import { NODE_CONFIG } from '../constants';
 
@@ -33,7 +33,11 @@ export const IntentStep: React.FC<IntentStepProps> = ({ nodeID, label, isLocal, 
   </Step>
 );
 
-const ConnectedIntentStep: ConnectedStep<Realtime.NodeData.Intent, Realtime.NodeData.IntentBuiltInPorts> = ({ ports, data, palette }) => {
+const ConnectedIntentStep: ConnectedStep<Realtime.NodeData.Intent, Realtime.NodeData.IntentBuiltInPorts> = ({
+  ports,
+  data,
+  palette,
+}) => {
   const intentMap = React.useContext(IntentMapContext)!;
 
   const { intent, availability } = data;

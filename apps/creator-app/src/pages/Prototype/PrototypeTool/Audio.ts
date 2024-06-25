@@ -4,6 +4,7 @@ const SOUND_BANK_PREFIX = 'soundbank://soundlibrary/';
 const SOUND_BANK_MIRROR = 'https://d3qhmae9zx9eb.cloudfront.net/';
 
 export class TAudio extends Audio {
+  // eslint-disable-next-line @typescript-eslint/ban-types
   public VF_REJECT?: Function;
 
   public VF_ON_STOP?: (audio: TAudio) => void;
@@ -58,7 +59,14 @@ class AudioController {
       offset = 0,
       onStop,
       onError,
-    }: { offset?: number; play?: boolean; muted?: boolean; loop?: boolean; onError?: () => void; onStop?: (audio: TAudio) => void } = {}
+    }: {
+      offset?: number;
+      play?: boolean;
+      muted?: boolean;
+      loop?: boolean;
+      onError?: () => void;
+      onStop?: (audio: TAudio) => void;
+    } = {}
   ): Promise<void> {
     this.stop();
 

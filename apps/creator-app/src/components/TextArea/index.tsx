@@ -1,8 +1,7 @@
-/* eslint-disable xss/no-mixed-html */
 import { Utils } from '@voiceflow/common';
 import { withEnterPress, withTargetValue } from '@voiceflow/ui';
 import React from 'react';
-import { TextareaAutosizeProps } from 'react-textarea-autosize';
+import type { TextareaAutosizeProps } from 'react-textarea-autosize';
 
 import * as S from './styles';
 

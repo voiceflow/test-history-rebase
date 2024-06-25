@@ -1,20 +1,14 @@
-import { BlockType } from '@realtime-sdk/constants';
-import { Node, NodeData } from '@realtime-sdk/models';
-import { BaseModels } from '@voiceflow/base-types';
+import type { BlockType } from '@realtime-sdk/constants';
+import type { Node, NodeData } from '@realtime-sdk/models';
+import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config/backend';
+import type * as Platform from '@voiceflow/platform-config/backend';
 import { createMultiAdapter } from 'bidirectional-adapter';
 
-import { VersionAdapterContext } from '../types';
-import {
-  defaultOutPortsAdapter,
-  defaultOutPortsAdapterV2,
-  getOutPortsAdapter,
-  getOutPortsAdapterV2,
-  OutPortsAdapter,
-  OutPortsAdapterV2,
-} from './block';
-import { PortsInfo } from './block/utils';
+import type { VersionAdapterContext } from '../types';
+import type { OutPortsAdapter, OutPortsAdapterV2 } from './block';
+import { defaultOutPortsAdapter, defaultOutPortsAdapterV2, getOutPortsAdapter, getOutPortsAdapterV2 } from './block';
+import type { PortsInfo } from './block/utils';
 
 const stepPortsAdapter = createMultiAdapter<
   BaseModels.StepOnlyData<BaseModels.AnyBaseStepPorts, BaseModels.BasePort[]>,
@@ -26,14 +20,17 @@ const stepPortsAdapter = createMultiAdapter<
       node: Node;
       data: NodeData<unknown>;
       context: VersionAdapterContext;
-    }
+    },
   ]
 >(
   (dbData, { platform, nodeType, dbNode }) => {
     const outPortAdapter = getOutPortsAdapter(platform)?.[nodeType] || (defaultOutPortsAdapter as OutPortsAdapter);
-    const outPortAdapterV2 = getOutPortsAdapterV2(platform)?.[nodeType] || (defaultOutPortsAdapterV2 as OutPortsAdapterV2);
+    const outPortAdapterV2 =
+      getOutPortsAdapterV2(platform)?.[nodeType] || (defaultOutPortsAdapterV2 as OutPortsAdapterV2);
 
-    return dbData.portsV2 ? outPortAdapterV2.fromDB(dbData.portsV2, { node: dbNode }) : outPortAdapter.fromDB(dbData.ports ?? [], { node: dbNode });
+    return dbData.portsV2
+      ? outPortAdapterV2.fromDB(dbData.portsV2, { node: dbNode })
+      : outPortAdapter.fromDB(dbData.ports ?? [], { node: dbNode });
   },
   ({ builtIn, dynamic, byKey = {} }, { platform, node, data }) => {
     const allPorts = [...Object.values(byKey), ...Object.values(builtIn), ...dynamic].filter((port) => port);
@@ -43,7 +40,8 @@ const stepPortsAdapter = createMultiAdapter<
 
     if (!hasPorts) return { portsV2: { builtIn: {}, dynamic: [], byKey: {} } };
 
-    const outPortAdapter = getOutPortsAdapterV2(platform)?.[node.type] || (defaultOutPortsAdapterV2 as OutPortsAdapterV2);
+    const outPortAdapter =
+      getOutPortsAdapterV2(platform)?.[node.type] || (defaultOutPortsAdapterV2 as OutPortsAdapterV2);
     const dbPorts = outPortAdapter.toDB({ dynamic, builtIn, byKey }, { node, data });
 
     return { portsV2: dbPorts };

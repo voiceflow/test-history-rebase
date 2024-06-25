@@ -1,5 +1,6 @@
 import { BaseNode } from '@voiceflow/base-types';
-import { Checkbox, OptionsMenuOption } from '@voiceflow/ui';
+import type { OptionsMenuOption } from '@voiceflow/ui';
+import { Checkbox } from '@voiceflow/ui';
 import React from 'react';
 
 import * as VersionV2 from '@/ducks/versionV2';
@@ -16,6 +17,7 @@ export const LABELS = {
 type Labels = Record<keyof typeof LABELS, string>;
 
 const useCanvasVisibilityOption = (
+  // eslint-disable-next-line default-param-last
   visibility: BaseNode.Utils.CanvasNodeVisibility = BaseNode.Utils.CanvasNodeVisibility.PREVIEW,
   onChange: (visibility: BaseNode.Utils.CanvasNodeVisibility) => void,
   labels: Labels = LABELS

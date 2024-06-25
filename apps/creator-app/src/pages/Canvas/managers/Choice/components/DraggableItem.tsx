@@ -1,11 +1,15 @@
 import composeRef from '@seznam/compose-react-refs';
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SectionV2, StrengthGauge } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
-import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
+import type {
+  DragPreviewComponentProps,
+  ItemComponentProps,
+  MappedItemComponentHandlers,
+} from '@/components/DraggableList';
 import IntentSelect from '@/components/IntentSelect';
 import { Designer } from '@/ducks';
 import { useAutoScrollNodeIntoView } from '@/hooks';
@@ -14,7 +18,7 @@ import { useSelector } from '@/hooks/store.hook';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
 import { Actions } from '../../components';
-import { NodeEditorV2Props } from '../../types';
+import type { NodeEditorV2Props } from '../../types';
 
 export interface DraggableItemProps
   extends DragPreviewComponentProps,
@@ -25,7 +29,19 @@ export interface DraggableItemProps
 }
 
 const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemProps> = (
-  { item, index, editor, itemKey, onUpdate, isDragging, onContextMenu, connectedDragRef, latestCreatedKey, isDraggingPreview, isContextMenuOpen },
+  {
+    item,
+    index,
+    editor,
+    itemKey,
+    onUpdate,
+    isDragging,
+    onContextMenu,
+    connectedDragRef,
+    latestCreatedKey,
+    isDraggingPreview,
+    isContextMenuOpen,
+  },
   ref
 ) => {
   const intents = useSelector(Designer.Intent.selectors.allWithFormattedBuiltInNames);
@@ -36,11 +52,17 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
 
   // filter out intents already used in interaction block
   const availableIntents = React.useMemo(
-    () => Utils.array.inferUnion(intents).filter(({ id }) => id === intent?.id || !editor.data.choices.some((choice) => choice?.intent === id)),
+    () =>
+      Utils.array
+        .inferUnion(intents)
+        .filter(({ id }) => id === intent?.id || !editor.data.choices.some((choice) => choice?.intent === id)),
     [intent, intents, editor.data.choices]
   );
 
-  const [sectionRef, scrollIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: autofocus, options: { block: 'end' } });
+  const [sectionRef, scrollIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({
+    condition: autofocus,
+    options: { block: 'end' },
+  });
 
   return (
     <EditorV2.PersistCollapse namespace={['interactionItem', item.id]} defaultCollapsed={!autofocus}>
@@ -53,12 +75,20 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
               <SectionV2.CollapseSection
                 ref={composeRef(ref, sectionRef) as React.Ref<HTMLDivElement>}
                 header={
-                  <SectionV2.Header ref={connectedDragRef} sticky sticked={sticked && !collapsed && !isDraggingPreview && !isDragging}>
+                  <SectionV2.Header
+                    ref={connectedDragRef}
+                    sticky
+                    sticked={sticked && !collapsed && !isDraggingPreview && !isDragging}
+                  >
                     <Box.Flex gap={16}>
                       <SectionV2.Title bold={!collapsed}>{intent?.name || `Path ${index + 1}`}</SectionV2.Title>
 
                       <Box.Flex pt={2}>
-                        <StrengthGauge width={36} level={strengthLevel} tooltipLabelMap={{ [StrengthGauge.Level.NOT_SET]: 'No utterances' }} />
+                        <StrengthGauge
+                          width={36}
+                          level={strengthLevel}
+                          tooltipLabelMap={{ [StrengthGauge.Level.NOT_SET]: 'No utterances' }}
+                        />
                       </Box.Flex>
                     </Box.Flex>
 

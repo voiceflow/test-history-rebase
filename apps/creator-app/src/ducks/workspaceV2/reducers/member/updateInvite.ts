@@ -11,7 +11,10 @@ const updateInviteReducer = createReducer(
 
     if (!workspace) return;
 
-    workspace.pendingMembers = Normal.patch(workspace.pendingMembers, email, { role, expiry: dayjs().add(1, 'week').toJSON() });
+    workspace.pendingMembers = Normal.patch(workspace.pendingMembers, email, {
+      role,
+      expiry: dayjs().add(1, 'week').toJSON(),
+    });
   }
 );
 

@@ -1,8 +1,9 @@
 import { Client } from '@logux/client';
 import type { ClientActionListener } from '@logux/client/client';
 import type { Action as LoguxAction, LoguxError } from '@logux/core';
-import { createNanoEvents, Unsubscribe } from 'nanoevents';
-import { Action, ActionCreator } from 'typescript-fsa';
+import type { Unsubscribe } from 'nanoevents';
+import { createNanoEvents } from 'nanoevents';
+import type { Action, ActionCreator } from 'typescript-fsa';
 
 import { clientLogger } from '@/client/utils';
 

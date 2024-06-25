@@ -1,8 +1,8 @@
 import { BaseNode } from '@voiceflow/base-types';
-import { EmptyObject } from '@voiceflow/common';
+import type { EmptyObject } from '@voiceflow/common';
 import { NodeType } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { SvgIconTypes } from '@voiceflow/ui';
+import type { SvgIconTypes } from '@voiceflow/ui';
 import { useMemo } from 'react';
 import { match } from 'ts-pattern';
 

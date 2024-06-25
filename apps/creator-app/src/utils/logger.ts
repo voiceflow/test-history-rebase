@@ -18,7 +18,9 @@ const [LOG_WHITELIST, LOG_BLACKLIST] = (LOG_FILTER || '')
   .reduce<[RegExp[], RegExp[]]>(
     ([whitelist, blacklist], glob) => {
       const pattern = `^${BASE_LOGGER_NAME}\\.${
-        glob ? glob.replace(SEPARATOR_REGEX, '\\.').replace(MATCH_MANY_REGEX, '.*?').replace(MATCH_ONE_REGEX, '[^\\.]*') : '.*'
+        glob
+          ? glob.replace(SEPARATOR_REGEX, '\\.').replace(MATCH_MANY_REGEX, '.*?').replace(MATCH_ONE_REGEX, '[^\\.]*')
+          : '.*'
       }$`;
 
       if (glob.startsWith(NEGATION)) {
@@ -71,7 +73,10 @@ abstract class LogEntity {
 }
 
 class LogDiff<T> extends LogEntity {
-  constructor(private lhs: T, private rhs: T) {
+  constructor(
+    private lhs: T,
+    private rhs: T
+  ) {
     super();
   }
 
@@ -121,7 +126,11 @@ class LogBold<T> extends LogEntity {
 }
 
 abstract class LogStatus<T> extends LogEntity {
-  constructor(private icon: string, private style: string, protected value: T) {
+  constructor(
+    private icon: string,
+    private style: string,
+    protected value: T
+  ) {
     super();
   }
 
@@ -190,6 +199,7 @@ const customizeLogger = (logger: loglevel.Logger, path: string[]) => {
   const logFactory = logger.methodFactory;
   const loggerName = path.join(SEPARATOR);
 
+  // eslint-disable-next-line no-param-reassign
   logger.methodFactory = (method, level, name) => {
     const logMethod = logFactory(method, level, name);
 
@@ -240,7 +250,8 @@ export const createLogger = (path: string[]) => {
 
   customizeLogger(logger, path);
 
-  const createUniqueChildLogger = (childName: string, id?: string) => createLogger([...path, id ? `${childName}<${id}>` : childName]);
+  const createUniqueChildLogger = (childName: string, id?: string) =>
+    createLogger([...path, id ? `${childName}<${id}>` : childName]);
   const createChildLogger = moize(createUniqueChildLogger);
 
   return Object.assign(logger, {

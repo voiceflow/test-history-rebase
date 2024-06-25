@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import { actionUtils } from '@voiceflow/realtime-sdk';
 
-import { ReportTag } from '@/models';
+import type { ReportTag } from '@/models';
 
 import { STATE_KEY } from './constants';
 

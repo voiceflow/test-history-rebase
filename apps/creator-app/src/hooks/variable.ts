@@ -1,7 +1,7 @@
 import { SLOT_REGEXP } from '@voiceflow/common';
 import React from 'react';
 
-import { VariableType } from '@/constants';
+import type { VariableType } from '@/constants';
 import { useVariablePromptModal } from '@/hooks/modal.hook';
 import { deepVariableReplacement, deepVariableSearch } from '@/utils/variable';
 

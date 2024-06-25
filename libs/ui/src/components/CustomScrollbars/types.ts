@@ -1,4 +1,4 @@
-import { ScrollbarProps, Scrollbars as ReactScrollbars } from 'react-custom-scrollbars-2';
+import type { ScrollbarProps, Scrollbars as ReactScrollbars } from 'react-custom-scrollbars-2';
 
 export interface Scrollbars extends ReactScrollbars {
   view: HTMLDivElement;

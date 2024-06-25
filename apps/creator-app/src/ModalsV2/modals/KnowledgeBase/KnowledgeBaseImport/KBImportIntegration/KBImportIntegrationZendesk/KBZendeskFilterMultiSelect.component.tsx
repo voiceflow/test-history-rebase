@@ -1,9 +1,10 @@
 import { tid } from '@voiceflow/style';
-import { BaseProps, Box, CheckboxControl, Dropdown, Menu, MenuItem, Tooltip, useTooltipModifiers } from '@voiceflow/ui-next';
+import type { BaseProps } from '@voiceflow/ui-next';
+import { Box, CheckboxControl, Dropdown, Menu, MenuItem, Tooltip, useTooltipModifiers } from '@voiceflow/ui-next';
 import React from 'react';
 
 import { useDeferredSearch } from '@/hooks/search.hook';
-import { ZendeskFilterBase } from '@/models/KnowledgeBase.model';
+import type { ZendeskFilterBase } from '@/models/KnowledgeBase.model';
 
 import { captionStyles } from './KBZendeskFilterSelect.css';
 
@@ -96,7 +97,11 @@ export const KBZendeskFilterMultiSelect = <T extends ZendeskFilterBase>({
                 return (
                   <MenuItem
                     key={index + 1}
-                    onClick={() => onValueChange(value.includes(option) ? value.filter((item) => item !== option) : [...value, option])}
+                    onClick={() =>
+                      onValueChange(
+                        value.includes(option) ? value.filter((item) => item !== option) : [...value, option]
+                      )
+                    }
                     label={option.name}
                     searchValue={search.deferredValue}
                     testID={tid(testID, 'menu-item')}
@@ -104,7 +109,11 @@ export const KBZendeskFilterMultiSelect = <T extends ZendeskFilterBase>({
                       <CheckboxControl
                         id="checkbox"
                         value={value.includes(option)}
-                        onChange={() => onValueChange(value.includes(option) ? value.filter((item) => item !== option) : [...value, option])}
+                        onChange={() =>
+                          onValueChange(
+                            value.includes(option) ? value.filter((item) => item !== option) : [...value, option]
+                          )
+                        }
                         testID={tid(testID, ['menu-item', 'select'])}
                       />
                     }

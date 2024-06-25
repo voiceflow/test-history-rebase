@@ -1,7 +1,7 @@
 import { Tracking } from '@/ducks';
-import { SyncThunk } from '@/store/types';
+import type { SyncThunk } from '@/store/types';
 
-import { OnboardingContextState } from './context/types';
+import type { OnboardingContextState } from './context/types';
 import { StepID } from './stepID.enum';
 
 export interface StepMetaPropsType {

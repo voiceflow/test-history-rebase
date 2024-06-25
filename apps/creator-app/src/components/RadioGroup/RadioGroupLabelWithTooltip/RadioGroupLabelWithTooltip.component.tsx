@@ -4,7 +4,7 @@ import React from 'react';
 import { TooltipContentLearn } from '@/components/Tooltip/TooltipContentLearn/TooltipContentLearn.component';
 import { popperPaddingModifierFactory } from '@/utils/popper.util';
 
-import { IRadioGroupLabelWithTooltip } from './RadioGroupLabelWithTooltip.interface';
+import type { IRadioGroupLabelWithTooltip } from './RadioGroupLabelWithTooltip.interface';
 
 export const RadioGroupLabelWithTooltip: React.FC<IRadioGroupLabelWithTooltip> = ({
   label,

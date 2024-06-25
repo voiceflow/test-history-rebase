@@ -1,9 +1,9 @@
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { Draft } from 'immer';
+import type * as Realtime from '@voiceflow/realtime-sdk';
+import type { Draft } from 'immer';
 import * as Normal from 'normal-store';
 
-import { CreatorState } from '../types';
+import type { CreatorState } from '../types';
 
 export const addLink = (
   state: Draft<CreatorState>,
@@ -64,7 +64,10 @@ export const removeLink = (state: Draft<CreatorState>, linkID: string): void => 
   state.links = Normal.removeOne(state.links, linkID);
 };
 
-export const removeNodePortRemapLinks = (state: Draft<CreatorState>, nodePortRemaps: Realtime.NodePortRemap[]): void => {
+export const removeNodePortRemapLinks = (
+  state: Draft<CreatorState>,
+  nodePortRemaps: Realtime.NodePortRemap[]
+): void => {
   nodePortRemaps.forEach(({ ports }) =>
     ports.forEach(({ portID }) => {
       if (!portID) return;

@@ -38,7 +38,10 @@ const TrainingSection: React.FC<TrainingSectionProps> = ({ isOpen, onOpen, toggl
   return (
     <Section
       header={
-        <TippyTooltip content={!nluTrainingModel.isTrained ? 'Agent needs training' : 'Agent fully trained'} disabled={isOpen}>
+        <TippyTooltip
+          content={!nluTrainingModel.isTrained ? 'Agent needs training' : 'Agent fully trained'}
+          disabled={isOpen}
+        >
           <Flex>
             <TrainingSectionTitle
               variant={
@@ -46,8 +49,8 @@ const TrainingSection: React.FC<TrainingSectionProps> = ({ isOpen, onOpen, toggl
                 nluTrainingDiffStatus === NLUTrainingDiffStatus.IDLE
                   ? TrainingSectionTitleVariant.IDLE
                   : nluTrainingModel.isTrained
-                  ? TrainingSectionTitleVariant.TRAINED
-                  : TrainingSectionTitleVariant.UNTRAINED
+                    ? TrainingSectionTitleVariant.TRAINED
+                    : TrainingSectionTitleVariant.UNTRAINED
               }
               statusVisible={!isOpen}
             >

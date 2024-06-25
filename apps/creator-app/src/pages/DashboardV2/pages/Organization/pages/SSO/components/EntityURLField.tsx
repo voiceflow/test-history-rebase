@@ -24,7 +24,9 @@ const EntityURLField: React.FC<EntityURLFieldProps> = ({ value, onChange }) => (
       </Box.FlexAlignStart>
 
       <Box flex={1} ml={24} mt={25}>
-        <SectionV2.Description secondary>The IdP Entity ID for the identity provider your organization uses.</SectionV2.Description>
+        <SectionV2.Description secondary>
+          The IdP Entity ID for the identity provider your organization uses.
+        </SectionV2.Description>
       </Box>
     </Box.FlexAlignStart>
   </SectionV2.SimpleSection>

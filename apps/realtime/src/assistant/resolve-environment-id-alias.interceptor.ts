@@ -1,4 +1,5 @@
-import { CallHandler, ExecutionContext, Inject, Injectable, NestInterceptor } from '@nestjs/common';
+import type { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import type { Request } from 'express';
 
 import { AssistantService } from './assistant.service';

@@ -1,5 +1,14 @@
 import { Actions } from '@voiceflow/sdk-logux-designer';
-import { appendMany, appendOne, createEmpty, normalize, patchMany, patchOne, removeMany, removeOne } from 'normal-store';
+import {
+  appendMany,
+  appendOne,
+  createEmpty,
+  normalize,
+  patchMany,
+  patchOne,
+  removeMany,
+  removeOne,
+} from 'normal-store';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 
 import type { ThreadCommentState } from './thread-comment.state';

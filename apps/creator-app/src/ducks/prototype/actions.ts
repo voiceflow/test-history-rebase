@@ -1,12 +1,13 @@
-import { BaseNode } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { BaseNode } from '@voiceflow/base-types';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
-import { PrototypeStatus, StoreType } from '@/constants/prototype';
+import type { PrototypeStatus } from '@/constants/prototype';
+import { StoreType } from '@/constants/prototype';
 import { createAction } from '@/ducks/utils';
-import { Store } from '@/models';
-import { Action } from '@/store/types';
+import type { Store } from '@/models';
+import type { Action } from '@/store/types';
 
-import { Context, PrototypeState } from './types';
+import type { Context, PrototypeState } from './types';
 
 // actions
 
@@ -33,17 +34,32 @@ export type PushContextHistory = Action<PrototypeAction.ADD_TEST_CONTEXT_HISTORY
 
 export type UpdatePrototypeVisualDevice = Action<PrototypeAction.UPDATE_TEST_VISUAL_DEVICE, BaseNode.Visual.DeviceType>;
 
-export type UpdatePrototypeVisualData = Action<PrototypeAction.UPDATE_TEST_VISUAL_DATA, null | BaseNode.Visual.StepData>;
+export type UpdatePrototypeVisualData = Action<
+  PrototypeAction.UPDATE_TEST_VISUAL_DATA,
+  null | BaseNode.Visual.StepData
+>;
 
-export type PushPrototypeVisualDataHistory = Action<PrototypeAction.ADD_TEST_VISUAL_DATA_HISTORY, null | BaseNode.Visual.StepData>;
+export type PushPrototypeVisualDataHistory = Action<
+  PrototypeAction.ADD_TEST_VISUAL_DATA_HISTORY,
+  null | BaseNode.Visual.StepData
+>;
 
-export type UpdatePrototypeVisualDataHistory = Action<PrototypeAction.UPDATE_TEST_VISUAL_DATA_HISTORY, (null | BaseNode.Visual.StepData)[]>;
+export type UpdatePrototypeVisualDataHistory = Action<
+  PrototypeAction.UPDATE_TEST_VISUAL_DATA_HISTORY,
+  (null | BaseNode.Visual.StepData)[]
+>;
 
 export type UpdatePrototypeContext = Action<PrototypeAction.UPDATE_TEST_CONTEXT, Partial<Context>>;
 
-export type UpdatePrototypeContextStore = Action<PrototypeAction.UPDATE_TEST_CONTEXT_STORE, { store: StoreType; payload: Partial<Store> }>;
+export type UpdatePrototypeContextStore = Action<
+  PrototypeAction.UPDATE_TEST_CONTEXT_STORE,
+  { store: StoreType; payload: Partial<Store> }
+>;
 
-export type UpdatePrototypeSettings = Action<PrototypeAction.UPDATE_PROTOTYPE_SETTINGS, { settings: Realtime.PrototypeSettings; patch: boolean }>;
+export type UpdatePrototypeSettings = Action<
+  PrototypeAction.UPDATE_PROTOTYPE_SETTINGS,
+  { settings: Realtime.PrototypeSettings; patch: boolean }
+>;
 
 export type AnyPrototypeAction =
   | UpdatePrototype
@@ -58,11 +74,14 @@ export type AnyPrototypeAction =
   | UpdatePrototypeSettings;
 
 // action creators
-export const updatePrototype = (payload: Partial<PrototypeState>): UpdatePrototype => createAction(PrototypeAction.UPDATE_TEST, payload);
+export const updatePrototype = (payload: Partial<PrototypeState>): UpdatePrototype =>
+  createAction(PrototypeAction.UPDATE_TEST, payload);
 
-export const updatePrototypeStatus = (payload: PrototypeStatus): UpdatePrototypeStatus => createAction(PrototypeAction.UPDATE_TEST_STATUS, payload);
+export const updatePrototypeStatus = (payload: PrototypeStatus): UpdatePrototypeStatus =>
+  createAction(PrototypeAction.UPDATE_TEST_STATUS, payload);
 
-export const pushContextHistory = (payload: Context): PushContextHistory => createAction(PrototypeAction.ADD_TEST_CONTEXT_HISTORY, payload);
+export const pushContextHistory = (payload: Context): PushContextHistory =>
+  createAction(PrototypeAction.ADD_TEST_CONTEXT_HISTORY, payload);
 
 export const updatePrototypeVisualDevice = (payload: BaseNode.Visual.DeviceType): UpdatePrototypeVisualDevice =>
   createAction(PrototypeAction.UPDATE_TEST_VISUAL_DEVICE, payload);
@@ -73,8 +92,9 @@ export const updatePrototypeVisualData = (data: null | BaseNode.Visual.StepData)
 export const pushPrototypeVisualDataHistory = (data: null | BaseNode.Visual.StepData): PushPrototypeVisualDataHistory =>
   createAction(PrototypeAction.ADD_TEST_VISUAL_DATA_HISTORY, data);
 
-export const updatePrototypeVisualDataHistory = (data: (null | BaseNode.Visual.StepData)[]): UpdatePrototypeVisualDataHistory =>
-  createAction(PrototypeAction.UPDATE_TEST_VISUAL_DATA_HISTORY, data);
+export const updatePrototypeVisualDataHistory = (
+  data: (null | BaseNode.Visual.StepData)[]
+): UpdatePrototypeVisualDataHistory => createAction(PrototypeAction.UPDATE_TEST_VISUAL_DATA_HISTORY, data);
 
 export const updatePrototypeContext = (payload: Partial<Context>): UpdatePrototypeContext =>
   createAction(PrototypeAction.UPDATE_TEST_CONTEXT, payload);

@@ -1,4 +1,5 @@
-import { Box, PopperModifiers, Text, Tokens, Tooltip } from '@voiceflow/ui-next';
+import type { PopperModifiers } from '@voiceflow/ui-next';
+import { Box, Text, Tokens, Tooltip } from '@voiceflow/ui-next';
 import React from 'react';
 
 interface IItemWithDescriptionTooltip {

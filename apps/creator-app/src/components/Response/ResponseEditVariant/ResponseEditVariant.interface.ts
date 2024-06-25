@@ -7,5 +7,8 @@ export interface IResponseEditVariant {
   autoFocus?: boolean;
   removeButton?: React.ReactNode;
   autoFocusIfEmpty?: boolean;
-  textVariantProps?: Omit<IResponseEditTextVariant, 'value' | 'textResponseVariant' | 'toolbar' | 'autoFocus' | 'onValueChange'>;
+  textVariantProps?: Omit<
+    IResponseEditTextVariant,
+    'value' | 'textResponseVariant' | 'toolbar' | 'autoFocus' | 'onValueChange'
+  >;
 }

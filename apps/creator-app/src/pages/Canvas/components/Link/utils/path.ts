@@ -1,6 +1,6 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 
-import { PathPoints } from '@/types';
+import type { PathPoints } from '@/types';
 import { pathBuilder } from '@/utils/svg';
 
 import { MIN_Y_POINTS_OFFSET, PATH_INFLECTION_OFFSET, STRAIGHT_PATH_RADIUS } from '../constants';
@@ -27,6 +27,7 @@ const buildCurvePath = (points: PathPoints): string => {
   return `M ${startX} ${startY} C ${startX + inflectionOffset} ${startY}, ${endX - inflectionOffset} ${endY}, ${endX} ${endY}`;
 };
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 const buildStraightPath = (points: PathPoints): string => {
   const [startX, startY] = getPoint(points[0]);
 

@@ -1,8 +1,9 @@
-import { IconButtonVariant } from '@ui/components/IconButton/types';
+import type { IconButtonVariant } from '@ui/components/IconButton/types';
 import SvgIcon from '@ui/components/SvgIcon';
 import { colors, css, styled, ThemeColor, transition } from '@ui/styles';
 
-import IconButtonContainer, { IconButtonContainerSharedProps } from './IconButtonContainer';
+import type { IconButtonContainerSharedProps } from './IconButtonContainer';
+import IconButtonContainer from './IconButtonContainer';
 
 export interface OutlineContainerProps extends IconButtonContainerSharedProps {
   color?: string;

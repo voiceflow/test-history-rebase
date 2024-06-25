@@ -1,9 +1,10 @@
 /* eslint-disable callback-return */
-import { Nullable } from '@voiceflow/common';
-import { Element, Node, Text } from 'slate';
+import type { Nullable } from '@voiceflow/common';
+import type { Node, Text } from 'slate';
+import { Element } from 'slate';
 
-import { ElementType } from '../../constants';
-import { ProcessorNext } from './types';
+import type { ElementType } from '../../constants';
+import type { ProcessorNext } from './types';
 
 export const matchAndProcessTextNodeToElement = (
   { type, node, regexp, next }: { type: ElementType; node: Text; regexp: RegExp; next: ProcessorNext },

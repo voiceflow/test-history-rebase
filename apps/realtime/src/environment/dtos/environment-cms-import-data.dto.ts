@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import type { z } from 'zod';
 
 import { FunctionImportDataDTO } from '@/function/dtos/function-import-data.dto';
 import { IntentImportDataDTO } from '@/intent/dtos/intent-import-data.dto';

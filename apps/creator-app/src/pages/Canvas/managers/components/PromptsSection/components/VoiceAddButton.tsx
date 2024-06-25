@@ -18,7 +18,9 @@ const VoiceAddButton: React.FC<VoiceAddButtonProps> = ({ items, onAdd, disabled,
   const onAddSpeak = () => onAdd(Platform.Common.Voice.CONFIG.utils.prompt.textFactory({ defaultVoice }));
   const onAddAudio = () => onAdd(Platform.Common.Voice.CONFIG.utils.prompt.audioFactory());
 
-  const isAudio = (items[0] as Platform.Common.Voice.Models.Prompt.Model)?.type === Platform.Common.Voice.Models.Prompt.PromptType.AUDIO;
+  const isAudio =
+    (items[0] as Platform.Common.Voice.Models.Prompt.Model)?.type ===
+    Platform.Common.Voice.Models.Prompt.PromptType.AUDIO;
 
   return multi ? (
     <SectionV2.AddButtonDropdown

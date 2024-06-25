@@ -8,8 +8,8 @@ import * as Session from '@/ducks/session';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
 import { useLocalStorageState } from '@/hooks/storage.hook';
 import * as ModalsV2 from '@/ModalsV2';
-import { NLPTrainJob } from '@/models';
-import { StageComponentProps } from '@/platforms/types';
+import type { NLPTrainJob } from '@/models';
+import type { StageComponentProps } from '@/platforms/types';
 
 import { createWidgetSessionKey } from '../utils';
 

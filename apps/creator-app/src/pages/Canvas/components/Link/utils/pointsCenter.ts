@@ -1,4 +1,4 @@
-import { PathPoints, Point } from '@/types';
+import type { PathPoints, Point } from '@/types';
 
 import { getPointX, getPointY } from './helpers';
 import { createLine, getLineLength, isHorizontalLineReversed, isVerticalLine, isVerticalLineReversed } from './lines';

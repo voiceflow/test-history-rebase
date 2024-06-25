@@ -12,8 +12,8 @@ import * as Session from '@/ducks/session';
 import { waitAsync } from '@/ducks/utils';
 import * as VersionV2 from '@/ducks/versionV2';
 import { getActiveVersionContext } from '@/ducks/versionV2/utils';
-import { Store, VariableValue } from '@/models';
-import { SyncThunk, Thunk } from '@/store/types';
+import type { Store, VariableValue } from '@/models';
+import type { SyncThunk, Thunk } from '@/store/types';
 
 import { updateSelectedVariableState, updateVariables } from './actions';
 import { ALL_PROJECT_VARIABLES_ID } from './constants';

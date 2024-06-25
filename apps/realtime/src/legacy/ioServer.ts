@@ -1,10 +1,11 @@
-import { Inject, Injectable, OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
+import type { OnApplicationBootstrap, OnApplicationShutdown } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ENVIRONMENT_VARIABLES } from '@voiceflow/nestjs-env';
 import { readFileSync } from 'fs';
 import { createServer } from 'https';
 import { Server } from 'socket.io';
 
-import { EnvironmentVariables } from '../app.env';
+import type { EnvironmentVariables } from '../app.env';
 
 @Injectable()
 export class IOServer extends Server implements OnApplicationShutdown, OnApplicationBootstrap {
@@ -19,7 +20,10 @@ export class IOServer extends Server implements OnApplicationShutdown, OnApplica
 
   onApplicationBootstrap() {
     if (this.env.NODE_ENV === 'e2e') {
-      const httpsServer = createServer({ key: readFileSync('certs/localhost.key'), cert: readFileSync('certs/localhost.crt') });
+      const httpsServer = createServer({
+        key: readFileSync('certs/localhost.key'),
+        cert: readFileSync('certs/localhost.crt'),
+      });
 
       this.listen(httpsServer);
 

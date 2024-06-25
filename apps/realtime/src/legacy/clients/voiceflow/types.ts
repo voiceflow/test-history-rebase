@@ -1,6 +1,6 @@
-import { AxiosInstance, AxiosStatic } from 'axios';
+import type { AxiosInstance, AxiosStatic } from 'axios';
 
-import { BaseOptions } from '../types';
+import type { BaseOptions } from '../types';
 
 export interface Options extends BaseOptions {
   axios: AxiosStatic;

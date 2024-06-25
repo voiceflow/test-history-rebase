@@ -1,10 +1,11 @@
 import * as Common from '@platform-config/configs/common';
 import { Config } from '@platform-config/configs/utils';
 import { Types } from '@platform-config/utils';
-import { AlexaConstants, AlexaVersion } from '@voiceflow/alexa-types';
+import type { AlexaConstants } from '@voiceflow/alexa-types';
+import { AlexaVersion } from '@voiceflow/alexa-types';
 import { createSimpleAdapter, createSmartSimpleAdapter } from 'bidirectional-adapter';
 
-import * as Models from '../../models';
+import type * as Models from '../../models';
 
 const PLATFORM_ONLY_FIELDS = Types.satisfies<keyof AlexaVersion.Settings>()([
   'events',

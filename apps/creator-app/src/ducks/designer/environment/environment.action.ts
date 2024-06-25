@@ -1,7 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
-import { NLUTrainingDiffStatus } from '@/constants/enums/nlu-training-diff-status.enum';
+import type { NLUTrainingDiffStatus } from '@/constants/enums/nlu-training-diff-status.enum';
 
 export interface SetNLUTrainingDiffStatus {
   status: NLUTrainingDiffStatus;

@@ -1,9 +1,9 @@
 import { UserRole } from '@voiceflow/dtos';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
 import { createCRUDState } from '@/ducks/utils/crudV2';
 
-import { WorkspaceState } from './types';
+import type { WorkspaceState } from './types';
 
 export const STATE_KEY = 'workspaceV2';
 

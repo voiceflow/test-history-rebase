@@ -10,4 +10,7 @@ export const nluTrainingDiffData = createSelector([nluTrainingDiff], ({ data }) 
 export const nluTrainingDiffHash = createSelector([nluTrainingDiff], ({ hash }) => hash);
 export const nluTrainingDiffStatus = createSelector([nluTrainingDiff], ({ status }) => status);
 
-export const gateSubscriptionRevision = createSelector([root], ({ gateSubscriptionRevision }) => gateSubscriptionRevision);
+export const gateSubscriptionRevision = createSelector(
+  [root],
+  ({ gateSubscriptionRevision }) => gateSubscriptionRevision
+);

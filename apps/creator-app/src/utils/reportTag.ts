@@ -8,4 +8,5 @@ export const isSystemTag = (tagID: string): tagID is SystemTag => SYSTEM_TAGS_VA
 
 export const isSentimentTag = (tagID: string): tagID is Sentiment => SENTIMENTS_VALUES.includes(tagID as Sentiment);
 
-export const isBuiltInTag = (tagID: string): tagID is SystemTag | Sentiment => isSystemTag(tagID) || isSentimentTag(tagID);
+export const isBuiltInTag = (tagID: string): tagID is SystemTag | Sentiment =>
+  isSystemTag(tagID) || isSentimentTag(tagID);

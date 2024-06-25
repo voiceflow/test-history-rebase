@@ -1,5 +1,6 @@
 import { parseId } from '@logux/core';
-import { Nullish, Utils } from '@voiceflow/common';
+import type { Nullish } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import _uniqBy from 'lodash/uniqBy';
 import * as Normal from 'normal-store';

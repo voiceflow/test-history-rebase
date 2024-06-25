@@ -4,7 +4,7 @@ import React from 'react';
 import { ConnectButton } from '../components';
 import { GOOGLE_OAUTH_SCOPES } from '../constants';
 import { useContext } from '../context';
-import { Account } from '../types';
+import type { Account } from '../types';
 
 export interface Props extends Base.Integration.LinkAccountButton.Props {
   onSuccess: (account: Account) => void;
@@ -23,7 +23,9 @@ export const Component: React.FC<Props> = ({ onError, onSuccess, ...props }) => 
     }
   };
 
-  return <ConnectButton.Component {...props} scopes={GOOGLE_OAUTH_SCOPES} onError={onError} onSuccess={onLinkAccount} />;
+  return (
+    <ConnectButton.Component {...props} scopes={GOOGLE_OAUTH_SCOPES} onError={onError} onSuccess={onLinkAccount} />
+  );
 };
 
 /**

@@ -1,6 +1,6 @@
 import { createUseJobInterfaceContent } from '@/components/JobInterface';
 import { AlexaStageType } from '@/constants/platforms';
-import { AlexaPublishJob } from '@/models';
+import type { AlexaPublishJob } from '@/models';
 
 import { PublishStageContent } from '../../publish/stages';
 import SubmitStage from './SubmitStage';

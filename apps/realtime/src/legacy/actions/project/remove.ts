@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { Context } from '@voiceflow/socket-utils';
+import type { Context } from '@voiceflow/socket-utils';
 import type { Action } from 'typescript-fsa';
 
 import { AbstractWorkspaceChannelControl } from '@/legacy/actions/workspace/utils';
@@ -11,7 +11,9 @@ class RemoveProject extends AbstractWorkspaceChannelControl<RemoveProjectPayload
 
   protected process = async (ctx: Context, { payload }: Action<RemoveProjectPayload>): Promise<void> => {
     await this.services.project.delete(ctx.data.creatorID, payload.key);
-    await this.server.process(Realtime.project.ejectUsers({ ...payload, projectID: payload.key, creatorID: ctx.data.creatorID }));
+    await this.server.process(
+      Realtime.project.ejectUsers({ ...payload, projectID: payload.key, creatorID: ctx.data.creatorID })
+    );
   };
 }
 

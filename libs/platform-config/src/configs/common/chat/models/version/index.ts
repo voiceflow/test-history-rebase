@@ -1,6 +1,6 @@
-import * as Base from '@platform-config/configs/base';
+import type * as Base from '@platform-config/configs/base';
 
-import * as Prompt from '../prompt';
+import type * as Prompt from '../prompt';
 import * as Publishing from './publishing';
 import * as Settings from './settings';
 

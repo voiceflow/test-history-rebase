@@ -1,4 +1,5 @@
-import Cookies, { CookieGetOptions, CookieSetOptions } from 'universal-cookie';
+import type { CookieGetOptions, CookieSetOptions } from 'universal-cookie';
+import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
 
@@ -8,4 +9,5 @@ export const getAllCookies = () => cookies.getAll();
 
 export const removeCookie = (key: string, options?: CookieSetOptions) => cookies.remove(key, options);
 
-export const setCookie = (key: string, value: string, options?: CookieSetOptions) => cookies.set(key, value, { sameSite: 'strict', ...options });
+export const setCookie = (key: string, value: string, options?: CookieSetOptions) =>
+  cookies.set(key, value, { sameSite: 'strict', ...options });

@@ -22,12 +22,18 @@ import {
   MAX_VISIBLE_ITEMS,
   NotFound,
 } from './components';
-import * as T from './types';
+import type * as T from './types';
 
 export * as MenuTypes from './types';
 
-function Menu(props: T.PropsWithChildren & React.RefAttributes<T.RefElement>, ref: React.Ref<T.RefElement>): React.ReactElement;
-function Menu<Value = void>(props: T.PropsWithOptions<Value> & React.RefAttributes<T.RefElement>, ref: React.Ref<T.RefElement>): React.ReactElement;
+function Menu(
+  props: T.PropsWithChildren & React.RefAttributes<T.RefElement>,
+  ref: React.Ref<T.RefElement>
+): React.ReactElement;
+function Menu<Value = void>(
+  props: T.PropsWithOptions<Value> & React.RefAttributes<T.RefElement>,
+  ref: React.Ref<T.RefElement>
+): React.ReactElement;
 function Menu<Value = void>(
   {
     id,

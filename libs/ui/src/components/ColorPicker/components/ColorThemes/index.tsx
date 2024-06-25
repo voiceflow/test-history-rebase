@@ -1,14 +1,20 @@
 import React from 'react';
 
-import { IColor } from '../../constants';
+import type { IColor } from '../../constants';
 import { getStandardShade } from '../../utils';
 import { Color } from './Color';
 import { ColorsList } from './styles';
-import { ColorThemesProps } from './types';
+import type { ColorThemesProps } from './types';
 
 export const ColorThemeUnit = Color;
 
-export const ColorThemes: React.FC<ColorThemesProps> = ({ colors, selectedColor = '', onColorSelect, newColorIndex, ...props }) => {
+export const ColorThemes: React.FC<ColorThemesProps> = ({
+  colors,
+  selectedColor = '',
+  onColorSelect,
+  newColorIndex,
+  ...props
+}) => {
   const lowercaseSelectedColor = selectedColor.toLowerCase();
 
   return (

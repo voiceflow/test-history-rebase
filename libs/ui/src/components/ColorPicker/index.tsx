@@ -3,14 +3,15 @@ import Tag from '@ui/components/Tag';
 import { useDebouncedCallback, useLinkedState } from '@ui/hooks';
 import { stopPropagation } from '@ui/utils';
 import { createShadesFromHue, createStandardShadeFromHue, STANDARD_GRADE } from '@ui/utils/colors/hsl';
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import React from 'react';
 import { DismissableLayerProvider } from 'react-dismissable-layers';
 
 import { ColorRange } from './components/ColorRange';
 import { ColorThemes } from './components/ColorThemes';
-import { ColorThemesPersistAPI } from './components/ColorThemes/types';
-import { Colors, ColorScheme, DEFAULT_SCHEME_COLORS, DEFAULT_THEMES, IColor } from './constants';
+import type { ColorThemesPersistAPI } from './components/ColorThemes/types';
+import type { Colors, IColor } from './constants';
+import { ColorScheme, DEFAULT_SCHEME_COLORS, DEFAULT_THEMES } from './constants';
 import { useNormalizedColor } from './hooks';
 import { Label, PopperContent, Wrapper } from './styles';
 import { hexToHue, normalizeColor } from './utils';
@@ -79,7 +80,11 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
           )}
 
           <Box width={200} mb={22} mt={5}>
-            <ColorRange hue={localHue} setHue={(hue) => onChangeHex(createStandardShadeFromHue(hue))} saveHue={onSaveHue} />
+            <ColorRange
+              hue={localHue}
+              setHue={(hue) => onChangeHex(createStandardShadeFromHue(hue))}
+              saveHue={onSaveHue}
+            />
           </Box>
 
           <Label>Color themes</Label>

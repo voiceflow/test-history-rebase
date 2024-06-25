@@ -1,10 +1,10 @@
 import { ErrorMessage } from '@ui/components/Error';
 import Input from '@ui/components/Input';
 import { useDidUpdateEffect } from '@ui/hooks';
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import React from 'react';
 
-import { InputRenderer } from '../../Primitive/LinkUpload';
+import type { InputRenderer } from '../../Primitive/LinkUpload';
 import { transformVariablesToReadable, validateURL } from '../../utils';
 
 export interface UploadLinkInputProps {
@@ -17,7 +17,13 @@ export interface UploadLinkInputProps {
 
 export type { InputRenderer };
 
-const UploadLinkInput: React.FC<UploadLinkInputProps> = ({ onChangeText, value = '', validate = validateURL, placeholder, renderInput }) => {
+const UploadLinkInput: React.FC<UploadLinkInputProps> = ({
+  onChangeText,
+  value = '',
+  validate = validateURL,
+  placeholder,
+  renderInput,
+}) => {
   const [error, setError] = React.useState<Nullable<string>>(null);
   const inputRef = React.useRef<HTMLDivElement & { getCurrentValue: () => { text: string } }>();
 
@@ -70,7 +76,13 @@ const UploadLinkInput: React.FC<UploadLinkInputProps> = ({ onChangeText, value =
           multiline: true,
         })
       ) : (
-        <Input {...inputProps} error={!!error} onChangeText={onChangeText} onEnterPress={() => validateAndUpdate(value)} value={value || ''} />
+        <Input
+          {...inputProps}
+          error={!!error}
+          onChangeText={onChangeText}
+          onEnterPress={() => validateAndUpdate(value)}
+          value={value || ''}
+        />
       )}
       {error && <ErrorMessage mb={0}>{error}</ErrorMessage>}
     </div>

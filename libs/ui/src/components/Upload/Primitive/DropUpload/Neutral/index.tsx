@@ -1,4 +1,4 @@
-import { SvgIconTypes } from '@ui/components/SvgIcon';
+import type { SvgIconTypes } from '@ui/components/SvgIcon';
 import { swallowEvent } from '@ui/utils';
 import React from 'react';
 
@@ -13,7 +13,9 @@ interface NeutralProps {
 
 const Neutral: React.FC<NeutralProps> = ({ onCornerAction, cornerIcon, label = 'file' }) => (
   <>
-    {onCornerAction && cornerIcon && <CornerActionButton onClick={swallowEvent(onCornerAction)} size={12} icon={cornerIcon} />}
+    {onCornerAction && cornerIcon && (
+      <CornerActionButton onClick={swallowEvent(onCornerAction)} size={12} icon={cornerIcon} />
+    )}
     <S.Message>
       Drop {label} here or <S.BrowseButton>Browse</S.BrowseButton>
     </S.Message>

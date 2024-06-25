@@ -1,4 +1,4 @@
-import { AreaChartFormatter } from '../types';
+import type { AreaChartFormatter } from '../types';
 
 const SimpleFormatter: AreaChartFormatter = {
   tooltip: { formatX: String },

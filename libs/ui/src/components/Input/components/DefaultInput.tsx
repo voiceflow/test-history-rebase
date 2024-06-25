@@ -1,15 +1,19 @@
 import composeRef from '@seznam/compose-react-refs';
-import SvgIcon, { SvgIconTypes } from '@ui/components/SvgIcon';
+import type { SvgIconTypes } from '@ui/components/SvgIcon';
+import SvgIcon from '@ui/components/SvgIcon';
 import { css, styled } from '@ui/styles';
 import { fontResetStyle } from '@ui/styles/bootstrap';
-import { Either } from '@ui/types';
+import type { Either } from '@ui/types';
 import React from 'react';
 
-import { hideNumberArrows, inputStyle, StyledInputProps } from '../styles';
+import type { StyledInputProps } from '../styles';
+import { hideNumberArrows, inputStyle } from '../styles';
 import { NestedIconPosition } from '../types';
 import ChildInput from './ChildInput';
-import InlineInput, { InlineInputProps } from './InlineInput';
-import InputWrapper, { InputWrapperProps } from './InputWrapper';
+import type { InlineInputProps } from './InlineInput';
+import InlineInput from './InlineInput';
+import type { InputWrapperProps } from './InputWrapper';
+import InputWrapper from './InputWrapper';
 
 export interface PlainInputProps extends StyledInputProps, Omit<React.ComponentProps<'input'>, 'ref' | 'children'> {}
 
@@ -86,7 +90,11 @@ export const NestedInput = React.forwardRef<HTMLInputElement, NestedInputProps>(
         {iconPosition === NestedIconPosition.LEFT && iconComponent}
 
         <ChildInput>
-          {children ? children({ ref: combinedRefs }) : <InlineInput {...props} ref={combinedRefs} readOnly={readOnly} disabled={disabled} />}
+          {children ? (
+            children({ ref: combinedRefs })
+          ) : (
+            <InlineInput {...props} ref={combinedRefs} readOnly={readOnly} disabled={disabled} />
+          )}
         </ChildInput>
 
         {iconPosition === NestedIconPosition.RIGHT && iconComponent}

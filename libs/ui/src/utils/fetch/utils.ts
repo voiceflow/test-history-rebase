@@ -1,7 +1,8 @@
 import { logger } from '@ui/utils/logger';
 
 import { DEFAULT_FETCH_OPTIONS } from './constants';
-import { FetchMessageFormat, FetchResult } from './types';
+import type { FetchResult } from './types';
+import { FetchMessageFormat } from './types';
 
 export const fetchLogger = logger.child('fetch');
 
@@ -11,7 +12,12 @@ export const buildHeaders = (headers: Map<string, string>) =>
     return acc;
   }, {});
 
-export const buildOptions = (rawOpts: RequestInit, globalHeaders: Map<string, string>, body: string | object | undefined, json: boolean) => {
+export const buildOptions = (
+  rawOpts: RequestInit,
+  globalHeaders: Map<string, string>,
+  body: string | object | undefined,
+  json: boolean
+) => {
   let opts: RequestInit = {
     ...DEFAULT_FETCH_OPTIONS,
     ...rawOpts,
@@ -42,7 +48,10 @@ export const buildOptions = (rawOpts: RequestInit, globalHeaders: Map<string, st
   return opts;
 };
 
-export const parseResponse = async <R>(res: Response, format: FetchMessageFormat): Promise<{ body: R; size: number }> => {
+export const parseResponse = async <R>(
+  res: Response,
+  format: FetchMessageFormat
+): Promise<{ body: R; size: number }> => {
   if (format === FetchMessageFormat.BLOB) {
     const blob = await res.blob();
 

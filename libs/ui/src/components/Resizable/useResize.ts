@@ -1,7 +1,8 @@
 import { useRAF } from '@ui/hooks';
 import React from 'react';
 
-import { ResizeManagerOptions, useResizeManager } from './manager';
+import type { ResizeManagerOptions } from './manager';
+import { useResizeManager } from './manager';
 
 interface ResizeOptions extends ResizeManagerOptions {}
 

@@ -1,8 +1,9 @@
-import { IconButtonVariant } from '@ui/components/IconButton/types';
+import type { IconButtonVariant } from '@ui/components/IconButton/types';
 import { colors, css, styled, ThemeColor } from '@ui/styles';
 
 import { beforeStyles } from './ActionContainer';
-import IconButtonContainer, { IconButtonContainerSharedProps, importantStyles } from './IconButtonContainer';
+import type { IconButtonContainerSharedProps } from './IconButtonContainer';
+import IconButtonContainer, { importantStyles } from './IconButtonContainer';
 
 export interface SuccessContainerProps extends IconButtonContainerSharedProps {
   variant: IconButtonVariant.SUCCESS;
@@ -13,7 +14,10 @@ const activeStyles = css`
   background: linear-gradient(-180deg, rgba(39, 151, 69, 0.08) 0%, rgba(39, 151, 69, 0.16) 100%);
   border-color: rgba(39, 151, 69, 0.5);
   box-shadow: none !important;
-  transition: opacity 0.12s linear, border-color 0.16s linear, box-shadow 0.12s linear;
+  transition:
+    opacity 0.12s linear,
+    border-color 0.16s linear,
+    box-shadow 0.12s linear;
 
   &:hover {
     color: rgba(110, 132, 154, 0.8);
@@ -33,7 +37,9 @@ const SuccessContainer = styled(IconButtonContainer)<SuccessContainerProps>`
   background: linear-gradient(-180deg, rgba(39, 151, 69, 0.08) 0%, rgba(39, 151, 69, 0.16) 100%);
   border: 1px solid transparent;
   border-color: ${colors(ThemeColor.WHITE)};
-  box-shadow: 0 0 0 1px ${colors(ThemeColor.WHITE)}, 0 1px 2px 1px rgba(17, 49, 96, 0.16);
+  box-shadow:
+    0 0 0 1px ${colors(ThemeColor.WHITE)},
+    0 1px 2px 1px rgba(17, 49, 96, 0.16);
   cursor: pointer;
 
   &:before {

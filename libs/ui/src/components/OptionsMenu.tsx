@@ -1,7 +1,8 @@
 import { Utils } from '@voiceflow/common';
 import React from 'react';
 
-import NestedMenu, { MenuItemMultilevel, UIOnlyMenuItemOption } from './NestedMenu';
+import type { MenuItemMultilevel, UIOnlyMenuItemOption } from './NestedMenu';
+import NestedMenu from './NestedMenu';
 
 export interface OptionsMenuOption extends MenuItemMultilevel<OptionsMenuOption> {
   label: React.ReactNode;

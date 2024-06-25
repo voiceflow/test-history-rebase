@@ -21,10 +21,12 @@ const MenuHeaderWrapper = styled.li<MenuHeaderWrapperProps>`
   ${({ isFocused }) =>
     isFocused &&
     css`
-      background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, ${backgrounds('greyGreen')} 100%), ${colors(ThemeColor.WHITE)};
+      background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, ${backgrounds('greyGreen')} 100%),
+        ${colors(ThemeColor.WHITE)};
 
       > input {
-        background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, ${backgrounds('greyGreen')} 100%), ${colors(ThemeColor.WHITE)};
+        background: linear-gradient(180deg, rgba(238, 244, 246, 0.85) 0%, ${backgrounds('greyGreen')} 100%),
+          ${colors(ThemeColor.WHITE)};
       }
     `};
 `;

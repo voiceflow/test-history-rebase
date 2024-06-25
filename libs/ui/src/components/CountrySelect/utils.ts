@@ -1,7 +1,7 @@
 import { stripAccents } from '../../utils/string';
 import { isUIOnlyMenuItemOption } from '../NestedMenu';
-import { OptionsFilter } from '../Select';
-import { Country } from './countries';
+import type { OptionsFilter } from '../Select';
+import type { Country } from './countries';
 
 const getMatchScore = (search: string, text: string, multiplier = 1) => {
   if (text === search) return 100 * multiplier;
@@ -14,14 +14,14 @@ const getMatchScore = (search: string, text: string, multiplier = 1) => {
 };
 
 export const filterAndSortOptions: OptionsFilter<Country, string> = (options, searchLabel, { maxSize }) => {
-  if (!searchLabel) return { filteredOptions: options.slice(0, maxSize), matchedOptions: options, notMatchedOptions: [] };
+  if (!searchLabel)
+    return { filteredOptions: options.slice(0, maxSize), matchedOptions: options, notMatchedOptions: [] };
 
   const matchedOptions: Country[] = [];
   const notMatchedOptions: Country[] = [];
 
   const strippedString = stripAccents(searchLabel).toLowerCase();
 
-  // eslint-disable-next-line no-restricted-syntax
   for (const option of options) {
     if (isUIOnlyMenuItemOption(option)) continue;
 

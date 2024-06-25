@@ -1,7 +1,7 @@
 import ChartTooltip from '@ui/components/ChartTooltip';
 import React from 'react';
 
-import { BarChartDatum } from '../types';
+import type { BarChartDatum } from '../types';
 
 const BarChartTooltip = ({ payload }: { payload?: { payload: BarChartDatum }[] }) => {
   if (!payload || !payload.length) return null;

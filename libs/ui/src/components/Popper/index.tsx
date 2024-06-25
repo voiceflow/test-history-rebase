@@ -8,7 +8,7 @@ import { DismissableLayerProvider, useDismissable } from 'react-dismissable-laye
 import { MemoryRouter } from 'react-router-dom';
 
 import { baseStyles, Body, Container, Content, Footer, Nav, NavItem } from './components';
-import * as T from './types';
+import type * as T from './types';
 
 export * as PopperTypes from './types';
 
@@ -87,8 +87,19 @@ const Popper: React.FC<T.Props> = ({
               positionFixed
             >
               {({ ref, style, scheduleUpdate }) => (
-                <div ref={ref} style={{ ...style, zIndex: zIndex ?? theme.zIndex.popper }} data-testid={testID} onClick={onContainerClick}>
-                  <Container className={ClassName.POPPER} width={width} height={height} maxWidth={maxWidth} maxHeight={maxHeight}>
+                <div
+                  ref={ref}
+                  style={{ ...style, zIndex: zIndex ?? theme.zIndex.popper }}
+                  data-testid={testID}
+                  onClick={onContainerClick}
+                >
+                  <Container
+                    className={ClassName.POPPER}
+                    width={width}
+                    height={height}
+                    maxWidth={maxWidth}
+                    maxHeight={maxHeight}
+                  >
                     {renderNav?.({ ...rendererProps, scheduleUpdate })}
 
                     <Body>

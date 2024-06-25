@@ -1,8 +1,8 @@
-import { ButtonVariant } from '@ui/components/Button/constants';
+import type { ButtonVariant } from '@ui/components/Button/constants';
 import SvgIcon from '@ui/components/SvgIcon';
 import React from 'react';
 
-import { CommonButtonProps } from '../types';
+import type { CommonButtonProps } from '../types';
 import * as S from './styles';
 
 export type DarkButtonProps = S.DarkButtonContainerProps & CommonButtonProps<ButtonVariant.PRIMARY>;

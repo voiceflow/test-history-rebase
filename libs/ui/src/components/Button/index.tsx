@@ -3,25 +3,33 @@ import { ClassName } from '@ui/styles/constants';
 import cn from 'classnames';
 import React from 'react';
 
+import type {
+  PrimaryButtonProps,
+  QuaternaryButtonProps,
+  SecondaryButtonProps,
+  TertiaryButtonProps,
+  WhiteButtonProps,
+} from './components';
 import {
   BaseButton,
   baseButtonStyles,
   ButtonContainer,
   DarkButton,
   PrimaryButton,
-  PrimaryButtonProps,
   QuaternaryButton,
-  QuaternaryButtonProps,
   SecondaryButton,
-  SecondaryButtonProps,
   TertiaryButton,
-  TertiaryButtonProps,
   WhiteButton,
-  WhiteButtonProps,
 } from './components';
 import { ButtonVariant } from './constants';
 
-export type { DarkButtonProps, PrimaryButtonProps, QuaternaryButtonProps, SecondaryButtonProps, TertiaryButtonProps } from './components';
+export type {
+  DarkButtonProps,
+  PrimaryButtonProps,
+  QuaternaryButtonProps,
+  SecondaryButtonProps,
+  TertiaryButtonProps,
+} from './components';
 export * from './components';
 export { ButtonVariant };
 
@@ -33,7 +41,12 @@ const BUTTON_VARIANTS = {
   [ButtonVariant.WHITE]: WhiteButton,
 };
 
-type ButtonProps = PrimaryButtonProps | SecondaryButtonProps | TertiaryButtonProps | QuaternaryButtonProps | WhiteButtonProps;
+type ButtonProps =
+  | PrimaryButtonProps
+  | SecondaryButtonProps
+  | TertiaryButtonProps
+  | QuaternaryButtonProps
+  | WhiteButtonProps;
 
 const Button: React.ForwardRefRenderFunction<HTMLButtonElement, ButtonProps> = (
   { variant = ButtonVariant.PRIMARY, className, children, ...props },

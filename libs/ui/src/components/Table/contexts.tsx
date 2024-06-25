@@ -1,7 +1,7 @@
 import { useContextApi, useEnableDisable } from '@ui/hooks';
 import React from 'react';
 
-import * as T from './types';
+import type * as T from './types';
 
 export const DEFAULT_STATE: T.ContextValue<any> = {
   items: [],

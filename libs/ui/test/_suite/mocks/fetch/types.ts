@@ -1,4 +1,4 @@
-import { Mock } from 'vitest';
+import type { Mock } from 'vitest';
 
 export interface Response {
   body: string;
@@ -7,7 +7,9 @@ export interface Response {
 }
 
 export interface Fetch {
-  (...responses: Response[]): Mock<
+  (
+    ...responses: Response[]
+  ): Mock<
     [input: RequestInfo | URL, init?: RequestInit | undefined],
     Promise<{ status: number; text: () => Promise<string> }>
   >;

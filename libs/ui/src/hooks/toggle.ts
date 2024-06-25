@@ -4,7 +4,10 @@ import React from 'react';
 export const useToggle = (defaultValue = false): [boolean, (nextValue?: unknown) => void] => {
   const [value, setValue] = React.useState(defaultValue);
 
-  const toggle = React.useCallback((nextValue: unknown) => setValue((currValue) => (_isBoolean(nextValue) ? nextValue : !currValue)), []);
+  const toggle = React.useCallback(
+    (nextValue: unknown) => setValue((currValue) => (_isBoolean(nextValue) ? nextValue : !currValue)),
+    []
+  );
 
   return [value, toggle];
 };
@@ -17,7 +20,9 @@ export const useEnableDisable = (defaultValue = false): [boolean, VoidFunction, 
   return [value, onEnable, onDisable];
 };
 
-export const useSwitch = (defaultValue: unknown = null): [boolean, unknown, (nextValue: unknown) => void, VoidFunction] => {
+export const useSwitch = (
+  defaultValue: unknown = null
+): [boolean, unknown, (nextValue: unknown) => void, VoidFunction] => {
   const [{ isSet, value }, setState] = React.useState({ isSet: !!defaultValue, value: defaultValue });
   const onChange = (nextValue: unknown) => setState({ isSet: true, value: nextValue });
   const onUnset = () => isSet && setState((state) => ({ ...state, isSet: false }));

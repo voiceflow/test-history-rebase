@@ -53,7 +53,10 @@ export const inputStyle = css<StyledInputProps>`
   min-height: ${({ theme }) => theme.components.input.height}px;
   padding: 10px 16px;
   color: #132042;
-  font: normal 15px Open Sans, Arial, sans-serif;
+  font:
+    normal 15px Open Sans,
+    Arial,
+    sans-serif;
   font-size: 15px;
   line-height: 20px;
   background: ${colors(ThemeColor.WHITE)};
@@ -61,7 +64,12 @@ export const inputStyle = css<StyledInputProps>`
   border-radius: 6px;
   box-shadow: 0 0 3px 0 rgba(17, 49, 96, 0.06);
   cursor: text;
-  transition: background-color 0.12s linear, color 0.12s linear, border-color 0.12s linear, box-shadow 0.12s linear, max-height 0.12s linear;
+  transition:
+    background-color 0.12s linear,
+    color 0.12s linear,
+    border-color 0.12s linear,
+    box-shadow 0.12s linear,
+    max-height 0.12s linear;
 
   &:active,
   &:focus,

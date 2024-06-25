@@ -2,7 +2,7 @@ import _isNumber from 'lodash/isNumber';
 import React from 'react';
 import { Sector } from 'recharts';
 
-import { DonutChartDatum } from '../types';
+import type { DonutChartDatum } from '../types';
 
 export interface DonutChartShapeProps {
   cx?: number;
@@ -30,12 +30,27 @@ const DonutChartShape: React.FC<DonutChartShapeProps> = ({
   isActive,
   payload,
 }) => {
-  if (!_isNumber(cx) || !_isNumber(cy) || !_isNumber(startAngle) || !_isNumber(endAngle) || !_isNumber(innerRadius) || !_isNumber(outerRadius))
+  if (
+    !_isNumber(cx) ||
+    !_isNumber(cy) ||
+    !_isNumber(startAngle) ||
+    !_isNumber(endAngle) ||
+    !_isNumber(innerRadius) ||
+    !_isNumber(outerRadius)
+  )
     return null;
 
   return (
     <g>
-      <Sector cx={cx} cy={cy} innerRadius={innerRadius} outerRadius={outerRadius} startAngle={startAngle} endAngle={endAngle} fill={payload?.color} />
+      <Sector
+        cx={cx}
+        cy={cy}
+        innerRadius={innerRadius}
+        outerRadius={outerRadius}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        fill={payload?.color}
+      />
       <Sector
         cx={cx}
         cy={cy}

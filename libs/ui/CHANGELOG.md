@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.319.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.319.3...@voiceflow/ui@1.319.4) (2024-06-25)
+
+### Bug Fixes
+
+* hide overflowing text in card/carousel block (COR-2448) ([#8383](https://github.com/voiceflow/creator-app/issues/8383)) ([6f8f96a](https://github.com/voiceflow/creator-app/commit/6f8f96ae35e50ed60471b531aa6e70dc0955c412))
+
 ## [1.319.3](https://github.com/voiceflow/creator-app/compare/@voiceflow/ui@1.319.2...@voiceflow/ui@1.319.3) (2024-06-25)
 
 ### Bug Fixes

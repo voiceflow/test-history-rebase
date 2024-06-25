@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1599.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1598.4...@voiceflow/creator-app@1.1599.0) (2024-06-25)
+
+### Bug Fixes
+
+* adjust editor width in CMS (COR-2450) ([#8389](https://github.com/voiceflow/creator-app/issues/8389)) ([68fcd7d](https://github.com/voiceflow/creator-app/commit/68fcd7d3f277c4e1ea27c3533873f8faf68fd31e))
+* main container height needs to take header into consideration (CORS-2477) ([#8406](https://github.com/voiceflow/creator-app/issues/8406)) ([a3f548b](https://github.com/voiceflow/creator-app/commit/a3f548b01044894384855fa17278775f883b3c10))
+* show only sessionID in the transcripts list (COR-2473) ([#8402](https://github.com/voiceflow/creator-app/issues/8402)) ([00e6ceb](https://github.com/voiceflow/creator-app/commit/00e6cebb796d8cce3e2bdfe5e952e51a21426add))
+
+### Features
+
+* make function paths draggable - FE (COR-2270) ([#8305](https://github.com/voiceflow/creator-app/issues/8305)) ([adce7ce](https://github.com/voiceflow/creator-app/commit/adce7ce6b870720ab97a08f6b0e0e01093aa38f6))
+
 ## [1.1598.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1598.3...@voiceflow/creator-app@1.1598.4) (2024-06-25)
 
 **Note:** Version bump only for package @voiceflow/creator-app

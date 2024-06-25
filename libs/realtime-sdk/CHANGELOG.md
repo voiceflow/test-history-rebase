@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.429.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.429.1...@voiceflow/realtime-sdk@1.429.2) (2024-06-25)
+
+### Bug Fixes
+
+* drop producs adapter and types (COR-000) ([#8386](https://github.com/voiceflow/creator-app/issues/8386)) ([9a0b19e](https://github.com/voiceflow/creator-app/commit/9a0b19e038ca39dc4fa251d805fcd6c398ceee34))
+
 ## [1.429.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime-sdk@1.429.0...@voiceflow/realtime-sdk@1.429.1) (2024-06-25)
 
 ### Bug Fixes

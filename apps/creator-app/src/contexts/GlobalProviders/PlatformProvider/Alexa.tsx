@@ -15,5 +15,7 @@ export const AlexaProvider: React.FC<React.PropsWithChildren> = ({ children }) =
     amazonInitialize: Amazon.initialize,
   });
 
-  return <PlatformConfig.Alexa.CONFIG.Context.Provider value={api}>{children}</PlatformConfig.Alexa.CONFIG.Context.Provider>;
+  return (
+    <PlatformConfig.Alexa.CONFIG.Context.Provider value={api}>{children}</PlatformConfig.Alexa.CONFIG.Context.Provider>
+  );
 };

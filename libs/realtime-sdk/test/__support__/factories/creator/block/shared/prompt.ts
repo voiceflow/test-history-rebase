@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker';
 import { getRandomEnumElement } from '@test/utils';
-import { ChatModels } from '@voiceflow/chat-types';
+import type { ChatModels } from '@voiceflow/chat-types';
 import * as Platform from '@voiceflow/platform-config/backend';
-import { VoiceModels } from '@voiceflow/voice-types';
+import type { VoiceModels } from '@voiceflow/voice-types';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import { define } from 'cooky-cutter';
 

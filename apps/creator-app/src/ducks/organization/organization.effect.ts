@@ -4,7 +4,7 @@ import { toast } from '@voiceflow/ui';
 import client from '@/client';
 import * as Errors from '@/config/errors';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { Thunk } from '@/store/types';
+import type { Thunk } from '@/store/types';
 import { getErrorMessage } from '@/utils/error';
 
 export const updateActiveOrganizationName =

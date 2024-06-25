@@ -1,5 +1,6 @@
-import { DBProduct, Product } from '@realtime-sdk/models';
-import { AlexaConstants, AlexaProject } from '@voiceflow/alexa-types';
+import type { DBProduct, Product } from '@realtime-sdk/models';
+import type { AlexaProject } from '@voiceflow/alexa-types';
+import { AlexaConstants } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
 import { createMultiAdapter } from 'bidirectional-adapter';
 
@@ -32,7 +33,9 @@ const productAdapter = createMultiAdapter<DBProduct, Product>(
       marketPlaces: parseMarketPlaces(publishingInformation.pricing, publishingInformation.distributionCountries),
       taxCategory: publishingInformation.taxInformation.category || null,
       referenceName,
-      trialPeriodDays: subscriptionInformation?.subscriptionTrialPeriodDays ? String(subscriptionInformation?.subscriptionTrialPeriodDays) : null,
+      trialPeriodDays: subscriptionInformation?.subscriptionTrialPeriodDays
+        ? String(subscriptionInformation?.subscriptionTrialPeriodDays)
+        : null,
       purchasableState: purchasableState || null,
       testingInstructions: testingInstructions || null,
       subscriptionFrequency: subscriptionInformation?.subscriptionPaymentFrequency || null,

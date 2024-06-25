@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { NestExpressApplication } from '@nestjs/platform-express';
+import type { NestExpressApplication } from '@nestjs/platform-express';
 import { Environment } from '@voiceflow/common';
 import { configureApp, corsConfig, LoggerPlugin } from '@voiceflow/nestjs-common';
 import { ENVIRONMENT_VARIABLES } from '@voiceflow/nestjs-env';

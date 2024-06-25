@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import { Channel, Language } from '@voiceflow/dtos';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import { Designer } from '@/ducks';
@@ -12,10 +12,10 @@ import {
   IntentMapContext,
   RequiredEntityMapContext,
 } from '@/pages/Canvas/contexts';
-import { EntityPrompt } from '@/pages/Canvas/types';
+import type { EntityPrompt } from '@/pages/Canvas/types';
 import { transformVariablesToReadable } from '@/utils/slot';
 
-import { ButtonItem } from './types';
+import type { ButtonItem } from './types';
 
 interface Options {
   data: Realtime.NodeData<Realtime.NodeData.Buttons>;

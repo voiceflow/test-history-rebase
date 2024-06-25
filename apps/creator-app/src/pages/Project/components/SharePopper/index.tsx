@@ -1,6 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { tid } from '@voiceflow/style';
-import { Popper, PopperTypes, stopPropagation } from '@voiceflow/ui';
+import type { PopperTypes } from '@voiceflow/ui';
+import { Popper, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 

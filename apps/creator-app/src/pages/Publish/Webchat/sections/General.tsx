@@ -1,5 +1,6 @@
-import { Nullish, Utils } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config';
+import type { Nullish } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import type * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Input, SectionV2, Select, TippyTooltip, Toggle } from '@voiceflow/ui';
 import { VoiceflowVersion } from '@voiceflow/voiceflow-types';

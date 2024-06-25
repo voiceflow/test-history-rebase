@@ -1,11 +1,14 @@
-import { Nullable, Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { Nullable } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
-import { BlockType, StepMenuType } from '@/constants';
+import type { StepMenuType } from '@/constants';
+import { BlockType } from '@/constants';
 import * as Viewport from '@/ducks/viewport';
 import { Coords } from '@/utils/geometry';
 
-import { CloneContextOptions, cloneEntityMap, DUPLICATE_OFFSET, EngineConsumer, mergeEntityMaps } from '../utils';
+import type { CloneContextOptions } from '../utils';
+import { cloneEntityMap, DUPLICATE_OFFSET, EngineConsumer, mergeEntityMaps } from '../utils';
 import { childEntityMapSelector, entityMapSelector, parentEntityMapSelector } from './selectors';
 
 class DiagramEngine extends EngineConsumer {
@@ -21,7 +24,11 @@ class DiagramEngine extends EngineConsumer {
     return this.select(childEntityMapSelector)(nodeID);
   }
 
-  async cloneEntities(entityMap: Realtime.EntityMap, coords: Coords, options?: CloneContextOptions): Promise<Realtime.EntityMap> {
+  async cloneEntities(
+    entityMap: Realtime.EntityMap,
+    coords: Coords,
+    options?: CloneContextOptions
+  ): Promise<Realtime.EntityMap> {
     const clonedEntityMap = cloneEntityMap(entityMap, options);
 
     await this.engine.node.importSnapshot(clonedEntityMap, coords, options?.diagramID);
@@ -113,6 +120,7 @@ class DiagramEngine extends EngineConsumer {
     menuType: StepMenuType;
     autoFocus?: boolean;
     diagramID: string;
+    // eslint-disable-next-line @typescript-eslint/ban-types
     factoryData?: Realtime.NodeDataMap[K] & Partial<Realtime.NodeData<{}>>;
   }) {
     const isActive = this.engine.getDiagramID() === diagramID;
@@ -137,7 +145,10 @@ class DiagramEngine extends EngineConsumer {
         const diagram = this.engine.getDiagramByID(diagramID);
         const scale = (diagram?.zoom ?? 100) / 100;
 
-        coords = new Coords([(rect.width / 2 - (diagram?.offsetX ?? 0)) * scale, (rect.height / 2 - (diagram?.offsetY ?? 0)) * scale]);
+        coords = new Coords([
+          (rect.width / 2 - (diagram?.offsetX ?? 0)) * scale,
+          (rect.height / 2 - (diagram?.offsetY ?? 0)) * scale,
+        ]);
       }
     }
 

@@ -1,10 +1,10 @@
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
 import * as Documentation from '@/config/documentation';
 import { BlockType } from '@/constants';
 
-import { NodeConfig } from '../types';
+import type { NodeConfig } from '../types';
 
 export const displayFactory = (aplType = BaseNode.Visual.APLType.SPLASH): BaseNode.Visual.APLStepData => ({
   title: '',

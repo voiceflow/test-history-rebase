@@ -1,13 +1,13 @@
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import _isEqual from 'lodash/isEqual';
 import React from 'react';
 
-import { HSLShades } from '@/constants';
+import type { HSLShades } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
 import { AccountLinkingContext } from '@/pages/Canvas/contexts';
-import { ConnectedStep } from '@/pages/Canvas/managers/types';
+import type { ConnectedStep } from '@/pages/Canvas/managers/types';
 
 import { EMPTY_ACCOUNT_DATA, NODE_CONFIG } from '../constants';
 
@@ -18,7 +18,12 @@ export interface AccountLinkingStepProps {
   palette: HSLShades;
 }
 
-export const AccountLinkingStep: React.FC<AccountLinkingStepProps> = ({ isConfigured, nodeID, nextPortID, palette }) => (
+export const AccountLinkingStep: React.FC<AccountLinkingStepProps> = ({
+  isConfigured,
+  nodeID,
+  nextPortID,
+  palette,
+}) => (
   <Step nodeID={nodeID}>
     <Section>
       <Item
@@ -33,11 +38,10 @@ export const AccountLinkingStep: React.FC<AccountLinkingStepProps> = ({ isConfig
   </Step>
 );
 
-const ConnectedAccountLinkingStep: ConnectedStep<Realtime.NodeData.AccountLinking, Realtime.NodeData.AccountLinkingBuiltInPorts> = ({
-  ports,
-  data,
-  palette,
-}) => {
+const ConnectedAccountLinkingStep: ConnectedStep<
+  Realtime.NodeData.AccountLinking,
+  Realtime.NodeData.AccountLinkingBuiltInPorts
+> = ({ ports, data, palette }) => {
   const accountLinkingData = React.useContext(AccountLinkingContext)!;
 
   const notEmpty = !_isEqual(accountLinkingData, EMPTY_ACCOUNT_DATA);

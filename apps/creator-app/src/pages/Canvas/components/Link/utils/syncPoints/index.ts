@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { Pair, PathPoint, PathPoints, Point } from '@/types';
+import type { Pair, PathPoint, PathPoints, Point } from '@/types';
 
 import { clonePoint, getPointX, getPointY } from '../helpers';
 import { createLine, isVerticalLine, transformVerticalHeadAndTailLine } from '../lines';
@@ -16,8 +16,8 @@ import {
   getTargetEndTopX,
   getTargetEndTopY,
 } from '../pathPoints';
-import { LinkedRects } from '../types';
-import { SyncPointsOptions } from './types';
+import type { LinkedRects } from '../types';
+import type { SyncPointsOptions } from './types';
 
 interface SyncStraightSourceTargetOptions {
   points: PathPoints;
@@ -93,7 +93,9 @@ const syncSourcePoints = ({ points, options, linkedRects }: SyncSourcePointsOpti
 
   if (!startPoint || !options.isStraight || !options.isPathLocked) return getPathPoints(linkedRects, options);
 
-  const newStartX = startPoint.reversed ? getSourceStartLeftX(linkedRects, options) : getSourceStartRightX(linkedRects, options);
+  const newStartX = startPoint.reversed
+    ? getSourceStartLeftX(linkedRects, options)
+    : getSourceStartRightX(linkedRects, options);
   const newStartY = startPoint.reversed ? getSourceStartLeftY(linkedRects) : getSourceStartRightY(linkedRects);
   const currentStartX = getPointX(startPoint);
   const currentStartY = getPointY(startPoint);
@@ -163,15 +165,15 @@ const syncTargetPoints = ({ points, options, shouldClone, linkedRects }: SyncTar
   const newEndX = endPoint.toTop
     ? getTargetEndTopX(linkedRects)
     : endPoint.reversed
-    ? getTargetEndRightX(linkedRects, options)
-    : getTargetEndLeftX(linkedRects, options);
+      ? getTargetEndRightX(linkedRects, options)
+      : getTargetEndLeftX(linkedRects, options);
 
   // eslint-disable-next-line no-nested-ternary
   const newEndY = endPoint.toTop
     ? getTargetEndTopY(linkedRects)
     : endPoint.reversed
-    ? getTargetEndRightY(linkedRects, options)
-    : getTargetEndLeftY(linkedRects, options);
+      ? getTargetEndRightY(linkedRects, options)
+      : getTargetEndLeftY(linkedRects, options);
 
   const currentEndX = getPointX(endPoint);
   const currentEndY = getPointY(endPoint);
@@ -193,7 +195,11 @@ const syncTargetPoints = ({ points, options, shouldClone, linkedRects }: SyncTar
   });
 };
 
-export const syncPointsWithLinkedRects = (points: PathPoints, linkedRects: LinkedRects, options: SyncPointsOptions): PathPoints => {
+export const syncPointsWithLinkedRects = (
+  points: PathPoints,
+  linkedRects: LinkedRects,
+  options: SyncPointsOptions
+): PathPoints => {
   let newPoints = points;
 
   if (!options.syncOnlyTarget) {

@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { hexToRGBA } from '@voiceflow/ui';
 
 export const UPDATE_DATA_TIMEOUT = 300;

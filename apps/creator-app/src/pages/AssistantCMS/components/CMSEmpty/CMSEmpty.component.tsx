@@ -8,7 +8,13 @@ import { useCMSManager } from '../../contexts/CMSManager';
 import { container } from './CMSEmpty.css';
 import type { ICMSEmpty } from './CMSEmpty.interface';
 
-export const CMSEmpty: React.FC<ICMSEmpty> = ({ button: buttonProps, children, searchTitle, illustration, ...props }) => {
+export const CMSEmpty: React.FC<ICMSEmpty> = ({
+  button: buttonProps,
+  children,
+  searchTitle,
+  illustration,
+  ...props
+}) => {
   const store = useStore();
   const cmsManager = useCMSManager();
 
@@ -21,7 +27,12 @@ export const CMSEmpty: React.FC<ICMSEmpty> = ({ button: buttonProps, children, s
       <div className={container}>
         <EmptyPage
           title={searchTitle}
-          button={{ label: 'Clear filters', variant: 'secondary', onClick: () => setSearch(''), testID: tid(EMPTY_TEST_ID, 'clear-filters') }}
+          button={{
+            label: 'Clear filters',
+            variant: 'secondary',
+            onClick: () => setSearch(''),
+            testID: tid(EMPTY_TEST_ID, 'clear-filters'),
+          }}
           description="Based on your search we couldn’t find any matching content."
           illustration={illustration}
           testID={EMPTY_TEST_ID}
@@ -35,7 +46,11 @@ export const CMSEmpty: React.FC<ICMSEmpty> = ({ button: buttonProps, children, s
       <div className={container}>
         <EmptyPage
           {...props}
-          button={buttonProps ? { ...buttonProps, onClick: () => buttonProps?.onClick(store.get(cmsManager.originalSearch)) } : undefined}
+          button={
+            buttonProps
+              ? { ...buttonProps, onClick: () => buttonProps?.onClick(store.get(cmsManager.originalSearch)) }
+              : undefined
+          }
           linkTarget="_blank"
           illustration={illustration}
           testID={EMPTY_TEST_ID}

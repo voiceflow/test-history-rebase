@@ -1,6 +1,6 @@
 import { CUSTOM_SLOT_TYPE, LEGACY_CUSTOM_SLOT_TYPE } from '@realtime-sdk/constants';
-import { Slot, SlotInput } from '@realtime-sdk/models';
-import { BaseModels } from '@voiceflow/base-types';
+import type { Slot, SlotInput } from '@realtime-sdk/models';
+import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { createMultiAdapter, createSmartMultiAdapter } from 'bidirectional-adapter';
 
@@ -39,7 +39,9 @@ export const slotSmartAdapter = createSmartMultiAdapter<BaseModels.Slot, Slot, [
   (dbSlot) => ({
     ...(hasValue(dbSlot, 'key') && { id: dbSlot.key }),
     ...(hasValue(dbSlot, 'name') && { name: dbSlot.name }),
-    ...(hasValue(dbSlot, 'type') && { type: (dbSlot.type?.value === LEGACY_CUSTOM_SLOT_TYPE ? CUSTOM_SLOT_TYPE : dbSlot.type?.value) || null }),
+    ...(hasValue(dbSlot, 'type') && {
+      type: (dbSlot.type?.value === LEGACY_CUSTOM_SLOT_TYPE ? CUSTOM_SLOT_TYPE : dbSlot.type?.value) || null,
+    }),
     ...(hasValue(dbSlot, 'color') && { color: dbSlot.color }),
     ...(hasValue(dbSlot, 'inputs') && { inputs: slotInputAdapter.mapFromDB(dbSlot.inputs) }),
   }),

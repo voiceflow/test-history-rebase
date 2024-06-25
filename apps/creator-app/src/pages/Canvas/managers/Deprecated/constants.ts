@@ -1,8 +1,8 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
 
-import { NodeConfigWithoutPorts } from '../types';
+import type { NodeConfigWithoutPorts } from '../types';
 
 export const NODE_CONFIG: NodeConfigWithoutPorts<Realtime.NodeData.Deprecated> = {
   type: BlockType.DEPRECATED,

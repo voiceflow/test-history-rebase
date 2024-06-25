@@ -1,5 +1,5 @@
 import { AlexaNode } from '@voiceflow/alexa-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Flex } from '@voiceflow/ui';
 import React from 'react';
 

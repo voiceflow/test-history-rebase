@@ -4,7 +4,18 @@ import { normalize } from 'normal-store';
 import * as CreatorV2 from '@/ducks/creatorV2';
 
 import suite from '../../_suite';
-import { ACTION_CONTEXT, LINK, MOCK_STATE, NODE, NODE_DATA, NODE_ID, PORT, PORT_ID, PROJECT_META, SCHEMA_VERSION } from '../_fixtures';
+import {
+  ACTION_CONTEXT,
+  LINK,
+  MOCK_STATE,
+  NODE,
+  NODE_DATA,
+  NODE_ID,
+  PORT,
+  PORT_ID,
+  PROJECT_META,
+  SCHEMA_VERSION,
+} from '../_fixtures';
 
 suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - importSnapshot reducer', ({ describeReducerV2 }) => {
   describeReducerV2(Realtime.creator.importSnapshot, ({ applyAction }) => {

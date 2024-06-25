@@ -1,4 +1,4 @@
-import { BaseButton } from '@voiceflow/base-types';
+import type { BaseButton } from '@voiceflow/base-types';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { createSelector } from 'reselect';
 
@@ -15,7 +15,10 @@ export const prototypeAutoplaySelector = createSelector([prototypeSelector], ({ 
 
 export const prototypeContextSelector = createSelector([prototypeSelector], ({ context }) => context);
 
-export const prototypeContextHistorySelector = createSelector([prototypeSelector], ({ contextHistory }) => contextHistory);
+export const prototypeContextHistorySelector = createSelector(
+  [prototypeSelector],
+  ({ contextHistory }) => contextHistory
+);
 
 export const prototypeFlowIDHistorySelector = createSelector([prototypeSelector], ({ flowIDHistory }) => flowIDHistory);
 
@@ -39,7 +42,10 @@ export const prototypeVisualDeviceSelector = createSelector([prototypeVisualSele
 
 export const prototypeVisualDataSelector = createSelector([prototypeVisualSelector], ({ data }) => data);
 
-export const prototypeVisualDataHistorySelector = createSelector([prototypeVisualSelector], ({ dataHistory }) => dataHistory);
+export const prototypeVisualDataHistorySelector = createSelector(
+  [prototypeVisualSelector],
+  ({ dataHistory }) => dataHistory
+);
 
 export const activePathsSelector = createSelector([prototypeSelector], ({ activePaths }) => activePaths);
 
@@ -50,23 +56,41 @@ export const activePathByDiagramIDSelector = createSelector(
 
 export const prototypeSettingsSelector = createSelector([prototypeSelector], ({ settings }) => settings);
 
-export const prototypeButtonsSelector = createSelector([prototypeSelector], ({ settings }) => settings.buttons as BaseButton.ButtonsLayout);
+export const prototypeButtonsSelector = createSelector(
+  [prototypeSelector],
+  ({ settings }) => settings.buttons as BaseButton.ButtonsLayout
+);
 
 export const prototypeLayoutSelector = createSelector(
   [prototypeSelector, projectTypeSelector],
   ({ settings }, projectType) => settings.layout || Realtime.Utils.platform.getDefaultPrototypeLayout(projectType)
 );
 
-export const prototypeBrandColorSelector = createSelector([prototypeSelector], ({ settings }) => settings.brandColor || '#3D81E2');
+export const prototypeBrandColorSelector = createSelector(
+  [prototypeSelector],
+  ({ settings }) => settings.brandColor || '#3D81E2'
+);
 
-export const prototypeBrandImageSelector = createSelector([prototypeSelector], ({ settings }) => settings.brandImage || '');
+export const prototypeBrandImageSelector = createSelector(
+  [prototypeSelector],
+  ({ settings }) => settings.brandImage || ''
+);
 
 export const prototypeAvatarSelector = createSelector([prototypeSelector], ({ settings }) => settings.avatar || '');
 
-export const prototypeBrandInfoSelector = createSelector([prototypeSelector], ({ settings: { layout: _, ...brandSettings } }) => brandSettings);
+export const prototypeBrandInfoSelector = createSelector(
+  [prototypeSelector],
+  ({ settings: { layout: _, ...brandSettings } }) => brandSettings
+);
 
 export const prototypePasswordSelector = createSelector([prototypeSelector], ({ settings }) => settings.password || '');
 
-export const prototypeButtonsOnlySelector = createSelector([prototypeSelector], ({ settings }) => !!settings.buttonsOnly);
+export const prototypeButtonsOnlySelector = createSelector(
+  [prototypeSelector],
+  ({ settings }) => !!settings.buttonsOnly
+);
 
-export const prototypeSelectedPersonaID = createSelector([prototypeSelector], ({ selectedPersonaID }) => selectedPersonaID);
+export const prototypeSelectedPersonaID = createSelector(
+  [prototypeSelector],
+  ({ selectedPersonaID }) => selectedPersonaID
+);

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import * as PaymentContext from '@/contexts/PaymentContext';
-import { UpgradePrompt } from '@/ducks/tracking';
+import type { UpgradePrompt } from '@/ducks/tracking';
 
 import manager from '../../../manager';
 import { Payment } from './components';

@@ -1,12 +1,21 @@
 import { Utils } from '@voiceflow/common';
-import { Box, createDividerMenuItemOption, KeyName, Select, SelectInputVariant, SvgIcon, swallowEvent, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import type { UIOnlyMenuItemOption } from '@voiceflow/ui';
+import {
+  Box,
+  createDividerMenuItemOption,
+  KeyName,
+  Select,
+  SelectInputVariant,
+  SvgIcon,
+  swallowEvent,
+} from '@voiceflow/ui';
 import _findLastIndex from 'lodash/findLastIndex';
 import React from 'react';
 
 import * as ReportTags from '@/ducks/reportTag';
 import * as Transcript from '@/ducks/transcript';
 import { useDispatch, useSelector, useTrackingEvents } from '@/hooks';
-import { ReportTag } from '@/models';
+import type { ReportTag } from '@/models';
 import { ClassName } from '@/styles/constants';
 import { isBuiltInTag, isSentimentTag } from '@/utils/reportTag';
 
@@ -84,18 +93,27 @@ const BaseReportTagInput: React.FC<BaseReportTagInputProps> = ({
   };
 
   // Only use tags that exist in redux (they can be deleted in the tags manager)
-  const selectedValidTagIDs = React.useMemo(() => selectedTags.filter((tag) => !!tagsMap[tag]), [selectedTags, tagsMap]);
+  const selectedValidTagIDs = React.useMemo(
+    () => selectedTags.filter((tag) => !!tagsMap[tag]),
+    [selectedTags, tagsMap]
+  );
 
   const options = React.useMemo(() => {
     if (selectOnly) {
-      const sortedAllTags = [...allTags].sort((lTag, rTag) => Number(isBuiltInTag(rTag.id)) - Number(isBuiltInTag(lTag.id)));
+      const sortedAllTags = [...allTags].sort(
+        (lTag, rTag) => Number(isBuiltInTag(rTag.id)) - Number(isBuiltInTag(lTag.id))
+      );
       const lastBuiltInIndex = _findLastIndex(sortedAllTags, (tag) => isBuiltInTag(tag.id));
 
       if (lastBuiltInIndex === -1 || lastBuiltInIndex === sortedAllTags.length - 1) {
         return sortedAllTags;
       }
 
-      return Utils.array.insert<ReportTag | UIOnlyMenuItemOption>(sortedAllTags, lastBuiltInIndex + 1, createDividerMenuItemOption());
+      return Utils.array.insert<ReportTag | UIOnlyMenuItemOption>(
+        sortedAllTags,
+        lastBuiltInIndex + 1,
+        createDividerMenuItemOption()
+      );
     }
 
     return allTags.filter((tag) => !isBuiltInTag(tag.id) && filterOutSelected(tag.id, selectedValidTagIDs));

@@ -1,4 +1,5 @@
-import { Nullable, Utils } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import { Preview, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 

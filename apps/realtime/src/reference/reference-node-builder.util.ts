@@ -1,5 +1,5 @@
 import { BaseNode } from '@voiceflow/base-types';
-import {
+import type {
   BlockNode,
   ChoiceV2Node,
   DiagramNode,
@@ -8,16 +8,15 @@ import {
   ReferenceIntentNodeMetadata,
   ReferenceResource,
   ReferenceResourceNodeMetadata,
-  ReferenceResourceType,
   StartNode,
   TriggerNode,
   TriggerNodeItem,
-  TriggerNodeItemType,
 } from '@voiceflow/dtos';
+import { ReferenceResourceType, TriggerNodeItemType } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import { ReferenceBaseBuilderUtil } from './reference-base-builder.util';
-import { ReferenceBuilderCacheUtil } from './reference-builder-cache.util';
+import type { ReferenceBuilderCacheUtil } from './reference-builder-cache.util';
 
 export class ReferenceNodeBuilderUtil extends ReferenceBaseBuilderUtil {
   private readonly nodes: DiagramNode[];

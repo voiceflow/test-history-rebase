@@ -1,6 +1,6 @@
-import { BaseNode } from '@voiceflow/base-types';
+import type { BaseNode } from '@voiceflow/base-types';
 
-import { NodeData } from '../../../../models';
+import type { NodeData } from '../../../../models';
 import {
   createBlockAdapter,
   createOutPortsAdapter,

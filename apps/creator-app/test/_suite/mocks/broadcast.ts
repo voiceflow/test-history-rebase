@@ -21,6 +21,7 @@ class MockBroadcastChannel<T = any> {
     }
   }
 
+  // eslint-disable-next-line no-empty-function
   close(): void {}
 
   addEventListener(event: 'message', listener: (event: MessageEvent<T>) => void): void {

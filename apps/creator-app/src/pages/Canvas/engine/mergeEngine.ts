@@ -1,12 +1,13 @@
 import { Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import _constant from 'lodash/constant';
 
 import { BlockType } from '@/constants';
 import { CANVAS_MERGING_CLASSNAME } from '@/pages/Canvas/constants';
-import { MergeLayerAPI } from '@/pages/Canvas/types';
+import type { MergeLayerAPI } from '@/pages/Canvas/types';
 
-import { createBoundaryTest, EngineConsumer, getNodeCandidates, NodeCandidate } from './utils';
+import type { NodeCandidate } from './utils';
+import { createBoundaryTest, EngineConsumer, getNodeCandidates } from './utils';
 
 const UNMERGEABLE_NODES = new Set([BlockType.START]);
 
@@ -20,7 +21,11 @@ class MergeEngine extends EngineConsumer<{ mergeLayer: MergeLayerAPI }> {
 
   candidates: NodeCandidate[] = [];
 
-  virtualSource: { type: BlockType; factoryData: Partial<Realtime.NodeData<unknown>>; extra?: VirtualSourceExtra } | null = null;
+  virtualSource: {
+    type: BlockType;
+    factoryData: Partial<Realtime.NodeData<unknown>>;
+    extra?: VirtualSourceExtra;
+  } | null = null;
 
   targetStep: { index: number; reset: () => void } | null = null;
 
@@ -80,14 +85,20 @@ class MergeEngine extends EngineConsumer<{ mergeLayer: MergeLayerAPI }> {
 
     this.engine.addClass(CANVAS_MERGING_CLASSNAME);
     this.sourceNodeID = sourceNodeID;
-    this.candidates = getNodeCandidates([...Utils.array.withoutValue(this.engine.getRootNodeIDs(), sourceNodeID)].reverse(), this.engine);
+    this.candidates = getNodeCandidates(
+      [...Utils.array.withoutValue(this.engine.getRootNodeIDs(), sourceNodeID)].reverse(),
+      this.engine
+    );
 
     this.log.debug('discovered merge candidates', this.log.value(this.candidates.length));
     this.log.debug(this.log.init('merge system initialized for node'), this.log.slug(sourceNodeID));
   }
 
   refreshCandidateDetection(sourceNodeID: string) {
-    this.candidates = getNodeCandidates([...Utils.array.withoutValue(this.engine.getRootNodeIDs(), sourceNodeID)].reverse(), this.engine);
+    this.candidates = getNodeCandidates(
+      [...Utils.array.withoutValue(this.engine.getRootNodeIDs(), sourceNodeID)].reverse(),
+      this.engine
+    );
   }
 
   updateTargetDetection() {
@@ -132,6 +143,7 @@ class MergeEngine extends EngineConsumer<{ mergeLayer: MergeLayerAPI }> {
 
   setVirtualSource<K extends keyof Realtime.NodeDataMap>(
     type: K,
+    // eslint-disable-next-line @typescript-eslint/ban-types
     factoryData?: (Realtime.NodeDataMap[K] & Partial<Realtime.NodeData<{}>>) | Partial<Realtime.NodeData<unknown>>,
     extra: VirtualSourceExtra = {}
   ) {

@@ -13,7 +13,7 @@ import { EngineContext } from '@/pages/Canvas/contexts';
 import { withKeyPress } from '@/utils/dom';
 
 import { Container, Control, Dropdown, Input, Menu, Option, Select } from './components';
-import { SearchOption } from './types';
+import type { SearchOption } from './types';
 
 const SearchBar: React.FC = () => {
   const [trackingEvents] = useTrackingEvents();

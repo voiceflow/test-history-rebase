@@ -1,8 +1,8 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
-import { ShareProjectTab } from '../constants';
+import type { ShareProjectTab } from '../constants';
 
 interface SharePopperData {
   defaultTab?: ShareProjectTab;

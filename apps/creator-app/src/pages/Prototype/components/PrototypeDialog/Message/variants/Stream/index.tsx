@@ -1,6 +1,7 @@
 import React from 'react';
 
-import BaseMessage, { BaseMessageProps } from '../../Base';
+import type { BaseMessageProps } from '../../Base';
+import BaseMessage from '../../Base';
 
 interface StreamProps extends Omit<BaseMessageProps, 'iconProps'> {
   audio: string;

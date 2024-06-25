@@ -5,7 +5,7 @@ import { TooltipContentLearn } from '@/components/Tooltip/TooltipContentLearn/To
 import { usePopperModifiers } from '@/hooks/popper.hook';
 import { popperPaddingModifierFactory } from '@/utils/popper.util';
 
-import { ISectionHeaderTitleWithLearnTooltip } from './SectionHeaderTitleWithLearnTooltip.interface';
+import type { ISectionHeaderTitleWithLearnTooltip } from './SectionHeaderTitleWithLearnTooltip.interface';
 
 export const SectionHeaderTitleWithLearnTooltip: React.FC<ISectionHeaderTitleWithLearnTooltip> = ({
   title,

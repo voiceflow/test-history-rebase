@@ -1,6 +1,6 @@
 import { WORKSPACE_SETTINGS_KEY } from '@realtime-sdk/constants';
-import { WorkspaceSettings } from '@realtime-sdk/models';
-import { BaseWorkspacePayload } from '@realtime-sdk/types';
+import type { WorkspaceSettings } from '@realtime-sdk/models';
+import type { BaseWorkspacePayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
 
 import { workspaceType } from './utils';
@@ -21,6 +21,8 @@ export interface ReplaceWorkspaceSettingsPayload extends BaseWorkspacePayload {
 
 export const patch = Utils.protocol.createAction<PatchWorkspaceSettingsPayload>(workspaceSettingsType('PATCH'));
 
-export const toggleDashboardKanban = Utils.protocol.createAction<ToggleDashboardKanbanPayload>(workspaceSettingsType('TOGGLE_DASHBOARD_KANBAN'));
+export const toggleDashboardKanban = Utils.protocol.createAction<ToggleDashboardKanbanPayload>(
+  workspaceSettingsType('TOGGLE_DASHBOARD_KANBAN')
+);
 
 export const replace = Utils.protocol.createAction<ReplaceWorkspaceSettingsPayload>(workspaceSettingsType('REPLACE'));

@@ -1,8 +1,8 @@
-import { StripeStatus } from '@voiceflow/dtos';
-import { PlanType } from '@voiceflow/internal';
+import type { StripeStatus } from '@voiceflow/dtos';
+import type { PlanType } from '@voiceflow/internal';
 
-import { PlanSeatLimits } from '../Workspace';
-import { WorkspaceMember } from './WorkspaceMember';
+import type { PlanSeatLimits } from '../Workspace';
+import type { WorkspaceMember } from './WorkspaceMember';
 
 export interface Workspace {
   id: string;

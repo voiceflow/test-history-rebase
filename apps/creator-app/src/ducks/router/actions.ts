@@ -1,11 +1,12 @@
-import { Struct } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config';
-import { CALL_HISTORY_METHOD, push, replace } from 'connected-react-router';
-import { ExtractRouteParams } from 'react-router';
+import type { Struct } from '@voiceflow/common';
+import type * as Platform from '@voiceflow/platform-config';
+import type { CALL_HISTORY_METHOD } from 'connected-react-router';
+import { push, replace } from 'connected-react-router';
+import type { ExtractRouteParams } from 'react-router';
 import { generatePath } from 'react-router-dom';
 
 import { Path, PublishRoute, RootRoute } from '@/config/routes';
-import { Action } from '@/store/types';
+import type { Action } from '@/store/types';
 import * as Query from '@/utils/query';
 import { isDialogflowPlatform } from '@/utils/typeGuards';
 

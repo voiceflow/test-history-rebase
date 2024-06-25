@@ -2,7 +2,7 @@ import { Button, ButtonVariant, Modal, Tabs } from '@voiceflow/ui';
 import React from 'react';
 
 import { ModalTabs } from '../constants';
-import { Response } from '../types';
+import type { Response } from '../types';
 import ResponseBody from './ResponseBody';
 import ResponseHeaders from './ResponseHeaders';
 

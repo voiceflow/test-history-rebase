@@ -1,6 +1,6 @@
 import type { Markup, Variable } from '@voiceflow/dtos';
-import { IconName } from '@voiceflow/icons';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { IconName } from '@voiceflow/icons';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, Surface, Text, Tokens } from '@voiceflow/ui-next';
 import { isMarkupEmpty, markupFactory } from '@voiceflow/utils-designer';
 import React from 'react';

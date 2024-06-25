@@ -1,7 +1,9 @@
 import React from 'react';
-import { ConnectDropTarget, useDrop } from 'react-dnd';
+import type { ConnectDropTarget } from 'react-dnd';
+import { useDrop } from 'react-dnd';
 
-import { DragContext, DragContextPreviewProps } from '@/contexts/DragContext';
+import type { DragContextPreviewProps } from '@/contexts/DragContext';
+import { DragContext } from '@/contexts/DragContext';
 import type { PreviewOptions } from '@/contexts/DragContext/DragLayer';
 export type { PreviewOptions as DragPreviewOptions } from '@/contexts/DragContext/DragLayer';
 

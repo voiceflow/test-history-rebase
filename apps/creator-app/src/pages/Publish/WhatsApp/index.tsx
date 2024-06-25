@@ -21,7 +21,8 @@ const WhatsApp: React.FC = () => (
     <PublishingComponents.WebhookField
       description={
         <>
-          Voiceflow uses Twilio as its messaging partner for WhatsApp Business Messaging. <Link href={WHATSAPP_DOCUMENTATION}>Learn More</Link>
+          Voiceflow uses Twilio as its messaging partner for WhatsApp Business Messaging.{' '}
+          <Link href={WHATSAPP_DOCUMENTATION}>Learn More</Link>
         </>
       }
       platformName="twilio-messaging"

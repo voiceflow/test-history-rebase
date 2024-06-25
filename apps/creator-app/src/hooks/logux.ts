@@ -1,13 +1,17 @@
 import React from 'react';
 
-import LoguxClient, { ClientEvents } from '@/client/logux';
+import type LoguxClient from '@/client/logux';
+import { ClientEvents } from '@/client/logux';
 import * as Account from '@/ducks/account';
 import * as Session from '@/ducks/session';
 import { useTeardown } from '@/hooks/lifecycle';
 import { useSelector, useStore } from '@/hooks/redux';
 import logger from '@/utils/logger';
 
-export const useLoguxSetup = (client: LoguxClient, { onLogout, onLogoutFail }: { onLogout?: VoidFunction; onLogoutFail?: VoidFunction } = {}) => {
+export const useLoguxSetup = (
+  client: LoguxClient,
+  { onLogout, onLogoutFail }: { onLogout?: VoidFunction; onLogoutFail?: VoidFunction } = {}
+) => {
   const store = useStore();
 
   const userID = useSelector(Account.userIDSelector);

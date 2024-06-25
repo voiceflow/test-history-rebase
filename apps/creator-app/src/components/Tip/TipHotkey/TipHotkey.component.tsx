@@ -1,4 +1,5 @@
-import { Icon, IHotKey, Text, Tokens } from '@voiceflow/ui-next';
+import type { IHotKey } from '@voiceflow/ui-next';
+import { Icon, Text, Tokens } from '@voiceflow/ui-next';
 import React, { Fragment } from 'react';
 
 import { iconStyle } from './TipHotkey.css';

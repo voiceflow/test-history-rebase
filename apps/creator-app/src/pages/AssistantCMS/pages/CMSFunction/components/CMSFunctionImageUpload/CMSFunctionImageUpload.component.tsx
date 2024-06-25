@@ -26,7 +26,11 @@ export const CMSFunctionImageUpload: React.FC<ICMSFunctionImageUpload> = ({ valu
     <Collapsible
       isEmpty={!value}
       noBottomPadding
-      header={<CollapsibleHeader label="Image">{({ isOpen }) => <CollapsibleHeaderButton isOpen={isOpen} />}</CollapsibleHeader>}
+      header={
+        <CollapsibleHeader label="Image">
+          {({ isOpen }) => <CollapsibleHeaderButton isOpen={isOpen} />}
+        </CollapsibleHeader>
+      }
       testID={tid('function', ['image', 'section'])}
     >
       <UploadArea

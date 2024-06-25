@@ -1,5 +1,6 @@
 import { Utils } from '@voiceflow/common';
-import { NodeType, Reference, ReferenceResource, ReferenceResourceType } from '@voiceflow/dtos';
+import type { Reference, ReferenceResource } from '@voiceflow/dtos';
+import { NodeType, ReferenceResourceType } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 export const mergeArrays = <T>(stateValue: T[], addValue: T[]) => {

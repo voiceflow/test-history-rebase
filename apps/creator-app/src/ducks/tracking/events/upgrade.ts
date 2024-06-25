@@ -1,9 +1,10 @@
-import { BillingPeriod, PlanType } from '@voiceflow/internal';
+import type { BillingPeriod, PlanType } from '@voiceflow/internal';
 
 import client from '@/client';
 import { PERIOD_NAME } from '@/constants';
 
-import { EventName, UpgradePrompt } from '../constants';
+import type { UpgradePrompt } from '../constants';
+import { EventName } from '../constants';
 import { createWorkspaceEvent, createWorkspaceEventTracker } from '../utils';
 
 interface TrackUpgradeOptions {

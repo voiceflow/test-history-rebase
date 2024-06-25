@@ -1,4 +1,4 @@
-import { PopperPlacement } from '@voiceflow/ui-next';
+import type { PopperPlacement } from '@voiceflow/ui-next';
 
 export interface ISectionHeaderTitleWithLearnTooltip {
   title: React.ReactNode;

@@ -1,5 +1,6 @@
-import { Quota as QuotaType } from '../../models/Billing/Quota';
-import { NestResource, NestResourceOptions } from '../nest';
+import type { Quota as QuotaType } from '../../models/Billing/Quota';
+import type { NestResourceOptions } from '../nest';
+import { NestResource } from '../nest';
 
 export class Quota extends NestResource {
   constructor(options: NestResourceOptions) {

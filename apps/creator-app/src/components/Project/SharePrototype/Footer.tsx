@@ -1,6 +1,6 @@
 import { tid } from '@voiceflow/style';
 import { Button, ButtonVariant, System, toast, ToastCallToAction } from '@voiceflow/ui';
-import { BaseProps } from '@voiceflow/ui-next';
+import type { BaseProps } from '@voiceflow/ui-next';
 import React from 'react';
 
 import * as Documentation from '@/config/documentation';

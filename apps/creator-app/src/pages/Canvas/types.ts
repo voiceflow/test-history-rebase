@@ -1,14 +1,13 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
-import React from 'react';
+import type * as Realtime from '@voiceflow/realtime-sdk';
+import type React from 'react';
 
-import { HSLShades } from '@/constants';
-import { LockOwner } from '@/models';
+import type { HSLShades } from '@/constants';
+import type { LockOwner } from '@/models';
 import type { ChipApiRef } from '@/pages/Canvas/components/Chip';
-import type { PathPoints } from '@/types';
-import { Pair, Point } from '@/types';
-import { Coords } from '@/utils/geometry';
+import type { Pair, PathPoints, Point } from '@/types';
+import type { Coords } from '@/utils/geometry';
 
-import { RealtimeCursorEvents } from './components/RealtimeOverlay/contexts';
+import type { RealtimeCursorEvents } from './components/RealtimeOverlay/contexts';
 
 export interface MarkupTransform {
   rect: DOMRect;
@@ -34,8 +33,14 @@ export interface CombinedAPI<T extends HTMLElement = HTMLElement> {
   ref: React.RefObject<T>;
   rename: VoidFunction;
   getRect: () => DOMRect | null;
-  addEventListener: <E extends keyof HTMLElementEventMap>(event: E, listener: (event: HTMLElementEventMap[E]) => void) => void;
-  removeEventListener: <E extends keyof HTMLElementEventMap>(event: E, listener: (event: HTMLElementEventMap[E]) => void) => void;
+  addEventListener: <E extends keyof HTMLElementEventMap>(
+    event: E,
+    listener: (event: HTMLElementEventMap[E]) => void
+  ) => void;
+  removeEventListener: <E extends keyof HTMLElementEventMap>(
+    event: E,
+    listener: (event: HTMLElementEventMap[E]) => void
+  ) => void;
 }
 
 export interface ActionStepAPI {

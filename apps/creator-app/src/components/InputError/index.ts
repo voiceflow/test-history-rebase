@@ -1,4 +1,5 @@
-import { color, ColorProps, space, SpaceProps, typography, TypographyProps } from 'styled-system';
+import type { ColorProps, SpaceProps, TypographyProps } from 'styled-system';
+import { color, space, typography } from 'styled-system';
 
 import { styled } from '@/hocs/styled';
 

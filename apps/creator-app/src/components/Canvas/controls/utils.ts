@@ -1,7 +1,7 @@
-import { Point } from '@/types';
+import type { Point } from '@/types';
 
 import { MAX_ZOOM, MIN_ZOOM, PINCH_SCROLL_FACTOR, SCROLL_FACTOR, ZOOM_FACTOR } from '../constants';
-import { ControlAction } from './types';
+import type { ControlAction } from './types';
 
 export abstract class BaseControls {
   constructor(protected handle: (action: ControlAction) => void) {}

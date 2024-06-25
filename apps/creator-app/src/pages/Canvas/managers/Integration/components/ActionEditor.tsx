@@ -1,11 +1,13 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { ActionEditor } from '@/pages/Canvas/managers/types';
+import type { ActionEditor } from '@/pages/Canvas/managers/types';
 
 import ApiActionEditor from './Api/ActionEditor';
 
-const IntegrationActionEditor: ActionEditor<Realtime.NodeData.CustomApi, Realtime.NodeData.IntegrationBuiltInPorts> = (props) => {
+const IntegrationActionEditor: ActionEditor<Realtime.NodeData.CustomApi, Realtime.NodeData.IntegrationBuiltInPorts> = (
+  props
+) => {
   return <ApiActionEditor {...props} />;
 };
 

@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { ComponentTupple, Compose } from '@/components/Compose/Compose.component';
+import type { ComponentTupple } from '@/components/Compose/Compose.component';
+import { Compose } from '@/components/Compose/Compose.component';
 import type Engine from '@/pages/Canvas/engine';
 
-import { getManager } from '../managers';
+import type { getManager } from '../managers';
 import { ClipboardProvider } from './ClipboardContext';
 import { ContextMenuProvider } from './ContextMenuContext';
 import { EngineProvider } from './Engine.context';

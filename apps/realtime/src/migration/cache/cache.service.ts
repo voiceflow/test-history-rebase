@@ -24,7 +24,8 @@ export class MigrationCacheService {
   }
 
   public async acquireMigrationLock(versionID: string, nodeID: string): Promise<void> {
-    const lockAcquired = (await this.redis.setnx(MigrationCacheService.getMigrationLockKey({ versionID }), nodeID)) === 1;
+    const lockAcquired =
+      (await this.redis.setnx(MigrationCacheService.getMigrationLockKey({ versionID }), nodeID)) === 1;
 
     if (!lockAcquired) {
       throw new Error('migration lock exists already');

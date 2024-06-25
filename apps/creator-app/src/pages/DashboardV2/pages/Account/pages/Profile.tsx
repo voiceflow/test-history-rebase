@@ -35,7 +35,10 @@ const Profile: React.FC = () => {
     >
       <SectionV2.SimpleSection headerProps={{ topUnit: 3, bottomUnit: 3 }}>
         <Box.Flex gap={24} fullWidth>
-          <Upload.Provider client={{ upload: (_endpoint, _fileType, formData) => updateUserProfileImage(formData) }} onError={datadogRum.addError}>
+          <Upload.Provider
+            client={{ upload: (_endpoint, _fileType, formData) => updateUserProfileImage(formData) }}
+            onError={datadogRum.addError}
+          >
             <Upload.IconUpload size={UploadIconVariant.SMALLER} isSquare user={user} />
           </Upload.Provider>
 

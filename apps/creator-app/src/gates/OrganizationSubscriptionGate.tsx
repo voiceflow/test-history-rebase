@@ -25,7 +25,11 @@ const OrganizationSubscriptionGate: React.FC<React.PropsWithChildren> = ({ child
   }, [isSubscribed]);
 
   return (
-    <LoadingGate isLoaded={isSubscribed} loader={<WorkspaceOrProjectLoader />} internalName={OrganizationSubscriptionGate.name}>
+    <LoadingGate
+      isLoaded={isSubscribed}
+      loader={<WorkspaceOrProjectLoader />}
+      internalName={OrganizationSubscriptionGate.name}
+    >
       {children}
     </LoadingGate>
   );

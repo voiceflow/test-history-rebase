@@ -1,8 +1,8 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Editor } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { ActionEditor } from '@/pages/Canvas/managers/types';
+import type { ActionEditor } from '@/pages/Canvas/managers/types';
 
 import { SetV3EditorForm } from './SetV3Editor/SetV3EditorForm.component';
 

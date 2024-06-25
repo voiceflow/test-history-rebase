@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Animations, Upload } from '@voiceflow/ui';
 import React from 'react';
 
@@ -12,7 +12,10 @@ interface CardFormProps {
 }
 
 const CardForm: React.FC<CardFormProps> = ({ data, onChange, withImage }) => {
-  const updateSmallImage = React.useCallback((smallImage: string | null) => onChange({ smallImage, hasSmallImage: true }), [onChange]);
+  const updateSmallImage = React.useCallback(
+    (smallImage: string | null) => onChange({ smallImage, hasSmallImage: true }),
+    [onChange]
+  );
   const updateLargeImage = React.useCallback((largeImage: string | null) => onChange({ largeImage }), [onChange]);
   const updateTitle = React.useCallback(({ text }: { text: string }) => onChange({ title: text }), [onChange]);
   const updateContent = React.useCallback(({ text }: { text: string }) => onChange({ content: text }), [onChange]);
@@ -24,17 +27,31 @@ const CardForm: React.FC<CardFormProps> = ({ data, onChange, withImage }) => {
       </FormControl>
 
       <FormControl label="Card Text" contentBottomUnits={!withImage ? 0 : undefined}>
-        <VariablesInput value={data.content} onBlur={updateContent} multiline placeholder="Thanks for signing up, let's begin!" newLineOnEnter />
+        <VariablesInput
+          value={data.content}
+          onBlur={updateContent}
+          multiline
+          placeholder="Thanks for signing up, let's begin!"
+          newLineOnEnter
+        />
       </FormControl>
 
       {withImage && (
         <Animations.FadeLeft>
           <FormControl label="Background Image" contentBottomUnits={!data.hasSmallImage ? 0 : undefined}>
-            <Upload.FullImage image={data.largeImage} update={updateLargeImage} renderInput={VariablesInput.renderInput} />
+            <Upload.FullImage
+              image={data.largeImage}
+              update={updateLargeImage}
+              renderInput={VariablesInput.renderInput}
+            />
           </FormControl>
           {data.hasSmallImage && (
             <FormControl label="Small Screen Image" contentBottomUnits={0}>
-              <Upload.FullImage image={data.smallImage} update={updateSmallImage} renderInput={VariablesInput.renderInput} />
+              <Upload.FullImage
+                image={data.smallImage}
+                update={updateSmallImage}
+                renderInput={VariablesInput.renderInput}
+              />
             </FormControl>
           )}
         </Animations.FadeLeft>

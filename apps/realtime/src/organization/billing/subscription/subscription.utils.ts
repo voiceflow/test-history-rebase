@@ -1,10 +1,5 @@
-import {
-  BillingPeriodUnit,
-  PlanName,
-  SubscriptionPaymentMethodStatus,
-  SubscriptionPaymentMethodStatusType,
-  SubscriptionStatus,
-} from '@voiceflow/dtos';
+import type { SubscriptionPaymentMethodStatusType } from '@voiceflow/dtos';
+import { BillingPeriodUnit, PlanName, SubscriptionPaymentMethodStatus, SubscriptionStatus } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 export const PAYMENT_METHOD_FAILED_STATUSES: Set<Partial<SubscriptionPaymentMethodStatusType>> = new Set([

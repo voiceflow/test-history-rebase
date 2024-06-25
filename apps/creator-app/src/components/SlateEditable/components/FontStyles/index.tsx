@@ -32,7 +32,11 @@ const FontStyles: React.FC = () => {
   useEditorHotkey(Hotkey.BOLD, () => {
     const nextFontWeight = fontWeight === FontWeight.REGULAR ? FontWeight.BOLD : FontWeight.REGULAR;
 
-    if ((FONT_WEIGHTS_PER_FONT_FAMILY[fontFamily] || FONT_WEIGHTS_PER_FONT_FAMILY[Font.OPEN_SANS])?.includes(nextFontWeight)) {
+    if (
+      (FONT_WEIGHTS_PER_FONT_FAMILY[fontFamily] || FONT_WEIGHTS_PER_FONT_FAMILY[Font.OPEN_SANS])?.includes(
+        nextFontWeight
+      )
+    ) {
       EditorAPI.setTextProperty(editor, TextProperty.FONT_WEIGHT, nextFontWeight);
     }
   });

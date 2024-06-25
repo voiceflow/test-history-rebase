@@ -1,6 +1,6 @@
 import * as Base from '@platform-config/configs/base';
 
-import { Account } from './types';
+import type { Account } from './types';
 
 export interface Value extends Base.Context.Value {
   linkAccount: (code: string) => Promise<Account>;

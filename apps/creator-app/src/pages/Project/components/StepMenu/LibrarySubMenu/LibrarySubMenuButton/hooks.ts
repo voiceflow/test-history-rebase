@@ -5,7 +5,8 @@ import * as CustomBlock from '@/ducks/customBlock';
 import { useDispatch } from '@/hooks';
 import * as ModalsV2 from '@/ModalsV2';
 
-import { isCustomBlockData, LibraryStepType, TabData } from '../../constants';
+import type { TabData } from '../../constants';
+import { isCustomBlockData, LibraryStepType } from '../../constants';
 
 const useCustomBlocksDropdown = (libraryType: LibraryStepType, tabData: TabData) => {
   const { name, id } = tabData;
@@ -31,7 +32,7 @@ const useCustomBlocksDropdown = (libraryType: LibraryStepType, tabData: TabData)
       onConfirm: async () => {
         try {
           await removeCustomBlock({ id });
-          toast.success(`Custom block removed.`);
+          toast.success('Custom block removed.');
         } catch (err) {
           toast.error('Failed to remove custom block.');
         }
@@ -61,7 +62,7 @@ const useBlockTemplatesDropdown = (tabData: TabData) => {
       entityType: 'Block Template',
       onConfirm: () => {
         deleteTemplate(id);
-        toast.success(`Block template removed.`);
+        toast.success('Block template removed.');
       },
     });
   };

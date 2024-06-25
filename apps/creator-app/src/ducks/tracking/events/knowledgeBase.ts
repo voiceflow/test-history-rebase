@@ -1,8 +1,8 @@
-import { BaseModels } from '@voiceflow/base-types';
-import { AIModel } from '@voiceflow/dtos';
+import type { BaseModels } from '@voiceflow/base-types';
+import type { AIModel } from '@voiceflow/dtos';
 
 import client from '@/client';
-import { ZendeskCountFilters } from '@/models/KnowledgeBase.model';
+import type { ZendeskCountFilters } from '@/models/KnowledgeBase.model';
 
 import { EventName } from '../constants';
 import { createProjectEvent, createProjectEventTracker } from '../utils';
@@ -15,10 +15,15 @@ export const trackAiKnowledgeBaseSourceAdded = createProjectEventTracker<{
   Type: BaseModels.Project.KnowledgeBaseDocumentType;
   refreshRate?: string;
   numberOfDocuments?: number;
-}>(({ ...eventInfo }) => client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_DATA_SOURCE_ADDED, eventInfo)));
+}>(({ ...eventInfo }) =>
+  client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_DATA_SOURCE_ADDED, eventInfo))
+);
 
-export const trackAiKnowledgeBaseSourceUpdated = createProjectEventTracker<{ documentIDs: string[]; Update_Type: 'Refresh rate' | 'Text' }>(
-  (eventInfo) => client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_DATA_SOURCE_UPDATED, eventInfo))
+export const trackAiKnowledgeBaseSourceUpdated = createProjectEventTracker<{
+  documentIDs: string[];
+  Update_Type: 'Refresh rate' | 'Text';
+}>((eventInfo) =>
+  client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_DATA_SOURCE_UPDATED, eventInfo))
 );
 
 export const trackAiKnowledgeBaseSourceDeleted = createProjectEventTracker<{ documentIDs: string[] }>((eventInfo) =>
@@ -50,18 +55,20 @@ export const trackAiKnowledgeBaseError = createProjectEventTracker<{ ErrorType: 
   client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_ERROR, eventInfo))
 );
 
-export const trackAiKnowledgeBaseIntegrationConnected = createProjectEventTracker<{ IntegrationType: string }>((eventInfo) =>
-  client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_INTEGRATION_CONNECTED, eventInfo))
+export const trackAiKnowledgeBaseIntegrationConnected = createProjectEventTracker<{ IntegrationType: string }>(
+  (eventInfo) =>
+    client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_INTEGRATION_CONNECTED, eventInfo))
 );
 
-export const trackAiKnowledgeBaseIntegrationFailed = createProjectEventTracker<{ IntegrationType: string }>((eventInfo) =>
-  client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_INTEGRATION_FAILED, eventInfo))
+export const trackAiKnowledgeBaseIntegrationFailed = createProjectEventTracker<{ IntegrationType: string }>(
+  (eventInfo) => client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_INTEGRATION_FAILED, eventInfo))
 );
 
-export const trackAiKnowledgeBaseIntegrationSelected = createProjectEventTracker<{ IntegrationType: string }>((eventInfo) =>
-  client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_INTEGRATION_SELECTED, eventInfo))
+export const trackAiKnowledgeBaseIntegrationSelected = createProjectEventTracker<{ IntegrationType: string }>(
+  (eventInfo) => client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_INTEGRATION_SELECTED, eventInfo))
 );
 
-export const trackAiKnowledgeBaseIntegrationFiltersUsed = createProjectEventTracker<{ Filters: ZendeskCountFilters }>((eventInfo) =>
-  client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_INTEGRATION_FILTERS_USED, eventInfo))
+export const trackAiKnowledgeBaseIntegrationFiltersUsed = createProjectEventTracker<{ Filters: ZendeskCountFilters }>(
+  (eventInfo) =>
+    client.analytics.track(createProjectEvent(EventName.AI_KNOWLEDGE_BASE_INTEGRATION_FILTERS_USED, eventInfo))
 );

@@ -2,7 +2,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Dropdown, IconButton, IconButtonVariant, stopPropagation } from '@voiceflow/ui';
 import cn from 'classnames';
 import React from 'react';
-import { ListChildComponentProps } from 'react-window';
+import type { ListChildComponentProps } from 'react-window';
 
 import { TranscriptExportFormat } from '@/client/transcript';
 import { Permission } from '@/constants/permissions';
@@ -15,7 +15,7 @@ import { SystemTag } from '@/models';
 import { ClassName } from '@/styles/constants';
 import { isSentimentTag } from '@/utils/reportTag';
 
-import { ListData } from '../../types';
+import type { ListData } from '../../types';
 import { Container, InfoSection, ReadStatusDot, StatusIcons } from './components';
 
 const TranscriptResultsItem: React.FC<ListChildComponentProps<ListData>> = ({ data, index, style }) => {

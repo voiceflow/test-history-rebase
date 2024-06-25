@@ -2,7 +2,8 @@ import type { Markup } from '@voiceflow/dtos';
 import type { SlateEditor } from '@voiceflow/ui-next';
 import type { ISlateEditor } from '@voiceflow/ui-next/build/cjs/components/Inputs/SlateEditor';
 
-export interface IMarkupInputWithVariables extends Omit<ISlateEditor, 'value' | 'onBlur' | 'onFocus' | 'placeholder' | 'onValueChange' | 'editor'> {
+export interface IMarkupInputWithVariables
+  extends Omit<ISlateEditor, 'value' | 'onBlur' | 'onFocus' | 'placeholder' | 'onValueChange' | 'editor'> {
   value: Markup;
   onBlur?: VoidFunction;
   onFocus?: VoidFunction;

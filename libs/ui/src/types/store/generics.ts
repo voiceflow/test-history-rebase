@@ -1,5 +1,5 @@
-import * as Redux from 'redux';
-import { Assign } from 'utility-types';
+import type * as Redux from 'redux';
+import type { Assign } from 'utility-types';
 
 import type { AnyAction, Dispatch } from './dispatch';
 

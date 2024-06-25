@@ -1,8 +1,9 @@
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
-import { TurnMap } from '@/pages/Conversations/components/TranscriptDialog';
-import { Message, MessageType, UserMessage } from '@/pages/Prototype/types';
+import type { TurnMap } from '@/pages/Conversations/components/TranscriptDialog';
+import type { Message, UserMessage } from '@/pages/Prototype/types';
+import { MessageType } from '@/pages/Prototype/types';
 
 import type { BaseMessageProps } from '../../Base';
 import NoIntent from './NoIntent';
@@ -31,7 +32,10 @@ export const IntentConfidence: React.FC<IntentConfidenceProps> = ({
   lastUserMessage,
   setFocusedTurnID,
 }) => {
-  const isReprompt = React.useMemo(() => turnID && dialogTurnMap?.get(turnID)?.some(isRepromptMessage), [dialogTurnMap, turnID]);
+  const isReprompt = React.useMemo(
+    () => turnID && dialogTurnMap?.get(turnID)?.some(isRepromptMessage),
+    [dialogTurnMap, turnID]
+  );
 
   const { intentName, intentMessage, confidenceMessage } = React.useMemo(() => {
     const intentName = message.split('**')[1];
@@ -56,7 +60,12 @@ export const IntentConfidence: React.FC<IntentConfidenceProps> = ({
 
   if (noMatch && isTranscript) {
     return (
-      <NoIntent turnID={turnID!} focused={focusedTurnID === turnID} utterance={lastUserMessage.input} onToggleIntentSelect={onToggleIntentSelect} />
+      <NoIntent
+        turnID={turnID!}
+        focused={focusedTurnID === turnID}
+        utterance={lastUserMessage.input}
+        onToggleIntentSelect={onToggleIntentSelect}
+      />
     );
   }
 

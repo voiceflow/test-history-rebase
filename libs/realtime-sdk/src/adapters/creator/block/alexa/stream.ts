@@ -1,6 +1,6 @@
-import { NodeData } from '@realtime-sdk/models';
+import type { NodeData } from '@realtime-sdk/models';
 import * as RealtimeUtils from '@realtime-sdk/utils';
-import { AlexaNode } from '@voiceflow/alexa-types';
+import type { AlexaNode } from '@voiceflow/alexa-types';
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 
@@ -39,9 +39,12 @@ const streamAdapter = createBlockAdapter<AlexaNode.Stream.StepData, NodeData.Str
 export const streamOutPortsAdapter = createOutPortsAdapter<NodeData.StreamBuiltInPorts, NodeData.Stream>(
   (dbPorts, options) => {
     const dbNextPort = findDBNextPort(dbPorts);
-    const dbPreviousPort = findDBPortByType(dbPorts, BaseModels.PortType.PREVIOUS) ?? migrateDBPortType(dbPorts[1], BaseModels.PortType.PREVIOUS);
+    const dbPreviousPort =
+      findDBPortByType(dbPorts, BaseModels.PortType.PREVIOUS) ??
+      migrateDBPortType(dbPorts[1], BaseModels.PortType.PREVIOUS);
     const dbPausePort =
-      findDBPortByType(dbPorts, BaseModels.PortType.PAUSE) ?? (dbPorts[2] ? migrateDBPortType(dbPorts[2], BaseModels.PortType.PAUSE) : null);
+      findDBPortByType(dbPorts, BaseModels.PortType.PAUSE) ??
+      (dbPorts[2] ? migrateDBPortType(dbPorts[2], BaseModels.PortType.PAUSE) : null);
 
     const nextPortData = outPortDataFromDB(dbNextPort, options);
     const previousPortData = outPortDataFromDB(dbPreviousPort, options);

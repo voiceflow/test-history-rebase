@@ -21,7 +21,9 @@ const SquareHandle = styled.div<SquareHandleProps>`
     bottom: 4px;
     background: #fff;
     border-radius: 1px;
-    box-shadow: 0 1px 3px 0 rgba(17, 49, 96, 0.08), 0 0 1px 1px rgba(17, 49, 96, 0.16);
+    box-shadow:
+      0 1px 3px 0 rgba(17, 49, 96, 0.08),
+      0 0 1px 1px rgba(17, 49, 96, 0.16);
 
     content: '';
   }

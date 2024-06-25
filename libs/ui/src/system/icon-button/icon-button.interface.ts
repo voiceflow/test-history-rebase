@@ -1,7 +1,7 @@
-import { SvgIconTypes } from '@ui/components/SvgIcon';
-import React from 'react';
+import type { SvgIconTypes } from '@ui/components/SvgIcon';
+import type React from 'react';
 
-import { Size } from './icon-button.enum';
+import type { Size } from './icon-button.enum';
 
 export interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   icon?: SvgIconTypes.Icon;

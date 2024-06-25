@@ -4,7 +4,7 @@ import React from 'react';
 // import { ResponseAttachmentPopper } from '../ResponseAttachmentPopper/ResponseAttachmentPopper.component';
 import { ResponseTextVariantLayout } from '../ResponseTextVariantLayout/ResponseTextVariantLayout.component';
 import { ResponseTextVariantSettings } from '../ResponseTextVariantSettings/ResponseTextVariantSettings.component';
-import { IResponseCreateTextVariant } from './ResponseCreateTextVariant.interface';
+import type { IResponseCreateTextVariant } from './ResponseCreateTextVariant.interface';
 
 export const ResponseCreateTextVariant: React.FC<IResponseCreateTextVariant> = ({
   textResponseVariant,

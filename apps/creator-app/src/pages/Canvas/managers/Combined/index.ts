@@ -1,9 +1,9 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
 import { NodeCategory } from '@/contexts/SearchContext/types';
 
-import { BaseNodeManagerConfig } from '../types';
+import type { BaseNodeManagerConfig } from '../types';
 import CombinedEditor from './CombinedEditor';
 
 const CombinedManager: BaseNodeManagerConfig<Realtime.NodeData.Combined> = {

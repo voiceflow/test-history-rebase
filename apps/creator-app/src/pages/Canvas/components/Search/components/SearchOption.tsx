@@ -1,7 +1,8 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
-import { components, OptionProps } from 'react-select';
+import type { OptionProps } from 'react-select';
+import { components } from 'react-select';
 
 import { Designer, Diagram } from '@/ducks';
 import { useSelector } from '@/hooks/redux';

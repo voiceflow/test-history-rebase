@@ -1,19 +1,14 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { Nullish, Struct, Utils } from '@voiceflow/common';
+import type { Nullish, Struct } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { logger } from '@voiceflow/ui';
 import EventEmitter from 'eventemitter3';
-import React from 'react';
+import type React from 'react';
 
-import {
-  BUFFER_REGION,
-  CanvasAPI,
-  MAX_CANVAS_SIZE,
-  MIN_CANVAS_HEIGHT,
-  MIN_CANVAS_WIDTH,
-  ORIGIN,
-} from '@/components/Canvas';
-import { MovementCalculator } from '@/components/Canvas/types';
+import type { CanvasAPI } from '@/components/Canvas';
+import { BUFFER_REGION, MAX_CANVAS_SIZE, MIN_CANVAS_HEIGHT, MIN_CANVAS_WIDTH, ORIGIN } from '@/components/Canvas';
+import type { MovementCalculator } from '@/components/Canvas/types';
 import { PageProgress } from '@/components/PageProgressBar';
 import { isDebug } from '@/config';
 import { BlockType, PageProgressBar } from '@/constants';
@@ -30,10 +25,10 @@ import * as Version from '@/ducks/versionV2';
 import * as Viewport from '@/ducks/viewport';
 import * as ModalsV2 from '@/ModalsV2';
 import { CanvasAction } from '@/pages/Canvas/constants';
-import { CanvasContainerAPI } from '@/pages/Canvas/types';
-import { DiagramHeartbeatContextValue } from '@/pages/Project/contexts';
-import { State, Store } from '@/store/types';
-import { Pair, Point } from '@/types';
+import type { CanvasContainerAPI } from '@/pages/Canvas/types';
+import type { DiagramHeartbeatContextValue } from '@/pages/Project/contexts';
+import type { State, Store } from '@/store/types';
+import type { Pair, Point } from '@/types';
 import { Coords } from '@/utils/geometry';
 import { getNodesGroupCenter } from '@/utils/node';
 
@@ -45,10 +40,11 @@ import { EntityType } from './constants';
 import DiagramEngine from './diagramEngine';
 import Dispatcher from './dispatcher';
 import DragEngine from './dragEngine';
-import LinkEntity, { PortLinkInstance } from './entities/linkEntity';
-import NodeEntity from './entities/nodeEntity';
-import PortEntity from './entities/portEntity';
-import ThreadEntity from './entities/threadEntity';
+import type { PortLinkInstance } from './entities/linkEntity';
+import type LinkEntity from './entities/linkEntity';
+import type NodeEntity from './entities/nodeEntity';
+import type PortEntity from './entities/portEntity';
+import type ThreadEntity from './entities/threadEntity';
 import FocusEngine from './focusEngine';
 import GroupSelectionEngine from './groupSelectionEngine';
 import HighlightEngine from './highlightEngine';

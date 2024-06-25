@@ -17,7 +17,9 @@ export const KBImportIntegration = manager.create(
     ({ api, type, opened, hidden, animated, closePrevented }) => {
       const TEST_ID = tid('knowledge-base', 'import-integration-modal');
 
-      const [screen, setScreen] = useState<'select-platform' | 'authenticate' | BaseModels.Project.IntegrationTypes>('select-platform');
+      const [screen, setScreen] = useState<'select-platform' | 'authenticate' | BaseModels.Project.IntegrationTypes>(
+        'select-platform'
+      );
       const [trackingEvents] = useTrackingEvents();
       const [subdomain, setSubdomain] = useState<string | undefined>();
 
@@ -53,7 +55,12 @@ export const KBImportIntegration = manager.create(
         >
           <Switch active={screen}>
             <Switch.Pane value="select-platform">
-              <KBImportIntegrationPlatform onClose={api.onClose} disabled={closePrevented} onContinue={onPlatformContinue} testID={TEST_ID} />
+              <KBImportIntegrationPlatform
+                onClose={api.onClose}
+                disabled={closePrevented}
+                onContinue={onPlatformContinue}
+                testID={TEST_ID}
+              />
             </Switch.Pane>
 
             <Switch.Pane value="authenticate">

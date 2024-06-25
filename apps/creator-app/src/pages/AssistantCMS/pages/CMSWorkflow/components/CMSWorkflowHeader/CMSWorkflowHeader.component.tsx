@@ -7,5 +7,10 @@ import { useOnWorkflowCreate } from '../../CMSWorkflow.hook';
 export const CMSWorkflowHeader: React.FC = () => {
   const onCreate = useOnWorkflowCreate();
 
-  return <CMSHeader searchPlaceholder="Search workflows" rightActions={<Header.Button.Primary label="New workflow" onClick={() => onCreate()} />} />;
+  return (
+    <CMSHeader
+      searchPlaceholder="Search workflows"
+      rightActions={<Header.Button.Primary label="New workflow" onClick={() => onCreate()} />}
+    />
+  );
 };

@@ -1,12 +1,12 @@
-import { BaseModels } from '@voiceflow/base-types';
-import * as Platform from '@voiceflow/platform-config';
+import type { BaseModels } from '@voiceflow/base-types';
+import type * as Platform from '@voiceflow/platform-config';
 import { pickRandomDefaultColor, toast } from '@voiceflow/ui';
 import React from 'react';
 
 import client from '@/client';
 import * as NLU from '@/config/nlu';
-import { NLUImportOrigin } from '@/constants';
-import { NLUImportModel } from '@/models';
+import type { NLUImportOrigin } from '@/constants';
+import type { NLUImportModel } from '@/models';
 import { upload } from '@/utils/dom';
 
 import { useTrackingEvents } from './tracking';
@@ -49,7 +49,9 @@ export const useNLUImport = ({ nluType, platform, onImport, onImportError }: Opt
         if (!importModelResponse) return;
 
         importModelResponse.slots =
-          importModelResponse.slots?.map((slot: BaseModels.Slot) => (slot.color ? slot : { ...slot, color: pickRandomDefaultColor() })) ?? [];
+          importModelResponse.slots?.map((slot: BaseModels.Slot) =>
+            slot.color ? slot : { ...slot, color: pickRandomDefaultColor() }
+          ) ?? [];
 
         toast.success(`${importModelResponse.intents.length} intents successfully imported!`);
 

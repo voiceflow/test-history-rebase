@@ -1,6 +1,7 @@
 import { OpenAI } from 'openai';
 
-import { isAzureBasedGPTConfig, isOpenAIGPTConfig, OpenAIConfig } from './gpt.interface';
+import type { OpenAIConfig } from './gpt.interface';
+import { isAzureBasedGPTConfig, isOpenAIGPTConfig } from './gpt.interface';
 
 export class OpenAIClient {
   openAIClient?: OpenAI;
@@ -32,7 +33,7 @@ export class OpenAIClient {
     }
 
     if (!this.openAIClient && !this.azureClient) {
-      throw new Error(`OpenAI client not initialized`);
+      throw new Error('OpenAI client not initialized');
     }
   }
 

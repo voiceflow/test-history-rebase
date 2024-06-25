@@ -1,8 +1,8 @@
-import { Nullish } from '@voiceflow/common';
-import { UserRole } from '@voiceflow/dtos';
+import type { Nullish } from '@voiceflow/common';
+import type { UserRole } from '@voiceflow/dtos';
 
+import type { Permission } from '@/constants/permissions';
 import {
-  Permission,
   PLAN_PERMISSION_DEFAULT_WARN_MESSAGE,
   ROLE_PERMISSION_DEFAULT_WARN_MESSAGE,
   TRIAL_EXPIRED_PERMISSION_DEFAULT_WARN_MESSAGE,

@@ -48,7 +48,12 @@ const AddCard = manager.create<AddCardProps>('LegacyBillingAddCard', () =>
               Cancel
             </Button>
 
-            <Button type="submit" variant={Button.Variant.PRIMARY} disabled={form.isSubmitting} isLoading={form.isSubmitting}>
+            <Button
+              type="submit"
+              variant={Button.Variant.PRIMARY}
+              disabled={form.isSubmitting}
+              isLoading={form.isSubmitting}
+            >
               {update ? 'Update Card' : 'Add Card'}
             </Button>
           </Modal.Footer>

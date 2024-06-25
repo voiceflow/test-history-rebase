@@ -44,7 +44,9 @@ export const AppearanceSection: React.FC = () => {
         <Box.Flex>
           <Box.Flex position="relative">
             <Launcher image={config.launcher} onClick={Utils.functional.noop} />
-            {config.launcher && <RemoveButton top={0} right={0} onClick={() => updateConfig({ launcher: '' }, { track: true })} />}
+            {config.launcher && (
+              <RemoveButton top={0} right={0} onClick={() => updateConfig({ launcher: '' }, { track: true })} />
+            )}
           </Box.Flex>
           <Box.Flex ml={-48}>
             <S.SelectorBox />
@@ -68,7 +70,11 @@ export const AppearanceSection: React.FC = () => {
               </Box>
             </S.PreviewCrop>
             {config.image !== DEFAULT_IMAGE && (
-              <RemoveButton top={-6} right={-6} onClick={() => updateConfig({ image: DEFAULT_IMAGE }, { track: true })} />
+              <RemoveButton
+                top={-6}
+                right={-6}
+                onClick={() => updateConfig({ image: DEFAULT_IMAGE }, { track: true })}
+              />
             )}
           </Box.Flex>
 
@@ -88,13 +94,21 @@ export const AppearanceSection: React.FC = () => {
               <Box ml={12} mt={-13}>
                 <ChatWidget.ChatContainer>
                   <Box backgroundColor={ThemeColor.WHITE} py={30} px={20}>
-                    <SystemResponse avatar={config.avatar} timestamp={now} messages={[{ type: 'text', text: 'Lorem ipsum dolor' }]} />
+                    <SystemResponse
+                      avatar={config.avatar}
+                      timestamp={now}
+                      messages={[{ type: 'text', text: 'Lorem ipsum dolor' }]}
+                    />
                   </Box>
                 </ChatWidget.ChatContainer>
               </Box>
             </S.PreviewCrop>
             {config.avatar !== DEFAULT_IMAGE && (
-              <RemoveButton top={-6} right={-6} onClick={() => updateConfig({ avatar: DEFAULT_IMAGE }, { track: true })} />
+              <RemoveButton
+                top={-6}
+                right={-6}
+                onClick={() => updateConfig({ avatar: DEFAULT_IMAGE }, { track: true })}
+              />
             )}
           </Box.Flex>
 

@@ -1,4 +1,4 @@
-import { Nullish } from '@voiceflow/common';
+import type { Nullish } from '@voiceflow/common';
 import { createSelector } from 'reselect';
 
 import { idParamSelector } from '@/ducks/utils/crudV2';
@@ -9,8 +9,9 @@ export const awarenessStateSelector = createSelector([rootProjectsSelector], (st
 
 export const awarenessViewersSelector = createSelector([awarenessStateSelector], (awareness) => awareness.viewers);
 
-export const awarenessViewersByIDSelector = createSelector([awarenessViewersSelector, idParamSelector], (viewers, projectID) =>
-  projectID ? viewers[projectID] : null
+export const awarenessViewersByIDSelector = createSelector(
+  [awarenessViewersSelector, idParamSelector],
+  (viewers, projectID) => (projectID ? viewers[projectID] : null)
 );
 
 export const getAwarenessViewersByIDSelector = createSelector(

@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import * as ReactRedux from 'react-redux';
 
 import type { State as AppState } from '@/ducks';
-import { AnyAction, Dispatchable, DispatchResult, Selector, Store } from '@/store/types';
+import type { AnyAction, Dispatchable, DispatchResult, Selector, Store } from '@/store/types';
 
 export const useStore = ReactRedux.useStore as () => Store;
 
@@ -13,7 +13,10 @@ export const useDispatch = <S extends any[], D extends any[], R extends Dispatch
 ) => {
   const store = useStore();
 
-  return useCallback((...dynamicArgs: D): DispatchResult<R> => store.dispatch(createAction(...staticArgs, ...dynamicArgs)), staticArgs);
+  return useCallback(
+    (...dynamicArgs: D): DispatchResult<R> => store.dispatch(createAction(...staticArgs, ...dynamicArgs)),
+    staticArgs
+  );
 };
 
 export const useLocalDispatch = <S extends any[], D extends any[], R extends AnyAction>(
@@ -22,7 +25,10 @@ export const useLocalDispatch = <S extends any[], D extends any[], R extends Any
 ) => {
   const store = useStore();
 
-  return useCallback((...dynamicArgs: D) => store.dispatch.local(createAction(...staticArgs, ...dynamicArgs)), staticArgs);
+  return useCallback(
+    (...dynamicArgs: D) => store.dispatch.local(createAction(...staticArgs, ...dynamicArgs)),
+    staticArgs
+  );
 };
 
 export const useCrossTabDispatch = <S extends any[], D extends any[], R extends AnyAction>(
@@ -31,7 +37,10 @@ export const useCrossTabDispatch = <S extends any[], D extends any[], R extends 
 ) => {
   const store = useStore();
 
-  return useCallback((...dynamicArgs: D) => store.dispatch.crossTab(createAction(...staticArgs, ...dynamicArgs)), staticArgs);
+  return useCallback(
+    (...dynamicArgs: D) => store.dispatch.crossTab(createAction(...staticArgs, ...dynamicArgs)),
+    staticArgs
+  );
 };
 
 export const useSyncDispatch = <S extends any[], D extends any[], R extends AnyAction>(
@@ -40,7 +49,10 @@ export const useSyncDispatch = <S extends any[], D extends any[], R extends AnyA
 ) => {
   const store = useStore();
 
-  return useCallback((...dynamicArgs: D) => store.dispatch.sync(createAction(...staticArgs, ...dynamicArgs)), staticArgs);
+  return useCallback(
+    (...dynamicArgs: D) => store.dispatch.sync(createAction(...staticArgs, ...dynamicArgs)),
+    staticArgs
+  );
 };
 
 export const useSelector = <T, A extends any[]>(selector: Selector<T, A>, ...args: A): T =>

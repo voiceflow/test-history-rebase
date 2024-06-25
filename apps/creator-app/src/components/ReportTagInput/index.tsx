@@ -22,7 +22,11 @@ interface InternalReportTagInputProps extends BaseReportTagInputProps {
 function ReportTagInput(props: BaseReportTagInputProps): React.ReactElement;
 function ReportTagInput(props: SelectOnlyReportTagInputProps): React.ReactElement;
 // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-function ReportTagInput({ variant = InputVariant.MANAGE, selectedTags, onChange }: InternalReportTagInputProps): React.ReactElement {
+function ReportTagInput({
+  variant = InputVariant.MANAGE,
+  selectedTags,
+  onChange,
+}: InternalReportTagInputProps): React.ReactElement {
   return variant === InputVariant.MANAGE ? (
     <ManageTagInput selectedTags={selectedTags} />
   ) : (

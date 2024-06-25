@@ -1,3 +1,4 @@
+/* eslint-disable no-empty-function */
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
 
@@ -88,7 +89,14 @@ suite(History, MOCK_STATE)('Ducks - History', ({ describeReducerV2, describeEffe
 
       it('merge transaction with active buffer', () => {
         const result = applyAction(
-          { ...MOCK_STATE, buffer: { id: 'foo', apply: [{ type: 'old_apply', payload: null }], revert: [{ type: 'old_revert', payload: null }] } },
+          {
+            ...MOCK_STATE,
+            buffer: {
+              id: 'foo',
+              apply: [{ type: 'old_apply', payload: null }],
+              revert: [{ type: 'old_revert', payload: null }],
+            },
+          },
           { transaction }
         );
 
@@ -128,7 +136,10 @@ suite(History, MOCK_STATE)('Ducks - History', ({ describeReducerV2, describeEffe
       });
 
       it('clear buffer if empty', () => {
-        const result = applyAction({ ...MOCK_STATE, buffer: { id: transactionID, apply: [], revert: [] } }, { transactionID });
+        const result = applyAction(
+          { ...MOCK_STATE, buffer: { id: transactionID, apply: [], revert: [] } },
+          { transactionID }
+        );
 
         expect(result.buffer).toBeNull();
       });
@@ -137,7 +148,10 @@ suite(History, MOCK_STATE)('Ducks - History', ({ describeReducerV2, describeEffe
         const apply = { type: 'apply', payload: null };
         const revert = { type: 'revert', payload: null };
 
-        const result = applyAction({ ...MOCK_STATE, buffer: { id: transactionID, apply: [apply], revert: [revert] } }, { transactionID });
+        const result = applyAction(
+          { ...MOCK_STATE, buffer: { id: transactionID, apply: [apply], revert: [revert] } },
+          { transactionID }
+        );
 
         expect(result.buffer).toBeNull();
         expect(result.undo).toEqual([...MOCK_STATE.undo, { id: transactionID, apply: [apply], revert: [revert] }]);
@@ -270,7 +284,10 @@ suite(History, MOCK_STATE)('Ducks - History', ({ describeReducerV2, describeEffe
 
         const { dispatched } = await applyEffect(rootState, () => {});
 
-        expect(dispatched).toEqual([History.startTransaction({ transactionID }), History.flushTransaction({ transactionID })]);
+        expect(dispatched).toEqual([
+          History.startTransaction({ transactionID }),
+          History.flushTransaction({ transactionID }),
+        ]);
       });
     });
 

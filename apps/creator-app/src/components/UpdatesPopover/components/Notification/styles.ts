@@ -25,6 +25,6 @@ export const Content = styled.div<{ type: Notifications.NotificationType }>`
   color: #2b3950;
   font-size: 13px;
 
-  ${({ type }) => type === Notifications.NotificationType.FEATURE && `color: #5d9df5;`}
-  ${({ type }) => type === Notifications.NotificationType.CHANGE && `color: #00cc87;`}
+  ${({ type }) => type === Notifications.NotificationType.FEATURE && 'color: #5d9df5;'}
+  ${({ type }) => type === Notifications.NotificationType.CHANGE && 'color: #00cc87;'}
 `;

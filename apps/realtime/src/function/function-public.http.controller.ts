@@ -32,7 +32,7 @@ export class FunctionPublicHTTPController {
   constructor(
     @Inject(FunctionService)
     private readonly service: FunctionService
-  ) { }
+  ) {}
 
   @Get('export-json/:environmentID')
   @Authorize.Permissions<Request<{ environmentID: string }>>([Permission.PROJECT_READ], (request) => ({

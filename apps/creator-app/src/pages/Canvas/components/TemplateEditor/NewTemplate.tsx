@@ -8,7 +8,8 @@ import { useEventualEngine } from '@/hooks/engine.hook';
 import { Coords } from '@/utils/geometry';
 
 import TemplatePopperEditor from './index';
-import TemplatePopperEditorPopper, { CanvasTemplateEditorPopperProps } from './Popper';
+import type { CanvasTemplateEditorPopperProps } from './Popper';
+import TemplatePopperEditorPopper from './Popper';
 
 interface CanvasTemplateEditorNewTemplateProps
   extends Omit<

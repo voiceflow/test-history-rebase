@@ -1,5 +1,6 @@
-import { BaseModels, BaseNode } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { BaseNode } from '@voiceflow/base-types';
+import { BaseModels } from '@voiceflow/base-types';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Thumbnail } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
@@ -7,10 +8,14 @@ import React from 'react';
 import Port from '@/pages/Canvas/components/Port';
 import Step, { Item } from '@/pages/Canvas/components/Step';
 import { PortEntityProvider } from '@/pages/Canvas/contexts';
-import { ConnectedStep } from '@/pages/Canvas/managers/types';
+import type { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { isVariable } from '@/utils/slot';
 
-const ImageStep: ConnectedStep<BaseNode.Visual.ImageStepData, Realtime.NodeData.VisualBuiltInPorts> = ({ ports, data, palette }) => {
+const ImageStep: ConnectedStep<BaseNode.Visual.ImageStepData, Realtime.NodeData.VisualBuiltInPorts> = ({
+  ports,
+  data,
+  palette,
+}) => {
   const stepAPI = React.useContext(Step.APIContext);
 
   const size = data.device ? VoiceflowConstants.DEVICE_SIZE_MAP[data.device] : data.dimensions;

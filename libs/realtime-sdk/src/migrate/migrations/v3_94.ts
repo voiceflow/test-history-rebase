@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import uniqBy from 'lodash/uniqBy';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 /**
  * this migration fixes versions with duplicate intents/entities that have the same ID

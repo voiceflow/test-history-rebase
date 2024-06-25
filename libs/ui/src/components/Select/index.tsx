@@ -5,26 +5,26 @@ import { toast } from '@ui/components/Toast';
 import { useDidUpdateEffect, usePersistFunction } from '@ui/hooks';
 import { ClassName } from '@ui/styles/constants';
 import * as System from '@ui/system';
-import { Primitive } from '@ui/types';
+import type { Primitive } from '@ui/types';
 import { setRef, stopPropagation } from '@ui/utils';
-import { Nullable, Utils } from '@voiceflow/common';
-import { Manager, PopperProps, Reference } from '@voiceflow/legacy-react-popper';
+import type { Nullable } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
+import type { PopperProps } from '@voiceflow/legacy-react-popper';
+import { Manager, Reference } from '@voiceflow/legacy-react-popper';
 import cn from 'classnames';
 import noop from 'lodash/noop';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
 
 // for some reason absolute paths are not transformed for this import
-import {
-  defaultMenuLabelRenderer,
+import type {
   GetOptionLabel,
   GetOptionValue,
-  isGroupedOptions,
-  isUIOnlyMenuItemOption,
   MenuItemGrouped,
   MenuItemMultilevel,
   MenuItemWithID,
 } from '../NestedMenu';
+import { defaultMenuLabelRenderer, isGroupedOptions, isUIOnlyMenuItemOption } from '../NestedMenu';
 import NestedMenu from '../NestedMenu/Menu';
 import {
   InlineInputValue,
@@ -36,7 +36,7 @@ import {
   TagsInput,
 } from './components';
 import { defaultOptionsFilter, searchableOptionsFilter } from './optionsFilters';
-import {
+import type {
   SelectClearableProps,
   SelectCreatableClearableProps,
   SelectCreatableProps,
@@ -48,7 +48,6 @@ import {
   SelectGroupedValueWithIDProps,
   SelectGroupedWithIDClearableProps,
   SelectGroupedWithIDProps,
-  SelectInputVariant,
   SelectInternalProps,
   SelectMultilevelClearableProps,
   SelectMultilevelProps,
@@ -76,6 +75,7 @@ import {
   SelectWithIDClearableProps,
   SelectWithIDProps,
 } from './types';
+import { SelectInputVariant } from './types';
 
 export type { BaseSelectProps, FilterResult, OptionsFilter } from './types';
 export { SelectInputVariant } from './types';

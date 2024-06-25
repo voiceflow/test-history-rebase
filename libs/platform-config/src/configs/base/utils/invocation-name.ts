@@ -9,7 +9,8 @@ export interface ValidateOptions {
 /**
  * returns error if value is not a valid
  */
-export const validateName = (options: ValidateOptions): string | null => (!options.value?.trim() ? 'Invocation name is required' : null);
+export const validateName = (options: ValidateOptions): string | null =>
+  !options.value?.trim() ? 'Invocation name is required' : null;
 
 export interface Config {
   validate: typeof validateName;

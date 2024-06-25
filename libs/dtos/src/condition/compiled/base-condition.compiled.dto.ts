@@ -5,7 +5,9 @@ import { CompiledExpressionConditionDataDTO } from './expression-condition/expre
 import { CompiledPromptConditionDataDTO } from './prompt-condition/prompt-condition-data.compiled.dto';
 import { CompiledScriptConditionDataDTO } from './script-condition/script-condition-data.compiled.dto';
 
-export const BaseCompiledConditionDTO = z.object({
-  type: z.nativeEnum(ConditionType),
-  data: z.union([CompiledPromptConditionDataDTO, CompiledScriptConditionDataDTO, CompiledExpressionConditionDataDTO]),
-}).strict();
+export const BaseCompiledConditionDTO = z
+  .object({
+    type: z.nativeEnum(ConditionType),
+    data: z.union([CompiledPromptConditionDataDTO, CompiledScriptConditionDataDTO, CompiledExpressionConditionDataDTO]),
+  })
+  .strict();

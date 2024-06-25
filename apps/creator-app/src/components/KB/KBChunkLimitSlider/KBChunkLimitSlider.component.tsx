@@ -1,7 +1,7 @@
 import { Slider } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { IKBChunkLimitSlider } from './KBChunkLimitSlider.interface';
+import type { IKBChunkLimitSlider } from './KBChunkLimitSlider.interface';
 
 export const KBChunkLimitSlider: React.FC<IKBChunkLimitSlider> = ({
   value,

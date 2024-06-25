@@ -1,11 +1,12 @@
 import type { PlanType } from '@voiceflow/internal';
-import React from 'react';
+import type React from 'react';
 
 import type { UpgradePopperData } from '@/components/UpgradePopper';
 import type { UpgradeTooltipData } from '@/components/UpgradeTooltip';
 import type { Permission } from '@/constants/permissions';
 import type { UpgradeModal } from '@/ModalsV2/modals/Upgrade';
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export type ActionGetter<Data, Return> = Data extends {} ? (data: Data) => Return : () => Return;
 
 export interface BasePlanPermission {

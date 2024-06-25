@@ -1,4 +1,4 @@
-import { NodeData } from '@realtime-sdk/models';
+import type { NodeData } from '@realtime-sdk/models';
 import { transformVariablesFromReadable, transformVariablesToReadable } from '@realtime-sdk/utils/slot';
 import { AlexaNode } from '@voiceflow/alexa-types';
 
@@ -44,7 +44,9 @@ const reminderDataAdapter = createBlockAdapter<AlexaNode.Reminder.StepData, Node
     return {
       reminder: {
         name,
-        type: isTimer ? AlexaNode.Reminder.ReminderType.SCHEDULED_RELATIVE : AlexaNode.Reminder.ReminderType.SCHEDULED_ABSOLUTE,
+        type: isTimer
+          ? AlexaNode.Reminder.ReminderType.SCHEDULED_RELATIVE
+          : AlexaNode.Reminder.ReminderType.SCHEDULED_ABSOLUTE,
         text,
         time: {
           h: hours,

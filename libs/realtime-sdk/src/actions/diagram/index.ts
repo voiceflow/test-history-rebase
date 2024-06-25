@@ -1,10 +1,10 @@
 import { createCRUDActions } from '@realtime-sdk/actions/utils';
 import { TEMPLATE_DIAGRAM_KEY } from '@realtime-sdk/constants';
-import { Diagram } from '@realtime-sdk/models';
-import { BaseVersionPayload } from '@realtime-sdk/types';
-import { PrimitiveDiagram } from '@realtime-sdk/utils/diagram';
+import type { Diagram } from '@realtime-sdk/models';
+import type { BaseVersionPayload } from '@realtime-sdk/types';
+import type { PrimitiveDiagram } from '@realtime-sdk/utils/diagram';
 import { Utils } from '@voiceflow/common';
-import { Required } from 'utility-types';
+import type { Required } from 'utility-types';
 
 import { diagramType } from './utils';
 

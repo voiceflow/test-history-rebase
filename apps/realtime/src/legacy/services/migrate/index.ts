@@ -1,4 +1,4 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 
 import { HEARTBEAT_EXPIRE_TIMEOUT } from '@/constants';

@@ -1,7 +1,7 @@
 import { Animations } from '@voiceflow/ui';
 
 import { createGlobalStyle } from '@/hocs/styled';
-import { Theme } from '@/styles/theme';
+import type { Theme } from '@/styles/theme';
 
 export { default as MentionEditorContainer } from './MentionEditorContainer';
 

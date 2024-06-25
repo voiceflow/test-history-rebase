@@ -1,5 +1,5 @@
-import { BaseModels } from '@voiceflow/base-types';
-import { BaseProps } from '@voiceflow/ui-next';
+import type { BaseModels } from '@voiceflow/base-types';
+import type { BaseProps } from '@voiceflow/ui-next';
 
 export interface IKBImportSitemapPreview extends BaseProps {
   urls: string;

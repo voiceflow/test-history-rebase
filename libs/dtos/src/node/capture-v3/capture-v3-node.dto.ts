@@ -3,7 +3,8 @@ import { z } from 'zod';
 import { AIParamsDTO } from '@/ai/ai-params.dto';
 import { AIPromptWrapperDTO } from '@/ai/ai-prompt-wrapper.dto';
 
-import { BaseNodeDataDTO, BaseNodeDTO, InferNode } from '../base/base-node.dto';
+import type { InferNode } from '../base/base-node.dto';
+import { BaseNodeDataDTO, BaseNodeDTO } from '../base/base-node.dto';
 import { BaseNodeDataAutomaticRepromptDTO } from '../base/base-node-data-automatic-reprompt.dto';
 import { BaseNodeDataNoReplyDTO } from '../base/base-node-data-no-reply.dto';
 import { BaseNodeDataPathDTO } from '../base/base-node-data-path.dto';

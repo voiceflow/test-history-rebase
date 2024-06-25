@@ -1,7 +1,9 @@
 import React from 'react';
 
-import Container, { ContainerProps } from './Container';
-import Header, { HeaderProps } from './Header';
+import type { ContainerProps } from './Container';
+import Container from './Container';
+import type { HeaderProps } from './Header';
+import Header from './Header';
 
 export interface SimpleSectionProps extends ContainerProps {
   style?: React.CSSProperties;

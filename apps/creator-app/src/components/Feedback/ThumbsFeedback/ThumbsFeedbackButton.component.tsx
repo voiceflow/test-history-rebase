@@ -3,14 +3,17 @@ import { Box, forwardRef, SquareButton, Text, Tokens, Tooltip } from '@voiceflow
 import React from 'react';
 
 import { buttonContainerStyle, buttonIconStyle } from './ThumbsFeedback.css';
-import { IThumbsFeedbackButton } from './ThumbsFeedback.interface';
+import type { IThumbsFeedbackButton } from './ThumbsFeedback.interface';
 
 export const ThumbsFeedbackButton = forwardRef<HTMLButtonElement, IThumbsFeedbackButton>('ThumbsFeedbackButton')(
   ({ type, onClick, voteType, isActive }, ref) => (
     <Tooltip
       placement="top"
       referenceElement={(tooltip) => (
-        <Box pl={type === 'good' ? 8 : 0} className={buttonContainerStyle({ type, voted: !!voteType, voteDestination: voteType === type })}>
+        <Box
+          pl={type === 'good' ? 8 : 0}
+          className={buttonContainerStyle({ type, voted: !!voteType, voteDestination: voteType === type })}
+        >
           <SquareButton
             ref={composeRefs(ref, tooltip.ref)}
             size="medium"
@@ -27,7 +30,11 @@ export const ThumbsFeedbackButton = forwardRef<HTMLButtonElement, IThumbsFeedbac
       {() => (
         <Text variant="caption">
           Feedback →{' '}
-          <Text as="span" variant="caption" color={type === 'bad' ? Tokens.colors.alert.alert300 : Tokens.colors.success.success200}>
+          <Text
+            as="span"
+            variant="caption"
+            color={type === 'bad' ? Tokens.colors.alert.alert300 : Tokens.colors.success.success200}
+          >
             {type === 'bad' ? 'Bad' : 'Good'}
           </Text>
         </Text>

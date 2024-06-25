@@ -1,17 +1,22 @@
 /* eslint-disable no-promise-executor-return */
 /* eslint-disable no-await-in-loop */
 import { HttpStatus, Inject, Injectable, Logger } from '@nestjs/common';
-import { BadRequestException, NotFoundException, PayloadTooLargeException, TooManyRequestsException } from '@voiceflow/exception';
+import {
+  BadRequestException,
+  NotFoundException,
+  PayloadTooLargeException,
+  TooManyRequestsException,
+} from '@voiceflow/exception';
 import * as fetch from '@voiceflow/fetch';
 import undici from 'undici';
 import { URLSearchParams } from 'url';
 
 import { AesEncryptionClient } from '@/common/clients/aes-encryption/aes-encryption.client';
-import { FetchClient } from '@/common/fetch';
+import type { FetchClient } from '@/common/fetch';
 
-import BaseOauthClient from '../base/base-oauth.interface';
+import type BaseOauthClient from '../base/base-oauth.interface';
 import { IntegrationType } from '../base/dtos/base-oauth-type.enum';
-import {
+import type {
   ZendeskBaseResource,
   ZendeskCountFilters,
   ZendeskExtendedResource,
@@ -68,24 +73,29 @@ export class ZendeskOauthClient implements BaseOauthClient {
     return Array.from(uniqueMap.values());
   }
 
-  getUserSegmentsMapping(userSegments: ZendeskFilterUserSegment[]): Record<string, { id: number; name: string; filterID: number | null }> {
+  getUserSegmentsMapping(
+    userSegments: ZendeskFilterUserSegment[]
+  ): Record<string, { id: number; name: string; filterID: number | null }> {
     let idCounter = 1;
 
-    return userSegments.reduce((res, { id, name }) => {
-      if (id === null) {
+    return userSegments.reduce(
+      (res, { id, name }) => {
+        if (id === null) {
+          return res;
+        }
+
+        res[id] = { id: idCounter, name, filterID: id };
+
+        idCounter++;
         return res;
-      }
-
-      res[id] = { id: idCounter, name, filterID: id };
-
-      idCounter++;
-      return res;
-    }, {} as Record<string, { id: number; name: string; filterID: number | null }>);
+      },
+      {} as Record<string, { id: number; name: string; filterID: number | null }>
+    );
   }
 
   getArticlesEndpoint(filters?: ZendeskUserSegmentFilters): { resourceKey: string; endpoint: string } {
     if (filters?.brands?.length !== 1) {
-      throw new BadRequestException('The \'brands\' filter must contain one brand value and cannot be empty.');
+      throw new BadRequestException("The 'brands' filter must contain one brand value and cannot be empty.");
     }
 
     let resourceKey = 'articles';
@@ -137,7 +147,9 @@ export class ZendeskOauthClient implements BaseOauthClient {
       ) {
         if (includeUserSegments) {
           const user_segment =
-            article.user_segment_id === null ? { id: 0, name: 'Everyone', filterID: null } : userSegmentsMapping[article.user_segment_id];
+            article.user_segment_id === null
+              ? { id: 0, name: 'Everyone', filterID: null }
+              : userSegmentsMapping[article.user_segment_id];
 
           if (!filteredUserSegmentsSet.has(user_segment.id)) {
             filteredUserSegments.push(user_segment);
@@ -383,34 +395,47 @@ export class ZendeskOauthClient implements BaseOauthClient {
     const endpoint = '/api/v2/help_center/categories';
     const resourceKey = 'categories';
 
-    const data: (ZendeskBaseResource & { locale?: string })[] = await this.fetchAllItems({ accessToken, resourceKey, endpoint, subdomain });
+    const data: (ZendeskBaseResource & { locale?: string })[] = await this.fetchAllItems({
+      accessToken,
+      resourceKey,
+      endpoint,
+      subdomain,
+    });
 
     // Group categories by locale
-    return data.reduce((acc, category) => {
-      const { locale } = category;
+    return data.reduce(
+      (acc, category) => {
+        const { locale } = category;
 
-      if (!locale) {
+        if (!locale) {
+          return acc;
+        }
+
+        if (!acc[locale]) {
+          acc[locale] = [];
+        }
+
+        acc[locale].push({
+          id: category.id,
+          name: category.name,
+        });
+
         return acc;
-      }
-
-      if (!acc[locale]) {
-        acc[locale] = [];
-      }
-
-      acc[locale].push({
-        id: category.id,
-        name: category.name,
-      });
-
-      return acc;
-    }, {} as { [locale: string]: Array<{ id: number; name: string }> });
+      },
+      {} as { [locale: string]: Array<{ id: number; name: string }> }
+    );
   }
 
   async fetchLocales(accessToken: string, subdomain?: string): Promise<ZendeskFilterLocale[]> {
     const endpoint = '/api/v2/locales';
     const resourceKey = 'locales';
 
-    const data: (ZendeskBaseResource & { locale?: string })[] = await this.fetchAllItems({ accessToken, resourceKey, endpoint, subdomain });
+    const data: (ZendeskBaseResource & { locale?: string })[] = await this.fetchAllItems({
+      accessToken,
+      resourceKey,
+      endpoint,
+      subdomain,
+    });
 
     return data.map((item) => ({
       id: item.id,
@@ -423,7 +448,12 @@ export class ZendeskOauthClient implements BaseOauthClient {
     const endpoint = '/api/v2/brands';
     const resourceKey = 'brands';
 
-    const data: (ZendeskBaseResource & { subdomain?: string })[] = await this.fetchAllItems({ accessToken, resourceKey, endpoint, subdomain });
+    const data: (ZendeskBaseResource & { subdomain?: string })[] = await this.fetchAllItems({
+      accessToken,
+      resourceKey,
+      endpoint,
+      subdomain,
+    });
 
     return data.map((brand) => ({
       id: brand.id,
@@ -451,7 +481,10 @@ export class ZendeskOauthClient implements BaseOauthClient {
   async fetchFilters(accessToken: string, integrationSubdomain: string, subdomain?: string): Promise<ZendeskFilters> {
     if (!subdomain) {
       return {
-        brands: this.removeDuplicates(await this.fetchBrands(accessToken, integrationSubdomain), (item: ZendeskFilterBrand) => item.id),
+        brands: this.removeDuplicates(
+          await this.fetchBrands(accessToken, integrationSubdomain),
+          (item: ZendeskFilterBrand) => item.id
+        ),
         labels: [],
         categories: {},
         locales: [],
@@ -529,7 +562,13 @@ export class ZendeskOauthClient implements BaseOauthClient {
       localesSetIds = new Set((filters?.locales ?? []).map((locale) => locale.locale?.toLowerCase()));
     }
 
-    return this.filterArticles({ fetchedArticles, userSegmentsMapping, userSegmentIds, localesSetIds, includeUserSegments: true });
+    return this.filterArticles({
+      fetchedArticles,
+      userSegmentsMapping,
+      userSegmentIds,
+      localesSetIds,
+      includeUserSegments: true,
+    });
   }
 
   async fetchCountByFilters(

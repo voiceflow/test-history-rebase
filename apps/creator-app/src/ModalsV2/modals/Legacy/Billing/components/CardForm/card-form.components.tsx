@@ -5,7 +5,7 @@ import React from 'react';
 import { useFormikTouchedErrors } from '@/hooks/formik';
 
 import { useStripeCard } from './card-form.hooks';
-import * as I from './card-form.interface';
+import type * as I from './card-form.interface';
 import * as S from './card-form.style';
 
 export const CardForm: React.FC<I.Props> = ({ form, disabled }) => {
@@ -37,7 +37,9 @@ export const CardForm: React.FC<I.Props> = ({ form, disabled }) => {
           />
         </S.CardElementContainer>
 
-        {(cardError || touchedErrors.cardCompleted) && <S.ErrorMessage>{cardError || touchedErrors.cardCompleted}</S.ErrorMessage>}
+        {(cardError || touchedErrors.cardCompleted) && (
+          <S.ErrorMessage>{cardError || touchedErrors.cardCompleted}</S.ErrorMessage>
+        )}
       </Box.FlexStart>
 
       <Box.FlexStart column alignItems="flex-start" fullWidth>

@@ -1,15 +1,17 @@
-import { Nullable } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { SvgIconTypes } from '@voiceflow/ui';
-import { ITreeData } from '@voiceflow/ui-next';
+import type { Nullable } from '@voiceflow/common';
+import type * as Realtime from '@voiceflow/realtime-sdk';
+import type { SvgIconTypes } from '@voiceflow/ui';
+import type { ITreeData } from '@voiceflow/ui-next';
 import _throttle from 'lodash/throttle';
 import React from 'react';
-import { useDrop, XYCoord } from 'react-dnd';
+import type { XYCoord } from 'react-dnd';
+import { useDrop } from 'react-dnd';
 import { NativeTypes } from 'react-dnd-html5-backend';
 
-import Canvas, { CanvasAPI } from '@/components/Canvas';
+import type { CanvasAPI } from '@/components/Canvas';
+import Canvas from '@/components/Canvas';
 import Crosshair from '@/components/Crosshair';
-import { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
+import type { DragPreviewComponentProps, ItemComponentProps } from '@/components/DraggableList';
 import { PageProgress } from '@/components/PageProgressBar';
 import { BlockType, DragItem, HOVER_THROTTLE_TIMEOUT, PageProgressBar } from '@/constants';
 import * as UI from '@/ducks/ui';
@@ -150,6 +152,7 @@ const CanvasDiagram: React.FC<React.PropsWithChildren> = ({ children }) => {
     [isEditingMode]
   );
 
+  // eslint-disable-next-line @typescript-eslint/ban-types
   const [, connectBlockDrop] = useDrop<DroppableItem, {}, {}>({
     accept: DROP_TYPES,
     drop: async (item, monitor) => {
@@ -171,20 +174,33 @@ const CanvasDiagram: React.FC<React.PropsWithChildren> = ({ children }) => {
       if ('blockType' in item) {
         await engine.node.add({ type: item.blockType, coords, factoryData: item.factoryData });
       } else if (item.type === DragItem.COMPONENTS && 'searchMatchValue' in item) {
-        await engine.node.add({ type: BlockType.COMPONENT, coords, factoryData: { name: item.item.name, diagramID: item.item.id } });
+        await engine.node.add({
+          type: BlockType.COMPONENT,
+          coords,
+          factoryData: { name: item.item.name, diagramID: item.item.id },
+        });
       } else if (isLibraryDragItem(item)) {
         if (item.libraryType === LibraryStepType.CUSTOM_BLOCK) {
-          await engine.node.add({ type: BlockType.CUSTOM_BLOCK_POINTER, coords, factoryData: pointerNodeDataFactory(item.tabData) });
+          await engine.node.add({
+            type: BlockType.CUSTOM_BLOCK_POINTER,
+            coords,
+            factoryData: pointerNodeDataFactory(item.tabData),
+          });
         } else if (item.libraryType === LibraryStepType.BLOCK_TEMPLATES) {
           await engine.canvasTemplate.dropTemplate(item.tabData.id, coords);
         }
       } else if (item.type === 'component' && 'metaData' in item) {
-        await engine.node.add({ type: BlockType.COMPONENT, coords, factoryData: { name: item.label, diagramID: item.metaData.diagramID } });
+        await engine.node.add({
+          type: BlockType.COMPONENT,
+          coords,
+          factoryData: { name: item.label, diagramID: item.metaData.diagramID },
+        });
       }
     },
 
     hover: _throttle(
       (item, monitor) => {
+        // eslint-disable-next-line no-param-reassign
         item.clientOffset = monitor.getClientOffset();
 
         if (!monitor.isOver({ shallow: true })) {

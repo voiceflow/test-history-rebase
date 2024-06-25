@@ -1,14 +1,16 @@
 import { PlanType } from '@voiceflow/internal';
 import React from 'react';
 
-import { BaseStaticLimit } from '@/config/planLimitV2';
-import { LimitType } from '@/constants/limits';
+import type { BaseStaticLimit } from '@/config/planLimitV2';
+import type { LimitType } from '@/constants/limits';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { getPlanLimitConfig, PlanLimitConfig } from '@/utils/planLimitV2';
+import type { PlanLimitConfig } from '@/utils/planLimitV2';
+import { getPlanLimitConfig } from '@/utils/planLimitV2';
 
 import { useSelector } from './redux';
 
-type PlanLimitConfigOptions<Limit extends LimitType> = PlanLimitConfig<Limit> extends BaseStaticLimit ? [] : [{ limit: number }];
+type PlanLimitConfigOptions<Limit extends LimitType> =
+  PlanLimitConfig<Limit> extends BaseStaticLimit ? [] : [{ limit: number }];
 
 export type PlanLimitData<Limit extends LimitType> = PlanLimitConfig<Limit> & {
   limit: number;
@@ -24,7 +26,9 @@ export const usePlanLimitConfig = <Limit extends LimitType>(
 
   const planLimit = React.useMemo(() => getPlanLimitConfig(limitType, activePlan), [limitType, activePlan]);
 
-  const maxLimit = useSelector((state) => planLimit && ('maxLimitSelector' in planLimit ? planLimit.maxLimitSelector?.(state) : undefined));
+  const maxLimit = useSelector(
+    (state) => planLimit && ('maxLimitSelector' in planLimit ? planLimit.maxLimitSelector?.(state) : undefined)
+  );
 
   return React.useMemo(() => {
     if (!planLimit) return null;
@@ -62,9 +66,8 @@ export const useGetPlanLimitedConfig = <Limit extends LimitType>(
   );
 };
 
-type PlanLimitedConfigOptions<Limit extends LimitType> = PlanLimitConfig<Limit> extends BaseStaticLimit
-  ? [] | [PlanLimitedOptions]
-  : [PlanLimitedOptions & BaseStaticLimit];
+type PlanLimitedConfigOptions<Limit extends LimitType> =
+  PlanLimitConfig<Limit> extends BaseStaticLimit ? [] | [PlanLimitedOptions] : [PlanLimitedOptions & BaseStaticLimit];
 
 export const usePlanLimitedConfig = <Limit extends LimitType>(
   limitType: Limit,

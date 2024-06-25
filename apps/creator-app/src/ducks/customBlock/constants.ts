@@ -1,6 +1,6 @@
 import { createCRUDState } from '@/ducks/utils/crudV2';
 
-import { CustomBlockState } from './types';
+import type { CustomBlockState } from './types';
 
 export const STATE_KEY = 'customBlock';
 

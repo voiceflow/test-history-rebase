@@ -24,7 +24,9 @@ const SSOTargetURLField: React.FC<SSOTargetURLFieldProps> = ({ value, onChange }
       </Box.FlexAlignStart>
 
       <Box flex={1} ml={24} mt={25}>
-        <SectionV2.Description secondary>The URL users of your organization will be directed to on log in.</SectionV2.Description>
+        <SectionV2.Description secondary>
+          The URL users of your organization will be directed to on log in.
+        </SectionV2.Description>
       </Box>
     </Box.FlexAlignStart>
   </SectionV2.SimpleSection>

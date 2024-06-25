@@ -1,7 +1,7 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 /**
  * this migration removes duplicated port ids
@@ -23,7 +23,10 @@ const migrateToV4_02: Transform = ({ diagrams }) => {
       if (portID) {
         if (portIDs.has(portID)) {
           const newPortID = Utils.id.objectID();
-          const newPortV2 = { ...portV2, builtIn: { ...portV2.builtIn, next: { ...portV2.builtIn.next, id: newPortID } } };
+          const newPortV2 = {
+            ...portV2,
+            builtIn: { ...portV2.builtIn, next: { ...portV2.builtIn.next, id: newPortID } },
+          };
           migratePorts(newPortV2);
         }
 

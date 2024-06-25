@@ -1,26 +1,26 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { BaseNode } from '@voiceflow/base-types';
-import { Nullable, Struct } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { CustomScrollbarsTypes, OptionsMenuOption, SvgIconTypes } from '@voiceflow/ui';
-import React from 'react';
-import { ExtractRouteParams, match } from 'react-router';
-import { Optional, Overwrite } from 'utility-types';
+import type { BaseNode } from '@voiceflow/base-types';
+import type { Nullable, Struct } from '@voiceflow/common';
+import type * as Platform from '@voiceflow/platform-config';
+import type * as Realtime from '@voiceflow/realtime-sdk';
+import type { CustomScrollbarsTypes, OptionsMenuOption, SvgIconTypes } from '@voiceflow/ui';
+import type React from 'react';
+import type { ExtractRouteParams, match } from 'react-router';
+import type { Optional, Overwrite } from 'utility-types';
 
-import { BlockType, HSLShades } from '@/constants';
-import { NodeCategory } from '@/contexts/SearchContext/types';
-import { TransactionContextValue } from '@/contexts/TransactionContext';
-import * as CreatorV2 from '@/ducks/creatorV2';
-import { FeatureFlagMap } from '@/ducks/feature';
-import { PathEntry } from '@/pages/Canvas/components/EditorSidebar/hooks';
-import { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
+import type { BlockType, HSLShades } from '@/constants';
+import type { NodeCategory } from '@/contexts/SearchContext/types';
+import type { TransactionContextValue } from '@/contexts/TransactionContext';
+import type * as CreatorV2 from '@/ducks/creatorV2';
+import type { FeatureFlagMap } from '@/ducks/feature';
+import type { PathEntry } from '@/pages/Canvas/components/EditorSidebar/hooks';
+import type { ConnectedMarkupNodeProps } from '@/pages/Canvas/components/MarkupNode/types';
 import type Engine from '@/pages/Canvas/engine';
 import type { NodeEntityResource } from '@/pages/Canvas/engine/entities/nodeEntity';
 import type { State } from '@/store/types';
 
-import { EditorAnimationEffect } from '../constants';
-import { NodeDataUpdater } from '../types';
+import type { EditorAnimationEffect } from '../constants';
+import type { NodeDataUpdater } from '../types';
 
 export { NodeEntityResource };
 

@@ -1,6 +1,7 @@
 import { Utils } from '@voiceflow/common';
 import React from 'react';
-import { Mention, MentionsInput, MentionsInputProps, OnChangeHandlerFunc, SuggestionDataItem } from 'react-mentions';
+import type { MentionsInputProps, OnChangeHandlerFunc, SuggestionDataItem } from 'react-mentions';
+import { Mention, MentionsInput } from 'react-mentions';
 import { createSelector } from 'reselect';
 
 import Commenter from '@/components/Commenter';

@@ -1,8 +1,8 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import { ActionEditor } from '@/pages/Canvas/managers/types';
+import type { ActionEditor } from '@/pages/Canvas/managers/types';
 
 import ActionRootEditor from './ActionRootEditor';
 import TLSEditor from './TLSEditor';

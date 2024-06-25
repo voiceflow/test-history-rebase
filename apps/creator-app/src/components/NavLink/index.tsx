@@ -16,7 +16,14 @@ const NavLink: React.FC<NavLinkProps> = ({ as: Item = 'button', to, exact, ...it
   const isActive = !!matchPath(location.pathname, { path: to, exact });
   const goTo = useDispatch(Router.goTo);
 
-  return <Item {...(Item === 'button' ? { type: 'button' } : {})} onClick={() => goTo(to)} isActive={isActive} {...itemProps} />;
+  return (
+    <Item
+      {...(Item === 'button' ? { type: 'button' } : {})}
+      onClick={() => goTo(to)}
+      isActive={isActive}
+      {...itemProps}
+    />
+  );
 };
 
 export default NavLink;

@@ -1,8 +1,8 @@
 import { BlockType } from '@realtime-sdk/constants';
-import { Markup } from '@realtime-sdk/models';
-import { BaseModels } from '@voiceflow/base-types';
+import type { Markup } from '@realtime-sdk/models';
+import type { BaseModels } from '@voiceflow/base-types';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 /**
  * this migration moves all image steps to match the transform translate(-50%,-50%) applied to center the image

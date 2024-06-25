@@ -3,12 +3,15 @@ import * as Normal from 'normal-store';
 
 import { createReducer } from '../utils';
 
-const patchMemberReducer = createReducer(Realtime.project.member.patch, (state, { projectID, creatorID, member: patch }) => {
-  const project = Normal.getOne(state, projectID);
+const patchMemberReducer = createReducer(
+  Realtime.project.member.patch,
+  (state, { projectID, creatorID, member: patch }) => {
+    const project = Normal.getOne(state, projectID);
 
-  if (!project) return;
+    if (!project) return;
 
-  project.members = Normal.patch(project.members, String(creatorID), patch);
-});
+    project.members = Normal.patch(project.members, String(creatorID), patch);
+  }
+);
 
 export default patchMemberReducer;

@@ -1,4 +1,4 @@
-import { Enum } from '@/utils/type/enum.util';
+import type { Enum } from '@/utils/type/enum.util';
 
 export const StripeStatus = {
   CANCELED: 'canceled',

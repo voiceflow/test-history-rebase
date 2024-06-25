@@ -14,13 +14,20 @@ const Create = manager.create('WorkspaceCreate', () => ({ api, type, opened, hid
   const allOrganizations = useSelector(Organization.organizationsWhereIsAdminSelector);
   const activeOrganizationID = useSelector(WorkspaceV2.active.organizationIDSelector);
 
-  const uniqueOrganizations = React.useMemo(() => [...new Map(allOrganizations.map((item) => [item.id, item])).values()], [allOrganizations]);
+  const uniqueOrganizations = React.useMemo(
+    () => [...new Map(allOrganizations.map((item) => [item.id, item])).values()],
+    [allOrganizations]
+  );
 
-  const [screen, setScreen] = React.useState<Screen>(uniqueOrganizations.length > 1 ? Screen.WORKSPACE_ORGANIZATION : Screen.WORKSPACE_NAME);
+  const [screen, setScreen] = React.useState<Screen>(
+    uniqueOrganizations.length > 1 ? Screen.WORKSPACE_ORGANIZATION : Screen.WORKSPACE_NAME
+  );
 
   const [workspaceName, setWorkspaceName] = React.useState('');
   const [workspaceImage, setWorkspaceImage] = React.useState<string | null>(null);
-  const [organizationID, setOrganizationID] = React.useState<string | null>(activeOrganizationID ?? uniqueOrganizations[0]?.id);
+  const [organizationID, setOrganizationID] = React.useState<string | null>(
+    activeOrganizationID ?? uniqueOrganizations[0]?.id
+  );
 
   const goToWorkspace = useDispatch(Router.goToWorkspace);
   const createWorkspace = useDispatch(WorkspaceV2.createWorkspace);

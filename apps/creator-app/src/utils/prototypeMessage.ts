@@ -1,4 +1,4 @@
-import { BaseText } from '@voiceflow/base-types';
+import type { BaseText } from '@voiceflow/base-types';
 
 import { EditorAPI } from '@/components/SlateEditable/editor';
 

@@ -3,7 +3,7 @@ import { Utils } from '@voiceflow/common';
 import { Box, Link, Menu, MenuItem, notify, Popper, Text, Tokens, Tooltip } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { UpgradeTooltipPlanPermission } from '@/config/planPermission';
+import type { UpgradeTooltipPlanPermission } from '@/config/planPermission';
 import { Permission } from '@/constants/permissions';
 import { Designer } from '@/ducks';
 import { useDispatch, useSelector } from '@/hooks';
@@ -13,7 +13,7 @@ import { stopPropagation } from '@/utils/handler.util';
 
 import { refreshRateOptions } from '../../../CMSKnowledgeBase.constants';
 import { captionStyles } from './CMSKnowledgeBaseTableRefreshCell.css';
-import { ICMSKnowledgeBaseTableRefreshCell } from './CMSKnowledgeBaseTableRefreshCell.interface';
+import type { ICMSKnowledgeBaseTableRefreshCell } from './CMSKnowledgeBaseTableRefreshCell.interface';
 
 export const CMSKnowledgeBaseTableRefreshCell: React.FC<ICMSKnowledgeBaseTableRefreshCell> = ({ item }) => {
   const refreshRatePermission = usePermission(Permission.FEATURE_KB_REFRESH_RATE);
@@ -46,7 +46,7 @@ export const CMSKnowledgeBaseTableRefreshCell: React.FC<ICMSKnowledgeBaseTableRe
 
   const onSetRefreshRate = async (refreshRate: BaseModels.Project.KnowledgeBaseDocumentRefreshRate) => {
     await patchManyRefreshRate([item.id], refreshRate);
-    notify.short.success(`Updated`, { delay: 2000, isClosable: false });
+    notify.short.success('Updated', { delay: 2000, isClosable: false });
   };
 
   const upgradeTooltip =
@@ -69,7 +69,7 @@ export const CMSKnowledgeBaseTableRefreshCell: React.FC<ICMSKnowledgeBaseTableRe
                 size="medium"
                 weight="regular"
                 onMouseEnter={onOpen}
-                onClick={stopPropagation(() => {})}
+                onClick={stopPropagation()}
                 label={(item.data as BaseModels.Project.KnowledgeBaseURL).refreshRate || 'Never'}
                 style={{ textTransform: 'capitalize' }}
               />
@@ -105,7 +105,7 @@ export const CMSKnowledgeBaseTableRefreshCell: React.FC<ICMSKnowledgeBaseTableRe
                 weight="regular"
                 onMouseEnter={onOpen}
                 onMouseLeave={onClose}
-                onClick={stopPropagation(() => {})}
+                onClick={stopPropagation()}
                 label={(item.data as BaseModels.Project.KnowledgeBaseURL).refreshRate || 'Never'}
                 style={{ textTransform: 'capitalize' }}
               />

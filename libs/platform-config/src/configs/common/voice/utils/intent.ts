@@ -1,9 +1,9 @@
 import * as Base from '@platform-config/configs/base';
 import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { Utils } from '@voiceflow/common';
-import { Optional, Required } from 'utility-types';
+import type { Optional, Required } from 'utility-types';
 
-import * as Models from '../models';
+import type * as Models from '../models';
 
 export const promptSanitizer = ({ text, slots, voice }: Optional<Models.Intent.Prompt> = {}): Models.Intent.Prompt => ({
   text: text || '',
@@ -21,7 +21,10 @@ export const slotDialogSanitizer = ({
   confirm: confirm.map(promptSanitizer),
 });
 
-export const slotSanitizer = ({ dialog, ...baseIntentSlot }: Required<Optional<Models.Intent.Slot>, 'id'>): Models.Intent.Slot => ({
+export const slotSanitizer = ({
+  dialog,
+  ...baseIntentSlot
+}: Required<Optional<Models.Intent.Slot>, 'id'>): Models.Intent.Slot => ({
   ...Base.Utils.Intent.slotSanitizer(baseIntentSlot),
   dialog: slotDialogSanitizer(dialog),
 });

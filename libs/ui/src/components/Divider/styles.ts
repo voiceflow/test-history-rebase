@@ -1,7 +1,7 @@
 import Flex from '@ui/components/Flex';
 import { css, styled, transition, units } from '@ui/styles';
 
-import * as T from './types';
+import type * as T from './types';
 
 export const getSimpleStyles = ({
   isVertical,

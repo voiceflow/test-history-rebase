@@ -38,9 +38,13 @@ export const useAIGenerateRequiredEntityTextResponseVariants = ({
         ...options,
         type: entity?.classifier ?? 'Custom',
         name: entity?.name ?? '',
-        examples: options.examples.map(({ text }) => markupToString.fromDB(text, { entitiesMapByID, variablesMapByID: {} })).filter(Boolean),
+        examples: options.examples
+          .map(({ text }) => markupToString.fromDB(text, { entitiesMapByID, variablesMapByID: {} }))
+          .filter(Boolean),
         intentName: isDefaultIntentName(intentName) ? '' : intentName,
-        intentInputs: utterances.map(({ text }) => markupToString.fromDB(text, { entitiesMapByID, variablesMapByID: {} })),
+        intentInputs: utterances.map(({ text }) =>
+          markupToString.fromDB(text, { entitiesMapByID, variablesMapByID: {} })
+        ),
       });
 
       return results.map((result) => ({

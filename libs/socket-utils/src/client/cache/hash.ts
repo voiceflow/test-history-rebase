@@ -1,5 +1,5 @@
 import BaseCache from './base';
-import { BaseHashAdapter, BaseKeyExtractor, HashFromDB, HashToDB, KeyOptions } from './types';
+import type { BaseHashAdapter, BaseKeyExtractor, HashFromDB, HashToDB, KeyOptions } from './types';
 
 class HashCache<K extends BaseKeyExtractor, A extends BaseHashAdapter | undefined = undefined> extends BaseCache<K, A> {
   public async set(keyOptions: KeyOptions<K>, value: HashToDB<A>): Promise<void> {

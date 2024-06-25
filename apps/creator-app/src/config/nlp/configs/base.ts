@@ -1,6 +1,6 @@
 import * as Platform from '@voiceflow/platform-config';
 
-import { FileExtension } from '../../../constants/file';
+import type { FileExtension } from '../../../constants/file';
 import { NLPType } from '../constants';
 
 interface Import {

@@ -1,3 +1,4 @@
+/* eslint-disable no-empty-function */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 
 // @ts-ignore

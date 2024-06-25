@@ -1,6 +1,6 @@
 import '@voiceflow/socket-utils';
 
-import { Mock } from 'vitest';
+import type { Mock } from 'vitest';
 
 declare module '@voiceflow/socket-utils' {
   interface AbstractLoguxControl {

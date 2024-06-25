@@ -1,9 +1,10 @@
 import { isIntentDBNode, isStartDBNode } from '@realtime-sdk/utils/typeGuards';
 import { BaseModels, BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { NodeSystemPortType, NodeType, TriggerNode, TriggerNodeItemType } from '@voiceflow/dtos';
+import type { TriggerNode } from '@voiceflow/dtos';
+import { NodeSystemPortType, NodeType, TriggerNodeItemType } from '@voiceflow/dtos';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 // migrates intent steps to triggers
 const migrateToV9_00: Transform = ({ diagrams }) => {

@@ -17,7 +17,10 @@ const SettingsColor: React.FC<SettingsColorProps> = ({ color, isOpen, onToggle, 
   return (
     <>
       <Button isActive={isOpen} onClick={onToggle} tooltipTitle="Color">
-        <ColorIcon color={color} gradient="conic-gradient(gold, orange, red, purple, MediumTurquoise, GreenYellow, gold)" />
+        <ColorIcon
+          color={color}
+          gradient="conic-gradient(gold, orange, red, purple, MediumTurquoise, GreenYellow, gold)"
+        />
       </Button>
 
       {isOpen && (

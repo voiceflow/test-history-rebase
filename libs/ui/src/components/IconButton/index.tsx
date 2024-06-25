@@ -1,22 +1,25 @@
-import SvgIcon, { SvgIconTypes } from '@ui/components/SvgIcon';
+import type { SvgIconTypes } from '@ui/components/SvgIcon';
+import SvgIcon from '@ui/components/SvgIcon';
 import React from 'react';
 
-import {
-  ActionContainer,
+import type {
   ActionContainerProps,
   BaseContainerProps,
-  FlatContainer,
   FlatContainerProps,
-  IconButtonContainer,
   IconButtonContainerProps,
-  OutlineContainer,
   OutlineContainerProps,
-  SquareContainer,
   SquareContainerProps,
-  SubtleContainer,
   SubtleContainerProps,
-  SuccessContainer,
   SuccessContainerProps,
+} from './components';
+import {
+  ActionContainer,
+  FlatContainer,
+  IconButtonContainer,
+  OutlineContainer,
+  SquareContainer,
+  SubtleContainer,
+  SuccessContainer,
 } from './components';
 import { IconButtonVariant } from './types';
 

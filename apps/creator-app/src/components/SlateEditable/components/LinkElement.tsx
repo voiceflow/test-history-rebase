@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { RenderElementProps } from 'slate-react';
+import type { RenderElementProps } from 'slate-react';
 import styled from 'styled-components';
 
 import { openURLInANewTab } from '@/utils/window';
 
-import { LinkElement as LinkElementType } from '../editor/types';
+import type { LinkElement as LinkElementType } from '../editor/types';
 
 const ClickableLink = styled.span<{ isCmdOrCtrlPressed: boolean }>`
   display: inline;
@@ -59,7 +59,12 @@ const LinkElement: React.FC<LinkElementProps> = ({ attributes, children, element
   };
 
   return (
-    <ClickableLink {...attributes} isCmdOrCtrlPressed={isClickable || isCmdOrCtrlPressed} style={{ position: 'relative' }} onClick={onClick}>
+    <ClickableLink
+      {...attributes}
+      isCmdOrCtrlPressed={isClickable || isCmdOrCtrlPressed}
+      style={{ position: 'relative' }}
+      onClick={onClick}
+    >
       {children}
     </ClickableLink>
   );

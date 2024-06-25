@@ -1,5 +1,11 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { colorGetReadableAlfa, colorReadableAlfaToOpacity, preventDefault, useDidUpdateEffect, useToggle } from '@voiceflow/ui';
+import type * as Realtime from '@voiceflow/realtime-sdk';
+import {
+  colorGetReadableAlfa,
+  colorReadableAlfaToOpacity,
+  preventDefault,
+  useDidUpdateEffect,
+  useToggle,
+} from '@voiceflow/ui';
 import React from 'react';
 
 import ColorSelect from '@/components/ColorSelect';

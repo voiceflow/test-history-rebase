@@ -1,5 +1,6 @@
 import { loader2Icon, spinnerSmall } from '@ui/assets';
-import { colors, css, styled, StyledProps, ThemeColor } from '@ui/styles';
+import type { StyledProps } from '@ui/styles';
+import { colors, css, styled, ThemeColor } from '@ui/styles';
 import { spinKeyframes } from '@ui/styles/animations';
 import { ClassName } from '@ui/styles/constants';
 import cn from 'classnames';

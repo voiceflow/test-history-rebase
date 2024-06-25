@@ -20,7 +20,7 @@ import * as VariableState from '@/ducks/variableState';
 import * as VersionV2 from '@/ducks/versionV2';
 import * as Viewport from '@/ducks/viewport';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
-import { State } from '@/store/types';
+import type { State } from '@/store/types';
 
 export const MOCK_STATE: State = {
   form: {},

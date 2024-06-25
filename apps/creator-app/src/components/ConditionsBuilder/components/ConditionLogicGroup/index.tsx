@@ -1,9 +1,9 @@
 import { BaseNode } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
-import { BaseLogicType, LogicUnitDataType } from '../../types';
+import type { BaseLogicType, LogicUnitDataType } from '../../types';
 import { getAddionalLogicData, getDefaultValue } from '../../utils';
 import ConditionLabel from '../ConditionLabel';
 import ConditionSelect from '../ConditionSelect';
@@ -21,7 +21,14 @@ export interface ConditionLogicGroupProps {
   updateBaseType: (value: BaseNode.Utils.ExpressionTypeV2.AND | BaseNode.Utils.ExpressionTypeV2.OR) => void;
 }
 
-const ConditionLogicGroup: React.FC<ConditionLogicGroupProps> = ({ expression, onChange, onDelete, firstItem, baseLogicType, updateBaseType }) => {
+const ConditionLogicGroup: React.FC<ConditionLogicGroupProps> = ({
+  expression,
+  onChange,
+  onDelete,
+  firstItem,
+  baseLogicType,
+  updateBaseType,
+}) => {
   const addNewCondition = (logicInterface: BaseNode.Utils.ConditionsLogicInterface) => {
     const values: any = getDefaultValue(logicInterface);
     onChange({ ...expression, value: [{ ...values }] });
@@ -30,7 +37,10 @@ const ConditionLogicGroup: React.FC<ConditionLogicGroupProps> = ({ expression, o
   const addAdditionalCondition = (logicInterface: BaseNode.Utils.ConditionsLogicInterface) => {
     const values: any = getDefaultValue(logicInterface);
     onChange(
-      getAddionalLogicData({ ...expression, type: BaseNode.Utils.ExpressionTypeV2.OR }! as Realtime.LogicGroupData, values) as Realtime.LogicGroupData
+      getAddionalLogicData(
+        { ...expression, type: BaseNode.Utils.ExpressionTypeV2.OR }! as Realtime.LogicGroupData,
+        values
+      ) as Realtime.LogicGroupData
     );
   };
 
@@ -39,7 +49,10 @@ const ConditionLogicGroup: React.FC<ConditionLogicGroupProps> = ({ expression, o
   };
 
   const onUpdateData = (index: number) => (data: Realtime.ExpressionV2) => {
-    onChange({ ...expression, value: expression.value.map((item: any, idx: number) => (idx === index ? { ...item, ...data } : item)) });
+    onChange({
+      ...expression,
+      value: expression.value.map((item: any, idx: number) => (idx === index ? { ...item, ...data } : item)),
+    });
   };
 
   const onDeleteCondition = (index: number) => () => {

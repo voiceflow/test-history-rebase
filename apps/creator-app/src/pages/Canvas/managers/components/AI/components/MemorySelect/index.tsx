@@ -2,8 +2,9 @@ import { BaseUtils } from '@voiceflow/base-types';
 import { Box, Dropdown, Input, Menu, SvgIcon, ThemeColor } from '@voiceflow/ui';
 import React from 'react';
 
-import PromptInput, { PromptInputProps } from '@/pages/Canvas/managers/components/AI/components/PromptInput';
-import { MemorySelectOption } from '@/pages/Canvas/managers/components/AI/constants';
+import type { PromptInputProps } from '@/pages/Canvas/managers/components/AI/components/PromptInput';
+import PromptInput from '@/pages/Canvas/managers/components/AI/components/PromptInput';
+import type { MemorySelectOption } from '@/pages/Canvas/managers/components/AI/constants';
 
 import { PromptSelectContainer } from './styles';
 
@@ -16,7 +17,10 @@ function MemorySelect(props: MemorySelectProps<React.PropsWithChildren>): React.
   // destructure props within function body to avoid TS arrow function error
   const { value, onChange, options } = props;
 
-  const selectedModeOption = React.useMemo(() => options.find(({ mode }) => value.mode === mode) || options[0], [options, value.mode]);
+  const selectedModeOption = React.useMemo(
+    () => options.find(({ mode }) => value.mode === mode) || options[0],
+    [options, value.mode]
+  );
 
   return (
     <Box>
@@ -33,7 +37,11 @@ function MemorySelect(props: MemorySelectProps<React.PropsWithChildren>): React.
         }
       >
         {({ ref, onToggle, isOpen }) => (
-          <PromptSelectContainer onClick={onToggle} ref={ref} color={isOpen ? ThemeColor.DARKER_BLUE : ThemeColor.SECONDARY}>
+          <PromptSelectContainer
+            onClick={onToggle}
+            ref={ref}
+            color={isOpen ? ThemeColor.DARKER_BLUE : ThemeColor.SECONDARY}
+          >
             {selectedModeOption?.title}
             <SvgIcon icon="arrowRightSmall" size={8} rotation={90} />
           </PromptSelectContainer>

@@ -5,11 +5,14 @@ import React from 'react';
 
 import { useRAF, useTeardown } from '@/hooks';
 import { EngineContext } from '@/pages/Canvas/contexts';
-import { Pair, Point } from '@/types';
-import { Coords, Vector } from '@/utils/geometry';
+import type { Pair, Point } from '@/types';
+import type { Coords, Vector } from '@/utils/geometry';
 import MouseMovement from '@/utils/mouseMovement';
 
-export const useDragTranslate = <T extends HTMLElement>(ref: React.RefObject<T | null>, position: React.MutableRefObject<Point>) => {
+export const useDragTranslate = <T extends HTMLElement>(
+  ref: React.RefObject<T | null>,
+  position: React.MutableRefObject<Point>
+) => {
   const [stylesScheduler] = useRAF();
 
   return React.useCallback(([movementX, movementY]: Pair<number>) => {

@@ -1,5 +1,5 @@
-import { BaseClientOptions } from '@voiceflow/socket-utils';
+import type { BaseClientOptions } from '@voiceflow/socket-utils';
 
-import { Config } from '@/types';
+import type { Config } from '@/types';
 
 export type BaseOptions = BaseClientOptions<Config>;

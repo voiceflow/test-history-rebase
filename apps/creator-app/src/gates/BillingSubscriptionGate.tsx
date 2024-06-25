@@ -17,7 +17,11 @@ const BillingSubscriptionGate: React.FC<React.PropsWithChildren> = ({ children }
     {
       time: 60 * 5000,
       shouldLoad: ([subID, orgID, workspaceID]) => !!subID && !!orgID && !!workspaceID,
-      callback: () => organizationID && subscription?.id && workspace?.id && loadSubscription(organizationID, subscription.id, workspace.id),
+      callback: () =>
+        organizationID &&
+        subscription?.id &&
+        workspace?.id &&
+        loadSubscription(organizationID, subscription.id, workspace.id),
     },
     [subscription?.id, organizationID, workspace?.id]
   );

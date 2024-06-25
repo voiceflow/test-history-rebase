@@ -1,7 +1,7 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 
 import { JobStatus } from '@/constants';
-import { Job } from '@/models';
+import type { Job } from '@/models';
 
 export const isRunning = (job: Nullable<Job<any>>): boolean =>
   job?.status === JobStatus.ACTIVE || job?.status === JobStatus.PENDING || job?.status === JobStatus.IDLE;

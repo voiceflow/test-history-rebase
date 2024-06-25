@@ -1,8 +1,9 @@
-import { BaseUtils } from '@voiceflow/base-types';
+import type { BaseUtils } from '@voiceflow/base-types';
 import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
-import { AIPromptSettings, IAIPromptSettings } from '@/components/AI/AIPromptSettings/AIPromptSettings.component';
+import type { IAIPromptSettings } from '@/components/AI/AIPromptSettings/AIPromptSettings.component';
+import { AIPromptSettings } from '@/components/AI/AIPromptSettings/AIPromptSettings.component';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
 interface IPromptSettingsEditor extends IAIPromptSettings {
@@ -27,7 +28,11 @@ export const PromptSettingsEditor: React.FC<IPromptSettingsEditor> = ({ value, o
               </SectionV2.Header>
             )}
           >
-            <AIPromptSettings value={value} onValueChange={onValueChange} containerProps={{ ...containerProps, pb: 20 }} />
+            <AIPromptSettings
+              value={value}
+              onValueChange={onValueChange}
+              containerProps={{ ...containerProps, pb: 20 }}
+            />
           </SectionV2.CollapseSection>
         )}
       </EditorV2.PersistCollapse>

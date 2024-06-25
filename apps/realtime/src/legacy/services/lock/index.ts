@@ -11,19 +11,49 @@ class LockService extends AbstractControl {
     return `locks:${versionID}:${lockID}:types`;
   }
 
-  private static getNodeTypesKey({ versionID, lockID, nodeID }: { versionID: string; lockID: string; nodeID: string }): string {
+  private static getNodeTypesKey({
+    versionID,
+    lockID,
+    nodeID,
+  }: {
+    versionID: string;
+    lockID: string;
+    nodeID: string;
+  }): string {
     return `locks:${versionID}:${lockID}:nodes:${nodeID}:types`;
   }
 
-  private static getNodeEntitiesKey({ versionID, lockID, nodeID }: { versionID: string; lockID: string; nodeID: string }): string {
+  private static getNodeEntitiesKey({
+    versionID,
+    lockID,
+    nodeID,
+  }: {
+    versionID: string;
+    lockID: string;
+    nodeID: string;
+  }): string {
     return `locks:${versionID}:${lockID}:nodes:${nodeID}:entities`;
   }
 
-  private static getTypeLocksKey({ versionID, lockID, type }: { versionID: string; lockID: string; type: string }): string {
+  private static getTypeLocksKey({
+    versionID,
+    lockID,
+    type,
+  }: {
+    versionID: string;
+    lockID: string;
+    type: string;
+  }): string {
     return `locks:${versionID}:${lockID}:types:${type}:locks`;
   }
 
-  public async lockEntities(versionID: string, lockID: string, nodeID: string, type: string, entityIDs: string[]): Promise<void> {
+  public async lockEntities(
+    versionID: string,
+    lockID: string,
+    nodeID: string,
+    type: string,
+    entityIDs: string[]
+  ): Promise<void> {
     await this.clients.redis
       .pipeline()
 
@@ -39,13 +69,22 @@ class LockService extends AbstractControl {
       .sadd(LockService.getNodeEntitiesKey({ versionID, lockID, nodeID }), ...entityIDs)
       .expire(LockService.getNodeEntitiesKey({ versionID, lockID, nodeID }), HEARTBEAT_EXPIRE_TIMEOUT)
 
-      .hset(LockService.getTypeLocksKey({ versionID, lockID, type }), Object.fromEntries(entityIDs.map((entityID) => [entityID, nodeID])))
+      .hset(
+        LockService.getTypeLocksKey({ versionID, lockID, type }),
+        Object.fromEntries(entityIDs.map((entityID) => [entityID, nodeID]))
+      )
       .expire(LockService.getTypeLocksKey({ versionID, lockID, type }), HEARTBEAT_EXPIRE_TIMEOUT)
 
       .exec();
   }
 
-  public async unlockEntities(versionID: string, lockID: string, nodeID: string, type: string, entityIDs: string[]): Promise<void> {
+  public async unlockEntities(
+    versionID: string,
+    lockID: string,
+    nodeID: string,
+    type: string,
+    entityIDs: string[]
+  ): Promise<void> {
     await this.clients.redis
       .pipeline()
 
@@ -116,20 +155,39 @@ class LockService extends AbstractControl {
     this.clients.redis.unlink(keysToUnlink);
   }
 
-  public async getAllLocks<Type extends string>(versionID: string, lockID: string): Promise<Record<Type, Record<string, string>>> {
+  public async getAllLocks<Type extends string>(
+    versionID: string,
+    lockID: string
+  ): Promise<Record<Type, Record<string, string>>> {
     const types = await this.clients.redis.smembers(LockService.getTypesKey({ versionID, lockID }));
-    const locksPerType = await Promise.all(types.map((type) => this.clients.redis.hgetall(LockService.getTypeLocksKey({ versionID, lockID, type }))));
+    const locksPerType = await Promise.all(
+      types.map((type) => this.clients.redis.hgetall(LockService.getTypeLocksKey({ versionID, lockID, type })))
+    );
 
-    return Object.fromEntries(types.map((type, index) => [type, locksPerType[index]])) as Record<Type, Record<string, string>>;
+    return Object.fromEntries(types.map((type, index) => [type, locksPerType[index]])) as Record<
+      Type,
+      Record<string, string>
+    >;
   }
 
-  public async isEntityLockedByType(currentNodeID: string, versionID: string, lockID: string, entityID: string, type: string): Promise<boolean> {
+  public async isEntityLockedByType(
+    currentNodeID: string,
+    versionID: string,
+    lockID: string,
+    entityID: string,
+    type: string
+  ): Promise<boolean> {
     const nodeID = await this.clients.redis.hget(LockService.getTypeLocksKey({ versionID, lockID, type }), entityID);
 
     return !!nodeID && nodeID !== currentNodeID;
   }
 
-  public async isEntityLockedByAnyType(currentNodeID: string, versionID: string, lockID: string, entityID: string): Promise<boolean> {
+  public async isEntityLockedByAnyType(
+    currentNodeID: string,
+    versionID: string,
+    lockID: string,
+    entityID: string
+  ): Promise<boolean> {
     const types = await this.clients.redis.smembers(LockService.getTypesKey({ versionID, lockID }));
     const nodeIDs = await Promise.all(
       types.map((type) => this.clients.redis.hget(LockService.getTypeLocksKey({ versionID, lockID, type }), entityID))

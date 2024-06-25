@@ -15,7 +15,9 @@ const InnerContainer = styled(FlexCenter)`
   border-radius: 5px;
   box-shadow: 0 0 3px rgba(17, 49, 96, 0.06);
   cursor: pointer;
-  transition: box-shadow 0.15s ease, border 0.15s ease;
+  transition:
+    box-shadow 0.15s ease,
+    border 0.15s ease;
   ${({ active }) => active && activeStyles}
 `;
 

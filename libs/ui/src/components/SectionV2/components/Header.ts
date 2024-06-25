@@ -1,6 +1,7 @@
 import { flexApartStyles } from '@ui/components/Flex';
 import { css, styled, units } from '@ui/styles';
-import { space, SpaceProps, typography, TypographyProps } from 'styled-system';
+import type { SpaceProps, TypographyProps } from 'styled-system';
+import { space, typography } from 'styled-system';
 
 import InfoIconTooltip from './InfoIconTooltip';
 
@@ -27,7 +28,8 @@ const Header = styled.header<HeaderProps>`
     `}
 
   ${({ theme, topUnit = 2.5, rightUnit = 4, bottomUnit = 2, leftUnit = 4 }) => css`
-    padding: ${units(topUnit)({ theme })}px ${units(rightUnit)({ theme })}px ${units(bottomUnit)({ theme })}px ${units(leftUnit)({ theme })}px;
+    padding: ${units(topUnit)({ theme })}px ${units(rightUnit)({ theme })}px ${units(bottomUnit)({ theme })}px
+      ${units(leftUnit)({ theme })}px;
   `}
 
 

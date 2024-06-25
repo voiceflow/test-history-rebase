@@ -1,13 +1,17 @@
 import { BaseModels, BaseUtils } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
 import { ActiveDiagramNormalizedEntitiesAndVariablesContext } from '@/pages/Canvas/contexts';
-import { ConnectedStep } from '@/pages/Canvas/managers/types';
+import type { ConnectedStep } from '@/pages/Canvas/managers/types';
 import { transformVariablesToReadable } from '@/utils/slot';
 
-const AIResponseStep: ConnectedStep<Realtime.NodeData.AIResponse, Realtime.NodeData.AIResponseBuiltInPorts> = ({ ports, data, palette }) => {
+const AIResponseStep: ConnectedStep<Realtime.NodeData.AIResponse, Realtime.NodeData.AIResponseBuiltInPorts> = ({
+  ports,
+  data,
+  palette,
+}) => {
   const entitiesAndVariables = React.useContext(ActiveDiagramNormalizedEntitiesAndVariablesContext)!;
 
   const nextPortID = ports.out.builtIn[BaseModels.PortType.NEXT];
@@ -37,7 +41,9 @@ const AIResponseStep: ConnectedStep<Realtime.NodeData.AIResponse, Realtime.NodeD
           multilineLabel
           labelLineClamp={100}
         />
-        {data.notFoundPath && isKnowledgeBaseSource && <Item nestedWithIcon v2 label="Not found" portID={notFoundPortID} palette={palette} />}
+        {data.notFoundPath && isKnowledgeBaseSource && (
+          <Item nestedWithIcon v2 label="Not found" portID={notFoundPortID} palette={palette} />
+        )}
       </Section>
     </Step>
   );

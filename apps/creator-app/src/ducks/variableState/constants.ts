@@ -1,6 +1,6 @@
 import { createCRUDState } from '@/ducks/utils/crudV2';
 
-import { VariableStateCRUDState } from './types';
+import type { VariableStateCRUDState } from './types';
 
 export const STATE_KEY = 'variableState';
 

@@ -1,10 +1,10 @@
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import update from 'immutability-helper';
 import { persistReducer } from 'redux-persist';
 import storageLocal from 'redux-persist/lib/storage';
 import { createSelector } from 'reselect';
 
-import { Action, Reducer, RootReducer } from '@/store/types';
+import type { Action, Reducer, RootReducer } from '@/store/types';
 
 import { createAction, createRootSelector } from './utils';
 
@@ -56,6 +56,7 @@ export type AnyRecentAction = UpdateRecentPrototype | UpdateRecentRedirect;
 export const updateRecentPrototypeReducer: Reducer<RecentState, UpdateRecentPrototype> = (state, { payload }) =>
   update(state, { prototype: { $merge: payload } });
 
+// eslint-disable-next-line default-param-last
 const recentReducer: RootReducer<RecentState, AnyRecentAction> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case RecentAction.UPDATE_RECENT_TESTING:
@@ -84,4 +85,5 @@ export const prototypeDebugSelector = createSelector([recentPrototypeSelector], 
 export const updateRecentPrototype = (payload: Partial<PrototypeConfig>): UpdateRecentPrototype =>
   createAction(RecentAction.UPDATE_RECENT_TESTING, payload);
 
-export const updateRecentRedirect = (payload: string | null): UpdateRecentRedirect => createAction(RecentAction.UPDATE_RECENT_REDIRECT, payload);
+export const updateRecentRedirect = (payload: string | null): UpdateRecentRedirect =>
+  createAction(RecentAction.UPDATE_RECENT_REDIRECT, payload);

@@ -1,5 +1,5 @@
-import { BaseNode } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { BaseNode } from '@voiceflow/base-types';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
 export interface BaseSystemMessageProps {
   onEmpty?: (isEmpty: boolean) => void;

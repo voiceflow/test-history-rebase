@@ -1,5 +1,5 @@
-import React from 'react';
-import { Editor } from 'slate';
+import type React from 'react';
+import type { Editor } from 'slate';
 
 import type { Hotkey } from '../../constants';
 import type { Plugin } from './types';

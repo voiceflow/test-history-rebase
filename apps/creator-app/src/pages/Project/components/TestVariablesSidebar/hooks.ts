@@ -4,7 +4,7 @@ import React from 'react';
 import { PrototypeStatus } from '@/constants/prototype';
 import * as Prototype from '@/ducks/prototype';
 import { useSelector } from '@/hooks';
-import { Variable, VariableValue } from '@/models';
+import type { Variable, VariableValue } from '@/models';
 
 export const usePrototypeContextVariables = (
   initialVariables: Variable[],

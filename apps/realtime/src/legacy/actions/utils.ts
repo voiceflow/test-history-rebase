@@ -1,20 +1,18 @@
 /* eslint-disable max-classes-per-file */
-import { Logger } from '@voiceflow/logger';
+import type { Logger } from '@voiceflow/logger';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
+import type { BaseContextData, Context } from '@voiceflow/socket-utils';
 import {
   AbstractActionControl as BaseAbstractActionControl,
   AbstractNoopActionControl as BaseAbstractNoopActionControl,
-  BaseContextData,
-  Context,
 } from '@voiceflow/socket-utils';
 
-import { LoguxControlOptions } from '../control';
+import type { LoguxControlOptions } from '../control';
 
-export abstract class AbstractActionControl<P, D extends BaseContextData = BaseContextData> extends BaseAbstractActionControl<
-  LoguxControlOptions,
+export abstract class AbstractActionControl<
   P,
-  D
-> {
+  D extends BaseContextData = BaseContextData,
+> extends BaseAbstractActionControl<LoguxControlOptions, P, D> {
   protected log: Logger;
 
   constructor(options: LoguxControlOptions) {

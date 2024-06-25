@@ -1,5 +1,5 @@
-import { AdditionalData, Component,PaymentIntent as ChargebeePaymentIntent } from '@chargebee/chargebee-js-types';
-import { PaymentIntent } from '@voiceflow/dtos';
+import type { AdditionalData, Component, PaymentIntent as ChargebeePaymentIntent } from '@chargebee/chargebee-js-types';
+import type { PaymentIntent } from '@voiceflow/dtos';
 import { CONTRIES_MAPPER, IS_DEVELOPMENT, toast } from '@voiceflow/ui';
 import { useRef } from 'react';
 
@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from '@/hooks';
 import { isUUID4 } from '@/utils/crypto';
 import * as chargebee from '@/vendors/chargebee';
 
-import * as CardForm from '../CardForm';
+import type * as CardForm from '../CardForm';
 
 const isMockedPaymentIntent = (paymentIntent: PaymentIntent) =>
   isUUID4(paymentIntent.id) && !paymentIntent.gatewayAccountId;

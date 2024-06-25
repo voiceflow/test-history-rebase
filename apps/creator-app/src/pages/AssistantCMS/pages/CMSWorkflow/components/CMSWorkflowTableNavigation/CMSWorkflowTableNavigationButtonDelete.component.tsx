@@ -28,7 +28,14 @@ export const CMSWorkflowTableNavigationButtonDelete: React.FC = () => {
       <Tooltip
         placement="bottom"
         referenceElement={({ ref, onOpen, onClose }) => (
-          <CMSResourceActionsButton ref={ref} label="Delete" iconName="Trash" disabled onPointerEnter={onOpen} onPointerLeave={onClose} />
+          <CMSResourceActionsButton
+            ref={ref}
+            label="Delete"
+            iconName="Trash"
+            disabled
+            onPointerEnter={onOpen}
+            onPointerLeave={onClose}
+          />
         )}
       >
         {() => <Text variant="caption">Default workflow can’t be deleted</Text>}

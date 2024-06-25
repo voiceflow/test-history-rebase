@@ -1,8 +1,8 @@
-import { SvgIconTypes } from '@voiceflow/ui';
-import React from 'react';
+import type { SvgIconTypes } from '@voiceflow/ui';
+import type React from 'react';
 
-import { HSLShades } from '@/constants';
-import { StepLabelVariant } from '@/constants/canvas';
+import type { HSLShades } from '@/constants';
+import type { StepLabelVariant } from '@/constants/canvas';
 
 export interface ItemProps extends React.PropsWithChildren {
   icon?: SvgIconTypes.Icon | null;

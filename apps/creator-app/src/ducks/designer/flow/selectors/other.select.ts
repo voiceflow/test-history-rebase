@@ -1,4 +1,4 @@
-import { Flow } from '@voiceflow/dtos';
+import type { Flow } from '@voiceflow/dtos';
 import { createSelector } from 'reselect';
 
 import { diagramIDParamSelector } from '@/ducks/utils';

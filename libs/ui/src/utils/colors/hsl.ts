@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-inferrable-types */
 import { hsluvToHex } from './hsluv';
 
 export const SATURATION: number = 50;
@@ -39,6 +38,9 @@ export const createShadesFromHue = (hue: Hue): HSLShades =>
   SHADES.reduce((acc, shade, i) => ({ ...acc, [COLOR_GRADES[i]]: createHSLuvShade(shade, hue) }), {} as HSLShades);
 
 export const createShadesFromHueWithDynamicSaturation = (hue: Hue): HSLShades =>
-  SHADES.reduce((acc, shade, i) => ({ ...acc, [COLOR_GRADES[i]]: createHSLuvShadeWithDynamicSaturation(shade, hue) }), {} as HSLShades);
+  SHADES.reduce(
+    (acc, shade, i) => ({ ...acc, [COLOR_GRADES[i]]: createHSLuvShadeWithDynamicSaturation(shade, hue) }),
+    {} as HSLShades
+  );
 
 export const createStandardShadeFromHue = (hue: Hue): string => createHSLuvShade(STANDARD_SHADE, hue);

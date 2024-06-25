@@ -2,7 +2,7 @@ import * as Common from '@platform-config/configs/common';
 import { DFESVersion } from '@voiceflow/google-dfes-types';
 import { createSimpleAdapter, createSmartSimpleAdapter } from 'bidirectional-adapter';
 
-import * as Models from '../../models';
+import type * as Models from '../../models';
 
 export const smart = createSmartSimpleAdapter<
   DFESVersion.ChatSettings,

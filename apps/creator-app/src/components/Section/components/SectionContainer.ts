@@ -33,9 +33,12 @@ export const draggingStyles = css`
 
 export const draggingPreviewStyles = css`
   margin: 0 ${units(2)}px;
-  background: linear-gradient(180deg, rgba(238, 244, 246, 0.3) 0%, rgba(238, 244, 246, 0.45) 100%), rgba(25 5, 255, 255, 0.8);
+  background: linear-gradient(180deg, rgba(238, 244, 246, 0.3) 0%, rgba(238, 244, 246, 0.45) 100%),
+    rgba(25 5, 255, 255, 0.8);
   border-radius: 7px;
-  box-shadow: 0 0 0 1px rgba(17, 49, 96, 0.06), 0 ${units()}px ${units(2)}px 0 rgba(17, 49, 96, 0.16);
+  box-shadow:
+    0 0 0 1px rgba(17, 49, 96, 0.06),
+    0 ${units()}px ${units(2)}px 0 rgba(17, 49, 96, 0.16);
 
   &::before {
     display: none;
@@ -80,7 +83,8 @@ const styles: Partial<Record<SectionVariant, any>> = {
 
 export const dividersStyles = css<SectionContainerProps>`
   position: absolute;
-  left: ${({ isDividerNested, variant, theme }) => (isDividerNested || variant === SectionVariant.FORM ? theme.unit * 4 : 0)}px;
+  left: ${({ isDividerNested, variant, theme }) =>
+    isDividerNested || variant === SectionVariant.FORM ? theme.unit * 4 : 0}px;
   right: 0;
   display: block;
   height: 1px;
@@ -139,7 +143,9 @@ const SectionContainer = styled.div<SectionContainerProps>`
     css`
       border-top-left-radius: 12px;
       border-top-right-radius: 12px;
-      box-shadow: 0 0 16px 0 rgba(19, 33, 68, 0.03), 0 0 0 1px rgba(19, 33, 68, 0.06);
+      box-shadow:
+        0 0 16px 0 rgba(19, 33, 68, 0.03),
+        0 0 0 1px rgba(19, 33, 68, 0.06);
       clip-path: inset(-16px -16px 0px -16px);
 
       ${Header} {

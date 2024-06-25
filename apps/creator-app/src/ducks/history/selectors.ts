@@ -10,8 +10,15 @@ export const undoTransactionsSelector = createSelector([rootHistorySelector], ({
 
 export const redoTransactionsSelector = createSelector([rootHistorySelector], ({ redo }) => redo);
 
-export const latestUndoTransactionSelector = createSelector([undoTransactionsSelector], (undo) => (undo.length ? undo[undo.length - 1] : null));
+export const latestUndoTransactionSelector = createSelector([undoTransactionsSelector], (undo) =>
+  undo.length ? undo[undo.length - 1] : null
+);
 
-export const latestRedoTransactionSelector = createSelector([redoTransactionsSelector], (redo) => (redo.length ? redo[redo.length - 1] : null));
+export const latestRedoTransactionSelector = createSelector([redoTransactionsSelector], (redo) =>
+  redo.length ? redo[redo.length - 1] : null
+);
 
-export const shouldIgnoreTransactionsSelector = createSelector([rootHistorySelector], (history) => !!history?.ignore?.length);
+export const shouldIgnoreTransactionsSelector = createSelector(
+  [rootHistorySelector],
+  (history) => !!history?.ignore?.length
+);

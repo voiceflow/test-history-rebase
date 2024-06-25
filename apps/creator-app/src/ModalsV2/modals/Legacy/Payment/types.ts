@@ -1,10 +1,10 @@
-import { BillingPeriod } from '@voiceflow/internal';
-import { useSmartReducerV2 } from '@voiceflow/ui';
+import type { BillingPeriod } from '@voiceflow/internal';
+import type { useSmartReducerV2 } from '@voiceflow/ui';
 
-import * as Tracking from '@/ducks/tracking';
-import { VoidInternalProps } from '@/ModalsV2/types';
+import type * as Tracking from '@/ducks/tracking';
+import type { VoidInternalProps } from '@/ModalsV2/types';
 
-import { Step } from './constants';
+import type { Step } from './constants';
 
 export interface PaymentModalState {
   step: Step;

@@ -1,5 +1,5 @@
-import { KnowledgeBaseDocument } from '@voiceflow/dtos';
-import { VersionKnowledgeBaseDocument } from '@voiceflow/orm-designer';
+import type { KnowledgeBaseDocument } from '@voiceflow/dtos';
+import type { VersionKnowledgeBaseDocument } from '@voiceflow/orm-designer';
 import { createMultiAdapter } from 'bidirectional-adapter';
 
 export const knowledgeBaseDocumentAdapter = createMultiAdapter<VersionKnowledgeBaseDocument, KnowledgeBaseDocument>(

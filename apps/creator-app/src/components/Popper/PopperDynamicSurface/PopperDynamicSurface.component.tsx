@@ -3,7 +3,7 @@ import { clsx } from '@voiceflow/style';
 import { forwardRef, Surface, useResizeObserver } from '@voiceflow/ui-next';
 import React, { useRef } from 'react';
 
-import { IPopperDynamicSurface } from './PopperDynamicSurface.interface';
+import type { IPopperDynamicSurface } from './PopperDynamicSurface.interface';
 
 export const PopperDynamicSurface = forwardRef<HTMLDivElement, IPopperDynamicSurface>('PopperDynamicSurface')((
   { update, className, ...props },

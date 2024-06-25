@@ -1,5 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { AmqpQueueMessagePriority, KBDocumentUrlData, KnowledgeBaseDocumentRefreshRate, RefreshJob } from '@voiceflow/dtos';
+import {
+  AmqpQueueMessagePriority,
+  KBDocumentUrlData,
+  KnowledgeBaseDocumentRefreshRate,
+  RefreshJob,
+} from '@voiceflow/dtos';
 import { IntegrationOauthTokenORM, RefreshJobsOrm, VersionKnowledgeBaseDocument } from '@voiceflow/orm-designer';
 import { Topic } from '@voiceflow/sdk-message-queue';
 import { MessageQueueService } from '@voiceflow/sdk-message-queue/nestjs';
@@ -61,16 +66,19 @@ export class RefreshJobService extends MutableService<RefreshJobsOrm> {
   ): Promise<Record<string, Pick<RefreshJob, 'checksum' | 'executeAt' | 'refreshRate'>>> {
     const existingRefreshJobs = await this.orm.findManyByDocumentIDs(projectID, documentIDs);
 
-    return existingRefreshJobs.reduce((result, obj) => {
-      const { documentID, checksum, executeAt, refreshRate } = obj;
-      const tmp = { ...result };
-      tmp[documentID.toJSON()] = {
-        checksum: checksum ?? undefined,
-        executeAt,
-        refreshRate,
-      };
-      return tmp;
-    }, {} as Record<string, Pick<RefreshJob, 'checksum' | 'executeAt' | 'refreshRate'>>);
+    return existingRefreshJobs.reduce(
+      (result, obj) => {
+        const { documentID, checksum, executeAt, refreshRate } = obj;
+        const tmp = { ...result };
+        tmp[documentID.toJSON()] = {
+          checksum: checksum ?? undefined,
+          executeAt,
+          refreshRate,
+        };
+        return tmp;
+      },
+      {} as Record<string, Pick<RefreshJob, 'checksum' | 'executeAt' | 'refreshRate'>>
+    );
   }
 
   async sendRefreshJobsToQueue(
@@ -117,12 +125,13 @@ export class RefreshJobService extends MutableService<RefreshJobsOrm> {
       }
     });
 
-    const integrationTokensMapping: Record<number, string> = await this.getIntegrationTokensMapping(integrationTokenIDSet);
+    const integrationTokensMapping: Record<number, string> =
+      await this.getIntegrationTokensMapping(integrationTokenIDSet);
 
-    const existingJobsMapping: Record<string, Pick<RefreshJob, 'checksum' | 'executeAt' | 'refreshRate'>> = await this.getExistingJobsMapping(
-      projectID,
-      documentIDs
-    );
+    const existingJobsMapping: Record<
+      string,
+      Pick<RefreshJob, 'checksum' | 'executeAt' | 'refreshRate'>
+    > = await this.getExistingJobsMapping(projectID, documentIDs);
 
     const refreshJobsToSend: (Pick<RefreshJob, 'projectID' | 'documentID' | 'workspaceID' | 'url' | 'checksum'> & {
       source?: string;

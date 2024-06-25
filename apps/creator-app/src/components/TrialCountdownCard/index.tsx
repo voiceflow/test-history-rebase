@@ -16,7 +16,8 @@ interface TrialCountdownCardProps {
 const TrialCountdownCard: React.FC<TrialCountdownCardProps> = ({ onClick, isProTrial, daysLeft }) => (
   <S.CardContainer>
     <S.CountdownText>
-      <S.DaysContainer>{daysLeft}</S.DaysContainer> {pluralize('day', daysLeft)} left on {isProTrial ? 'pro' : ''} free trial
+      <S.DaysContainer>{daysLeft}</S.DaysContainer> {pluralize('day', daysLeft)} left on {isProTrial ? 'pro' : ''} free
+      trial
     </S.CountdownText>
 
     <S.ProgressContainer>

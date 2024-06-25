@@ -1,12 +1,13 @@
 import { FolderScope } from '@voiceflow/dtos';
-import { BaseSelectProps, Menu, MenuItemMultilevel, MenuItemWithID, Select, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import type { BaseSelectProps, MenuItemMultilevel, MenuItemWithID, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import { Menu, Select } from '@voiceflow/ui';
 import React, { useMemo } from 'react';
 
 import { Creator, Designer, Version } from '@/ducks';
 import { useSelector } from '@/hooks/redux';
 
 import { useOptionsTree } from './hooks';
-import { Value } from './types';
+import type { Value } from './types';
 import { createGroupedSelectID } from './utils';
 
 export interface BlockSelectProps extends BaseSelectProps {

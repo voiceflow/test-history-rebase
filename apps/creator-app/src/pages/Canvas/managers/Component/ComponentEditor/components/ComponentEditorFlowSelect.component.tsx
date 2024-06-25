@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { Flow } from '@voiceflow/dtos';
+import type { Flow } from '@voiceflow/dtos';
 import { ActionButtons, Box, Button, Divider, Dropdown, Menu, Search } from '@voiceflow/ui-next';
 import React from 'react';
 
@@ -15,7 +15,11 @@ interface IComponentEditorFlowSelect {
   onSelect: (flow: Flow) => void;
   activeNodeID: string;
 }
-export const ComponentEditorFlowSelect: React.FC<IComponentEditorFlowSelect> = ({ diagramID, onSelect, activeNodeID }) => {
+export const ComponentEditorFlowSelect: React.FC<IComponentEditorFlowSelect> = ({
+  diagramID,
+  onSelect,
+  activeNodeID,
+}) => {
   const flows = useSelector(Designer.Flow.selectors.allOrderedByName);
   const flow = useSelector(Designer.Flow.selectors.oneByDiagramID, { diagramID: diagramID ?? null });
   const createModal = ModalsV2.useModal(ModalsV2.Flow.Create);
@@ -51,7 +55,11 @@ export const ComponentEditorFlowSelect: React.FC<IComponentEditorFlowSelect> = (
           {({ onClose, referenceRef }) => (
             <Menu
               actionButtons={
-                search.hasItems && <ActionButtons firstButton={<ActionButtons.Button label="Create component" onClick={onCreateFlow} />} />
+                search.hasItems && (
+                  <ActionButtons
+                    firstButton={<ActionButtons.Button label="Create component" onClick={onCreateFlow} />}
+                  />
+                )
               }
               searchSection={<Search placeholder="Search" value={search.value} onValueChange={search.setValue} />}
               width={referenceRef.current?.clientWidth}

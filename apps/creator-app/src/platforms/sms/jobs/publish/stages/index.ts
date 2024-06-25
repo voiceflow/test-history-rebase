@@ -1,7 +1,7 @@
 import { createUseJobInterfaceContent } from '@/components/JobInterface';
 import { ErrorStage } from '@/components/PlatformUploadPopup/components';
 import { SMSPublishStageType } from '@/constants/platforms';
-import { SMSPublishJob } from '@/models';
+import type { SMSPublishJob } from '@/models';
 
 import ConnectStage from './ConnectStage';
 import SuccessStage from './SuccessStage';

@@ -3,7 +3,7 @@ import React from 'react';
 
 import * as Account from '@/ducks/account';
 import { useSelector } from '@/hooks';
-import { LockOwner } from '@/models';
+import type { LockOwner } from '@/models';
 import { useEditLock } from '@/pages/Canvas/hooks/locking';
 
 import { Container } from './components';

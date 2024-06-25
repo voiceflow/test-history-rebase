@@ -1,4 +1,5 @@
-import { Editor, Range, Text } from 'slate';
+import type { Editor, Text } from 'slate';
+import { Range } from 'slate';
 
 import type { EditorAPIType } from '../editorAPI';
 import type { APIPlugin, Plugin } from './types';

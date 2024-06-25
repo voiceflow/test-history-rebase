@@ -1,7 +1,7 @@
-import { Utterance } from '@voiceflow/dtos';
+import type { Utterance } from '@voiceflow/dtos';
 
-import { AIGenerateTextResponseVariant } from '@/components/AI/ai.interface';
-import { IResponseCreateVariant } from '@/components/Response/ResponseCreateVariant/ResponseCreateVariant.interface';
+import type { AIGenerateTextResponseVariant } from '@/components/AI/ai.interface';
+import type { IResponseCreateVariant } from '@/components/Response/ResponseCreateVariant/ResponseCreateVariant.interface';
 
 export interface IIntentRequiredEntityRepromptsPopper {
   children: React.ReactNode;

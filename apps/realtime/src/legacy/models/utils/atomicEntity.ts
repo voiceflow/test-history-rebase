@@ -26,7 +26,9 @@ class AtomicEntity {
     return Atomic.pull(pulls.map(({ path, ...data }) => ({ ...data, path: this.pathGetter(entityID, path) })));
   }
 
-  public pullMany(entityPulls: Array<{ entityID: string; pulls: Atomic.PullOperation[] }>): Atomic.UpdateOperation<'$pull'> {
+  public pullMany(
+    entityPulls: Array<{ entityID: string; pulls: Atomic.PullOperation[] }>
+  ): Atomic.UpdateOperation<'$pull'> {
     return this.runMany(entityPulls, ({ entityID, pulls }) => this.pull(entityID, pulls));
   }
 
@@ -34,7 +36,9 @@ class AtomicEntity {
     return Atomic.push(pushes.map(({ path, ...data }) => ({ ...data, path: this.pathGetter(entityID, path) })));
   }
 
-  public pushMany(entityPushes: Array<{ entityID: string; pushes: Atomic.PushOperation[] }>): Atomic.UpdateOperation<'$push'> {
+  public pushMany(
+    entityPushes: Array<{ entityID: string; pushes: Atomic.PushOperation[] }>
+  ): Atomic.UpdateOperation<'$push'> {
     return this.runMany(entityPushes, ({ entityID, pushes }) => this.push(entityID, pushes));
   }
 
@@ -60,7 +64,9 @@ class AtomicEntity {
     );
   }
 
-  public unsetMany(entityUnsets: Array<{ entityID: string; unsets: Atomic.UnsetOperation[] }>): Atomic.UpdateOperation<'$unset'> {
+  public unsetMany(
+    entityUnsets: Array<{ entityID: string; unsets: Atomic.UnsetOperation[] }>
+  ): Atomic.UpdateOperation<'$unset'> {
     return this.runMany(entityUnsets, ({ entityID, unsets }) => this.unset(entityID, unsets));
   }
 }

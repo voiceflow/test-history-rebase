@@ -1,8 +1,8 @@
-import { IO, Point } from '@voiceflow/realtime-sdk';
+import type { IO, Point } from '@voiceflow/realtime-sdk';
 
-import { MovementCalculator } from '@/components/Canvas/types';
+import type { MovementCalculator } from '@/components/Canvas/types';
 import { createDispatcherContext } from '@/contexts/DispatcherContext';
-import { Pair } from '@/types';
+import type { Pair } from '@/types';
 
 export interface RealtimeCursorEvents {
   zoomViewport: (calculateMovement: MovementCalculator) => void;

@@ -46,7 +46,10 @@ export class UtteranceService extends CMSObjectService<UtteranceORM> {
   }
   /* Create */
 
-  async createManyAndSync(data: CMSCreateForUserData<UtteranceORM>[], { userID, context }: { userID: number; context: CMSContext }) {
+  async createManyAndSync(
+    data: CMSCreateForUserData<UtteranceORM>[],
+    { userID, context }: { userID: number; context: CMSContext }
+  ) {
     const utterances = await this.createManyForUser(userID, data.map(injectAssistantAndEnvironmentIDs(context)));
 
     return {

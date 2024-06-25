@@ -1,6 +1,6 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/dtos';
-import { PlanType } from '@voiceflow/internal';
+import type { PlanType } from '@voiceflow/internal';
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 

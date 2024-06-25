@@ -2,7 +2,7 @@ import composeRef from '@seznam/compose-react-refs';
 import { Utils } from '@voiceflow/common';
 import { useDidUpdateEffect, useEnableDisable, withEnterPress, withInputBlur } from '@voiceflow/ui';
 import React from 'react';
-import { AutosizeInputProps } from 'react-input-autosize';
+import type { AutosizeInputProps } from 'react-input-autosize';
 
 import { withTargetValue } from '@/utils/dom';
 
@@ -30,7 +30,20 @@ export interface EditableTextAPI {
 
 const EditableText = React.forwardRef<EditableTextAPI, EditableTextProps>(
   (
-    { id, value, onChange, editing, onBlur, onFocus, children, titleRef: titleRefProp, className, placeholder, startEditingOnFocus = true, ...props },
+    {
+      id,
+      value,
+      onChange,
+      editing,
+      onBlur,
+      onFocus,
+      children,
+      titleRef: titleRefProp,
+      className,
+      placeholder,
+      startEditingOnFocus = true,
+      ...props
+    },
     ref
   ) => {
     const [isEditing, startEditing, stopEditing] = useEnableDisable(editing);

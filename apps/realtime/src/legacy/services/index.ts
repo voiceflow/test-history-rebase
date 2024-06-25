@@ -1,19 +1,19 @@
-import { Logger } from '@voiceflow/logger';
-import { HashedIDService } from '@voiceflow/nestjs-common';
+import type { Logger } from '@voiceflow/logger';
+import type { HashedIDService } from '@voiceflow/nestjs-common';
 import type { IdentityClient } from '@voiceflow/sdk-identity';
-import { BaseServiceMap } from '@voiceflow/socket-utils';
+import type { BaseServiceMap } from '@voiceflow/socket-utils';
 
-import { AssistantService } from '@/assistant/assistant.service';
-import { CreatorService } from '@/creator/creator.service';
-import { FlowService } from '@/flow/flow.service';
-import { OrganizationIdentityService } from '@/organization/identity/identity.service';
+import type { AssistantService } from '@/assistant/assistant.service';
+import type { CreatorService } from '@/creator/creator.service';
+import type { FlowService } from '@/flow/flow.service';
+import type { OrganizationIdentityService } from '@/organization/identity/identity.service';
 import type { ProjectService as ProjectServiceV2 } from '@/project/project.service';
-import { ProjectListService } from '@/project-list/project-list.service';
-import { ReferenceService } from '@/reference/reference.service';
-import { ThreadService } from '@/thread/thread.service';
+import type { ProjectListService } from '@/project-list/project-list.service';
+import type { ReferenceService } from '@/reference/reference.service';
+import type { ThreadService } from '@/thread/thread.service';
 import type { Config } from '@/types';
 import type { UserService } from '@/user/user.service';
-import { WorkflowService } from '@/workflow/workflow.service';
+import type { WorkflowService } from '@/workflow/workflow.service';
 
 import type { ClientMap } from '../clients';
 import type { ModelMap } from '../models';

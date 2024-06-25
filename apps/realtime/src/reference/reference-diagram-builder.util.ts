@@ -1,7 +1,8 @@
-import { Diagram, DiagramType, ReferenceResourceType } from '@voiceflow/dtos';
+import type { Diagram } from '@voiceflow/dtos';
+import { DiagramType, ReferenceResourceType } from '@voiceflow/dtos';
 
 import { ReferenceBaseBuilderUtil } from './reference-base-builder.util';
-import { ReferenceBuilderCacheUtil } from './reference-builder-cache.util';
+import type { ReferenceBuilderCacheUtil } from './reference-builder-cache.util';
 import { ReferenceNodeBuilderUtil } from './reference-node-builder.util';
 
 export class ReferenceDiagramBuilderUtil extends ReferenceBaseBuilderUtil {

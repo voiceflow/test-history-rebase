@@ -32,7 +32,9 @@ suite('Client - Prototype', ({ expectMembers }) => {
 
       expect(await client.interact(VERSION_ID, data, { sessionID })).toEqual(response);
 
-      expect(axiosPost).toBeCalledWith(`${GENERAL_RUNTIME_ENDPOINT}/interact/${VERSION_ID}`, data, { headers: { sessionID } });
+      expect(axiosPost).toBeCalledWith(`${GENERAL_RUNTIME_ENDPOINT}/interact/${VERSION_ID}`, data, {
+        headers: { sessionID },
+      });
     });
   });
 });

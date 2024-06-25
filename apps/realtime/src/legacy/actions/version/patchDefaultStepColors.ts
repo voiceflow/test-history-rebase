@@ -1,6 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { Context } from '@voiceflow/socket-utils';
-import { Action } from 'typescript-fsa';
+import type { Context } from '@voiceflow/socket-utils';
+import type { Action } from 'typescript-fsa';
 
 import { AbstractVersionResourceControl } from './utils';
 
@@ -11,7 +11,10 @@ class PatchVersionDefaultStepColors extends AbstractVersionResourceControl<Realt
     await this.services.version.patchDefaultStepColors(payload.versionID, payload.defaultStepColors);
   };
 
-  protected finally = async (ctx: Context, { payload }: Action<Realtime.version.PatchDefaultStepColorsPayload>): Promise<void> => {
+  protected finally = async (
+    ctx: Context,
+    { payload }: Action<Realtime.version.PatchDefaultStepColorsPayload>
+  ): Promise<void> => {
     await this.services.project.setUpdatedBy(payload.projectID, ctx.data.creatorID);
   };
 }

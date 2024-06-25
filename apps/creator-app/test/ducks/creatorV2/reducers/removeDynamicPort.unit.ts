@@ -6,144 +6,149 @@ import * as CreatorV2 from '@/ducks/creatorV2';
 import suite from '../../_suite';
 import { ACTION_CONTEXT, LINK, LINK_ID, MOCK_STATE, NODE_ID, PORT, PORT_ID } from '../_fixtures';
 
-suite(CreatorV2, MOCK_STATE)('Ducks | Creator V2 - removeDynamicPort reducer', ({ describeReducerV2, describeReverter, createState }) => {
-  describeReducerV2(Realtime.port.removeDynamic, ({ applyAction }) => {
-    const fooLink = { ...LINK, id: 'fooLink' };
-    const barLink = { ...LINK, id: 'barLink' };
-    const fooPort = { ...PORT, id: 'fooPort' };
-    const barPort = { ...PORT, id: 'barPort' };
+suite(CreatorV2, MOCK_STATE)(
+  'Ducks | Creator V2 - removeDynamicPort reducer',
+  ({ describeReducerV2, describeReverter, createState }) => {
+    describeReducerV2(Realtime.port.removeDynamic, ({ applyAction }) => {
+      const fooLink = { ...LINK, id: 'fooLink' };
+      const barLink = { ...LINK, id: 'barLink' };
+      const fooPort = { ...PORT, id: 'fooPort' };
+      const barPort = { ...PORT, id: 'barPort' };
 
-    it('ignore removing port for a different diagram', () => {
-      const result = applyAction(MOCK_STATE, {
-        ...ACTION_CONTEXT,
-        diagramID: 'foo',
-        nodeID: NODE_ID,
-        portID: PORT_ID,
-        removeNodes: [],
+      it('ignore removing port for a different diagram', () => {
+        const result = applyAction(MOCK_STATE, {
+          ...ACTION_CONTEXT,
+          diagramID: 'foo',
+          nodeID: NODE_ID,
+          portID: PORT_ID,
+          removeNodes: [],
+        });
+
+        expect(result).toBe(MOCK_STATE);
       });
 
-      expect(result).toBe(MOCK_STATE);
-    });
-
-    it('remove all references to a port', () => {
-      const result = applyAction(
-        {
-          ...MOCK_STATE,
-          ports: normalize([fooPort, PORT, barPort]),
-          portsByNodeID: {
-            [NODE_ID]: Realtime.Utils.port.createEmptyNodePorts(),
-            fooNode: Realtime.Utils.port.createEmptyNodePorts(),
+      it('remove all references to a port', () => {
+        const result = applyAction(
+          {
+            ...MOCK_STATE,
+            ports: normalize([fooPort, PORT, barPort]),
+            portsByNodeID: {
+              [NODE_ID]: Realtime.Utils.port.createEmptyNodePorts(),
+              fooNode: Realtime.Utils.port.createEmptyNodePorts(),
+            },
+            nodeIDByPortID: { [PORT_ID]: NODE_ID, [fooPort.id]: NODE_ID },
+            linkIDsByPortID: { [PORT_ID]: [], [fooPort.id]: ['fooLink'] },
           },
-          nodeIDByPortID: { [PORT_ID]: NODE_ID, [fooPort.id]: NODE_ID },
-          linkIDsByPortID: { [PORT_ID]: [], [fooPort.id]: ['fooLink'] },
-        },
-        { ...ACTION_CONTEXT, nodeID: NODE_ID, portID: PORT_ID, removeNodes: [] }
-      );
+          { ...ACTION_CONTEXT, nodeID: NODE_ID, portID: PORT_ID, removeNodes: [] }
+        );
 
-      expect(result.ports).toEqual(normalize([fooPort, barPort]));
-      expect(result.portsByNodeID).toEqual({
-        [NODE_ID]: Realtime.Utils.port.createEmptyNodePorts(),
-        fooNode: Realtime.Utils.port.createEmptyNodePorts(),
+        expect(result.ports).toEqual(normalize([fooPort, barPort]));
+        expect(result.portsByNodeID).toEqual({
+          [NODE_ID]: Realtime.Utils.port.createEmptyNodePorts(),
+          fooNode: Realtime.Utils.port.createEmptyNodePorts(),
+        });
+        expect(result.nodeIDByPortID).toEqual({ [fooPort.id]: NODE_ID });
+        expect(result.linkIDsByPortID).toEqual({ [fooPort.id]: ['fooLink'] });
       });
-      expect(result.nodeIDByPortID).toEqual({ [fooPort.id]: NODE_ID });
-      expect(result.linkIDsByPortID).toEqual({ [fooPort.id]: ['fooLink'] });
-    });
 
-    it('remove a dynamic port', () => {
-      const result = applyAction(
-        {
-          ...MOCK_STATE,
-          portsByNodeID: {
-            [NODE_ID]: {
-              in: [fooPort.id],
-              out: {
-                dynamic: [barPort.id, PORT_ID],
-                byKey: {},
-                builtIn: {},
+      it('remove a dynamic port', () => {
+        const result = applyAction(
+          {
+            ...MOCK_STATE,
+            portsByNodeID: {
+              [NODE_ID]: {
+                in: [fooPort.id],
+                out: {
+                  dynamic: [barPort.id, PORT_ID],
+                  byKey: {},
+                  builtIn: {},
+                },
               },
             },
           },
-        },
-        { ...ACTION_CONTEXT, nodeID: NODE_ID, portID: PORT_ID, removeNodes: [] }
-      );
+          { ...ACTION_CONTEXT, nodeID: NODE_ID, portID: PORT_ID, removeNodes: [] }
+        );
 
-      expect(result.portsByNodeID[NODE_ID]).toEqual({
-        in: [fooPort.id],
-        out: {
-          dynamic: [barPort.id],
-          byKey: {},
-          builtIn: {},
-        },
-      });
-    });
-
-    it('remove all links from a port', () => {
-      const result = applyAction(
-        {
-          ...MOCK_STATE,
-          links: normalize([LINK]),
-          nodeIDsByLinkID: { [LINK_ID]: [NODE_ID], [fooLink.id]: [NODE_ID] },
-          portIDsByLinkID: { [LINK_ID]: [PORT_ID], [barLink.id]: [PORT_ID] },
-          linkIDsByNodeID: { [NODE_ID]: [fooLink.id, LINK_ID, barLink.id] },
-          linkIDsByPortID: { [PORT_ID]: [LINK_ID] },
-        },
-        { ...ACTION_CONTEXT, nodeID: NODE_ID, portID: PORT_ID, removeNodes: [] }
-      );
-
-      expect(result.links).toEqual(normalize([]));
-      expect(result.nodeIDsByLinkID).toEqual({ [fooLink.id]: [NODE_ID] });
-      expect(result.portIDsByLinkID).toEqual({ [barLink.id]: [PORT_ID] });
-      expect(result.linkIDsByNodeID).toEqual({ [NODE_ID]: [fooLink.id, barLink.id] });
-    });
-  });
-
-  describeReverter(Realtime.port.removeDynamic, ({ revertAction }) => {
-    it('registers an action reverter', () => {
-      const targetNodeID = 'targetNodeID';
-      const targetPortID = 'targetPortID';
-      const portLabel = 'my port';
-      const linkData: any = { foo: 'bar' };
-      const rootState = createState({
-        ...MOCK_STATE,
-        linkIDsByPortID: { [PORT_ID]: [LINK_ID] },
-        portsByNodeID: { [NODE_ID]: { in: [], out: { byKey: {}, builtIn: {}, dynamic: ['first', 'second', PORT_ID, 'fourth'] } } },
-        ports: normalize([{ id: PORT_ID, nodeID: NODE_ID, label: portLabel, virtual: false }]),
-        links: normalize([
-          {
-            id: LINK_ID,
-            source: { nodeID: NODE_ID, portID: PORT_ID },
-            target: { nodeID: targetNodeID, portID: targetPortID },
-            data: linkData,
+        expect(result.portsByNodeID[NODE_ID]).toEqual({
+          in: [fooPort.id],
+          out: {
+            dynamic: [barPort.id],
+            byKey: {},
+            builtIn: {},
           },
-        ]),
+        });
       });
 
-      const result = revertAction(rootState, {
-        ...ACTION_CONTEXT,
-        nodeID: NODE_ID,
-        portID: PORT_ID,
-        removeNodes: [],
-      });
+      it('remove all links from a port', () => {
+        const result = applyAction(
+          {
+            ...MOCK_STATE,
+            links: normalize([LINK]),
+            nodeIDsByLinkID: { [LINK_ID]: [NODE_ID], [fooLink.id]: [NODE_ID] },
+            portIDsByLinkID: { [LINK_ID]: [PORT_ID], [barLink.id]: [PORT_ID] },
+            linkIDsByNodeID: { [NODE_ID]: [fooLink.id, LINK_ID, barLink.id] },
+            linkIDsByPortID: { [PORT_ID]: [LINK_ID] },
+          },
+          { ...ACTION_CONTEXT, nodeID: NODE_ID, portID: PORT_ID, removeNodes: [] }
+        );
 
-      expect(result).toEqual([
-        Realtime.port.addDynamic({
+        expect(result.links).toEqual(normalize([]));
+        expect(result.nodeIDsByLinkID).toEqual({ [fooLink.id]: [NODE_ID] });
+        expect(result.portIDsByLinkID).toEqual({ [barLink.id]: [PORT_ID] });
+        expect(result.linkIDsByNodeID).toEqual({ [NODE_ID]: [fooLink.id, barLink.id] });
+      });
+    });
+
+    describeReverter(Realtime.port.removeDynamic, ({ revertAction }) => {
+      it('registers an action reverter', () => {
+        const targetNodeID = 'targetNodeID';
+        const targetPortID = 'targetPortID';
+        const portLabel = 'my port';
+        const linkData: any = { foo: 'bar' };
+        const rootState = createState({
+          ...MOCK_STATE,
+          linkIDsByPortID: { [PORT_ID]: [LINK_ID] },
+          portsByNodeID: {
+            [NODE_ID]: { in: [], out: { byKey: {}, builtIn: {}, dynamic: ['first', 'second', PORT_ID, 'fourth'] } },
+          },
+          ports: normalize([{ id: PORT_ID, nodeID: NODE_ID, label: portLabel, virtual: false }]),
+          links: normalize([
+            {
+              id: LINK_ID,
+              source: { nodeID: NODE_ID, portID: PORT_ID },
+              target: { nodeID: targetNodeID, portID: targetPortID },
+              data: linkData,
+            },
+          ]),
+        });
+
+        const result = revertAction(rootState, {
           ...ACTION_CONTEXT,
           nodeID: NODE_ID,
           portID: PORT_ID,
-          index: 2,
-          label: portLabel,
-        }),
-        Realtime.link.addDynamic({
-          ...ACTION_CONTEXT,
-          sourceParentNodeID: null,
-          sourceNodeID: NODE_ID,
-          sourcePortID: PORT_ID,
-          targetNodeID,
-          targetPortID,
-          linkID: LINK_ID,
-          data: linkData,
-        }),
-      ]);
+          removeNodes: [],
+        });
+
+        expect(result).toEqual([
+          Realtime.port.addDynamic({
+            ...ACTION_CONTEXT,
+            nodeID: NODE_ID,
+            portID: PORT_ID,
+            index: 2,
+            label: portLabel,
+          }),
+          Realtime.link.addDynamic({
+            ...ACTION_CONTEXT,
+            sourceParentNodeID: null,
+            sourceNodeID: NODE_ID,
+            sourcePortID: PORT_ID,
+            targetNodeID,
+            targetPortID,
+            linkID: LINK_ID,
+            data: linkData,
+          }),
+        ]);
+      });
     });
-  });
-});
+  }
+);

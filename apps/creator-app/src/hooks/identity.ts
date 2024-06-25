@@ -1,11 +1,13 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import { UserRole } from '@voiceflow/dtos';
 import { PlanType } from '@voiceflow/internal';
 import React from 'react';
 
-import { VirtualRole } from '@/constants/roles';
-import { IdentityContext, IdentityContextValue } from '@/contexts/IdentityContext';
-import { ProjectIdentityContext, ProjectIdentityContextValue } from '@/pages/Project/contexts/ProjectIdentityContext';
+import type { VirtualRole } from '@/constants/roles';
+import type { IdentityContextValue } from '@/contexts/IdentityContext';
+import { IdentityContext } from '@/contexts/IdentityContext';
+import type { ProjectIdentityContextValue } from '@/pages/Project/contexts/ProjectIdentityContext';
+import { ProjectIdentityContext } from '@/pages/Project/contexts/ProjectIdentityContext';
 import { isRoleAStrongerRoleB } from '@/utils/role';
 
 export interface Identity extends IdentityContextValue, ProjectIdentityContextValue {

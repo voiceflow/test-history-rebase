@@ -1,4 +1,4 @@
-import { LoguxControlOptions } from '../../control';
+import type { LoguxControlOptions } from '../../control';
 import AddVariableStateControl from './add';
 import CreateVariableStateControl from './create';
 import DeleteVariableStateControl from './delete';

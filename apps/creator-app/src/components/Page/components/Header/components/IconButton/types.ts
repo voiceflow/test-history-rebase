@@ -1,8 +1,8 @@
-import { Nullable } from '@voiceflow/common';
-import { TippyTooltipProps } from '@voiceflow/ui';
-import React from 'react';
+import type { Nullable } from '@voiceflow/common';
+import type { TippyTooltipProps } from '@voiceflow/ui';
+import type React from 'react';
 
-import * as S from './styles';
+import type * as S from './styles';
 
 export interface Props extends Omit<S.ButtonProps, 'variant'> {
   tooltip?: Nullable<TippyTooltipProps>;

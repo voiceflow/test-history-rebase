@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { Utils } from '@voiceflow/common';
-import { ActionCreator, AnyAction } from 'typescript-fsa';
-import { ValuesType } from 'utility-types';
+import type { ActionCreator, AnyAction } from 'typescript-fsa';
+import type { ValuesType } from 'utility-types';
 
 export interface CRUDKeyPayload {
   key: string;
@@ -43,9 +43,11 @@ export type ClientCRUDActionCreators<T extends CRUDActionCreators<any, any, any>
   'update' | 'patch' | 'remove' | 'removeMany' | 'reorder' | 'move'
 >;
 
-export type ClientCRUDPayload<Model, Context extends object = {}, Patch extends Partial<Model> = Partial<Model>> = ReturnType<
-  ValuesType<ClientCRUDActionCreators<CRUDActionCreators<Model, Context, Patch>>>
->['payload'];
+export type ClientCRUDPayload<
+  Model,
+  Context extends object = {},
+  Patch extends Partial<Model> = Partial<Model>,
+> = ReturnType<ValuesType<ClientCRUDActionCreators<CRUDActionCreators<Model, Context, Patch>>>>['payload'];
 
 export const createCRUDActions = <Model, Context extends object = {}, Patch extends Partial<Model> = Partial<Model>>(
   createType: (name: string) => string
@@ -72,7 +74,11 @@ export const getCRUDActionTargets = <T extends CRUDActionCreators<any, any, any>
   actionCreators: ClientCRUDActionCreators<T>,
   action: AnyAction
 ): string[] | null => {
-  if (actionCreators.remove.match(action) || actionCreators.update.match(action) || actionCreators.patch.match(action)) {
+  if (
+    actionCreators.remove.match(action) ||
+    actionCreators.update.match(action) ||
+    actionCreators.patch.match(action)
+  ) {
     return [action.payload.key];
   }
 

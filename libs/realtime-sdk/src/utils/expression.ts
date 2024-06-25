@@ -1,4 +1,4 @@
-import { ExpressionData, ExpressionV2, LogicGroupData } from '@realtime-sdk/models';
+import type { ExpressionData, ExpressionV2, LogicGroupData } from '@realtime-sdk/models';
 import { transformVariablesToReadable } from '@realtime-sdk/utils/slot';
 import { BaseNode } from '@voiceflow/base-types';
 import isVarName from 'is-var-name';
@@ -66,7 +66,10 @@ export const expressionfyV2 = (expression: BaseNode.Utils.Expression): string | 
   if (expression.type === BaseNode.Utils.ExpressionType.ADVANCE) {
     if (Array.isArray(expression.value)) {
       return mathJStoJSParser(
-        expression.value.reduce((acc, curr) => `${acc}${acc ? EXPRESSION_OPERATION_SYMBOL_MAP[expression.type] : ''}${expressionfyV2(curr)}`, '')
+        expression.value.reduce(
+          (acc, curr) => `${acc}${acc ? EXPRESSION_OPERATION_SYMBOL_MAP[expression.type] : ''}${expressionfyV2(curr)}`,
+          ''
+        )
       );
     }
 
@@ -83,7 +86,9 @@ export const expressionfyV2 = (expression: BaseNode.Utils.Expression): string | 
 /**
  *  gets the list of deepest expressions
  */
-export const flatten = (exps: BaseNode.Utils.Expression[]): BaseNode.Utils.GenericExpression<BaseNode.Utils.ExpressionType, string>[] =>
+export const flatten = (
+  exps: BaseNode.Utils.Expression[]
+): BaseNode.Utils.GenericExpression<BaseNode.Utils.ExpressionType, string>[] =>
   exps.reduce<BaseNode.Utils.GenericExpression<BaseNode.Utils.ExpressionType, string>[]>((acc, cur) => {
     const { value } = cur;
 
@@ -105,12 +110,16 @@ export const isDeepestExpressionAdvance = (expression: BaseNode.Utils.Expression
   flatten([expression]).some(({ type }) => ADVANCE_LOGIC_TYPES.includes(type));
 
 export const hasAdvanceChildExpression = (expression: BaseNode.Utils.Expression): boolean => {
-  if (expression.type === BaseNode.Utils.ExpressionType.ADVANCE || expression.type === BaseNode.Utils.ExpressionType.NOT) {
+  if (
+    expression.type === BaseNode.Utils.ExpressionType.ADVANCE ||
+    expression.type === BaseNode.Utils.ExpressionType.NOT
+  ) {
     return true;
   }
 
   return (
-    (Array.isArray(expression.value) && expression.value.some((data: any) => ADVANCE_LOGIC_TYPES.includes(data.type))) ||
+    (Array.isArray(expression.value) &&
+      expression.value.some((data: any) => ADVANCE_LOGIC_TYPES.includes(data.type))) ||
     isDeepestExpressionAdvance(expression)
   );
 };
@@ -136,7 +145,10 @@ const EXPRESSIONV2_OPERATION_SYMBOL_MAP: Record<string, string> = {
   [BaseNode.Utils.ExpressionTypeV2.IS_EMPTY]: 'is empty',
 };
 
-export const expressionfyLogicUnit = (expression: ExpressionV2, variablesMap: Record<string, { id: string; name: string }>): string => {
+export const expressionfyLogicUnit = (
+  expression: ExpressionV2,
+  variablesMap: Record<string, { id: string; name: string }>
+): string => {
   if (expression.type === BaseNode.Utils.ExpressionTypeV2.VALUE) {
     if (!expression.value) {
       return '';
@@ -194,12 +206,15 @@ export const expressionPreview = (
   variablesMap: Record<string, { id: string; name: string }>
 ): string => {
   if (expression.type) {
-    return (expression.value as Array<ExpressionV2 | LogicGroupData>).reduce((acc: string, curr: ExpressionV2 | LogicGroupData) => {
-      // eslint-disable-next-line no-param-reassign, sonarjs/no-nested-template-literals
-      acc = `${acc}${acc ? ` ${EXPRESSIONV2_OPERATION_SYMBOL_MAP[expression.type!]} ` : ''}(${expressionfyLogicInterface(curr, variablesMap)})`;
+    return (expression.value as Array<ExpressionV2 | LogicGroupData>).reduce(
+      (acc: string, curr: ExpressionV2 | LogicGroupData) => {
+        // eslint-disable-next-line no-param-reassign, sonarjs/no-nested-template-literals
+        acc = `${acc}${acc ? ` ${EXPRESSIONV2_OPERATION_SYMBOL_MAP[expression.type!]} ` : ''}(${expressionfyLogicInterface(curr, variablesMap)})`;
 
-      return acc;
-    }, '');
+        return acc;
+      },
+      ''
+    );
   }
 
   return expression.value.length > 0 ? expressionfyLogicInterface(expression?.value[0], variablesMap) : '';

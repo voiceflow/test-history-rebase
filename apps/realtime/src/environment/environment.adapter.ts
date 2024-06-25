@@ -1,6 +1,6 @@
 /* eslint-disable max-params */
 import { Inject, Injectable } from '@nestjs/common';
-import { DiagramObject,VersionObject } from '@voiceflow/orm-designer';
+import type { DiagramObject, VersionObject } from '@voiceflow/orm-designer';
 
 import { AttachmentService } from '@/attachment/attachment.service';
 import { DiagramService } from '@/diagram/diagram.service';
@@ -14,7 +14,7 @@ import { VariableService } from '@/variable/variable.service';
 import { VersionService } from '@/version/version.service';
 import { WorkflowService } from '@/workflow/workflow.service';
 
-import { EnvironmentCMSData } from './environment.interface';
+import type { EnvironmentCMSData } from './environment.interface';
 @Injectable()
 export class EnvironmentAdapter {
   constructor(

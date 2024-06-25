@@ -1,5 +1,6 @@
 import { BaseNode, BaseTrace } from '@voiceflow/base-types';
-import { BaseRequest, RequestType } from '@voiceflow/dtos';
+import type { BaseRequest } from '@voiceflow/dtos';
+import { RequestType } from '@voiceflow/dtos';
 import { isActionRequest, isIntentRequest, isTextRequest } from '@voiceflow/utils-designer';
 // eslint-disable-next-line you-dont-need-lodash-underscore/is-string
 import _isString from 'lodash/isString';
@@ -8,9 +9,11 @@ import { isDebug } from '@/config';
 import logger from '@/utils/logger';
 
 import AudioController from './Audio';
-import MessageController, { MessageControllerProps } from './Message';
+import type { MessageControllerProps } from './Message';
+import MessageController from './Message';
 import TimeoutController from './Timeout';
-import TraceController, { StepDirection, TraceControllerProps } from './Trace';
+import type { TraceControllerProps } from './Trace';
+import TraceController, { StepDirection } from './Trace';
 
 export type PrototypeToolProps = MessageControllerProps & TraceControllerProps;
 
@@ -72,7 +75,10 @@ class PrototypeTool {
 
   public continue(): void {
     // can't continue if the stream paused
-    if (this.trace?.topTrace?.type === BaseTrace.TraceType.STREAM && this.trace.topTrace.payload.action === BaseNode.Stream.TraceStreamAction.PAUSE)
+    if (
+      this.trace?.topTrace?.type === BaseTrace.TraceType.STREAM &&
+      this.trace.topTrace.payload.action === BaseNode.Stream.TraceStreamAction.PAUSE
+    )
       return;
 
     this.audio?.continue();
@@ -90,7 +96,10 @@ class PrototypeTool {
     return this.trace?.navigateToStep(messageID);
   }
 
-  public async interact({ name, request = null }: { name?: string; request?: BaseRequest | string | null } = {}): Promise<void> {
+  public async interact({
+    name,
+    request = null,
+  }: { name?: string; request?: BaseRequest | string | null } = {}): Promise<void> {
     this.audio?.stop();
 
     await this.trace?.flushTrace();

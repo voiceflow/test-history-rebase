@@ -5,7 +5,12 @@ import { InputWithVariables } from '@/components/Input/InputWithVariables/InputW
 
 import type { ICardPopperButtonEditorPopper } from './CardPopperButtonEditorPopper.interface';
 
-export const CardPopperButtonEditorPopper: React.FC<ICardPopperButtonEditorPopper> = ({ label, onLabelChange, referenceElement, ...props }) => {
+export const CardPopperButtonEditorPopper: React.FC<ICardPopperButtonEditorPopper> = ({
+  label,
+  onLabelChange,
+  referenceElement,
+  ...props
+}) => {
   const modifiers = useCreateConst(() => [{ name: 'offset', options: { offset: [0, 13] } }]);
 
   return (
@@ -15,7 +20,13 @@ export const CardPopperButtonEditorPopper: React.FC<ICardPopperButtonEditorPoppe
           <Section.Header.Container pt={11} title="Button label" variant="active" />
 
           <Box px={24} pb={20}>
-            <InputWithVariables value={label} autoFocus placeholder="Untitled button" onValueChange={onLabelChange} singleLine />
+            <InputWithVariables
+              value={label}
+              autoFocus
+              placeholder="Untitled button"
+              onValueChange={onLabelChange}
+              singleLine
+            />
           </Box>
         </Surface>
       )}

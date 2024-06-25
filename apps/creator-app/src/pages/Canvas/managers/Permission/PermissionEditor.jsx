@@ -22,7 +22,9 @@ function PermissionEditor({ data, onChange }) {
     [permissions, onChange]
   );
 
-  const displayName = permissions.map((permissionValue) => PERMISSIONS.find((permission) => permission.value === permissionValue).label).join(', ');
+  const displayName = permissions
+    .map((permissionValue) => PERMISSIONS.find((permission) => permission.value === permissionValue).label)
+    .join(', ');
 
   return (
     <Content

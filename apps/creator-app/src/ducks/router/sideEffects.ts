@@ -1,16 +1,17 @@
-import { Struct } from '@voiceflow/common';
+import type { Struct } from '@voiceflow/common';
 import { generatePath } from 'react-router';
 
 import { PageProgress } from '@/components/PageProgressBar/utils';
 import * as Errors from '@/config/errors';
-import { CMSRoute, Path } from '@/config/routes';
+import type { CMSRoute } from '@/config/routes';
+import { Path } from '@/config/routes';
 import { PageProgressBar } from '@/constants';
 import * as Creator from '@/ducks/creatorV2';
 import * as Designer from '@/ducks/designer';
 import * as ProjectV2 from '@/ducks/projectV2';
 import * as Session from '@/ducks/session';
 import * as Version from '@/ducks/versionV2';
-import { SyncThunk } from '@/store/types';
+import type { SyncThunk } from '@/store/types';
 
 import {
   goTo,

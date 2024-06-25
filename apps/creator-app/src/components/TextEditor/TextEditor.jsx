@@ -44,7 +44,16 @@ function TextEditor({
     forceBlurOnStateChange,
     resetRecreateEditorState,
     resetForceBlurOnStateChange,
-  } = React.useMemo(() => createPlugins(pluginsTypes, pluginsProps, { enableReadOnly, disableReadOnly }, { textValue: value, isEmpty: !value }), []);
+  } = React.useMemo(
+    () =>
+      createPlugins(
+        pluginsTypes,
+        pluginsProps,
+        { enableReadOnly, disableReadOnly },
+        { textValue: value, isEmpty: !value }
+      ),
+    []
+  );
 
   const fromStateWithAdapter = React.useMemo(() => fromState(toTextAdapters), [toTextAdapters]);
   const [editorState, updateEditorState] = React.useState(() => toState(value, fromTextConvertor(pluginsProps)));
@@ -173,7 +182,10 @@ function TextEditor({
     const cachedTextValue = store.get('textValue');
 
     if (value !== cachedTextValue || shouldRecreateEditorState) {
-      const textValue = store.get('editorState') && cachedTextValue === value ? fromStateWithAdapter(store.get('editorState')).text : value;
+      const textValue =
+        store.get('editorState') && cachedTextValue === value
+          ? fromStateWithAdapter(store.get('editorState')).text
+          : value;
 
       store.set('editorState', toState(textValue, fromTextConvertor(pluginsProps), store.get('editorState')));
       store.set('textValue', textValue);

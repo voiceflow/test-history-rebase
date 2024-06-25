@@ -5,7 +5,8 @@ import Commenter from '@/components/Commenter';
 import * as Account from '@/ducks/account';
 import { useSelector } from '@/hooks';
 
-import CommentActions, { CommentActionsProps } from './CommentActions';
+import type { CommentActionsProps } from './CommentActions';
+import CommentActions from './CommentActions';
 
 export interface ThreadEditorHeaderProps extends Omit<CommentActionsProps, 'currentUserID'> {}
 

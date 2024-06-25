@@ -3,31 +3,33 @@ import React from 'react';
 
 import { Label } from './components';
 import * as S from './styles';
-import * as T from './types';
+import type * as T from './types';
 
 export * as ActionTypes from './types';
 
-const Action = React.forwardRef<HTMLDivElement, T.Props>(({ icon, port, label, active, onClick, nodeID, reversed, onDoubleClick }, ref) => {
-  const [contentHovered, onContentMouseEnter, onContentMouseLeave] = useEnableDisable(false);
+const Action = React.forwardRef<HTMLDivElement, T.Props>(
+  ({ icon, port, label, active, onClick, nodeID, reversed, onDoubleClick }, ref) => {
+    const [contentHovered, onContentMouseEnter, onContentMouseLeave] = useEnableDisable(false);
 
-  return (
-    <S.Container ref={ref} borders={active || contentHovered} reversed={reversed} data-node-id={nodeID}>
-      <S.Content
-        active={active || contentHovered}
-        onClick={onClick}
-        onMouseEnter={onClick && onContentMouseEnter}
-        onMouseLeave={onClick && onContentMouseLeave}
-        onDoubleClick={onDoubleClick}
-      >
-        {icon}
+    return (
+      <S.Container ref={ref} borders={active || contentHovered} reversed={reversed} data-node-id={nodeID}>
+        <S.Content
+          active={active || contentHovered}
+          onClick={onClick}
+          onMouseEnter={onClick && onContentMouseEnter}
+          onMouseLeave={onClick && onContentMouseLeave}
+          onDoubleClick={onDoubleClick}
+        >
+          {icon}
 
-        {label}
-      </S.Content>
+          {label}
+        </S.Content>
 
-      {port}
-    </S.Container>
-  );
-});
+        {port}
+      </S.Container>
+    );
+  }
+);
 
 export default Object.assign(Action, {
   S,

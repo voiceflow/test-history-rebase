@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { ColorPickerPopper, ColorPickerPopperProps, ColorPickerPopperRef } from '@/components/ColorPickerPopper';
+import type { ColorPickerPopperProps, ColorPickerPopperRef } from '@/components/ColorPickerPopper';
+import { ColorPickerPopper } from '@/components/ColorPickerPopper';
 import { useCanvasPan, useCanvasZoom } from '@/pages/Canvas/hooks/canvas';
 
 export const CanvasColorPicker: React.FC<ColorPickerPopperProps> = (props) => {

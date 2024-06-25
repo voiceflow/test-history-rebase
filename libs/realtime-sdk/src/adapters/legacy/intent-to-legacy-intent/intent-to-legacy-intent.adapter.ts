@@ -1,6 +1,7 @@
 import { BaseModels } from '@voiceflow/base-types';
-import { ChatModels } from '@voiceflow/chat-types';
-import { Nullable, Utils } from '@voiceflow/common';
+import type { ChatModels } from '@voiceflow/chat-types';
+import type { Nullable } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import type {
   AnyResponseVariant,
   Entity,
@@ -14,7 +15,7 @@ import type {
   Variable,
 } from '@voiceflow/dtos';
 import { CardLayout, Channel, Language, ResponseVariantType } from '@voiceflow/dtos';
-import { VoiceModels } from '@voiceflow/voice-types';
+import type { VoiceModels } from '@voiceflow/voice-types';
 import { createSimpleAdapter } from 'bidirectional-adapter';
 import groupBy from 'lodash/groupBy';
 

@@ -1,4 +1,5 @@
-import { SvgIcon, SvgIconTypes } from '@voiceflow/ui';
+import type { SvgIconTypes } from '@voiceflow/ui';
+import { SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import * as S from './styles';

@@ -1,11 +1,15 @@
 import composeRef from '@seznam/compose-react-refs';
-import { BaseNode } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { BaseNode } from '@voiceflow/base-types';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { SectionV2 } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
-import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
+import type {
+  DragPreviewComponentProps,
+  ItemComponentProps,
+  MappedItemComponentHandlers,
+} from '@/components/DraggableList';
 import IntentSelect from '@/components/IntentSelect';
 import VariablesInput from '@/components/VariablesInput';
 import { Diagram } from '@/ducks';
@@ -16,7 +20,7 @@ import EditorV2 from '@/pages/Canvas/components/EditorV2';
 import { transformVariablesToReadable } from '@/utils/slot';
 
 import { Actions } from '../../components';
-import { NodeEditorV2Props } from '../../types';
+import type { NodeEditorV2Props } from '../../types';
 
 export interface DraggableItemProps
   extends DragPreviewComponentProps,
@@ -53,7 +57,10 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
 
   const autofocus = latestCreatedKey === itemKey && itemCount !== 1;
 
-  const [sectionRef, scrollSectionIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: autofocus, options: { block: 'end' } });
+  const [sectionRef, scrollSectionIntoView] = useAutoScrollNodeIntoView<HTMLDivElement>({
+    condition: autofocus,
+    options: { block: 'end' },
+  });
 
   const onRemoveIntent = () => {
     onUpdate({ intent: null });
@@ -73,9 +80,15 @@ const DraggableItem: React.ForwardRefRenderFunction<HTMLElement, DraggableItemPr
               <SectionV2.CollapseSection
                 ref={composeRef(ref, sectionRef) as React.Ref<HTMLDivElement>}
                 header={
-                  <SectionV2.Header ref={connectedDragRef} sticky sticked={sticked && !collapsed && !isDraggingPreview && !isDragging}>
+                  <SectionV2.Header
+                    ref={connectedDragRef}
+                    sticky
+                    sticked={sticked && !collapsed && !isDraggingPreview && !isDragging}
+                  >
                     <SectionV2.Title bold={!collapsed}>
-                      {transformVariablesToReadable(item.name, entitiesAndVariables.byKey) || intent?.name || `Button ${index + 1}`}
+                      {transformVariablesToReadable(item.name, entitiesAndVariables.byKey) ||
+                        intent?.name ||
+                        `Button ${index + 1}`}
                     </SectionV2.Title>
 
                     <SectionV2.CollapseArrowIcon collapsed={collapsed} />

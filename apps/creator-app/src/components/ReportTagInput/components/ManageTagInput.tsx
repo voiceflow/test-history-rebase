@@ -49,7 +49,9 @@ const ManageTagInput: React.FC<ManageTagInputProps> = ({ selectedTags }) => {
       selectedTags={selectedTags}
       renderFooterAction={({ close }) => (
         <Menu.Footer>
-          <Menu.Footer.Action onClick={Utils.functional.chainVoid(close, () => tagManagerModal.openVoid())}>Manage Tags</Menu.Footer.Action>
+          <Menu.Footer.Action onClick={Utils.functional.chainVoid(close, () => tagManagerModal.openVoid())}>
+            Manage Tags
+          </Menu.Footer.Action>
         </Menu.Footer>
       )}
     />

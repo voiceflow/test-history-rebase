@@ -1,5 +1,5 @@
 import { BaseUtils } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, Button, Input, SectionV2, SvgIcon, useLinkedState, withInputBlur } from '@voiceflow/ui';
 import React from 'react';
 
@@ -43,7 +43,10 @@ const Editor: React.FC = () => {
   const onPreview = async () => {
     if (isLoading) return;
 
-    const context = await fillVariables({ sets: editor.data.sets.filter((set) => !!set.prompt.trim()), system: editor.data.system });
+    const context = await fillVariables({
+      sets: editor.data.sets.filter((set) => !!set.prompt.trim()),
+      system: editor.data.system,
+    });
     if (!context) return;
 
     try {
@@ -118,7 +121,12 @@ const Editor: React.FC = () => {
             headerProps={{ bottomUnit: 1.5 }}
             contentProps={{ bottomOffset: 2.5 }}
           >
-            <RadioGroup isFlat options={AI.SOURCE_OPTIONS} checked={source} onChange={(source) => editor.onChange({ source })} />
+            <RadioGroup
+              isFlat
+              options={AI.SOURCE_OPTIONS}
+              checked={source}
+              onChange={(source) => editor.onChange({ source })}
+            />
           </SectionV2.SimpleContentSection>
 
           <SectionV2.Divider inset />
@@ -138,7 +146,13 @@ const Editor: React.FC = () => {
         {mapManager.map((item, { key, onUpdate, onRemove, isFirst }) => (
           <Box key={key}>
             {!isFirst && <Divider />}
-            <Set set={item} source={source} onUpdate={onUpdate} onRemove={onRemove} removeDisabled={mapManager.size <= 1} />
+            <Set
+              set={item}
+              source={source}
+              onUpdate={onUpdate}
+              onRemove={onRemove}
+              removeDisabled={mapManager.size <= 1}
+            />
           </Box>
         ))}
       </SectionV2.Content>

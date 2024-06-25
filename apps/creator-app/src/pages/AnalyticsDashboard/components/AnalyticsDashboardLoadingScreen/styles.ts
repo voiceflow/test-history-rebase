@@ -9,9 +9,12 @@ interface BlockingPageProps {
 
 export const BlockingPage = styled(Box.FlexCenter)<BlockingPageProps>`
   top: ${({ theme, isNewLayout }) => (isNewLayout ? theme.components.header.newHeight : 135)}px;
-  left: ${({ theme, isNewLayout }) => (isNewLayout ? theme.components.sidebarIconMenu.newWidth : theme.components.sidebarIconMenu.width)}px;
+  left: ${({ theme, isNewLayout }) =>
+    isNewLayout ? theme.components.sidebarIconMenu.newWidth : theme.components.sidebarIconMenu.width}px;
   width: calc(
-    100% - ${({ theme, isNewLayout }) => (isNewLayout ? theme.components.sidebarIconMenu.newWidth : theme.components.sidebarIconMenu.width)}px
+    100% -
+      ${({ theme, isNewLayout }) =>
+        isNewLayout ? theme.components.sidebarIconMenu.newWidth : theme.components.sidebarIconMenu.width}px
   );
   height: calc(100% - ${({ theme, isNewLayout }) => (isNewLayout ? theme.components.header.newHeight : 135)}px);
   position: absolute;

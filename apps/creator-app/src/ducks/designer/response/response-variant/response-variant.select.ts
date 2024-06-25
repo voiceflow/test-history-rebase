@@ -9,10 +9,19 @@ import { STATE_KEY } from './response-variant.state';
 
 const root = createSubSelector(responseRoot, STATE_KEY);
 
-export const { hasOneByID, hasAllByIDs, oneByID, getOneByID, allByIDs, getAllByIDs, all, map, count, isEmpty } = createDesignerCRUDSelectors(root);
+export const { hasOneByID, hasAllByIDs, oneByID, getOneByID, allByIDs, getAllByIDs, all, map, count, isEmpty } =
+  createDesignerCRUDSelectors(root);
 
-export const allByDiscriminatorID = createSelector(all, responseDiscriminatorIDParamSelector, (responseDiscriminators, discriminatorID) => {
-  return !discriminatorID
-    ? []
-    : sortCreatableCMSResources(responseDiscriminators.filter((responseDiscriminator) => responseDiscriminator.discriminatorID === discriminatorID));
-});
+export const allByDiscriminatorID = createSelector(
+  all,
+  responseDiscriminatorIDParamSelector,
+  (responseDiscriminators, discriminatorID) => {
+    return !discriminatorID
+      ? []
+      : sortCreatableCMSResources(
+          responseDiscriminators.filter(
+            (responseDiscriminator) => responseDiscriminator.discriminatorID === discriminatorID
+          )
+        );
+  }
+);

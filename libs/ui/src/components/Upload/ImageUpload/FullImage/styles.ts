@@ -13,7 +13,8 @@ const calculateRatio = (ratio?: number) =>
 
 export const Container = styled(Flex)<{ isActive?: boolean; autoHeight?: boolean; height?: number }>`
   border-radius: 5px;
-  height: ${({ autoHeight, height, theme }) => (autoHeight ? 'auto' : `${height || theme.components.imageUpload.height}px`)};
+  height: ${({ autoHeight, height, theme }) =>
+    autoHeight ? 'auto' : `${height || theme.components.imageUpload.height}px`};
 
   position: relative;
   color: #62778c;

@@ -1,10 +1,12 @@
-import { Nullable, Utils } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import { swallowEvent, useSetup } from '@voiceflow/ui';
 import React from 'react';
 
 import { useRAF, useResizeObserver } from '@/hooks';
 
-import { Container, PanelPropsInjected } from './components';
+import type { PanelPropsInjected } from './components';
+import { Container } from './components';
 
 export { Divider as ResizableDivider, Panel as ResizablePanel } from './components';
 
@@ -16,7 +18,13 @@ interface ResizableProps {
   onResizeStart?: () => void;
 }
 
-const Resizable = ({ children, onResized, renderDivider, onResizeEnd, onResizeStart }: ResizableProps): React.ReactElement<any, any> => {
+const Resizable = ({
+  children,
+  onResized,
+  renderDivider,
+  onResizeEnd,
+  onResizeStart,
+}: ResizableProps): React.ReactElement<any, any> => {
   const heightsRef = React.useRef<number[]>([]);
   const childrenRefs = React.useRef<Record<number, Nullable<HTMLDivElement>>>({});
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -41,6 +49,7 @@ const Resizable = ({ children, onResized, renderDivider, onResizeEnd, onResizeSt
     let prevNextCollapsed = collapsedChildren[index + 1] ?? false;
     let prevCurrentCollapsed = collapsedChildren[index];
 
+    // eslint-disable-next-line sonarjs/cognitive-complexity
     return (currentClientY: number): void => {
       const diffPX = currentClientY - clientY;
       const diff = (diffPX / containerHeight) * 100;
@@ -50,7 +59,8 @@ const Resizable = ({ children, onResized, renderDivider, onResizeEnd, onResizeSt
       const currentHeightPX = containerHeight * (currentHeight / 100);
 
       const canResizeNext = nextNode && nextChildren && nextHeightPX >= (nextChildren.props.minHeight ?? 0);
-      const canResizeCurrent = currentNode && currentChildren && currentHeightPX >= (currentChildren.props.minHeight ?? 0);
+      const canResizeCurrent =
+        currentNode && currentChildren && currentHeightPX >= (currentChildren.props.minHeight ?? 0);
 
       let nextMaxHeightStyle: Nullable<number> = null;
       let currentMaxHeightStyle: Nullable<number> = null;
@@ -64,10 +74,14 @@ const Resizable = ({ children, onResized, renderDivider, onResizeEnd, onResizeSt
 
         if (prevCurrentCollapsed) {
           prevCurrentCollapsed = false;
-          setCollapsedChildren((prevCollapsedChildren) => Utils.array.replace(prevCollapsedChildren, index, prevCurrentCollapsed));
+          setCollapsedChildren((prevCollapsedChildren) =>
+            Utils.array.replace(prevCollapsedChildren, index, prevCurrentCollapsed)
+          );
         } else if (prevNextCollapsed) {
           prevNextCollapsed = false;
-          setCollapsedChildren((prevCollapsedChildren) => Utils.array.replace(prevCollapsedChildren, index + 1, prevNextCollapsed));
+          setCollapsedChildren((prevCollapsedChildren) =>
+            Utils.array.replace(prevCollapsedChildren, index + 1, prevNextCollapsed)
+          );
         }
       } else if (!canResizeCurrent && !prevCurrentCollapsed) {
         if (currentNode && nextNode) {
@@ -84,7 +98,9 @@ const Resizable = ({ children, onResized, renderDivider, onResizeEnd, onResizeSt
         }
 
         prevCurrentCollapsed = true;
-        setCollapsedChildren((prevCollapsedChildren) => Utils.array.replace(prevCollapsedChildren, index, prevCurrentCollapsed));
+        setCollapsedChildren((prevCollapsedChildren) =>
+          Utils.array.replace(prevCollapsedChildren, index, prevCurrentCollapsed)
+        );
       } else if (!canResizeNext && !prevNextCollapsed) {
         if (currentNode && nextNode) {
           const minDiffPX = initialNextHeightPX - (nextChildren.props.minHeight ?? 0);
@@ -100,7 +116,9 @@ const Resizable = ({ children, onResized, renderDivider, onResizeEnd, onResizeSt
         }
 
         prevNextCollapsed = true;
-        setCollapsedChildren((prevCollapsedChildren) => Utils.array.replace(prevCollapsedChildren, index + 1, prevNextCollapsed));
+        setCollapsedChildren((prevCollapsedChildren) =>
+          Utils.array.replace(prevCollapsedChildren, index + 1, prevNextCollapsed)
+        );
       }
 
       updateStylesScheduler(() => {
@@ -143,7 +161,9 @@ const Resizable = ({ children, onResized, renderDivider, onResizeEnd, onResizeSt
 
     setContainerHeight(containerHeight);
     setCollapsedChildren(
-      heightsRef.current.map((height, index) => (children[index].props.minHeight ?? 0) >= Math.ceil(containerHeight * (height / 100)))
+      heightsRef.current.map(
+        (height, index) => (children[index].props.minHeight ?? 0) >= Math.ceil(containerHeight * (height / 100))
+      )
     );
   };
 
@@ -174,7 +194,9 @@ const Resizable = ({ children, onResized, renderDivider, onResizeEnd, onResizeSt
               collapsed: collapsedChildren[index],
               withDivider: index !== childrenCount - 1,
               renderDivider,
-              onDividerMouseDown: swallowEvent<React.MouseEvent<HTMLDivElement>>((event) => onDividerMouseDown(index, event)),
+              onDividerMouseDown: swallowEvent<React.MouseEvent<HTMLDivElement>>((event) =>
+                onDividerMouseDown(index, event)
+              ),
             })}
           </React.Fragment>
         ))}

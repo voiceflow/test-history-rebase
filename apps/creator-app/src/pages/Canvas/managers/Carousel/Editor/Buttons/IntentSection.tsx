@@ -1,11 +1,11 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, SectionV2, StrengthGauge } from '@voiceflow/ui';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
 import React from 'react';
 
 import IntentSelect from '@/components/IntentSelect';
 import { useIntent } from '@/hooks/intent.hook';
-import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
+import type { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 
 interface IntentsSectionProps<Data, BuiltInPorts extends Realtime.BuiltInPortRecord> {
   intentID?: string | null;
@@ -37,7 +37,11 @@ const IntentsSection = <Data, BuiltInPorts extends Realtime.BuiltInPortRecord>({
           Attach intent
           {intentID && (
             <Box.Flex pl={16}>
-              <StrengthGauge width={36} level={strengthLevel} tooltipLabelMap={{ [StrengthGauge.Level.NOT_SET]: 'No utterances' }} />
+              <StrengthGauge
+                width={36}
+                level={strengthLevel}
+                tooltipLabelMap={{ [StrengthGauge.Level.NOT_SET]: 'No utterances' }}
+              />
             </Box.Flex>
           )}
         </SectionV2.Title>

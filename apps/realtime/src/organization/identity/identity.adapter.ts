@@ -1,6 +1,6 @@
-import { Organization, OrganizationMember, UserRole } from '@voiceflow/dtos';
+import type { Organization, OrganizationMember, UserRole } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import * as Identity from '@voiceflow/sdk-identity';
+import type * as Identity from '@voiceflow/sdk-identity';
 import { createMultiAdapter, notImplementedAdapter } from 'bidirectional-adapter';
 import uniqBy from 'lodash/uniqBy.js';
 

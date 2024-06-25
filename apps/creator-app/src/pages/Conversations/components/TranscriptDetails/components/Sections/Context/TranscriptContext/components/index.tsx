@@ -25,7 +25,8 @@ export const StyledLogo = styled.div<{ isCustom: boolean }>`
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background-image: ${({ isCustom }) => (isCustom ? 'none' : 'linear-gradient(to bottom, rgba(19, 33, 68, 0.85), #132144)')};
+  background-image: ${({ isCustom }) =>
+    isCustom ? 'none' : 'linear-gradient(to bottom, rgba(19, 33, 68, 0.85), #132144)'};
 
   & > * > svg {
     margin-left: 10px;

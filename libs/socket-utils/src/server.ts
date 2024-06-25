@@ -1,7 +1,7 @@
 import * as Logux from '@logux/server';
 import { Environment } from '@voiceflow/common';
-import { Logger } from '@voiceflow/logger';
-import { Action, AnyAction } from 'typescript-fsa';
+import type { Logger } from '@voiceflow/logger';
+import type { Action, AnyAction } from 'typescript-fsa';
 
 const SUBPROTOCOL = '1.0.0';
 const SUPPORT_RANGE = '1.x';
@@ -21,7 +21,16 @@ export interface SocketServerOptions {
 }
 
 export class SocketServer extends Logux.Server {
-  constructor({ port, cwd, env, logger, timeout, supports = SUPPORT_RANGE, subprotocol = SUBPROTOCOL, loggerIgnoredActions }: SocketServerOptions) {
+  constructor({
+    port,
+    cwd,
+    env,
+    logger,
+    timeout,
+    supports = SUPPORT_RANGE,
+    subprotocol = SUBPROTOCOL,
+    loggerIgnoredActions,
+  }: SocketServerOptions) {
     super({
       root: cwd,
       host: '0.0.0.0',
@@ -36,7 +45,9 @@ export class SocketServer extends Logux.Server {
           if ([...(loggerIgnoredActions ?? []), 'logux/processed'].includes(details?.action?.type)) return;
           if (INFO_BYPASS.has(message)) return;
 
-          logger.info(env === Environment.PRODUCTION ? { message, details } : `${message}${actionType && ': '}${actionType}`);
+          logger.info(
+            env === Environment.PRODUCTION ? { message, details } : `${message}${actionType && ': '}${actionType}`
+          );
         },
         warn: (details, message) => {
           if (WARNING_BYPASS.has(message)) return;

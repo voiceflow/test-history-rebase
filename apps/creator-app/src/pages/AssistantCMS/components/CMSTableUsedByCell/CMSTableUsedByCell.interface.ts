@@ -1,4 +1,4 @@
-import { CMSTableUsedByCellItemType } from './CMSTableUsedByCellItemType.enum';
+import type { CMSTableUsedByCellItemType } from './CMSTableUsedByCellItemType.enum';
 
 export interface CMSTableUsedByCellItem {
   id: string;

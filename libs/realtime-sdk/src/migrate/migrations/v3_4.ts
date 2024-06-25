@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { BaseModels } from '@voiceflow/base-types';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 /**
  * adds missing components to versions component list so all components are visible in the menu

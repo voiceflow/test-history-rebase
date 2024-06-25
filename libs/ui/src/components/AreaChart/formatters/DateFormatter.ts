@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 
-import { AreaChartFormatter } from '../types';
+import type { AreaChartFormatter } from '../types';
 
 const createDateFormatter = ({
   styleXAxis,

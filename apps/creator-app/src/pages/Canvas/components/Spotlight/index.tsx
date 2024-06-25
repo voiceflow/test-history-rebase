@@ -1,14 +1,15 @@
 import { Utils } from '@voiceflow/common';
 import { Flex, KeyName, preventDefault, SvgIcon, useDidUpdateEffect } from '@voiceflow/ui';
 import React from 'react';
-import { SelectInstance } from 'react-select';
+import type { SelectInstance } from 'react-select';
 
 import { useCanvasNodeFilter } from '@/hooks/canvas-node.hook';
 import { useActiveProjectConfig } from '@/hooks/platformConfig';
 import { useTrackingEvents } from '@/hooks/tracking';
 import { EngineContext, SpotlightContext } from '@/pages/Canvas/contexts';
 import { useManager } from '@/pages/Canvas/managers/utils';
-import { getStepSections, StepItem } from '@/pages/Project/components/StepMenu/constants';
+import type { StepItem } from '@/pages/Project/components/StepMenu/constants';
+import { getStepSections } from '@/pages/Project/components/StepMenu/constants';
 import { Identifier } from '@/styles/constants';
 import { withKeyPress } from '@/utils/dom';
 

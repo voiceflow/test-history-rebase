@@ -1,8 +1,8 @@
 import { INVITE_KEY, MEMBER_KEY } from '@realtime-sdk/constants';
-import { AnyWorkspaceMember, PendingWorkspaceMember } from '@realtime-sdk/models';
-import { BaseCreatorPayload, BaseWorkspacePayload } from '@realtime-sdk/types';
+import type { AnyWorkspaceMember, PendingWorkspaceMember } from '@realtime-sdk/models';
+import type { BaseCreatorPayload, BaseWorkspacePayload } from '@realtime-sdk/types';
 import { Utils } from '@voiceflow/common';
-import { UserRole } from '@voiceflow/dtos';
+import type { UserRole } from '@voiceflow/dtos';
 
 import { workspaceType } from './utils';
 

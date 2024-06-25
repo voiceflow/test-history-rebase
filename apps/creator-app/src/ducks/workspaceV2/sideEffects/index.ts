@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { UserRole } from '@voiceflow/dtos';
+import type { UserRole } from '@voiceflow/dtos';
 import { PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast } from '@voiceflow/ui';
@@ -12,7 +12,7 @@ import * as Session from '@/ducks/session';
 import * as Tracking from '@/ducks/tracking';
 import { waitAsync } from '@/ducks/utils';
 import { openError } from '@/ModalsV2/utils';
-import { SyncThunk, Thunk } from '@/store/types';
+import type { SyncThunk, Thunk } from '@/store/types';
 import { getErrorMessage } from '@/utils/error';
 import { AsyncActionError } from '@/utils/logux';
 

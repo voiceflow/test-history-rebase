@@ -1,12 +1,12 @@
 /* eslint-disable max-classes-per-file */
 
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { BaseContextData, Context, Resend } from '@voiceflow/socket-utils';
+import type { BaseContextData, Context, Resend } from '@voiceflow/socket-utils';
 import type { Action } from 'typescript-fsa';
 
 import { AbstractActionControl } from '@/legacy/actions/utils';
 import { AbstractVersionResourceControl } from '@/legacy/actions/version/utils';
-import { WorkspaceContextData } from '@/legacy/actions/workspace/utils';
+import type { WorkspaceContextData } from '@/legacy/actions/workspace/utils';
 
 export abstract class AbstractDiagramActionControl<
   P extends Realtime.BaseDiagramPayload,

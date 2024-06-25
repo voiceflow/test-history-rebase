@@ -1,13 +1,13 @@
 import TippyTooltip from '@ui/components/TippyTooltip';
-import { Nullable } from '@voiceflow/common';
-import { UserRole } from '@voiceflow/dtos';
+import type { Nullable } from '@voiceflow/common';
+import type { UserRole } from '@voiceflow/dtos';
 import dayjs from 'dayjs';
 import React from 'react';
 
 import Row from './Row';
 import RowProjectsTooltip from './RowProjectsTooltip';
 import RowWarningTooltip from './RowWarningTooltip';
-import { Member } from './types';
+import type { Member } from './types';
 
 interface ListProps<M extends Member> {
   inset?: boolean;

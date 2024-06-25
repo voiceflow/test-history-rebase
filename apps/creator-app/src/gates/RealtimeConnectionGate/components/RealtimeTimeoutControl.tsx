@@ -38,7 +38,11 @@ const RealtimeTimeoutControl: React.FC = () => {
       <System.Snackbar.Icon icon="warning" />
 
       <System.Snackbar.Text>
-        {terminated ? <>You're offline. Restore connection to continue working</> : <>You’re offline, trying to reconnect: {countdown}</>}
+        {terminated ? (
+          <>You're offline. Restore connection to continue working</>
+        ) : (
+          <>You’re offline, trying to reconnect: {countdown}</>
+        )}
       </System.Snackbar.Text>
 
       {terminated && <System.Snackbar.Button onClick={() => window.location.reload()}>Reload</System.Snackbar.Button>}

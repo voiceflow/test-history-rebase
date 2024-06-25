@@ -11,7 +11,7 @@ import {
   withFieldLocaleCompareSort,
   withFolderSort,
 } from '../../../../contexts/CMSManager/CMSManager.util';
-import { CMSIntentSortContext } from '../../CMSIntent.interface';
+import type { CMSIntentSortContext } from '../../CMSIntent.interface';
 import { IntentTableColumn } from './CMSIntentTable.constant';
 import { CMSIntentTableConfidenceCell } from './CMSIntentTableConfidenceCell/CMSIntentTableConfidenceCell.component';
 import { CMSIntentTableUsedByCell } from './CMSIntentTableUsedByCell.component';

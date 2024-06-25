@@ -1,6 +1,6 @@
 import { BaseNode, BaseUtils } from '@voiceflow/base-types';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 /*
  * this migration transforms random nodes into randomV2s

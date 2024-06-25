@@ -53,8 +53,13 @@ const insertSingleTag = ({ tag, store, attributes }) => {
   const selection = store.get('prevSelection');
   let editorState = store.getEditorState();
 
-  // eslint-disable-next-line prefer-const
-  let { key: openTagKey, text: openTagText, content } = createOpenTag(editorState.getCurrentContent(), { tag, isSingle: true, attributes });
+  let {
+    // eslint-disable-next-line prefer-const
+    key: openTagKey,
+    // eslint-disable-next-line prefer-const
+    text: openTagText,
+    content,
+  } = createOpenTag(editorState.getCurrentContent(), { tag, isSingle: true, attributes });
 
   content = Modifier.replaceText(content, selection, openTagText, null, openTagKey);
 
@@ -67,8 +72,13 @@ const insertTagInCollapsedSelection = ({ tag, store, attributes }) => {
   let selection = store.get('prevSelection');
   let editorState = store.getEditorState();
 
-  // eslint-disable-next-line prefer-const
-  let { key: openTagKey, text: openTagText, content } = createOpenTag(editorState.getCurrentContent(), { tag, isSingle: false, attributes });
+  let {
+    // eslint-disable-next-line prefer-const
+    key: openTagKey,
+    // eslint-disable-next-line prefer-const
+    text: openTagText,
+    content,
+  } = createOpenTag(editorState.getCurrentContent(), { tag, isSingle: false, attributes });
 
   content = Modifier.insertText(content, selection, openTagText, null, openTagKey);
   editorState = EditorState.push(editorState, content, PushAction.INSERT_CHARACTERS);
@@ -115,7 +125,10 @@ const findOpenedClosedEntities = (entitiesAtSelection) => {
 
     if (type === EntityType.XML_OPEN_TAG) {
       openEntities.push(data);
-    } else if (type === EntityType.XML_CLOSE_TAG && openEntities[openEntities.length - 1]?.entity.getData().tag === tag) {
+    } else if (
+      type === EntityType.XML_CLOSE_TAG &&
+      openEntities[openEntities.length - 1]?.entity.getData().tag === tag
+    ) {
       openEntities.pop();
     } else {
       closeEntities.push(data);
@@ -272,7 +285,10 @@ const insertTagInSelection = ({ tag, store, attributes }) => {
   let editorState = store.getEditorState();
   let content = editorState.getCurrentContent();
 
-  const entitiesAtSelection = findEntitiesAndRangesAtSelection(editorState, selection, [EntityType.XML_OPEN_TAG, EntityType.XML_CLOSE_TAG]);
+  const entitiesAtSelection = findEntitiesAndRangesAtSelection(editorState, selection, [
+    EntityType.XML_OPEN_TAG,
+    EntityType.XML_CLOSE_TAG,
+  ]);
 
   const { openEntities, closeEntities } = findOpenedClosedEntities(entitiesAtSelection);
 

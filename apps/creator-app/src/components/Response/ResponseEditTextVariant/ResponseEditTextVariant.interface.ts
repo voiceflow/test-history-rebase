@@ -5,7 +5,14 @@ import type { IResponseTextVariantLayout } from '../ResponseTextVariantLayout/Re
 export interface IResponseEditTextVariant
   extends Omit<
     IResponseTextVariantLayout,
-    'value' | 'children' | 'variantType' | 'onValueChange' | 'settingsButton' | 'attachmentsList' | 'attachmentButton' | 'onChangeVariantType'
+    | 'value'
+    | 'children'
+    | 'variantType'
+    | 'onValueChange'
+    | 'settingsButton'
+    | 'attachmentsList'
+    | 'attachmentButton'
+    | 'onChangeVariantType'
   > {
   textResponseVariant: TextResponseVariant;
 }

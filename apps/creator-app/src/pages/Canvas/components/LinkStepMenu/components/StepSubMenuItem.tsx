@@ -1,5 +1,6 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { stopPropagation, SvgIconTypes, usePopper } from '@voiceflow/ui';
+import type { SvgIconTypes } from '@voiceflow/ui';
+import { stopPropagation, usePopper } from '@voiceflow/ui';
 import React from 'react';
 
 import { StepMenuType } from '@/constants';

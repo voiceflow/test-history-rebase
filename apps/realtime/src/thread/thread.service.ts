@@ -58,7 +58,9 @@ export class ThreadService extends MutableService<ThreadORM> {
     const result = await this.postgresEM.transactional(async () => {
       const threads = await this.createMany(data.map((thread) => Utils.object.omit(thread, ['comments'])));
       const threadComments = await this.threadComment.createMany(
-        data.flatMap((thread, index) => thread.comments?.map((comment) => ({ ...comment, threadID: threads[index].id })) ?? [])
+        data.flatMap(
+          (thread, index) => thread.comments?.map((comment) => ({ ...comment, threadID: threads[index].id })) ?? []
+        )
       );
 
       return {
@@ -88,7 +90,10 @@ export class ThreadService extends MutableService<ThreadORM> {
     ]);
   }
 
-  async createManyAndBroadcast(data: ThreadCreateData[], meta: { auth: AuthMetaPayload; context: LegacyVersionActionContext }) {
+  async createManyAndBroadcast(
+    data: ThreadCreateData[],
+    meta: { auth: AuthMetaPayload; context: LegacyVersionActionContext }
+  ) {
     const result = await this.createManyAndSync(data);
 
     await this.broadcastAddMany(result, meta);
@@ -106,13 +111,22 @@ export class ThreadService extends MutableService<ThreadORM> {
     };
   }
 
-  async deleteManyWithRelations({ threads, threadComments }: { threads: ThreadObject[]; threadComments: ThreadCommentObject[] }) {
+  async deleteManyWithRelations({
+    threads,
+    threadComments,
+  }: {
+    threads: ThreadObject[];
+    threadComments: ThreadCommentObject[];
+  }) {
     await this.threadComment.deleteMany(toPostgresEntityIDs(threadComments));
     await this.deleteMany(toPostgresEntityIDs(threads));
   }
 
   async deleteManyAndSync(threadIDs: number[]) {
-    const [threads, relations] = await Promise.all([this.findMany(threadIDs), this.collectRelationsToDelete(threadIDs)]);
+    const [threads, relations] = await Promise.all([
+      this.findMany(threadIDs),
+      this.collectRelationsToDelete(threadIDs),
+    ]);
 
     await this.deleteManyWithRelations({ ...relations, threads });
 
@@ -156,19 +170,27 @@ export class ThreadService extends MutableService<ThreadORM> {
     ]);
   }
 
-  async deleteManyAndBroadcast(ids: number[], meta: { auth: AuthMetaPayload; context: LegacyVersionActionContext }): Promise<void> {
+  async deleteManyAndBroadcast(
+    ids: number[],
+    meta: { auth: AuthMetaPayload; context: LegacyVersionActionContext }
+  ): Promise<void> {
     const result = await this.deleteManyAndSync(ids);
 
     await this.broadcastDeleteMany(result, meta);
   }
 
-  async deleteManyByDiagramsAndBroadcast(diagramIDs: string[], meta: { auth: AuthMetaPayload; context: LegacyVersionActionContext }): Promise<void> {
+  async deleteManyByDiagramsAndBroadcast(
+    diagramIDs: string[],
+    meta: { auth: AuthMetaPayload; context: LegacyVersionActionContext }
+  ): Promise<void> {
     const result = await this.deleteManyByDiagramsAndSync(diagramIDs);
 
     await this.broadcastDeleteMany(result, meta);
   }
 
   async moveMany(data: Record<string, [number, number]>) {
-    await Promise.all(Object.entries(data).map(([id, position]) => this.patchOne(this.threadSerializer.decodeID(id), { position })));
+    await Promise.all(
+      Object.entries(data).map(([id, position]) => this.patchOne(this.threadSerializer.decodeID(id), { position }))
+    );
   }
 }

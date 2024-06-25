@@ -5,5 +5,5 @@ import { PostgresObjectIDMutableORM } from './postgres-object-id-mutable.orm';
 
 export abstract class PostgresCMSMutableORM<
   BaseEntity extends Omit<PostgresCMSCreatableEntity, typeof DEFAULT_OR_NULL_COLUMN>,
-  DiscriminatorEntity extends Omit<BaseEntity, typeof DEFAULT_OR_NULL_COLUMN> = BaseEntity
+  DiscriminatorEntity extends Omit<BaseEntity, typeof DEFAULT_OR_NULL_COLUMN> = BaseEntity,
 > extends PostgresObjectIDMutableORM<BaseEntity, DiscriminatorEntity> {}

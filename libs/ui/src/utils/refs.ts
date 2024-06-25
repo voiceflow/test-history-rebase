@@ -1,4 +1,4 @@
-import { Nullish } from '@voiceflow/common';
+import type { Nullish } from '@voiceflow/common';
 import type { Ref } from 'react';
 
 export const setRef = <T>(ref: Nullish<Ref<T | null>>, value: T | null): void => {

@@ -33,7 +33,9 @@ const MemberIcon = styled.div<MemberIconProps>`
           box-shadow: 0 0 0 2px transparent;
         `
       : css`
-          box-shadow: 0 0 0 2px #fff, 0 1px 2px 2px rgba(17, 49, 96, 0.16);
+          box-shadow:
+            0 0 0 2px #fff,
+            0 1px 2px 2px rgba(17, 49, 96, 0.16);
         `}
   ${({ small }) =>
     small &&

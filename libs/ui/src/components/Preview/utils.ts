@@ -1,6 +1,6 @@
-import React from 'react';
+import type React from 'react';
 
-import { JSColorStyle } from './types';
+import type { JSColorStyle } from './types';
 
 export const getJSCodeStyle = (options: { colors: JSColorStyle }): Record<string, React.CSSProperties> => ({
   hljs: {

@@ -13,7 +13,13 @@ export const CMSEntityHeader: React.FC = () => {
   return (
     <CMSHeader
       searchPlaceholder="Search entities"
-      rightActions={<Header.Button.Primary label="New entity" onClick={() => onCreate()} testID={tid(HEADER_TEST_ID, 'new-entity')} />}
+      rightActions={
+        <Header.Button.Primary
+          label="New entity"
+          onClick={() => onCreate()}
+          testID={tid(HEADER_TEST_ID, 'new-entity')}
+        />
+      }
     />
   );
 };

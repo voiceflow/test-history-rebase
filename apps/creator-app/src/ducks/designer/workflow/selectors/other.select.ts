@@ -1,4 +1,4 @@
-import { Workflow } from '@voiceflow/dtos';
+import type { Workflow } from '@voiceflow/dtos';
 import { createSelector } from 'reselect';
 
 import { diagramIDParamSelector } from '@/ducks/utils';

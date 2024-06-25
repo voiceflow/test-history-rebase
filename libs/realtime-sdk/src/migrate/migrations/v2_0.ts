@@ -2,10 +2,10 @@
 import * as Adapters from '@realtime-sdk/adapters';
 import { SchemaVersion } from '@realtime-sdk/schema-version/schema-version.enum';
 import * as Utils from '@realtime-sdk/utils';
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import { normalize } from 'normal-store';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 /**
  * this migration converts the existing port structure from an array to an object
@@ -14,7 +14,11 @@ import { Transform } from './types';
  */
 const migrateToV2: Transform = ({ diagrams }, { project }) => {
   diagrams.forEach((dbDiagram) => {
-    const diagram = Adapters.creatorAdapter.fromDB(dbDiagram, { platform: project.platform, projectType: project.type, context: {} });
+    const diagram = Adapters.creatorAdapter.fromDB(dbDiagram, {
+      platform: project.platform,
+      projectType: project.type,
+      context: {},
+    });
     const nodes = normalize(diagram.nodes);
 
     Object.values(dbDiagram.nodes).forEach((dbNode) => {
@@ -29,7 +33,11 @@ const migrateToV2: Transform = ({ diagrams }, { project }) => {
         const data = diagram.data[dbNode.nodeID];
 
         // using the ports adapters to reliable transform to the new ports schema
-        const ports = Adapters.stepPortsAdapter.fromDB(dbNode.data, { dbNode, nodeType: node.type, platform: project.platform });
+        const ports = Adapters.stepPortsAdapter.fromDB(dbNode.data, {
+          dbNode,
+          nodeType: node.type,
+          platform: project.platform,
+        });
         const { portsV2 } = Adapters.stepPortsAdapter.toDB(ports, {
           node,
           data,

@@ -4,7 +4,7 @@ import React from 'react';
 import { useActiveProjectConfig } from '@/hooks';
 import { ChipAPIProvider } from '@/pages/Canvas/components/Chip';
 import { EngineContext, ManagerContext } from '@/pages/Canvas/contexts';
-import { CombinedAPI } from '@/pages/Canvas/types';
+import type { CombinedAPI } from '@/pages/Canvas/types';
 
 import { useCombined } from './hooks';
 import { useChipApi, useChipStepAPI } from './NodeChipStep/hooks';
@@ -21,11 +21,24 @@ const NodeChipStart = React.forwardRef<CombinedAPI>((_, ref) => {
 
   const chipElmRef = React.useRef<HTMLElement>(null);
 
-  const { palette, onClick, onDropRef, nodeEntity, isHovered, wrapElement, combinedRef, hoverHandlers, hasLinkWarning } = useCombined({
+  const {
+    palette,
+    onClick,
+    onDropRef,
+    nodeEntity,
+    isHovered,
+    wrapElement,
+    combinedRef,
+    hoverHandlers,
+    hasLinkWarning,
+  } = useCombined({
     defaultBlockColor: DEFAULT_SCHEME_COLORS[ColorScheme.BLACK].standardColor,
   });
 
-  const onRename = React.useCallback((label: string) => engine.node.updateData(nodeEntity.nodeID, { label }), [engine, nodeEntity.nodeID]);
+  const onRename = React.useCallback(
+    (label: string) => engine.node.updateData(nodeEntity.nodeID, { label }),
+    [engine, nodeEntity.nodeID]
+  );
 
   const { data, ports } = nodeEntity.useState((e) => {
     const { node, data } = e.resolve();
@@ -70,7 +83,14 @@ const NodeChipStart = React.forwardRef<CombinedAPI>((_, ref) => {
       <NodeLifecycle />
 
       <ChipAPIProvider value={chipStepApi}>
-        <Chip data={data as any} ports={ports as any} engine={engine} nluType={nlu} platform={platform} projectType={projectType} />
+        <Chip
+          data={data as any}
+          ports={ports as any}
+          engine={engine}
+          nluType={nlu}
+          platform={platform}
+          projectType={projectType}
+        />
       </ChipAPIProvider>
     </>
   );

@@ -2,8 +2,14 @@ import { tid } from '@voiceflow/style';
 import { Box, Chunk, Collapsible, CollapsibleHeader, CollapsibleHeaderButton } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { chunkBoxStyles, contentStyles, dividerStyles, headerStyles, sectionBox } from './CMSKnowledgeBaseEditorChunks.css';
-import { ICMSKnowledgeBaseEditorChunks } from './CMSKnowledgeBaseEditorChunks.interface';
+import {
+  chunkBoxStyles,
+  contentStyles,
+  dividerStyles,
+  headerStyles,
+  sectionBox,
+} from './CMSKnowledgeBaseEditorChunks.css';
+import type { ICMSKnowledgeBaseEditorChunks } from './CMSKnowledgeBaseEditorChunks.interface';
 
 export const CMSKnowledgeBaseEditorChunks: React.FC<ICMSKnowledgeBaseEditorChunks> = ({ chunks, disabled }) => {
   const TEST_ID = tid('document', 'chunks');
@@ -29,7 +35,9 @@ export const CMSKnowledgeBaseEditorChunks: React.FC<ICMSKnowledgeBaseEditorChunk
             isSection
             testID={tid(TEST_ID, 'header')}
           >
-            {({ isOpen }) => <CollapsibleHeaderButton disabled={disabled} isOpen={isOpen} testID={tid(TEST_ID, 'toggle-collapsed')} />}
+            {({ isOpen }) => (
+              <CollapsibleHeaderButton disabled={disabled} isOpen={isOpen} testID={tid(TEST_ID, 'toggle-collapsed')} />
+            )}
           </CollapsibleHeader>
         }
       >

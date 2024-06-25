@@ -43,7 +43,9 @@ export const useMarkupWithVariables = ({
   const variableCreateModal = useVariableCreateModal();
 
   const variablesMap = useSelector(
-    (state) => pluginOptions?.[SlateEditor.PluginType.VARIABLE]?.variablesMap ?? Designer.selectors.uniqueSlateEntitiesAndVariablesMapByID(state)
+    (state) =>
+      pluginOptions?.[SlateEditor.PluginType.VARIABLE]?.variablesMap ??
+      Designer.selectors.uniqueSlateEntitiesAndVariablesMapByID(state)
   );
 
   const input = useInput({

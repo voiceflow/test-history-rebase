@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Divider, SectionV2, stopPropagation, System } from '@voiceflow/ui';
 import React from 'react';
 
@@ -7,7 +7,7 @@ import { withRequiredEngine } from '@/contexts/EventualEngineContext';
 import { useTrackingEvents } from '@/hooks';
 import { Content } from '@/pages/Canvas/components/Editor';
 import type Engine from '@/pages/Canvas/engine';
-import { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
+import type { NodeEditorPropsType } from '@/pages/Canvas/managers/types';
 
 import { BackgroundColor, TextAligns, TextStyles } from './components';
 

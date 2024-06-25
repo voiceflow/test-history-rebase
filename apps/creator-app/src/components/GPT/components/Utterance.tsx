@@ -1,5 +1,5 @@
 import composeRef from '@seznam/compose-react-refs';
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import { Box, SectionV2, stopPropagation, useDidUpdateEffect, usePopper } from '@voiceflow/ui';
 import React from 'react';
 
@@ -20,8 +20,20 @@ interface GPTUtteranceProps {
   activeIndex?: number;
 }
 
-const GPTUtterance: React.FC<GPTUtteranceProps> = ({ index, input, onFocus, isActive, onChange, onReject, slots, activeIndex }) => {
-  const [ref] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: isActive, options: { block: 'nearest' } }, [isActive, activeIndex]);
+const GPTUtterance: React.FC<GPTUtteranceProps> = ({
+  index,
+  input,
+  onFocus,
+  isActive,
+  onChange,
+  onReject,
+  slots,
+  activeIndex,
+}) => {
+  const [ref] = useAutoScrollNodeIntoView<HTMLDivElement>({ condition: isActive, options: { block: 'nearest' } }, [
+    isActive,
+    activeIndex,
+  ]);
 
   const popper = usePopper({
     placement: 'left-start',
@@ -42,7 +54,15 @@ const GPTUtterance: React.FC<GPTUtteranceProps> = ({ index, input, onFocus, isAc
     <Box ref={composeRef<HTMLDivElement>(ref, popper.setReferenceElement)} onClick={() => onFocus()}>
       <SectionV2.ListItem action={<SectionV2.RemoveButton onClick={stopPropagation(onReject)} />}>
         <Box width="100%" opacity={isActive ? 1 : 0.5}>
-          <Utterance space slots={slots} value={input.text} isActive={isActive} onBlur={onChange} onEnterPress={onChange} creatable={false} />
+          <Utterance
+            space
+            slots={slots}
+            value={input.text}
+            isActive={isActive}
+            onBlur={onChange}
+            onEnterPress={onChange}
+            creatable={false}
+          />
         </Box>
       </SectionV2.ListItem>
 

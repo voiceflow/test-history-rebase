@@ -1,4 +1,4 @@
-import { Intent, UtteranceText } from '@voiceflow/dtos';
+import type { Intent, UtteranceText } from '@voiceflow/dtos';
 
 export interface IIntentEditUtterancesSection {
   intent: Intent;

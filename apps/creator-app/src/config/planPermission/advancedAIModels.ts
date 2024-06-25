@@ -1,4 +1,4 @@
-import { AIModel } from '@voiceflow/dtos';
+import type { AIModel } from '@voiceflow/dtos';
 import { PlanType } from '@voiceflow/internal';
 
 import { AI_MODEL_CONFIG_MAP } from '@/config/ai-model';
@@ -7,7 +7,7 @@ import { PRO_PLUS_PLANS } from '@/constants/plans';
 import * as Tracking from '@/ducks/tracking';
 import { getUpgradeModalProps } from '@/utils/upgrade';
 
-import { UpgradeModalPlanPermission } from './types';
+import type { UpgradeModalPlanPermission } from './types';
 
 export interface Data {
   modelType: AIModel;

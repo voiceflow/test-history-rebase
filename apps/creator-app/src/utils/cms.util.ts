@@ -9,4 +9,6 @@ export const getFolderScopeLabel = (name: string) =>
     .otherwise(() => name);
 
 export const sortCreatableCMSResources = <T extends { id: string; createdAt: string }>(array: T[]) =>
-  [...array].sort((l, r) => new Date(r.createdAt).getTime() - new Date(l.createdAt).getTime() || r.id.localeCompare(l.id));
+  [...array].sort(
+    (l, r) => new Date(r.createdAt).getTime() - new Date(l.createdAt).getTime() || r.id.localeCompare(l.id)
+  );

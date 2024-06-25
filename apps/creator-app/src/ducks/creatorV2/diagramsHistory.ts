@@ -1,9 +1,10 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { LOCATION_CHANGE, LocationChangeAction } from 'connected-react-router';
+import type { LocationChangeAction } from 'connected-react-router';
+import { LOCATION_CHANGE } from 'connected-react-router';
 import { createSelector } from 'reselect';
 
 import { createAction, createSubSelector } from '@/ducks/utils';
-import { Action, Reducer, RootReducer } from '@/store/types';
+import type { Action, Reducer, RootReducer } from '@/store/types';
 
 import { creatorStateSelector } from './selectors/base';
 
@@ -31,14 +32,16 @@ type AnyDiagramsHistoryAction = DiagramsHistoryPop | DiagramsHistoryPush | Diagr
 
 // reducers
 
-export const diagramsHistoryPopReducer: Reducer<DiagramsHistoryState, DiagramsHistoryPop> = (state, _action) => state.slice(0, state.length - 1);
+export const diagramsHistoryPopReducer: Reducer<DiagramsHistoryState, DiagramsHistoryPop> = (state, _action) =>
+  state.slice(0, state.length - 1);
 
-export const diagramsHistoryPushReducer: Reducer<DiagramsHistoryState, DiagramsHistoryPush> = (state, { payload: { diagramID, nodeID } }) => [
-  ...state,
-  { diagramID, nodeID },
-];
+export const diagramsHistoryPushReducer: Reducer<DiagramsHistoryState, DiagramsHistoryPush> = (
+  state,
+  { payload: { diagramID, nodeID } }
+) => [...state, { diagramID, nodeID }];
 
 const diagramsHistoryReducer: RootReducer<DiagramsHistoryState, AnyDiagramsHistoryAction | LocationChangeAction> = (
+  // eslint-disable-next-line default-param-last
   state = INITIAL_DIAGRAMS_HISTORY_STATE,
   action
 ) => {
@@ -70,7 +73,8 @@ export { rootSelector as creatorDiagramsHistorySelector };
 
 export const previousDiagramHistoryStateSelector = createSelector(
   [rootSelector],
-  (diagramsHistory): { diagramID: string; nodeID?: string } | null => diagramsHistory[diagramsHistory.length - 1] ?? null
+  (diagramsHistory): { diagramID: string; nodeID?: string } | null =>
+    diagramsHistory[diagramsHistory.length - 1] ?? null
 );
 
 // action creators

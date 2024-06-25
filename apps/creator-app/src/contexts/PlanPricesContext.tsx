@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { BillingPeriod, PlanType } from '@voiceflow/internal';
+import type { BillingPeriod, PlanType } from '@voiceflow/internal';
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 
@@ -32,7 +32,9 @@ export const PlanPricesProvider: React.FC<React.PropsWithChildren> = ({ children
     const prices = Object.fromEntries(
       visiblePlans.map((plan) => [
         plan.id,
-        plan.pricing ? Object.fromEntries(Object.entries(plan.pricing).map(([key, { price }]) => [key, price / 100])) : null,
+        plan.pricing
+          ? Object.fromEntries(Object.entries(plan.pricing).map(([key, { price }]) => [key, price / 100]))
+          : null,
       ])
     ) as PlanPricesMap;
 

@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
@@ -34,7 +34,10 @@ const BackgroundColor: React.FC<BackgroundColorProps> = ({ nodeID, data }) => {
       collapsed={collapsed}
       contentProps={{ bottomOffset: 2.5 }}
     >
-      <BackgroundColorSlider color={data.backgroundColor ?? DEFAULT_BACKGROUND_COLOR} onChangeColor={updateBackgroundColor} />
+      <BackgroundColorSlider
+        color={data.backgroundColor ?? DEFAULT_BACKGROUND_COLOR}
+        onChangeColor={updateBackgroundColor}
+      />
     </SectionV2.ActionCollapseSection>
   );
 };

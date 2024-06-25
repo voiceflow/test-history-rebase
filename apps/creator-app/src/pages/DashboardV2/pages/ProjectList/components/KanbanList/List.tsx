@@ -1,5 +1,5 @@
 import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Button, ButtonVariant, Dropdown, IconButton, IconButtonVariant } from '@voiceflow/ui';
 import cn from 'classnames';
 import * as Normal from 'normal-store';
@@ -8,7 +8,8 @@ import React from 'react';
 import { Permission } from '@/constants/permissions';
 import { ScrollContextProvider } from '@/contexts/ScrollContext';
 import * as Account from '@/ducks/account';
-import { DragItem, DropOptions, InjectedDraggableProps, withDraggable } from '@/hocs/withDraggable';
+import type { DragItem, DropOptions, InjectedDraggableProps } from '@/hocs/withDraggable';
+import { withDraggable } from '@/hocs/withDraggable';
 import {
   useHorizontalScrollToNode,
   useLinkedState,
@@ -23,7 +24,8 @@ import { DashboardClassName } from '@/styles/constants';
 import { withEnterPress, withTargetValue } from '@/utils/dom';
 
 import DragZone from './DragZone';
-import Item, { ItemProps, OwnItemProps } from './Item';
+import type { ItemProps, OwnItemProps } from './Item';
+import Item from './Item';
 import * as S from './styled';
 
 interface DropContainerProps extends ItemProps {

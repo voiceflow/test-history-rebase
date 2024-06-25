@@ -1,5 +1,6 @@
 import React from 'react';
-import { Redirect, RedirectProps } from 'react-router-dom';
+import type { RedirectProps } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 export interface RedirectWithSearchProps extends RedirectProps {
   to: string;

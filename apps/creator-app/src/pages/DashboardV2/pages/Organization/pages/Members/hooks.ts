@@ -1,6 +1,6 @@
-import { BaseProject } from '@voiceflow/base-types';
+import type { BaseProject } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import { UserRole } from '@voiceflow/dtos';
+import type { UserRole } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { toast, useAsyncEffect } from '@voiceflow/ui';
 import * as Normal from 'normal-store';

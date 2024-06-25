@@ -1,11 +1,11 @@
-import { AlexaVersion } from '@voiceflow/alexa-types';
-import { Nullable } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config';
+import type { AlexaVersion } from '@voiceflow/alexa-types';
+import type { Nullable } from '@voiceflow/common';
+import type * as Platform from '@voiceflow/platform-config';
 
 import client from '@/client';
 import * as Errors from '@/config/errors';
 import * as Session from '@/ducks/session';
-import { Thunk } from '@/store/types';
+import type { Thunk } from '@/store/types';
 
 import { platformFactory } from './utils';
 

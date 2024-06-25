@@ -1,4 +1,5 @@
-import { Editor, IEditorAPI, Scroll } from '@voiceflow/ui-next';
+import type { IEditorAPI } from '@voiceflow/ui-next';
+import { Editor, Scroll } from '@voiceflow/ui-next';
 import React, { useRef } from 'react';
 
 import { ResponseMessageForm } from '@/components/ResponseV2/ResponseMessageForm/ResponseMessageForm.component';

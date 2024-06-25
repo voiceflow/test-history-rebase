@@ -1,11 +1,11 @@
 import { IO } from '@voiceflow/realtime-sdk';
 
-import { Client } from '@/client';
-import { MovementCalculator } from '@/components/Canvas/types';
+import type { Client } from '@/client';
+import type { MovementCalculator } from '@/components/Canvas/types';
 import { OverlayType } from '@/pages/Canvas/constants';
-import { Pair, Point } from '@/types';
+import type { Pair, Point } from '@/types';
 
-import { IORealtimeCursorEvents } from '../components/RealtimeOverlay/contexts';
+import type { IORealtimeCursorEvents } from '../components/RealtimeOverlay/contexts';
 import type Engine from '.';
 import { EngineConsumer } from './utils';
 

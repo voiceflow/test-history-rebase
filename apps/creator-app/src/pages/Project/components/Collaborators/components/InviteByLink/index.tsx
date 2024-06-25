@@ -1,6 +1,7 @@
 import { datadogRum } from '@datadog/browser-rum';
 import { Utils } from '@voiceflow/common';
-import { ProjectUserRole, UserRole } from '@voiceflow/dtos';
+import type { ProjectUserRole } from '@voiceflow/dtos';
+import { UserRole } from '@voiceflow/dtos';
 import { Button, ButtonVariant, Menu, toast, useSetup } from '@voiceflow/ui';
 import React from 'react';
 

@@ -2,7 +2,13 @@ import { setRef } from '@voiceflow/ui';
 import React from 'react';
 
 import TextEditor, { PluginType } from '@/components/TextEditor';
-import type { TextEditorBlurData, TextEditorProps, TextEditorRef, TextEditorVariable, VariablesPluginsData } from '@/components/TextEditor/types';
+import type {
+  TextEditorBlurData,
+  TextEditorProps,
+  TextEditorRef,
+  TextEditorVariable,
+  VariablesPluginsData,
+} from '@/components/TextEditor/types';
 
 const pluginsTypes = [PluginType.VARIABLES];
 
@@ -34,7 +40,18 @@ export interface UtteranceRef extends TextEditorRef {
 }
 
 const Utterance: React.ForwardRefRenderFunction<UtteranceRef, UtteranceProps> = (
-  { space, slots, creatable, noSlots, onAddSlot, characters, createInputPlaceholder = 'Search entities', onBlur, onEnterPress, ...props },
+  {
+    space,
+    slots,
+    creatable,
+    noSlots,
+    onAddSlot,
+    characters,
+    createInputPlaceholder = 'Search entities',
+    onBlur,
+    onEnterPress,
+    ...props
+  },
   ref
 ) => {
   const pluginProps = React.useMemo(
@@ -54,12 +71,14 @@ const Utterance: React.ForwardRefRenderFunction<UtteranceRef, UtteranceProps> = 
   );
 
   const onBlurCallback = React.useCallback(
-    ({ text, pluginsData }: TextEditorBlurData) => onBlur?.({ text, slots: pluginsData[PluginType.VARIABLES]?.variables || [] }),
+    ({ text, pluginsData }: TextEditorBlurData) =>
+      onBlur?.({ text, slots: pluginsData[PluginType.VARIABLES]?.variables || [] }),
     [onBlur]
   );
 
   const onEnterPressCallback = React.useCallback(
-    ({ text, pluginsData }: TextEditorBlurData) => onEnterPress?.({ text, slots: pluginsData[PluginType.VARIABLES]?.variables || [] }),
+    ({ text, pluginsData }: TextEditorBlurData) =>
+      onEnterPress?.({ text, slots: pluginsData[PluginType.VARIABLES]?.variables || [] }),
     [onEnterPress]
   );
 

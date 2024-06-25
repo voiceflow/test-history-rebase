@@ -1,4 +1,4 @@
-import { NodePortSchema } from '@voiceflow/realtime-sdk';
+import type { NodePortSchema } from '@voiceflow/realtime-sdk';
 import React from 'react';
 
 import * as History from '@/ducks/history';

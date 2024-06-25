@@ -1,4 +1,4 @@
-import { MenuItemMultilevel, MenuItemWithID } from '@voiceflow/ui';
+import type { MenuItemMultilevel, MenuItemWithID } from '@voiceflow/ui';
 
 export interface Value {
   stepID: string;

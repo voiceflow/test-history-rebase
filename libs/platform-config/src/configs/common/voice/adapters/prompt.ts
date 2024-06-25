@@ -2,15 +2,17 @@ import * as Base from '@platform-config/configs/base';
 import { Config as ConfigUtils } from '@platform-config/configs/utils';
 import { AlexaConstants } from '@voiceflow/alexa-types';
 import { Utils } from '@voiceflow/common';
-import { VoiceModels } from '@voiceflow/voice-types';
+import type { VoiceModels } from '@voiceflow/voice-types';
 import { VoiceflowConstants } from '@voiceflow/voiceflow-types';
-import { createMultiAdapter, MultiAdapter } from 'bidirectional-adapter';
+import type { MultiAdapter } from 'bidirectional-adapter';
+import { createMultiAdapter } from 'bidirectional-adapter';
 
 import * as Models from '../models';
 
 export const simple = createMultiAdapter<VoiceModels.Prompt<string>, Models.Prompt.Model>(
   (prompt) => {
-    const type = prompt.voice === VoiceflowConstants.Voice.AUDIO ? Models.Prompt.PromptType.AUDIO : Models.Prompt.PromptType.TEXT;
+    const type =
+      prompt.voice === VoiceflowConstants.Voice.AUDIO ? Models.Prompt.PromptType.AUDIO : Models.Prompt.PromptType.TEXT;
     const isText = type === Models.Prompt.PromptType.TEXT;
 
     return {
@@ -24,7 +26,10 @@ export const simple = createMultiAdapter<VoiceModels.Prompt<string>, Models.Prom
   },
   (prompt) => ({
     desc: prompt.desc ?? undefined,
-    voice: prompt.type === Models.Prompt.PromptType.AUDIO ? VoiceflowConstants.Voice.AUDIO : prompt.voice ?? AlexaConstants.Voice.ALEXA,
+    voice:
+      prompt.type === Models.Prompt.PromptType.AUDIO
+        ? VoiceflowConstants.Voice.AUDIO
+        : prompt.voice ?? AlexaConstants.Voice.ALEXA,
     content: (prompt.type === Models.Prompt.PromptType.AUDIO ? prompt.audio : prompt.content) ?? '',
   })
 );
@@ -41,4 +46,5 @@ export const validate = ConfigUtils.validateFactory<Config>(CONFIG);
 /**
  * Should not be used in the configs, only in the adapters to share the logic and fix TS voice related typings
  */
-export const simpleFactory = <Voice extends string>() => simple as unknown as MultiAdapter<VoiceModels.Prompt<Voice>, Models.Prompt.Model<Voice>>;
+export const simpleFactory = <Voice extends string>() =>
+  simple as unknown as MultiAdapter<VoiceModels.Prompt<Voice>, Models.Prompt.Model<Voice>>;

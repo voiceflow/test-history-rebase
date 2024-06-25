@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { NodeEntityContext } from '@/pages/Canvas/contexts';
-import { CombinedAPI } from '@/pages/Canvas/types';
+import type { CombinedAPI } from '@/pages/Canvas/types';
 
 import NodeBlock from './NodeBlock';
 import NodeChip from './NodeChip';

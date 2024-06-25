@@ -1,4 +1,5 @@
-import { BoxProps, boxStyles } from '@ui/components/Box';
+import type { BoxProps } from '@ui/components/Box';
+import { boxStyles } from '@ui/components/Box';
 import { BlockText } from '@ui/components/Text';
 import { css, styled } from '@ui/styles';
 

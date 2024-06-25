@@ -1,4 +1,5 @@
-import { Box, SectionV2, SvgIcon, SvgIconTypes } from '@voiceflow/ui';
+import type { SvgIconTypes } from '@voiceflow/ui';
+import { Box, SectionV2, SvgIcon } from '@voiceflow/ui';
 import React from 'react';
 
 import * as Settings from '@/components/Settings';

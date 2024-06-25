@@ -1,4 +1,4 @@
-import { Location } from 'history';
+import type { Location } from 'history';
 import { matchPath } from 'react-router-dom';
 import { createSelector } from 'reselect';
 

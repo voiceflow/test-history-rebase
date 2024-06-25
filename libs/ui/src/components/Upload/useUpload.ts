@@ -2,8 +2,9 @@ import { useEnableDisable } from '@ui/hooks';
 import React from 'react';
 
 import { UPLOAD_ERROR } from './constants';
-import { Context, UploadFileType } from './Context';
-import { AnyWithUploadProps, WithMultiUploadProps, WithSingleUploadProps } from './types';
+import type { UploadFileType } from './Context';
+import { Context } from './Context';
+import type { AnyWithUploadProps, WithMultiUploadProps, WithSingleUploadProps } from './types';
 
 export interface UploadConfig {
   fileType: UploadFileType;
@@ -13,8 +14,10 @@ export interface UploadConfig {
   onError?: (error: string) => void;
 }
 
-const isMultiUploadProps = (config: AnyWithUploadProps): config is WithMultiUploadProps => Array.isArray(config.endpoint);
-const isSingleUploadProps = (config: AnyWithUploadProps): config is WithSingleUploadProps => !Array.isArray(config.endpoint);
+const isMultiUploadProps = (config: AnyWithUploadProps): config is WithMultiUploadProps =>
+  Array.isArray(config.endpoint);
+const isSingleUploadProps = (config: AnyWithUploadProps): config is WithSingleUploadProps =>
+  !Array.isArray(config.endpoint);
 
 export type SingleUploadConfig = UploadConfig & WithSingleUploadProps;
 export type MultiUploadConfig = UploadConfig & WithMultiUploadProps;

@@ -10,7 +10,8 @@ import * as Query from '@/utils/query';
 
 import { ChatDisplay, Container, Input, Start, UserSaysContainer } from './components';
 import { usePrototype, useResetPrototype, useStartPrototype } from './hooks';
-import { BotMessageTypes, Message, MessageType, PMStatus, PrototypeAllTypes } from './types';
+import type { Message, PrototypeAllTypes } from './types';
+import { BotMessageTypes, MessageType, PMStatus } from './types';
 
 export interface PrototypeProps {
   debug: boolean;

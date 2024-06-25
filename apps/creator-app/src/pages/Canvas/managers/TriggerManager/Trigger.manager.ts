@@ -1,9 +1,9 @@
 import { TriggerNodeItemType } from '@voiceflow/dtos';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
 import { Designer } from '@/ducks';
 
-import { NodeManagerConfigV3 } from '../types';
+import type { NodeManagerConfigV3 } from '../types';
 import { TriggerChip } from './Trigger.chip';
 import { TriggerStep } from './Trigger.step';
 import { TriggerEditor } from './TriggerEditor/Trigger.editor';
@@ -19,7 +19,9 @@ export const TriggerManager: NodeManagerConfigV3<Realtime.NodeData.Trigger> = {
 
   searchIcon: 'goToBlock',
   getSearchParams: (data, state) => {
-    const intentIDs = data.items.filter((item) => item.type === TriggerNodeItemType.INTENT && item.resourceID).map((item) => item.resourceID!);
+    const intentIDs = data.items
+      .filter((item) => item.type === TriggerNodeItemType.INTENT && item.resourceID)
+      .map((item) => item.resourceID!);
     const intentNames = intentIDs.map((id) => Designer.Intent.selectors.nameByID(state, { id }));
 
     return intentNames.filter((name): name is string => !!name);

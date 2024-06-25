@@ -1,8 +1,8 @@
 /* eslint-disable max-classes-per-file */
-import { EmptyObject } from '@voiceflow/common';
-import { IO } from '@voiceflow/realtime-sdk/backend';
-import { User } from '@voiceflow/socket-utils';
-import { Socket as IOSocket } from 'socket.io';
+import type { EmptyObject } from '@voiceflow/common';
+import type { IO } from '@voiceflow/realtime-sdk/backend';
+import type { User } from '@voiceflow/socket-utils';
+import type { Socket as IOSocket } from 'socket.io';
 
 import type { IOControlOptions } from '../control';
 
@@ -36,7 +36,10 @@ export abstract class AbstractControl {
   }
 }
 
-export abstract class AbstractEvent<Ctx extends EmptyObject = EmptyObject, Data extends EmptyObject = EmptyObject> extends AbstractControl {
+export abstract class AbstractEvent<
+  Ctx extends EmptyObject = EmptyObject,
+  Data extends EmptyObject = EmptyObject,
+> extends AbstractControl {
   abstract event: IO.Event;
 
   abstract handle(socket: Socket<Ctx>, data: Partial<Data>): Promise<void>;

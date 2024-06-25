@@ -1,10 +1,11 @@
-import { NodeSystemPortType, TriggerNodeItem, TriggerNodeItemType } from '@voiceflow/dtos';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type { TriggerNodeItem } from '@voiceflow/dtos';
+import { NodeSystemPortType, TriggerNodeItemType } from '@voiceflow/dtos';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React, { useMemo } from 'react';
 
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
 import { IntentMapContext } from '@/pages/Canvas/contexts';
-import { ConnectedStep } from '@/pages/Canvas/managers/types';
+import type { ConnectedStep } from '@/pages/Canvas/managers/types';
 
 import { TRIGGER_NODE_CONFIG } from './TriggerManager.constants';
 

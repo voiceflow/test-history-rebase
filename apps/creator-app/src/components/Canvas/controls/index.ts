@@ -3,7 +3,7 @@ import { IS_MAC } from '@voiceflow/ui';
 import { ControlScheme, SCROLL_TIMEOUT } from '../constants';
 import MouseInterface from './mouse';
 import TrackpadInterface from './trackpad';
-import { ControlAction } from './types';
+import type { ControlAction } from './types';
 
 const ControlSchemeMap = {
   [ControlScheme.MOUSE]: MouseInterface,
@@ -11,6 +11,7 @@ const ControlSchemeMap = {
 };
 
 const generateControls = (
+  // eslint-disable-next-line default-param-last
   scheme: ControlScheme = IS_MAC ? ControlScheme.TRACKPAD : ControlScheme.MOUSE,
   handle: (action: ControlAction) => void,
   scrollTimeout = SCROLL_TIMEOUT

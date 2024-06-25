@@ -1,11 +1,11 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import React from 'react';
 
-import { HSLShades } from '@/constants';
+import type { HSLShades } from '@/constants';
 import { StepLabelVariant } from '@/constants/canvas';
 import Step, { Item, Section } from '@/pages/Canvas/components/Step';
 import { CustomBlockMapContext } from '@/pages/Canvas/contexts';
-import { ConnectedStep } from '@/pages/Canvas/managers/types';
+import type { ConnectedStep } from '@/pages/Canvas/managers/types';
 
 interface PointerStepProps {
   data: Realtime.NodeData<Realtime.NodeData.Pointer>;
@@ -41,7 +41,13 @@ const PointerStep: React.FC<PointerStepProps> = ({ data, ports, palette, sourceB
       {withPorts && paths.length > 0 && (
         <Section>
           {paths.map((path) => (
-            <Item key={path.portID} label={path.label} placeholder="Enter path name" portID={path.portID} multilineLabel />
+            <Item
+              key={path.portID}
+              label={path.label}
+              placeholder="Enter path name"
+              portID={path.portID}
+              multilineLabel
+            />
           ))}
         </Section>
       )}

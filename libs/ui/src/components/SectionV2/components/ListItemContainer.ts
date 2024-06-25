@@ -30,7 +30,9 @@ const ListItemContainer = styled(Flex)<ListItemContainerProps>`
   ${({ isDraggingPreview }) =>
     isDraggingPreview &&
     css`
-      box-shadow: 0 4px 8px 0 rgba(17, 49, 96, 0.08), 0 0 0 1px rgba(17, 49, 96, 0.08);
+      box-shadow:
+        0 4px 8px 0 rgba(17, 49, 96, 0.08),
+        0 0 0 1px rgba(17, 49, 96, 0.08);
       background-color: #fff;
       background-image: linear-gradient(to bottom, rgba(238, 244, 246, 0.3), rgba(238, 244, 246, 0.6));
       border-radius: 6px;

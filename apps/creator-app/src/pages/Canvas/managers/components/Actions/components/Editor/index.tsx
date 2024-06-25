@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { useContextApi } from '@voiceflow/ui';
 import React from 'react';
 import { useParams } from 'react-router-dom';
@@ -22,7 +22,9 @@ const ActionsEditor: React.FC = () => {
   const data = useSelector(CreatorV2.nodeDataByIDSelector, { id: actionNodeID });
 
   const onChange = React.useCallback(
-    (value: Partial<Realtime.NodeData<{}>>) => (node?.id ? editor.engine.node.updateData(node.id, value) : Promise.resolve()),
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    (value: Partial<Realtime.NodeData<{}>>) =>
+      node?.id ? editor.engine.node.updateData(node.id, value) : Promise.resolve(),
     [editor.engine.node, node?.id]
   );
 

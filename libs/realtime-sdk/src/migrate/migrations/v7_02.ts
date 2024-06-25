@@ -1,7 +1,8 @@
 /* eslint-disable no-param-reassign */
-import { BaseModels, BaseNode, BaseUtils } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
+import { BaseNode, BaseUtils } from '@voiceflow/base-types';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 export const LAST_UTTERANCE = '{{[last_utterance].last_utterance}}';
 

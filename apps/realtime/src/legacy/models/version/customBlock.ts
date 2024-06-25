@@ -1,5 +1,5 @@
 import { Utils } from '@voiceflow/common';
-import { VersionCustomBlock } from '@voiceflow/dtos';
+import type { VersionCustomBlock } from '@voiceflow/dtos';
 
 import { NestedMongoModel } from '../_mongo';
 import { Atomic } from '../utils';

@@ -1,6 +1,8 @@
-import { Flow, FolderScope, NodeType, Workflow } from '@voiceflow/dtos';
+import type { Flow, FolderScope, Workflow } from '@voiceflow/dtos';
+import { NodeType } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { createUIOnlyMenuItemOption, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import type { UIOnlyMenuItemOption } from '@voiceflow/ui';
+import { createUIOnlyMenuItemOption } from '@voiceflow/ui';
 import { useCallback } from 'react';
 
 import { Designer, Diagram } from '@/ducks';
@@ -8,7 +10,7 @@ import { useFeature } from '@/hooks/feature.hook';
 import { useFolderTree } from '@/hooks/folder.hook';
 import { useSelector } from '@/hooks/store.hook';
 
-import { BlockOption, GroupOption } from './types';
+import type { BlockOption, GroupOption } from './types';
 import { createGroupedSelectID } from './utils';
 
 export const useOptionsTree = <Item extends Flow | Workflow>(

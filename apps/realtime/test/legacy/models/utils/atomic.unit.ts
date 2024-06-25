@@ -129,14 +129,20 @@ describe('Models | Utils | Atomic', () => {
           'path.$[setoperationid21id].child': { id: 10 },
         },
         operation: '$set',
-        arrayFilters: [{ 'setoperationid11id.id': 0 }, { 'setoperationid21id.value': 2 }, { 'setoperationid31id.parent.child': { id: 20 } }],
+        arrayFilters: [
+          { 'setoperationid11id.id': 0 },
+          { 'setoperationid21id.value': 2 },
+          { 'setoperationid31id.parent.child': { id: 20 } },
+        ],
       });
     });
   });
 
   describe('unset', () => {
     it('creates unset operation for simple path', () => {
-      expect(Atomic.unset([{ path: 'path-1' }, { path: 'path-2' }, { path: 'path-3' }, { path: 'path.nested' }])).to.eql({
+      expect(
+        Atomic.unset([{ path: 'path-1' }, { path: 'path-2' }, { path: 'path-3' }, { path: 'path.nested' }])
+      ).to.eql({
         query: {
           'path-1': 1,
           'path-2': 1,
@@ -187,7 +193,11 @@ describe('Models | Utils | Atomic', () => {
           'path.$[unsetoperationid21id].child': 1,
         },
         operation: '$unset',
-        arrayFilters: [{ 'unsetoperationid11id.id': 0 }, { 'unsetoperationid21id.value': 2 }, { 'unsetoperationid31id.parent.child': { id: 20 } }],
+        arrayFilters: [
+          { 'unsetoperationid11id.id': 0 },
+          { 'unsetoperationid21id.value': 2 },
+          { 'unsetoperationid31id.parent.child': { id: 20 } },
+        ],
       });
     });
   });

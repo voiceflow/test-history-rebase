@@ -1,5 +1,5 @@
-import { Fetch } from '@/client/fetch';
-import { NLUImportModel } from '@/models';
+import type { Fetch } from '@/client/fetch';
+import type { NLUImportModel } from '@/models';
 
 export const RESOURCE_ENDPOINT = 'model-import';
 export const VERSION_ENDPOINT = 'versions';

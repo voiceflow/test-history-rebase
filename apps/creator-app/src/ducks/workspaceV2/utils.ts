@@ -1,10 +1,10 @@
-import { NonNullishRecord } from '@voiceflow/common';
+import type { NonNullishRecord } from '@voiceflow/common';
 import { createStructuredSelector } from 'reselect';
 
 import * as Errors from '@/config/errors';
 import * as Session from '@/ducks/session';
 import { duckLogger } from '@/ducks/utils';
-import { State } from '@/store/types';
+import type { State } from '@/store/types';
 
 import { STATE_KEY } from './constants';
 

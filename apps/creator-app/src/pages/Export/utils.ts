@@ -3,9 +3,9 @@ import _isNumber from 'lodash/isNumber';
 
 import client from '@/client';
 import * as ProjectV2 from '@/ducks/projectV2';
-import { Thunk } from '@/store/types';
+import type { Thunk } from '@/store/types';
 import { BLOCK_WIDTH } from '@/styles/theme';
-import { Point } from '@/types';
+import type { Point } from '@/types';
 import { isMarkupBlockType, isRootOrMarkupBlockType } from '@/utils/typeGuards';
 
 const findCanvasExportOffsets = (

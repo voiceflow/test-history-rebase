@@ -5,7 +5,8 @@ interface SubMenuProps {
   children?: React.ReactNode;
 }
 
-const getPopperOffset = ({ placement }: { placement: string }): [number, number] => (placement === 'right-end' ? [0, 0] : [-40, 0]);
+const getPopperOffset = ({ placement }: { placement: string }): [number, number] =>
+  placement === 'right-end' ? [0, 0] : [-40, 0];
 
 const SubMenu = React.forwardRef<HTMLDivElement, SubMenuProps>(({ children }, ref) => {
   const rootPopper = usePopper({

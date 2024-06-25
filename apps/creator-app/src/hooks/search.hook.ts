@@ -22,7 +22,8 @@ export const useDeferredSearch = <T>({
       .filter((item) => searchBy(item).toLocaleLowerCase().includes(transformedSearch))
       .sort(
         (left, right) =>
-          searchBy(left).toLocaleLowerCase().indexOf(transformedSearch) - searchBy(right).toLocaleLowerCase().indexOf(transformedSearch)
+          searchBy(left).toLocaleLowerCase().indexOf(transformedSearch) -
+          searchBy(right).toLocaleLowerCase().indexOf(transformedSearch)
       );
   }, [items, deferredValue]);
 

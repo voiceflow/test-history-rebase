@@ -2,7 +2,7 @@ import { SvgIcon, System, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
 import * as S from './styles';
-import * as T from './types';
+import type * as T from './types';
 
 export * as IconButtonTypes from './types';
 

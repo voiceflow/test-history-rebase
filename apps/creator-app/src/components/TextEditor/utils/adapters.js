@@ -26,6 +26,7 @@ const createRawState = (value, convertor) => {
   };
 };
 
+// eslint-disable-next-line default-param-last
 export const toState = (value = '', convertor, prevEditorState) => {
   const content = convertFromRaw(createRawState(value, convertor));
 
@@ -41,6 +42,7 @@ export const fromState = (pluginsAdapters) => {
     const pluginsData = {};
 
     const text = blocks
+      // eslint-disable-next-line no-shadow
       .flatMap(({ text, entityRanges }) => {
         if (!entityRanges.length) {
           return text;

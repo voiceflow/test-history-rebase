@@ -6,33 +6,41 @@ import React from 'react';
 
 import { Variant } from './constants';
 import * as S from './styles';
-import * as T from './types';
+import type * as T from './types';
 
 export * as SvgIconTypes from './types';
 
-const SvgIcon = React.forwardRef<HTMLSpanElement, T.Props>(({ icon, size = 16, color = 'currentColor', className, ...props }, ref) => {
-  let IconElement: React.ComponentType;
+const SvgIcon = React.forwardRef<HTMLSpanElement, T.Props>(
+  ({ icon, size = 16, color = 'currentColor', className, ...props }, ref) => {
+    let IconElement: React.ComponentType;
 
-  if (typeof icon === 'string') {
-    if (!(icon in ICONS)) {
-      return null;
+    if (typeof icon === 'string') {
+      if (!(icon in ICONS)) {
+        return null;
+      }
+
+      IconElement = ICONS[icon];
+
+      if (IS_TEST && !IconElement) {
+        IconElement = () => <svg data-icon-name={icon}></svg>;
+      }
+    } else {
+      IconElement = icon;
     }
 
-    IconElement = ICONS[icon];
-
-    if (IS_TEST && !IconElement) {
-      IconElement = () => <svg data-icon-name={icon}></svg>;
-    }
-  } else {
-    IconElement = icon;
+    return (
+      <S.Container
+        className={cn(ClassName.SVG_ICON, `${ClassName.SVG_ICON}--${icon}`, className)}
+        size={size}
+        color={color}
+        {...props}
+        ref={ref}
+      >
+        <IconElement />
+      </S.Container>
+    );
   }
-
-  return (
-    <S.Container className={cn(ClassName.SVG_ICON, `${ClassName.SVG_ICON}--${icon}`, className)} size={size} color={color} {...props} ref={ref}>
-      <IconElement />
-    </S.Container>
-  );
-});
+);
 
 export default Object.assign(React.memo(SvgIcon), {
   ICONS,

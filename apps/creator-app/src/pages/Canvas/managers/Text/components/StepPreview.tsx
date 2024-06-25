@@ -6,7 +6,7 @@ import { Permission } from '@/constants/permissions';
 import { usePermission } from '@/hooks/permission';
 import { copyWithToast } from '@/utils/clipboard';
 
-import { StepItem } from './types';
+import type { StepItem } from './types';
 
 interface StepPreviewProps {
   items: StepItem[];

@@ -1,6 +1,6 @@
-import { ProjectCustomTheme } from '@voiceflow/dtos';
+import type { ProjectCustomTheme } from '@voiceflow/dtos';
 import { createShadesFromColor } from '@voiceflow/ui';
-import { ICustomTheme } from '@voiceflow/ui-next/build/esm/components/Other/ColorPicker/ColorPickerForm/ColorPickerForm.interface';
+import type { ICustomTheme } from '@voiceflow/ui-next/build/esm/components/Other/ColorPicker/ColorPickerForm/ColorPickerForm.interface';
 import { createMultiAdapter } from 'bidirectional-adapter';
 
 export const uiCustomThemeAdapter = createMultiAdapter<ProjectCustomTheme, ICustomTheme>(

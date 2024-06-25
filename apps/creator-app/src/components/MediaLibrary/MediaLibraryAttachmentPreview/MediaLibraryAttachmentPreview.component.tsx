@@ -7,7 +7,9 @@ import type { IMediaLibraryAttachmentPreview } from './MediaLibraryAttachmentPre
 
 export const MediaLibraryAttachmentPreview: React.FC<IMediaLibraryAttachmentPreview> = ({ attachment }) =>
   match(attachment)
-    .with({ type: AttachmentType.MEDIA }, (attachment) => <MediaLibraryMediaAttachmentPreview attachment={attachment} />)
+    .with({ type: AttachmentType.MEDIA }, (attachment) => (
+      <MediaLibraryMediaAttachmentPreview attachment={attachment} />
+    ))
     // TODO: add card attachment
     .with({ type: AttachmentType.CARD }, () => null)
     .exhaustive();

@@ -1,13 +1,13 @@
 import { Channel, Language } from '@voiceflow/dtos';
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { Actions } from '@voiceflow/sdk-logux-designer';
+import type * as Realtime from '@voiceflow/realtime-sdk';
+import type { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { useAIGenerateResponseMessages } from '@/components/AI/hooks/ai-generate-response-messages.hook';
 import { Designer } from '@/ducks';
 import { useIsAIFeaturesEnabled } from '@/hooks/ai.hook';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 
-import { IResponseMessageForm } from './ResponseMessageForm.interface';
+import type { IResponseMessageForm } from './ResponseMessageForm.interface';
 
 export const useResponseMessages = ({ responseID }: { responseID: string | null }) => {
   const discriminator = useSelector(Designer.Response.ResponseDiscriminator.selectors.oneByLanguageChannelResponseID, {

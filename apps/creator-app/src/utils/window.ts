@@ -34,5 +34,9 @@ export const openURLInANewPopupWindow = (url: string): Window | null => {
   const left = window.screenX + (window.outerWidth - width) / 2;
   const top = window.screenY + (window.outerHeight - height) / 2.5;
 
-  return window.open(getURLWithProtocol(url), 'popup', `width=${width},height=${height},left=${left},top=${top},popup=true,noopener=false`);
+  return window.open(
+    getURLWithProtocol(url),
+    'popup',
+    `width=${width},height=${height},left=${left},top=${top},popup=true,noopener=false`
+  );
 };

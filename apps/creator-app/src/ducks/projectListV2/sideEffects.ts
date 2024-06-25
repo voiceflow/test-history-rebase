@@ -4,7 +4,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import * as Errors from '@/config/errors';
 import * as Session from '@/ducks/session';
 import { getActiveWorkspaceContext } from '@/ducks/workspaceV2/utils';
-import { Thunk } from '@/store/types';
+import type { Thunk } from '@/store/types';
 
 import { projectListByIDSelector } from './selectors';
 
@@ -30,7 +30,9 @@ export const createProjectList =
 export const renameProjectList =
   (listID: string, name: string): Thunk =>
   async (dispatch, getState) => {
-    await dispatch.sync(Realtime.projectList.crud.patch({ ...getActiveWorkspaceContext(getState()), key: listID, value: { name } }));
+    await dispatch.sync(
+      Realtime.projectList.crud.patch({ ...getActiveWorkspaceContext(getState()), key: listID, value: { name } })
+    );
   };
 
 export const deleteProjectList =
@@ -47,13 +49,17 @@ export const deleteProjectList =
 export const deleteProjectFromList =
   (listID: string, projectID: string): Thunk =>
   async (dispatch, getState) => {
-    await dispatch.sync(Realtime.projectList.removeProjectFromList({ ...getActiveWorkspaceContext(getState()), listID, projectID }));
+    await dispatch.sync(
+      Realtime.projectList.removeProjectFromList({ ...getActiveWorkspaceContext(getState()), listID, projectID })
+    );
   };
 
 export const moveProjectList =
   ({ fromID, toIndex, skipPersist }: { fromID: string; toIndex: number; skipPersist?: boolean }): Thunk =>
   async (dispatch, getState) => {
-    await dispatch.sync(Realtime.projectList.crud.move({ ...getActiveWorkspaceContext(getState()), fromID, toIndex }, { skipPersist }));
+    await dispatch.sync(
+      Realtime.projectList.crud.move({ ...getActiveWorkspaceContext(getState()), fromID, toIndex }, { skipPersist })
+    );
   };
 
 export const transplantProjectBetweenLists =

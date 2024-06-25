@@ -1,9 +1,13 @@
 import composeRef from '@seznam/compose-react-refs';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { OverflowText, SectionV2, UploadV2 } from '@voiceflow/ui';
 import React from 'react';
 
-import { DragPreviewComponentProps, ItemComponentProps, MappedItemComponentHandlers } from '@/components/DraggableList';
+import type {
+  DragPreviewComponentProps,
+  ItemComponentProps,
+  MappedItemComponentHandlers,
+} from '@/components/DraggableList';
 import { SlateTextInput } from '@/components/SlateInputs';
 import VariablesInput from '@/components/VariablesInput';
 import { Diagram } from '@/ducks';
@@ -12,7 +16,7 @@ import { useImageDimensions } from '@/hooks/file.hook';
 import { useSelector } from '@/hooks/store.hook';
 import { FormControl } from '@/pages/Canvas/components/Editor';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
-import { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
+import type { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
 import { transformVariablesToReadable } from '@/utils/slot';
 import { isDialogflowPlatform } from '@/utils/typeGuards';
 

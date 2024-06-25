@@ -1,9 +1,9 @@
 import { projectSelector } from '@/ducks/projectV2/selectors/active';
 import * as Session from '@/ducks/session';
 import { workspaceSelector } from '@/ducks/workspaceV2/selectors/active';
-import { SyncThunk, Thunk } from '@/store/types';
+import type { SyncThunk, Thunk } from '@/store/types';
 
-import {
+import type {
   BaseEventInfo,
   BaseOnlyKeys,
   DiagramEvent,
@@ -66,13 +66,20 @@ export const createOrganizationEvent = <T extends OrganizationEventInfo, K exten
     }
   );
 
-export const createWorkspaceEventTracker = <T>(callback: (options: T & WorkspaceEventInfo, ...args: Parameters<Thunk>) => void): EventTracker<T> =>
+export const createWorkspaceEventTracker = <T>(
+  callback: (options: T & WorkspaceEventInfo, ...args: Parameters<Thunk>) => void
+): EventTracker<T> =>
   createBaseEventTracker<T>((data, dispatch, getState, extra) => {
     const workspace = workspaceSelector(getState());
 
     if (!workspace) return;
 
-    callback({ ...data, workspaceID: workspace.id, organizationID: workspace.organizationID }, dispatch, getState, extra);
+    callback(
+      { ...data, workspaceID: workspace.id, organizationID: workspace.organizationID },
+      dispatch,
+      getState,
+      extra
+    );
   });
 
 export const createWorkspaceEvent = <T extends WorkspaceEventInfo, K extends WorkspaceOnlyKeys<keyof T>>(
@@ -83,16 +90,28 @@ export const createWorkspaceEvent = <T extends WorkspaceEventInfo, K extends Wor
   createOrganizationEvent(
     name,
     { ...properties, workspace_id: workspaceID },
-    { ...options, envIDs: [...envIDs, 'workspace_id' as const], workspaceHashedIDs: [...workspaceHashedIDs, 'workspace_id'] }
+    {
+      ...options,
+      envIDs: [...envIDs, 'workspace_id' as const],
+      workspaceHashedIDs: [...workspaceHashedIDs, 'workspace_id'],
+    }
   );
 
-export const createProjectEventTracker = <T>(callback: (options: ProjectEventInfo & T, ...args: Parameters<Thunk>) => void): EventTracker<T> =>
+export const createProjectEventTracker = <T>(
+  callback: (options: ProjectEventInfo & T, ...args: Parameters<Thunk>) => void
+): EventTracker<T> =>
   createWorkspaceEventTracker<T>((data, dispatch, getState, extra) => {
     const project = projectSelector(getState());
 
     if (!project) return;
 
-    const payload = { ...data, projectID: project.id, nluType: project.nlu, platform: project.platform, projectType: project.type };
+    const payload = {
+      ...data,
+      projectID: project.id,
+      nluType: project.nlu,
+      platform: project.platform,
+      projectType: project.type,
+    };
 
     callback(payload, dispatch, getState, extra);
   });
@@ -104,11 +123,19 @@ export const createProjectEvent = <T extends ProjectEventInfo, K extends Project
 ): ProjectEvent<T> =>
   createWorkspaceEvent(
     name,
-    { ...properties, project_id: projectID, project_nlu: nluType, project_type: projectType, project_platform: platform },
+    {
+      ...properties,
+      project_id: projectID,
+      project_nlu: nluType,
+      project_type: projectType,
+      project_platform: platform,
+    },
     options
   );
 
-export const createVersionEventTracker = <T>(callback: (options: VersionEventInfo & T, ...args: Parameters<Thunk>) => void): EventTracker<T> =>
+export const createVersionEventTracker = <T>(
+  callback: (options: VersionEventInfo & T, ...args: Parameters<Thunk>) => void
+): EventTracker<T> =>
   createProjectEventTracker<T>((data, dispatch, getState, extra) => {
     const state = getState();
     const versionID = Session.activeVersionIDSelector(state);
@@ -124,7 +151,9 @@ export const createVersionEvent = <T extends VersionEventInfo, K extends Version
   options?: EventOptions<K>
 ): VersionEvent<T> => createProjectEvent(name, { ...properties, version_id: versionID }, options);
 
-export const createDiagramEventTracker = <T>(callback: (options: DiagramEventInfo & T, ...args: Parameters<Thunk>) => void): EventTracker<T> =>
+export const createDiagramEventTracker = <T>(
+  callback: (options: DiagramEventInfo & T, ...args: Parameters<Thunk>) => void
+): EventTracker<T> =>
   createVersionEventTracker<T>((data, dispatch, getState, extra) => {
     const state = getState();
     const diagramID = Session.activeDiagramIDSelector(state);

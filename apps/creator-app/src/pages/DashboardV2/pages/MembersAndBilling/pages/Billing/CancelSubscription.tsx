@@ -1,4 +1,4 @@
-import { PlanName } from '@voiceflow/dtos';
+import type { PlanName } from '@voiceflow/dtos';
 import { Box, Button, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
@@ -27,11 +27,16 @@ const CancelSubscription: React.FC<CancelSubscriptionProps> = ({ nextBillingDate
             <div>
               <Page.Section.Title>Cancel Subscription</Page.Section.Title>
               <Page.Section.Description>
-                {plan === 'team' ? 'Teams' : 'Pro'} features will be available until the end of the current billing cycle.
+                {plan === 'team' ? 'Teams' : 'Pro'} features will be available until the end of the current billing
+                cycle.
               </Page.Section.Description>
             </div>
 
-            <TippyTooltip content={`Workspace scheduled to be downgraded on ${nextBillingDate}`} disabled={isCancelable} width={400}>
+            <TippyTooltip
+              content={`Workspace scheduled to be downgraded on ${nextBillingDate}`}
+              disabled={isCancelable}
+              width={400}
+            >
               <Button disabled={!isCancelable} variant={Button.Variant.SECONDARY} onClick={handleClick}>
                 Cancel Subscription
               </Button>

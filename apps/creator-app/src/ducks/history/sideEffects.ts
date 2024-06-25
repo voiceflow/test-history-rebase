@@ -1,10 +1,18 @@
-import { Eventual, Utils } from '@voiceflow/common';
+import type { Eventual } from '@voiceflow/common';
+import { Utils } from '@voiceflow/common';
 import { toast } from '@voiceflow/ui';
 
 import { wrapReplayAction } from '@/ducks/utils';
-import { Thunk } from '@/store/types';
+import type { Thunk } from '@/store/types';
 
-import { flushTransaction, redoTransaction, startIgnoreTransactions, startTransaction, stopIgnoreTransactions, undoTransaction } from './actions';
+import {
+  flushTransaction,
+  redoTransaction,
+  startIgnoreTransactions,
+  startTransaction,
+  stopIgnoreTransactions,
+  undoTransaction,
+} from './actions';
 import { latestRedoTransactionSelector, latestUndoTransactionSelector } from './selectors';
 
 export const transaction =
@@ -46,7 +54,9 @@ export const undo = (): Thunk => (dispatch, getState) => {
     return promise;
   }
 
-  promise = Promise.all(transaction.apply.map((action) => dispatch.sync(wrapReplayAction(action)))).then(Utils.functional.noop);
+  promise = Promise.all(transaction.apply.map((action) => dispatch.sync(wrapReplayAction(action)))).then(
+    Utils.functional.noop
+  );
   dispatch(undoTransaction({ transactionID: transaction.id, revertID: Utils.id.cuid() }));
 
   return promise;
@@ -63,7 +73,9 @@ export const redo = (): Thunk => (dispatch, getState) => {
     return promise;
   }
 
-  promise = Promise.all(transaction.apply.map((action) => dispatch.sync(wrapReplayAction(action)))).then(Utils.functional.noop);
+  promise = Promise.all(transaction.apply.map((action) => dispatch.sync(wrapReplayAction(action)))).then(
+    Utils.functional.noop
+  );
   dispatch(redoTransaction({ transactionID: transaction.id, revertID: Utils.id.cuid() }));
 
   return promise;

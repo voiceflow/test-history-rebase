@@ -1,6 +1,6 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 
-import {
+import type {
   GetOptionKey,
   GetOptionLabel,
   GetOptionValue,
@@ -51,7 +51,10 @@ interface OptionalProps<Option> {
   getOptionKey?: GetOptionKey<Option>;
 }
 
-export interface MenuOptionsProps<Option, Value> extends BaseMenuOptionsProps, OptionalProps<Option>, GenericMenuOptionsProps<Option, Value> {
+export interface MenuOptionsProps<Option, Value>
+  extends BaseMenuOptionsProps,
+    OptionalProps<Option>,
+    GenericMenuOptionsProps<Option, Value> {
   getOptionKey: GetOptionKey<Option>;
 }
 
@@ -83,11 +86,17 @@ export interface MenuOptionsGroupedProps<Option, GroupedOption extends MenuItemG
   getOptionKey: GetOptionKey<Option>;
 }
 
-export interface MenuOptionsWithIDGroupedProps<Option extends MenuItemWithID, GroupedOption extends MenuItemGrouped<Option>, Value>
-  extends BaseMenuOptionsProps,
+export interface MenuOptionsWithIDGroupedProps<
+  Option extends MenuItemWithID,
+  GroupedOption extends MenuItemGrouped<Option>,
+  Value,
+> extends BaseMenuOptionsProps,
     OptionalProps<Option>,
     GenericGroupedMenuOptionsProps<Option, GroupedOption, Value> {
   grouped: true;
 }
 
-export interface MenuOptionsInternalProps extends BaseMenuOptionsProps, GenericMenuOptionsProps<unknown, unknown>, OptionalProps<unknown> {}
+export interface MenuOptionsInternalProps
+  extends BaseMenuOptionsProps,
+    GenericMenuOptionsProps<unknown, unknown>,
+    OptionalProps<unknown> {}

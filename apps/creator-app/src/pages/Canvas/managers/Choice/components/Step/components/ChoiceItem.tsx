@@ -1,11 +1,11 @@
 import { Popper, stopPropagation } from '@voiceflow/ui';
 import React from 'react';
 
-import { HSLShades } from '@/constants';
+import type { HSLShades } from '@/constants';
 import { Item, StepButton } from '@/pages/Canvas/components/Step';
 
 import { NODE_CONFIG } from '../../../constants';
-import { ChoiceItem as ChoiceItemType } from '../types';
+import type { ChoiceItem as ChoiceItemType } from '../types';
 import ChoicePreview from './ChoicePreview';
 
 interface ChoiceItemProps extends ChoiceItemType {
@@ -26,9 +26,13 @@ const ChoiceItem: React.FC<ChoiceItemProps> = ({ label, portID, index, prompts, 
       !!prompts?.length && (
         <Popper
           placement="right-start"
-          renderContent={({ onClose }) => <ChoicePreview prompts={prompts} onClose={onClose} onOpenEditor={onOpenEditor} />}
+          renderContent={({ onClose }) => (
+            <ChoicePreview prompts={prompts} onClose={onClose} onOpenEditor={onOpenEditor} />
+          )}
         >
-          {({ onToggle, ref, isOpened }) => <StepButton ref={ref} onClick={stopPropagation(onToggle)} icon="setV2" isActive={isOpened} />}
+          {({ onToggle, ref, isOpened }) => (
+            <StepButton ref={ref} onClick={stopPropagation(onToggle)} icon="setV2" isActive={isOpened} />
+          )}
         </Popper>
       )
     }

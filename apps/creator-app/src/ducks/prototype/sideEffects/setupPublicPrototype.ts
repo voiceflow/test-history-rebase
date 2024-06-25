@@ -1,16 +1,16 @@
-import { BaseButton } from '@voiceflow/base-types';
+import type { BaseButton } from '@voiceflow/base-types';
 import { ChatVersion } from '@voiceflow/chat-types';
-import { PlanType } from '@voiceflow/internal';
+import type { PlanType } from '@voiceflow/internal';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import _constant from 'lodash/constant';
 
 import client from '@/client';
 import { PrototypeLayout } from '@/constants/prototype';
 import * as Session from '@/ducks/session';
-import { Thunk } from '@/store/types';
+import type { Thunk } from '@/store/types';
 
 import { updatePrototype } from '../actions';
-import { PrototypeSettings } from '../types';
+import type { PrototypeSettings } from '../types';
 import resetPrototype from './reset';
 
 const setupPublicPrototype =
@@ -33,7 +33,8 @@ const setupPublicPrototype =
     const { platform, type: projectType } = Realtime.legacyPlatformToProjectType(prototype.platform, prototype.type);
 
     const rootDiagramID = prototype.context.stack?.[0].diagramID as string;
-    const layout = (prototype?.settings.layout ?? Realtime.Utils.platform.getDefaultPrototypeLayout(projectType)) as PrototypeLayout;
+    const layout = (prototype?.settings.layout ??
+      Realtime.Utils.platform.getDefaultPrototypeLayout(projectType)) as PrototypeLayout;
     const buttonsOnly = !!prototype?.settings.buttonsOnly;
 
     const version = {
@@ -62,7 +63,8 @@ const setupPublicPrototype =
     dispatch(Session.setActiveDiagramID(rootDiagramID));
 
     const savedMessageDelay = Realtime.Utils.typeGuards.isChatProjectType(projectType)
-      ? ChatVersion.defaultMessageDelay({ durationMilliseconds: prototype?.data?.messageDelay?.durationMilliseconds }).durationMilliseconds
+      ? ChatVersion.defaultMessageDelay({ durationMilliseconds: prototype?.data?.messageDelay?.durationMilliseconds })
+          .durationMilliseconds
       : 0;
 
     return {

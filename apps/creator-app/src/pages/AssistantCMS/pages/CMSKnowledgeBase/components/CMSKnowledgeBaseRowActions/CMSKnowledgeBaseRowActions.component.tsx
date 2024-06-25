@@ -12,7 +12,7 @@ import { useCMSResourceGetPath } from '@/pages/AssistantCMS/hooks/cms-resource.h
 import { clipboardCopy } from '@/utils/clipboard.util';
 import { stopPropagation } from '@/utils/handler.util';
 
-import { ICMSKnowledgeBaseRowActions } from './CMSKnowledgeBaseRowActions.interface';
+import type { ICMSKnowledgeBaseRowActions } from './CMSKnowledgeBaseRowActions.interface';
 
 export const CMSKnowledgeBaseRowActions: React.FC<ICMSKnowledgeBaseRowActions> = ({ id, onClose }) => {
   const TEST_ID = tid(CMS_TEST_ID, 'context-menu');
@@ -28,13 +28,13 @@ export const CMSKnowledgeBaseRowActions: React.FC<ICMSKnowledgeBaseRowActions> =
   const onConfirmDelete = async () => {
     await deleteOne(id);
 
-    notify.short.info(`1 data source deleted`, { showIcon: false });
+    notify.short.info('1 data source deleted', { showIcon: false });
   };
 
   const onDelete = () => {
     confirmModal.openVoid({
-      body: `Deleted data sources won’t be recoverable. Please confirm that you want to continue.`,
-      title: `Delete data source`,
+      body: 'Deleted data sources won’t be recoverable. Please confirm that you want to continue.',
+      title: 'Delete data source',
       confirm: onConfirmDelete,
       confirmButtonLabel: 'Delete forever',
       confirmButtonVariant: 'alert',
@@ -43,7 +43,7 @@ export const CMSKnowledgeBaseRowActions: React.FC<ICMSKnowledgeBaseRowActions> =
 
   const onCopyLink = () => {
     clipboardCopy(`${window.location.origin}${cmsResourceGetPath(id).path}`);
-    notify.short.success(`Copied`);
+    notify.short.success('Copied');
     onClose();
   };
 
@@ -65,7 +65,12 @@ export const CMSKnowledgeBaseRowActions: React.FC<ICMSKnowledgeBaseRowActions> =
       )}
       <Divider />
 
-      <MenuItem label="Delete" onClick={Utils.functional.chainVoid(onClose, onDelete)} prefixIconName="Trash" testID={tid(TEST_ID, 'delete')} />
+      <MenuItem
+        label="Delete"
+        onClick={Utils.functional.chainVoid(onClose, onDelete)}
+        prefixIconName="Trash"
+        testID={tid(TEST_ID, 'delete')}
+      />
     </>
   );
 };

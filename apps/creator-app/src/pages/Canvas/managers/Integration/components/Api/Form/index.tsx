@@ -5,8 +5,15 @@ import React from 'react';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
 import TLSEditor from '../TLSEditor';
-import { BodySection, CaptureResponseSection, Footer, HeaderSection, ParametersSection, RequestTypeSection } from './components';
-import { FormProps } from './types';
+import {
+  BodySection,
+  CaptureResponseSection,
+  Footer,
+  HeaderSection,
+  ParametersSection,
+  RequestTypeSection,
+} from './components';
+import type { FormProps } from './types';
 
 const Form: React.FC<FormProps> = ({ editor, header, footer }) => {
   const showBodySection = editor.data.selectedAction !== BaseNode.Api.APIActionType.GET;

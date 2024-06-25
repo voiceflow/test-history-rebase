@@ -1,5 +1,5 @@
-import { Nullable } from '@voiceflow/common';
-import { ThreadComment } from '@voiceflow/dtos';
+import type { Nullable } from '@voiceflow/common';
+import type { ThreadComment } from '@voiceflow/dtos';
 import { Box, Dropdown, FlexEnd, IconButton, IconButtonVariant, Menu, swallowEvent, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 

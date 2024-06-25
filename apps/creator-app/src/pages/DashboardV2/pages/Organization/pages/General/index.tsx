@@ -50,7 +50,13 @@ const OrganizationGeneral: React.FC = () => {
             </SectionV2.Title>
 
             <Box.FlexApart gap={16} fullWidth>
-              <Input name="name" value={name} onBlur={saveName} onChangeText={updateName} placeholder="Organization Name" />
+              <Input
+                name="name"
+                value={name}
+                onBlur={saveName}
+                onChangeText={updateName}
+                placeholder="Organization Name"
+              />
             </Box.FlexApart>
           </Box.FlexAlignStart>
         </Box.Flex>

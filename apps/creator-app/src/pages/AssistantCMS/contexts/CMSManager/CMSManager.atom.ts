@@ -32,9 +32,15 @@ const allCMSFoldersSelector = createSelector(Designer.Folder.selectors.allByScop
 export const CMSResourceMolecule = molecule<CMSManager<any>>((_, getScope) => {
   const scope = getScope(CMSResourceScope);
 
-  const items = splitAtom(atomWithSelector((state) => scope.selectors.allByFolderID(state, { folderID: scope.folderID })));
+  const items = splitAtom(
+    atomWithSelector((state) => scope.selectors.allByFolderID(state, { folderID: scope.folderID }))
+  );
 
-  const folders = splitAtom(atomWithSelector((state) => allCMSFoldersSelector(state, { parentID: scope.folderID, folderScope: scope.folderScope })));
+  const folders = splitAtom(
+    atomWithSelector((state) =>
+      allCMSFoldersSelector(state, { parentID: scope.folderID, folderScope: scope.folderScope })
+    )
+  );
 
   const originalSearch = atom('');
 

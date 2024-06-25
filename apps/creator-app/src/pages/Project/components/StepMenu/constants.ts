@@ -1,11 +1,11 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import * as Platform from '@voiceflow/platform-config';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { SvgIconTypes } from '@voiceflow/ui';
+import type { SvgIconTypes } from '@voiceflow/ui';
 // eslint-disable-next-line you-dont-need-lodash-underscore/is-function
 import _isFunction from 'lodash/isFunction';
 
-import { DragItem } from '@/constants';
+import type { DragItem } from '@/constants';
 import { getManager } from '@/pages/Canvas/managers/utils';
 
 export interface StepItem {

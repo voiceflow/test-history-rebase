@@ -1,4 +1,4 @@
-import { KnowledgeBaseDocumentRefreshRate } from '@voiceflow/dtos';
+import type { KnowledgeBaseDocumentRefreshRate } from '@voiceflow/dtos';
 
 interface OauthService {
   uploadDocsByFilters({

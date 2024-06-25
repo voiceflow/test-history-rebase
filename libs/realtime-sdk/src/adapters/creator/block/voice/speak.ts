@@ -1,10 +1,10 @@
 import { Utils } from '@voiceflow/common';
-import { VoiceModels, VoiceNode } from '@voiceflow/voice-types';
+import type { VoiceModels, VoiceNode } from '@voiceflow/voice-types';
 import { createMultiAdapter } from 'bidirectional-adapter';
 
 import { DialogType } from '../../../../constants';
-import { NodeData } from '../../../../models';
-import { SpeakData } from '../../../../models/Speak';
+import type { NodeData } from '../../../../models';
+import type { SpeakData } from '../../../../models/Speak';
 import { baseSpeakAdapter } from '../base';
 import { createBlockAdapter } from '../utils';
 

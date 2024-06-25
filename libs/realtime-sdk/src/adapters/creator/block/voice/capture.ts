@@ -1,6 +1,6 @@
-import { VoiceNode } from '@voiceflow/voice-types';
+import type { VoiceNode } from '@voiceflow/voice-types';
 
-import { NodeData } from '../../../../models';
+import type { NodeData } from '../../../../models';
 import { baseCaptureAdapter } from '../base';
 import { createBlockAdapter, voiceMigrateRepromptToNoReply, voiceNoReplyAdapter } from '../utils';
 

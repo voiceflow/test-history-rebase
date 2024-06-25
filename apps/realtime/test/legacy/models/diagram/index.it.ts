@@ -1,7 +1,9 @@
 import { ObjectId } from 'bson';
-import { Db, MongoClient } from 'mongodb';
+import type { Db } from 'mongodb';
+import { MongoClient } from 'mongodb';
 
-import DiagramModel, { DBDiagramModel } from '@/legacy/models/diagram';
+import type { DBDiagramModel } from '@/legacy/models/diagram';
+import DiagramModel from '@/legacy/models/diagram';
 import config from '@/old_config';
 
 const mockDiagram: Omit<DBDiagramModel, '_id'> = {

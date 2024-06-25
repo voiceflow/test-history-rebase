@@ -44,18 +44,17 @@ export class NLUManagerHTTPController {
   ): Promise<IntentClarityResponse> {
     const config = await this.configuration.getConfiguration('nlumanage-pairwise');
 
-    const { clarityByClass, overallScores, problematicSentences, utteranceMapper } = await this.interaction.sendRequest<any, any>(
-      `${environmentID}.${Utils.id.cuid.slug()}`,
-      config,
-      {
-        reqGUID: Utils.id.cuid(),
-        // the order of the fields is important here!
-        intents,
-        platform,
-        slots,
-        topConflicting,
-      }
-    );
+    const { clarityByClass, overallScores, problematicSentences, utteranceMapper } = await this.interaction.sendRequest<
+      any,
+      any
+    >(`${environmentID}.${Utils.id.cuid.slug()}`, config, {
+      reqGUID: Utils.id.cuid(),
+      // the order of the fields is important here!
+      intents,
+      platform,
+      slots,
+      topConflicting,
+    });
 
     return { clarityByClass, overallScores, problematicSentences, utteranceMapper };
   }

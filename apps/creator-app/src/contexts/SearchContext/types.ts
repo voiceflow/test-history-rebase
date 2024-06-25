@@ -1,5 +1,5 @@
-import { BaseModels } from '@voiceflow/base-types';
-import { SvgIconTypes } from '@voiceflow/ui';
+import type { BaseModels } from '@voiceflow/base-types';
+import type { SvgIconTypes } from '@voiceflow/ui';
 
 export interface BaseDatabaseEntry {
   targets: string[];

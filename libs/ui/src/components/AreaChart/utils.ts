@@ -1,5 +1,5 @@
 import { SCALE_INCREMENTS, SCALE_MINIMUM } from './constants';
-import { AreaChartDatum } from './types';
+import type { AreaChartDatum } from './types';
 
 const getScale = (value: number, scale = SCALE_MINIMUM): number => {
   const nextScale = SCALE_INCREMENTS.map((increment) => increment * scale).find((scale) => scale > value);

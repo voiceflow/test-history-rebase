@@ -35,7 +35,11 @@ const Workspace: React.FC = () => {
           <br />
 
           <Box.FlexCenter mt={24}>
-            <Button id="createWorkspace" variant={ButtonVariant.PRIMARY} onClick={() => createWorkspaceModal.openVoid()}>
+            <Button
+              id="createWorkspace"
+              variant={ButtonVariant.PRIMARY}
+              onClick={() => createWorkspaceModal.openVoid()}
+            >
               New Workspace
             </Button>
           </Box.FlexCenter>

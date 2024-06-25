@@ -1,7 +1,7 @@
 import { Box, notify, Popper } from '@voiceflow/ui-next';
 import React, { useState } from 'react';
 
-import { IThumbsFeedback } from './ThumbsFeedback.interface';
+import type { IThumbsFeedback } from './ThumbsFeedback.interface';
 import { ThumbsFeedbackButton } from './ThumbsFeedbackButton.component';
 
 export const ThumbsFeedback: React.FC<IThumbsFeedback> = ({ onBad, onGood, children }) => {

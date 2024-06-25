@@ -1,10 +1,10 @@
 import { AlexaVersion } from '@voiceflow/alexa-types';
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
 
-import { NodeConfig } from '../types';
+import type { NodeConfig } from '../types';
 
 export const NODE_CONFIG: NodeConfig<Realtime.NodeData.AccountLinking, Realtime.NodeData.AccountLinkingBuiltInPorts> = {
   type: BlockType.ACCOUNT_LINKING,
@@ -44,7 +44,10 @@ export const TABS = [
 
 export const CLIENT_AUTH_SCHEMES = [
   { value: AlexaVersion.AccountLinkingAccessTokenScheme.HTTP_BASIC, label: 'HTTP Basic (recommended)' },
-  { value: AlexaVersion.AccountLinkingAccessTokenScheme.REQUEST_BODY_CREDENTIALS, label: 'Credentials in request body' },
+  {
+    value: AlexaVersion.AccountLinkingAccessTokenScheme.REQUEST_BODY_CREDENTIALS,
+    label: 'Credentials in request body',
+  },
 ];
 
 export const EMPTY_ACCOUNT_DATA: AlexaVersion.AccountLinking = {

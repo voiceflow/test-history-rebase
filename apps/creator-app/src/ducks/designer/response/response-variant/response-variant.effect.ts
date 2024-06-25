@@ -11,7 +11,11 @@ import { responseTextVariantCreateDataFactory } from '@/utils/response.util';
 interface CreateTextData extends Partial<Omit<Actions.ResponseVariant.CreateTextData, 'discriminatorID'>> {}
 
 export const createOneText =
-  (discriminatorID: string, data?: CreateTextData, options?: Actions.ResponseVariant.CreateOptions): Thunk<TextResponseVariant> =>
+  (
+    discriminatorID: string,
+    data?: CreateTextData,
+    options?: Actions.ResponseVariant.CreateOptions
+  ): Thunk<TextResponseVariant> =>
   async (dispatch, getState) => {
     const state = getState();
 
@@ -29,7 +33,11 @@ export const createOneText =
   };
 
 export const createManyText =
-  (discriminatorID: string, data: CreateTextData[], options?: Actions.ResponseVariant.CreateOptions): Thunk<TextResponseVariant[]> =>
+  (
+    discriminatorID: string,
+    data: CreateTextData[],
+    options?: Actions.ResponseVariant.CreateOptions
+  ): Thunk<TextResponseVariant[]> =>
   async (dispatch, getState) => {
     const state = getState();
 
@@ -47,7 +55,11 @@ export const createManyText =
   };
 
 export const createOneEmpty =
-  (discriminatorID: string, variantType: ResponseVariantType, options?: Actions.ResponseVariant.CreateOptions): Thunk<AnyResponseVariant> =>
+  (
+    discriminatorID: string,
+    variantType: ResponseVariantType,
+    options?: Actions.ResponseVariant.CreateOptions
+  ): Thunk<AnyResponseVariant> =>
   (dispatch) =>
     match(variantType)
       .with(ResponseVariantType.TEXT, () => dispatch(createOneText(discriminatorID, undefined, options)))

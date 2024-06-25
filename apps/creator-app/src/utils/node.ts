@@ -1,7 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk';
 
 import { BlockType } from '@/constants';
-import { Point } from '@/types';
+import type { Point } from '@/types';
 
 import { isMarkupOrCombinedBlockType } from './typeGuards';
 
@@ -26,7 +26,10 @@ export const getNodesGroupCenter = (
   return { center: [centerX, centerY], minX, maxX, minY, maxY };
 };
 
-export const centerNodeGroup = (entities: Realtime.EntityMap, [originX, originY]: Realtime.Point): Realtime.EntityMap => {
+export const centerNodeGroup = (
+  entities: Realtime.EntityMap,
+  [originX, originY]: Realtime.Point
+): Realtime.EntityMap => {
   const combinedAndMarkupNodes = entities.nodesWithData.filter(({ node }) => isMarkupOrCombinedBlockType(node.type));
 
   const {
@@ -43,7 +46,9 @@ export const centerNodeGroup = (entities: Realtime.EntityMap, [originX, originY]
   );
 
   const ports = entities.ports.map((port) =>
-    port.linkData?.points ? { ...port, linkData: { ...port.linkData, points: port.linkData.points.map(adjustPathPoint) } } : port
+    port.linkData?.points
+      ? { ...port, linkData: { ...port.linkData, points: port.linkData.points.map(adjustPathPoint) } }
+      : port
   );
 
   const nodesWithData = entities.nodesWithData.map(({ node, data }) => ({
@@ -59,4 +64,5 @@ export const centerNodeGroup = (entities: Realtime.EntityMap, [originX, originY]
 };
 
 export const isChipNode = (node: Realtime.Node | null, parentNode: Realtime.Node | null) =>
-  node?.type === BlockType.START || (parentNode?.combinedNodes.length === 1 && Realtime.Utils.typeGuards.isCanvasChipBlockType(node?.type));
+  node?.type === BlockType.START ||
+  (parentNode?.combinedNodes.length === 1 && Realtime.Utils.typeGuards.isCanvasChipBlockType(node?.type));

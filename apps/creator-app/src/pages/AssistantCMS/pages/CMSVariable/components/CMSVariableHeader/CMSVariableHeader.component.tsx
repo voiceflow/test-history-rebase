@@ -13,7 +13,13 @@ export const CMSVariableHeader: React.FC = () => {
   return (
     <CMSHeader
       searchPlaceholder="Search variables"
-      rightActions={<Header.Button.Primary label="New variable" onClick={() => onCreate()} testID={tid(HEADER_TEST_ID, 'new-variable')} />}
+      rightActions={
+        <Header.Button.Primary
+          label="New variable"
+          onClick={() => onCreate()}
+          testID={tid(HEADER_TEST_ID, 'new-variable')}
+        />
+      }
     />
   );
 };

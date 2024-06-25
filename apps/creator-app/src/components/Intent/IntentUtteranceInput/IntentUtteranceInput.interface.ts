@@ -1,5 +1,5 @@
 import type { UtteranceText } from '@voiceflow/dtos';
-import { BaseProps } from '@voiceflow/ui-next';
+import type { BaseProps } from '@voiceflow/ui-next';
 
 export interface IIntentUtteranceInput extends BaseProps {
   value: UtteranceText;

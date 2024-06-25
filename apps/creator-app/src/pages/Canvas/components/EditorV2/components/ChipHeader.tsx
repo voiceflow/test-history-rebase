@@ -1,4 +1,5 @@
-import { COLOR_PICKER_CONSTANTS, ColorThemeUnit, SectionV2, SidebarEditor, SidebarEditorTypes } from '@voiceflow/ui';
+import type { SidebarEditorTypes } from '@voiceflow/ui';
+import { COLOR_PICKER_CONSTANTS, ColorThemeUnit, SectionV2, SidebarEditor } from '@voiceflow/ui';
 import React from 'react';
 import { useDismissable } from 'react-dismissable-layers';
 
@@ -13,7 +14,12 @@ interface ChipHeaderProps extends Partial<Omit<SidebarEditorTypes.HeaderProps, '
   onChangeColor: (color: string) => void;
 }
 
-const ChipHeader: React.FC<ChipHeaderProps> = ({ title, color, colorScheme = COLOR_PICKER_CONSTANTS.ColorScheme.DARK, onChangeColor }) => {
+const ChipHeader: React.FC<ChipHeaderProps> = ({
+  title,
+  color,
+  colorScheme = COLOR_PICKER_CONSTANTS.ColorScheme.DARK,
+  onChangeColor,
+}) => {
   const editor = useEditor();
   const popperContainerRef = React.useRef<HTMLDivElement>(null);
   const [isShowingPicker, togglePopper] = useDismissable(false, { ref: popperContainerRef });

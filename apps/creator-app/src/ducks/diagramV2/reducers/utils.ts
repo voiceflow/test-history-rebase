@@ -2,11 +2,11 @@ import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import { TriggerNodeItemType } from '@voiceflow/dtos';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { Draft } from 'immer';
+import type { Draft } from 'immer';
 
 import { createCombinedReducerFactory, createReducerFactory } from '@/ducks/utils';
 
-import { DiagramState } from '../types';
+import type { DiagramState } from '../types';
 
 export const createReducer = createReducerFactory<DiagramState>();
 export const createCombinedReducer = createCombinedReducerFactory<DiagramState>();

@@ -2,7 +2,7 @@ import { Utils } from '@voiceflow/common';
 import _constant from 'lodash/constant';
 import React from 'react';
 
-import { PortInstance } from '@/pages/Canvas/engine/entities/portEntity';
+import type { PortInstance } from '@/pages/Canvas/engine/entities/portEntity';
 
 export const usePortInstance = (getAnchorPoint: () => DOMRect | null) =>
   React.useMemo<PortInstance>(

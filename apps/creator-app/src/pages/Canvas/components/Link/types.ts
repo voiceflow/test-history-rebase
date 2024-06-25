@@ -1,11 +1,11 @@
-import { BaseModels } from '@voiceflow/base-types';
-import { Nullable } from '@voiceflow/common';
-import React from 'react';
+import type { BaseModels } from '@voiceflow/base-types';
+import type { Nullable } from '@voiceflow/common';
+import type React from 'react';
 
-import { LinkInstance } from '@/pages/Canvas/engine/entities/linkEntity';
-import { Point } from '@/types';
+import type { LinkInstance } from '@/pages/Canvas/engine/entities/linkEntity';
+import type { Point } from '@/types';
 
-import { LinkedRects, MarkerAttrs } from './utils';
+import type { LinkedRects, MarkerAttrs } from './utils';
 
 export type InternalLinkInstance = LinkInstance & {
   pathRef: React.RefObject<SVGPathElement>;

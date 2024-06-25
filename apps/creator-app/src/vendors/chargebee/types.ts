@@ -1,4 +1,4 @@
-import { Chargebee as ChargebeeClient } from '@chargebee/chargebee-js-types';
+import type { Chargebee as ChargebeeClient } from '@chargebee/chargebee-js-types';
 
 declare global {
   interface Window {

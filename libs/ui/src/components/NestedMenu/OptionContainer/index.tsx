@@ -1,4 +1,5 @@
-import { Popper, PopperProps } from '@voiceflow/legacy-react-popper';
+import type { PopperProps } from '@voiceflow/legacy-react-popper';
+import { Popper } from '@voiceflow/legacy-react-popper';
 import React from 'react';
 
 import Portal from '../../Portal';
@@ -8,7 +9,10 @@ export interface NestedMenuOptionContainerProps extends React.PropsWithChildren 
   placement?: PopperProps['placement'];
 }
 
-const NestedMenuOptionContainer: React.FC<NestedMenuOptionContainerProps> = ({ children, placement = 'right-start' }) => (
+const NestedMenuOptionContainer: React.FC<NestedMenuOptionContainerProps> = ({
+  children,
+  placement = 'right-start',
+}) => (
   <Portal portalNode={document.body}>
     <Popper
       placement={placement}

@@ -1,4 +1,4 @@
-import { VariableDatatype } from '@voiceflow/dtos';
+import type { VariableDatatype } from '@voiceflow/dtos';
 
 export interface IVariableDatatypeDropdown {
   value: VariableDatatype;

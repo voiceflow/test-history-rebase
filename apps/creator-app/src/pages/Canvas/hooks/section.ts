@@ -5,7 +5,13 @@ import * as Session from '@/ducks/session';
 import { useSelector } from '@/hooks';
 import { useEnvironmentSessionStorageState } from '@/hooks/storage.hook';
 
-export const useSectionState = <T>({ sectionKey, defaultValue }: { sectionKey: null | string | string[]; defaultValue: T }) => {
+export const useSectionState = <T>({
+  sectionKey,
+  defaultValue,
+}: {
+  sectionKey: null | string | string[];
+  defaultValue: T;
+}) => {
   const namespace = React.useContext(NamespaceContext);
   const activeDiagramID = useSelector(Session.activeDiagramIDSelector);
 

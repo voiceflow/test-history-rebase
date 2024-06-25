@@ -1,10 +1,13 @@
-import { Nullable } from '@voiceflow/common';
-import { fetchLogger, NetworkError } from '@voiceflow/ui';
+import type { Nullable } from '@voiceflow/common';
+import type { NetworkError } from '@voiceflow/ui';
+import { fetchLogger } from '@voiceflow/ui';
 import axios from 'axios';
 
 export const RESOURCE_ENDPOINT = 'session';
 
-const createSessionService = <A extends Record<string, any>, D extends Record<string, any>>(serviceEndpoint: string) => ({
+const createSessionService = <A extends Record<string, any>, D extends Record<string, any>>(
+  serviceEndpoint: string
+) => ({
   getAccount: () =>
     axios
       .get<Nullable<A>>(`${serviceEndpoint}/${RESOURCE_ENDPOINT}/profile`)

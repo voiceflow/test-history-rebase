@@ -1,6 +1,6 @@
-import { PopperProps as ReactPopperProps } from '@voiceflow/legacy-react-popper';
-import React from 'react';
-import { DismissEventType } from 'react-dismissable-layers';
+import type { PopperProps as ReactPopperProps } from '@voiceflow/legacy-react-popper';
+import type React from 'react';
+import type { DismissEventType } from 'react-dismissable-layers';
 
 export interface BaseRendererProps {
   onClose: VoidFunction;

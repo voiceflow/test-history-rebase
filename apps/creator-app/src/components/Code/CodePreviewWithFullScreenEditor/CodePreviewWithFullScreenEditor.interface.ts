@@ -1,4 +1,4 @@
-import { ISquareButton } from '@voiceflow/ui-next';
+import type { ISquareButton } from '@voiceflow/ui-next';
 
 export interface ICodePreviewWithFullScreenEditor {
   code: string;

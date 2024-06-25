@@ -1,11 +1,11 @@
 import { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk';
-import { SvgIconTypes } from '@voiceflow/ui';
+import type { SvgIconTypes } from '@voiceflow/ui';
 
 import * as Documentation from '@/config/documentation';
 
-import { NodeConfig } from '../types';
+import type { NodeConfig } from '../types';
 
 const NAME_MAP: Record<Realtime.DialogType, string> = {
   [Realtime.DialogType.AUDIO]: 'Audio',

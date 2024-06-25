@@ -1,7 +1,7 @@
 import { Logger } from '@nestjs/common';
-import { KeyValueCache } from '@voiceflow/socket-utils';
-import { MultiAdapter } from 'bidirectional-adapter';
-import { PickByValue } from 'utility-types';
+import type { KeyValueCache } from '@voiceflow/socket-utils';
+import type { MultiAdapter } from 'bidirectional-adapter';
+import type { PickByValue } from 'utility-types';
 
 import type { ClientMap } from '@/legacy/clients';
 import type { Client as Voiceflow } from '@/legacy/clients/voiceflow';
@@ -20,7 +20,11 @@ class AccessCache {
 
   public canWrite: ReturnType<AccessCache['createAccessResolver']>;
 
-  constructor(private resource: keyof PickByValue<Voiceflow, ResourceClient>, private clients: ClientMap, private services: ServiceMap) {
+  constructor(
+    private resource: keyof PickByValue<Voiceflow, ResourceClient>,
+    private clients: ClientMap,
+    private services: ServiceMap
+  ) {
     const canReadCache = this.createCacheFactory(this.createKeyFactory('can-read'));
 
     const canWriteCache = this.createCacheFactory(this.createKeyFactory('can-write'));
@@ -49,7 +53,10 @@ class AccessCache {
       if (cachedCanRead !== null) {
         // TODO: remove this temporary logging after BUG-696
         if (!cachedCanRead) {
-          new Logger('AccessCache').warn({ resource: this.resource, resourceID, accessType, creatorID }, `[cache access denied] ${creatorID}`);
+          new Logger('AccessCache').warn(
+            { resource: this.resource, resourceID, accessType, creatorID },
+            `[cache access denied] ${creatorID}`
+          );
         }
 
         return cachedCanRead;

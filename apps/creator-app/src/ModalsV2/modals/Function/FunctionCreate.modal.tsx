@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
 import type { Function as FunctionType } from '@voiceflow/dtos';
-import { IconName } from '@voiceflow/icons';
+import type { IconName } from '@voiceflow/icons';
 import * as Realtime from '@voiceflow/realtime-sdk';
 import { tid } from '@voiceflow/style';
 import { Dropdown, Menu, notify, TextArea, Tooltip } from '@voiceflow/ui-next';
@@ -17,7 +17,8 @@ import { useDispatch } from '@/hooks/store.hook';
 import { useValidators } from '@/hooks/validate.hook';
 
 import { modalsManager } from '../../manager';
-import { FunctionStarterTemplate, starterTemplates, TemplateID } from './FunctionCreate.constant';
+import type { FunctionStarterTemplate } from './FunctionCreate.constant';
+import { starterTemplates, TemplateID } from './FunctionCreate.constant';
 import { dropdownModifier, dropdownPrefixIconModifier, textareaStyles } from './FunctionCreate.css';
 
 export interface IFunctionCreateModal {

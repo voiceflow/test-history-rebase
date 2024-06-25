@@ -1,6 +1,6 @@
-import { AuthMetaPayload } from '@voiceflow/nestjs-logux';
+import type { AuthMetaPayload } from '@voiceflow/nestjs-logux';
 
-import { EnvironmentVariables } from './app.env';
+import type { EnvironmentVariables } from './app.env';
 
 export type Config = EnvironmentVariables;
 

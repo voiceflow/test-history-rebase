@@ -1,4 +1,4 @@
-import { BaseVersion } from '@voiceflow/base-types';
+import type { BaseVersion } from '@voiceflow/base-types';
 
 export interface Model extends BaseVersion.Publishing {
   locales?: string[];

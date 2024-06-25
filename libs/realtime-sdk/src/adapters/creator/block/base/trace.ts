@@ -1,5 +1,5 @@
 import { NodeData } from '@realtime-sdk/models';
-import { AnyRecord, BaseNode } from '@voiceflow/base-types';
+import type { AnyRecord, BaseNode } from '@voiceflow/base-types';
 
 import {
   createBlockAdapter,
@@ -11,7 +11,13 @@ import {
 } from '../utils';
 
 const traceAdapter = createBlockAdapter<
-  BaseNode._v1.StepData<{ name: string; body: string; bodyType: NodeData.TraceBodyType; scope: NodeData.TraceScope; isBlocking: boolean }>,
+  BaseNode._v1.StepData<{
+    name: string;
+    body: string;
+    bodyType: NodeData.TraceBodyType;
+    scope: NodeData.TraceScope;
+    isBlocking: boolean;
+  }>,
   NodeData.Trace
 >(
   ({ payload, defaultPath, paths }, options) => {

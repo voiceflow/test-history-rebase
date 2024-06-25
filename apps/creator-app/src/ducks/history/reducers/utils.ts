@@ -1,7 +1,7 @@
 import { createReducerFactory } from '@/ducks/utils';
 
 import { MAX_HISTORY_LENGTH } from '../constants';
-import { HistoryState, Transaction } from '../types';
+import type { HistoryState, Transaction } from '../types';
 
 export const createReducer = createReducerFactory<HistoryState>();
 

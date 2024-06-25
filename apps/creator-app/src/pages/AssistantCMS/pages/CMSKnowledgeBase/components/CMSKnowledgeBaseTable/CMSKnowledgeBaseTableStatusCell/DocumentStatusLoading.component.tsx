@@ -1,7 +1,7 @@
 import { Box, LoadingSpinner, Text, Tooltip } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { ICMSKnowledgeBaseTableStatusCell } from './CMSKnowledgeBaseTableStatusCell.interface';
+import type { ICMSKnowledgeBaseTableStatusCell } from './CMSKnowledgeBaseTableStatusCell.interface';
 
 export const DocumentStatusLoading: React.FC<ICMSKnowledgeBaseTableStatusCell> = () => (
   <Tooltip

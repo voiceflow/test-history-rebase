@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { EditableTextProps } from '@/components/EditableText';
+import type { EditableTextProps } from '@/components/EditableText';
 import TextArea from '@/components/TextArea';
-import { HSLShades } from '@/constants';
+import type { HSLShades } from '@/constants';
 import { css, styled, transition } from '@/hocs/styled';
 import {
   CANVAS_COMMENTING_ENABLED_CLASSNAME,

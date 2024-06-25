@@ -12,7 +12,9 @@ const rootPersonaReducer = reducerWithInitialState<PersonaState>(createEmpty())
   .case(Actions.Persona.DeleteOne, (state, { id }) => removeOne(state, id))
   .case(Actions.Persona.DeleteMany, (state, { ids }) => removeMany(state, ids))
   .case(Actions.Persona.Replace, (state, { data }) => ({ ...state, ...normalize(data) }))
-  .caseWithAction(Actions.Persona.PatchOne, (state, action) => patchOne(state, action.payload.id, patchWithUpdatedFields(action)))
+  .caseWithAction(Actions.Persona.PatchOne, (state, action) =>
+    patchOne(state, action.payload.id, patchWithUpdatedFields(action))
+  )
   .caseWithAction(Actions.Persona.PatchMany, (state, action) =>
     patchMany(
       state,

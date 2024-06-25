@@ -3,9 +3,10 @@ import { Link } from '@voiceflow/ui';
 import queryString from 'query-string';
 import React from 'react';
 
-import { VisualMessage } from '@/pages/Prototype/types';
+import type { VisualMessage } from '@/pages/Prototype/types';
 
-import BaseMessage, { BaseMessageProps } from '../../Base';
+import type { BaseMessageProps } from '../../Base';
+import BaseMessage from '../../Base';
 import * as S from './styles';
 
 interface VisualProps extends BaseMessageProps {

@@ -12,7 +12,9 @@ export const Container = styled.div<ContainerProps>`
   border-radius: 8px;
   cursor: ${({ onClick }) => (onClick ? 'pointer' : 'default')};
   background-color: ${({ $active }) => ($active ? 'rgba(93, 157, 245, 0.1)' : 'transparent')};
-  transition: border-color 0.2s, background-color 0.2s;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
   ${({ onClick }) =>
     onClick &&
     css`

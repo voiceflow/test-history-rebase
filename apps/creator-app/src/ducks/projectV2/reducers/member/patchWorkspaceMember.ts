@@ -6,17 +6,20 @@ import { isEditorUserRole } from '@/utils/role';
 
 import { createReducer } from '../utils';
 
-const patchWorkspaceMemberReducer = createReducer(Realtime.workspace.member.patch, (state, { creatorID, member: patch }) => {
-  Object.values(state.byKey).forEach((project) => {
-    const member = Normal.getOne(project.members, String(creatorID));
+const patchWorkspaceMemberReducer = createReducer(
+  Realtime.workspace.member.patch,
+  (state, { creatorID, member: patch }) => {
+    Object.values(state.byKey).forEach((project) => {
+      const member = Normal.getOne(project.members, String(creatorID));
 
-    if (!member) return;
+      if (!member) return;
 
-    // do nothing if the member is not an editor and the workspace patch is an editor
-    if (!isEditorUserRole(member.role) || isEditorUserRole(patch.role)) return;
+      // do nothing if the member is not an editor and the workspace patch is an editor
+      if (!isEditorUserRole(member.role) || isEditorUserRole(patch.role)) return;
 
-    member.role = UserRole.VIEWER;
-  });
-});
+      member.role = UserRole.VIEWER;
+    });
+  }
+);
 
 export default patchWorkspaceMemberReducer;

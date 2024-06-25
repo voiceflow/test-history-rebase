@@ -1,4 +1,4 @@
-import { AnyRecord } from '@voiceflow/common';
+import type { AnyRecord } from '@voiceflow/common';
 import { useLayoutEffect, useMemo } from 'react';
 
 import { jsonEditorStyles, outputVarsStyles } from './FunctionTestResult.css';
@@ -61,11 +61,21 @@ export const useTestResultModalHeight = ({
 
     let maxHeights = calculateModalDefaultHeight();
 
-    if (isOutputVarsSectionOpened && outputVarsCount) maxHeights = { ...maxHeights, outputContent: calculateOutputVarsSectionHeight() };
-    if (isResolvedPathSectionOpened && paths.length) maxHeights = { ...maxHeights, resolvedPath: RESOLVED_PATH_CONTENT_HEIGHT };
+    if (isOutputVarsSectionOpened && outputVarsCount)
+      maxHeights = { ...maxHeights, outputContent: calculateOutputVarsSectionHeight() };
+    if (isResolvedPathSectionOpened && paths.length)
+      maxHeights = { ...maxHeights, resolvedPath: RESOLVED_PATH_CONTENT_HEIGHT };
 
     return maxHeights;
-  }, [isTracesSectionOpened, traces, outputVars, paths, isOutputVarsSectionOpened, isResolvedPathSectionOpened, numInputVariables]);
+  }, [
+    isTracesSectionOpened,
+    traces,
+    outputVars,
+    paths,
+    isOutputVarsSectionOpened,
+    isResolvedPathSectionOpened,
+    numInputVariables,
+  ]);
 };
 
 // TODO: find a better solution for this
@@ -105,7 +115,7 @@ export const useDynamicTracesCodeEditorHeight = ({
     });
 
     // TODO: magic number
-    if (isTracesSectionOpened) calcCss += ` + 14px`;
+    if (isTracesSectionOpened) calcCss += ' + 14px';
 
     return `calc(${calcCss})`;
   };
@@ -138,5 +148,13 @@ export const useDynamicTracesCodeEditorHeight = ({
     } else {
       sectionElement?.setAttribute('style', 'max-height: 86px');
     }
-  }, [isTracesSectionOpened, traces, outputVars, paths, isOutputVarsSectionOpened, isResolvedPathSectionOpened, numInputVariables]);
+  }, [
+    isTracesSectionOpened,
+    traces,
+    outputVars,
+    paths,
+    isOutputVarsSectionOpened,
+    isResolvedPathSectionOpened,
+    numInputVariables,
+  ]);
 };

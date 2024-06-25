@@ -28,7 +28,15 @@ const RangeInput: React.FC<RangeInputProps> = ({ min, max, value, onChange, ...p
     setLength(newLength);
   };
 
-  return <DefaultInput {...props} type="text" value={length} onChange={withTargetValue(onUpdate)} onBlur={withTargetValue(onSave)} />;
+  return (
+    <DefaultInput
+      {...props}
+      type="text"
+      value={length}
+      onChange={withTargetValue(onUpdate)}
+      onBlur={withTargetValue(onSave)}
+    />
+  );
 };
 
 export default RangeInput;

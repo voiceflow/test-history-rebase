@@ -1,4 +1,4 @@
-import { BaseUtils } from '@voiceflow/base-types';
+import type { BaseUtils } from '@voiceflow/base-types';
 import React from 'react';
 
 import VariablesInput from '@/components/VariablesInput';
@@ -17,7 +17,13 @@ export interface PromptInputProps<T> {
 
 function PromptInput<T extends React.PropsWithChildren>(props: PromptInputProps<T>): React.ReactElement;
 function PromptInput(props: PromptInputProps<React.PropsWithChildren>): React.ReactElement {
-  const { InputWrapper = { Component: React.Fragment, props: {} }, value, onChange, placeholder, onContentChange } = props;
+  const {
+    InputWrapper = { Component: React.Fragment, props: {} },
+    value,
+    onChange,
+    placeholder,
+    onContentChange,
+  } = props;
 
   return (
     <InputWrapper.Component {...InputWrapper.props}>

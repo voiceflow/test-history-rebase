@@ -1,4 +1,4 @@
-import { PopperChildrenProps } from '@voiceflow/ui-next/build/cjs/components/Utility/Popper/Popper.interface';
+import type { PopperChildrenProps } from '@voiceflow/ui-next/build/cjs/components/Utility/Popper/Popper.interface';
 
 export interface IThumbsFeedback {
   onBad?: VoidFunction;

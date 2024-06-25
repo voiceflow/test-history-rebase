@@ -1,12 +1,13 @@
-import { CreatorDiagram, DBNodeStart, Link, Node, NodeData, Port } from '@realtime-sdk/models';
+import type { CreatorDiagram, DBNodeStart, Link, Node, NodeData, Port } from '@realtime-sdk/models';
 import { isActions, isBlock, isMarkupBlockType, isStart } from '@realtime-sdk/utils/typeGuards';
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
-import * as Platform from '@voiceflow/platform-config/backend';
+import type * as Platform from '@voiceflow/platform-config/backend';
 import { createSimpleAdapter } from 'bidirectional-adapter';
-import { denormalize, Normalized } from 'normal-store';
+import type { Normalized } from 'normal-store';
+import { denormalize } from 'normal-store';
 
-import { AdapterContext, VersionAdapterContext } from '../types';
+import type { AdapterContext, VersionAdapterContext } from '../types';
 import { cleanupDBNodes } from './cleanup';
 import nodeAdapter from './node';
 

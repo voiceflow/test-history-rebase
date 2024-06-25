@@ -1,4 +1,4 @@
-import { BaseModels } from '@voiceflow/base-types';
+import type { BaseModels } from '@voiceflow/base-types';
 import { Table, Text, Tooltip } from '@voiceflow/ui-next';
 import React from 'react';
 

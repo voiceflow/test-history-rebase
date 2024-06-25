@@ -7,7 +7,7 @@ import { refererIDsByResourceIDMapAtom } from '@/atoms/reference.atom';
 
 import { CMSTableLinkMenuCell } from '../CMSTableLinkMenuCell/CMSTableLinkMenuCell.component';
 import { useCMSTableUsedByCellGetItem } from './CMSTableUsedByCell.hook';
-import { CMSTableUsedByCellItem, ICMSTableUsedByCell } from './CMSTableUsedByCell.interface';
+import type { CMSTableUsedByCellItem, ICMSTableUsedByCell } from './CMSTableUsedByCell.interface';
 import { CMSTableUsedByCellItemType } from './CMSTableUsedByCellItemType.enum';
 
 export const CMSTableUsedByCell: React.FC<ICMSTableUsedByCell> = ({

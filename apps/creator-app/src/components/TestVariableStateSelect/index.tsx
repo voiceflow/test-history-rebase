@@ -1,6 +1,6 @@
 import { Utils } from '@voiceflow/common';
+import type { BaseSelectProps } from '@voiceflow/ui';
 import {
-  BaseSelectProps,
   isNotUIOnlyMenuItemOption,
   isUIOnlyMenuItemOption,
   Menu,
@@ -19,7 +19,7 @@ import * as ModalsV2 from '@/ModalsV2';
 
 import { SelectContainer } from './components';
 import { baseOptions, dividerOption } from './constants';
-import { VariableStateOption } from './types';
+import type { VariableStateOption } from './types';
 
 interface TestVariableStateSelectProps extends BaseSelectProps {
   value?: string | null;

@@ -3,7 +3,8 @@ import { Utils } from '@voiceflow/common';
 const generateEmail = () => `${Utils.generate.id(true)}@example.com`;
 const generateURL = () => `https://s3.amazonaws.com/com.example.images/${Utils.generate.id()}.png`;
 
-export const mockAxiosError = (status: number) => Object.assign(new Error(), { isAxiosError: true, response: { status } });
+export const mockAxiosError = (status: number) =>
+  Object.assign(new Error(), { isAxiosError: true, response: { status } });
 
 export const MOCK_ACTION = {
   type: 'workspace.CRUD:REPLACE',

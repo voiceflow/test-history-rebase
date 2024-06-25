@@ -1,9 +1,9 @@
 import { BaseNode } from '@voiceflow/base-types';
 import { SLOT_REGEXP, Utils } from '@voiceflow/common';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import isEmpty from 'lodash/isEmpty';
 
-import { LogicUnitDataType } from './types';
+import type { LogicUnitDataType } from './types';
 
 // Validations
 
@@ -23,6 +23,7 @@ export const isValidExpressionValue = (value: string): boolean => {
   }
 
   // INVALID: variable and alpha-numeric text
+  // eslint-disable-next-line sonarjs/prefer-single-boolean-return
   if (value.length > variables[0].length) {
     return false;
   }
@@ -38,13 +39,18 @@ export const isConditionInvalid = (expression: LogicUnitDataType) => {
   const leftValueMissing = !isEmpty(expression.value[1]?.value) && isEmpty(expression.value[0]?.value);
   return (
     (leftValueMissing || rightValueMissing) &&
-    !(expression.type === BaseNode.Utils.ExpressionTypeV2.IS_EMPTY || expression.type === BaseNode.Utils.ExpressionTypeV2.HAS_VALUE)
+    !(
+      expression.type === BaseNode.Utils.ExpressionTypeV2.IS_EMPTY ||
+      expression.type === BaseNode.Utils.ExpressionTypeV2.HAS_VALUE
+    )
   );
 };
 
 // Default values
 
-export const getAddionalLogicData = <T extends Realtime.ExpressionData | Realtime.LogicGroupData = Realtime.ExpressionData | Realtime.LogicGroupData>(
+export const getAddionalLogicData = <
+  T extends Realtime.ExpressionData | Realtime.LogicGroupData = Realtime.ExpressionData | Realtime.LogicGroupData,
+>(
   expression: Realtime.ExpressionData | Realtime.LogicGroupData,
   newCondition: Realtime.ExpressionV2 | Realtime.LogicGroupData
 ): T =>
@@ -52,7 +58,7 @@ export const getAddionalLogicData = <T extends Realtime.ExpressionData | Realtim
     ...expression,
     type: expression.type || BaseNode.Utils.ExpressionTypeV2.AND,
     value: [...expression.value, { ...newCondition }],
-  } as T);
+  }) as T;
 
 export const getDefaultValue = (
   logicInterface: BaseNode.Utils.ConditionsLogicInterface,
@@ -104,7 +110,10 @@ export const getDefaultValue = (
         logicInterface,
         type: null,
         value: isV2
-          ? [getDefaultValue(BaseNode.Utils.ConditionsLogicInterface.VARIABLE), getDefaultValue(BaseNode.Utils.ConditionsLogicInterface.VARIABLE)]
+          ? [
+              getDefaultValue(BaseNode.Utils.ConditionsLogicInterface.VARIABLE),
+              getDefaultValue(BaseNode.Utils.ConditionsLogicInterface.VARIABLE),
+            ]
           : [],
       } as Realtime.LogicGroupData;
   }

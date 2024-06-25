@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { validateFiles } from '../../utils';
-import UploadBase, { UploadBaseProps } from '../Base';
+import type { UploadBaseProps } from '../Base';
+import UploadBase from '../Base';
 import { DropContent } from '../Drop';
 
 export interface UploadTLSProps extends Pick<UploadBaseProps, 'onChange'> {

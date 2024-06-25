@@ -86,7 +86,11 @@ export class VariableService extends CMSTabularService<VariableORM> {
     const { variables: sourceVariables } = await this.findManyWithSubResourcesByEnvironment(sourceEnvironmentID);
 
     return this.importManyWithSubResources({
-      variables: sourceVariables.map((item) => ({ ...item, assistantID: targetAssistantID, environmentID: targetEnvironmentID })),
+      variables: sourceVariables.map((item) => ({
+        ...item,
+        assistantID: targetAssistantID,
+        environmentID: targetEnvironmentID,
+      })),
     });
   }
 
@@ -94,7 +98,12 @@ export class VariableService extends CMSTabularService<VariableORM> {
 
   prepareImportData(
     { variables }: VariableExportImportDataDTO,
-    { userID, backup, assistantID, environmentID }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
+    {
+      userID,
+      backup,
+      assistantID,
+      environmentID,
+    }: { userID: number; backup?: boolean; assistantID: string; environmentID: string }
   ): { variables: VariableJSON[] } {
     const createdAt = new Date().toJSON();
 
@@ -210,7 +219,10 @@ export class VariableService extends CMSTabularService<VariableORM> {
 
   /* Upsert */
 
-  async upsertManyWithSubResources(data: { variables: Variable[] }, meta: { userID: number; assistantID: string; environmentID: string }) {
+  async upsertManyWithSubResources(
+    data: { variables: Variable[] },
+    meta: { userID: number; assistantID: string; environmentID: string }
+  ) {
     const { variables } = this.prepareImportData(data, meta);
 
     await this.upsertMany(this.mapFromJSON(variables));

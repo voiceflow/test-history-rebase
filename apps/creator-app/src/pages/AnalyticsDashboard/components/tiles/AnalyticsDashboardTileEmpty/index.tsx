@@ -2,7 +2,7 @@ import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import { QueryState } from '../../../constants';
-import { QueryResult } from '../../../types';
+import type { QueryResult } from '../../../types';
 import * as S from './styles';
 
 interface AnalyticsDashboardChartEmptyProps {

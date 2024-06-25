@@ -1,8 +1,10 @@
-import { Nullable } from '@voiceflow/common';
+import type { Nullable } from '@voiceflow/common';
 import React from 'react';
-import { Editor, NodeEntry, Range, Text } from 'slate';
+import type { Editor, NodeEntry } from 'slate';
+import { Range, Text } from 'slate';
 
-import { Prism, PrismLanguage } from '../editor';
+import type { PrismLanguage } from '../editor';
+import { Prism } from '../editor';
 
 const getTokenLength = (token: string | Prism.Token): number => {
   if (typeof token === 'string') {
@@ -54,7 +56,8 @@ export const useEditorDecorate = (editor: Editor): Nullable<(entry: NodeEntry) =
         ranges.push({
           ...range,
           range,
-          isSelected: !!editor.selection && Range.isCollapsed(editor.selection) && Range.includes(range, editor.selection),
+          isSelected:
+            !!editor.selection && Range.isCollapsed(editor.selection) && Range.includes(range, editor.selection),
           [token.type]: true,
         });
       }

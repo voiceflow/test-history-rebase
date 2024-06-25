@@ -1,11 +1,23 @@
 import { SLOT_REGEXP } from '@voiceflow/common';
-import { Entity } from '@voiceflow/dtos';
-import * as Platform from '@voiceflow/platform-config';
-import * as Realtime from '@voiceflow/realtime-sdk';
-import { Badge, Box, ErrorMessage, SectionV2, stopPropagation, SvgIcon, Text, ThemeColor, toast, useRAF } from '@voiceflow/ui';
+import type { Entity } from '@voiceflow/dtos';
+import type * as Platform from '@voiceflow/platform-config';
+import type * as Realtime from '@voiceflow/realtime-sdk';
+import {
+  Badge,
+  Box,
+  ErrorMessage,
+  SectionV2,
+  stopPropagation,
+  SvgIcon,
+  Text,
+  ThemeColor,
+  toast,
+  useRAF,
+} from '@voiceflow/ui';
 import React from 'react';
 
-import Utterance, { UtteranceRef } from '@/components/Utterance';
+import type { UtteranceRef } from '@/components/Utterance';
+import Utterance from '@/components/Utterance';
 import { useMapManager } from '@/hooks';
 import EditorV2 from '@/pages/Canvas/components/EditorV2';
 
@@ -17,14 +29,23 @@ interface UtteranceSectionProps {
   preventAccent?: boolean;
 }
 
-const UtteranceSection: React.FC<UtteranceSectionProps> = ({ slot, utterances, onChange, usedEntities, preventAccent }) => {
+const UtteranceSection: React.FC<UtteranceSectionProps> = ({
+  slot,
+  utterances,
+  onChange,
+  usedEntities,
+  preventAccent,
+}) => {
   const utteranceRef = React.useRef<UtteranceRef>(null);
   const [addError, setAddError] = React.useState('');
   const [isAddEmpty, setIsAddEmpty] = React.useState(true);
 
   const [badgeAddScheduler] = useRAF();
 
-  const validate = ({ text }: Platform.Base.Models.Intent.Input, { index, isUpdate }: { index: number; isUpdate: boolean }) => {
+  const validate = (
+    { text }: Platform.Base.Models.Intent.Input,
+    { index, isUpdate }: { index: number; isUpdate: boolean }
+  ) => {
     let error = '';
     const trimmedText = text.trim();
 
@@ -81,7 +102,12 @@ const UtteranceSection: React.FC<UtteranceSectionProps> = ({ slot, utterances, o
               iconProps={{ variant: SvgIcon.Variant.BLUE }}
               rightAction={
                 !isAddEmpty && (
-                  <Badge slide onClick={stopPropagation(() => utteranceRef.current && mapManager.onAdd(utteranceRef.current.getCurrentUtterance()))}>
+                  <Badge
+                    slide
+                    onClick={stopPropagation(
+                      () => utteranceRef.current && mapManager.onAdd(utteranceRef.current.getCurrentUtterance())
+                    )}
+                  >
                     Enter
                   </Badge>
                 )
@@ -96,8 +122,8 @@ const UtteranceSection: React.FC<UtteranceSectionProps> = ({ slot, utterances, o
                 <ErrorMessage mb={0}>{addError}</ErrorMessage>
               ) : (
                 <ErrorMessage mb={0}>
-                  Add utterances using the <Text color={ThemeColor.PRIMARY}>{`{${slot.name}}`}</Text> entity to improve your agents capture
-                  accuracy.
+                  Add utterances using the <Text color={ThemeColor.PRIMARY}>{`{${slot.name}}`}</Text> entity to improve
+                  your agents capture accuracy.
                 </ErrorMessage>
               ))}
           </SectionV2.Content>

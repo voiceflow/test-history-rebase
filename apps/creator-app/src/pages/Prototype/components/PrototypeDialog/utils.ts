@@ -1,6 +1,7 @@
 import { BaseRequest } from '@voiceflow/base-types';
 
-import { BotMessageTypes, Interaction, Message, MessageType } from '@/pages/Prototype/types';
+import type { Interaction, Message } from '@/pages/Prototype/types';
+import { BotMessageTypes, MessageType } from '@/pages/Prototype/types';
 import { openURLInANewTab } from '@/utils/window';
 
 export const checkIfFirstInGroup = (previousMessage: Message, currentMessage: Message) => {
@@ -23,10 +24,7 @@ export const checkIfLastBotMessage = (message: Message, messages: Message[]) => 
   while (pointer >= 0) {
     const curr = messages[pointer];
     if (BotMessageTypes.includes(curr?.type)) {
-      if (message.id === curr.id) {
-        return true;
-      }
-      return false;
+      return message.id === curr.id;
     }
     pointer -= 1;
   }
@@ -39,10 +37,7 @@ export const checkIfLastBubble = (message: Message, messages: Message[]) => {
     const curr = messages[pointer];
     const messageType = curr.type;
     if (BotMessageTypes.includes(messageType) || messageType === MessageType.USER) {
-      if (message.id === curr.id) {
-        return true;
-      }
-      return false;
+      return message.id === curr.id;
     }
     pointer -= 1;
   }

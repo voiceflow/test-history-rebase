@@ -1,6 +1,7 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { Context, terminateResend } from '@voiceflow/socket-utils';
-import { Action } from 'typescript-fsa';
+import type { Context } from '@voiceflow/socket-utils';
+import { terminateResend } from '@voiceflow/socket-utils';
+import type { Action } from 'typescript-fsa';
 
 import { AbstractWorkspaceChannelControl } from '../utils';
 
@@ -9,7 +10,10 @@ class ToggleDashboardKanban extends AbstractWorkspaceChannelControl<Realtime.wor
 
   protected resend = terminateResend;
 
-  protected process = async (ctx: Context, { payload }: Action<Realtime.workspace.settings.ToggleDashboardKanbanPayload>) => {
+  protected process = async (
+    ctx: Context,
+    { payload }: Action<Realtime.workspace.settings.ToggleDashboardKanbanPayload>
+  ) => {
     const { creatorID } = ctx.data;
 
     await this.services.workspaceSettings.patch(creatorID, payload.workspaceID, { dashboardKanban: payload.enabled });

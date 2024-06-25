@@ -1,5 +1,5 @@
 import { BaseNode } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
 import { DEVICE_LABEL_MAP } from '@/constants';
 

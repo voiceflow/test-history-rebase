@@ -36,7 +36,11 @@ describe('Adapters | Creator | Block | Alexa | Command', () => {
 
   describe('when transforming to db', () => {
     it('returns correct default values', () => {
-      const nodeData = Creator.Block.Alexa.CommandNodeData({ diagramID: null, intent: null, mappings: [{ slot: null, variable: null }] });
+      const nodeData = Creator.Block.Alexa.CommandNodeData({
+        diagramID: null,
+        intent: null,
+        mappings: [{ slot: null, variable: null }],
+      });
 
       const result = commandAdapter.toDB({ ...nodeData }, { context: {} });
 

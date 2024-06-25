@@ -1,6 +1,7 @@
 import React from 'react';
 
-import BaseGenerateButton, { BaseGenerateButtonProps } from './Base';
+import type { BaseGenerateButtonProps } from './Base';
+import BaseGenerateButton from './Base';
 
 export interface HoverButtonProps extends Omit<BaseGenerateButtonProps, 'options'> {
   label: string;
@@ -9,7 +10,14 @@ export interface HoverButtonProps extends Omit<BaseGenerateButtonProps, 'options
   pluralLabel: string;
 }
 
-const PromptButton: React.FC<HoverButtonProps> = ({ label, children, quantities = [1, 3, 5], onGenerate, pluralLabel, ...props }) => (
+const PromptButton: React.FC<HoverButtonProps> = ({
+  label,
+  children,
+  quantities = [1, 3, 5],
+  onGenerate,
+  pluralLabel,
+  ...props
+}) => (
   <BaseGenerateButton
     {...props}
     onClick={() => onGenerate({ quantity: quantities[0] })}

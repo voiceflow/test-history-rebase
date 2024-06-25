@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { CanvasAPI } from '@/components/Canvas';
+import type { CanvasAPI } from '@/components/Canvas';
 import * as WorkspaceV2 from '@/ducks/workspaceV2';
 import { VersionSubscriptionGate } from '@/gates';
 import { withBatchLoadingGate } from '@/hocs/withBatchLoadingGate';

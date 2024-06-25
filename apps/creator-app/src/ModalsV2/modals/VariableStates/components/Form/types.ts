@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 
 export interface Value extends Omit<Realtime.VariableState, 'id' | 'projectID'> {}
 

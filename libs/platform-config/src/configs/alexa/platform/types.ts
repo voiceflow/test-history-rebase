@@ -1,4 +1,4 @@
-import { AlexaModels } from '@voiceflow/alexa-types';
+import type { AlexaModels } from '@voiceflow/alexa-types';
 
 export interface Account {
   token: string;

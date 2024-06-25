@@ -1,4 +1,5 @@
-import React, { ComponentProps, PropsWithChildren, ReactNode } from 'react';
+import type { ComponentProps, PropsWithChildren, ReactNode } from 'react';
+import React from 'react';
 
 type AnyComponent = React.ComponentType<any>;
 

@@ -23,7 +23,13 @@ const MultiFields = ({ type, tooltipContent, onAdd, onRemove, handleChange, fiel
   const onChange = React.useCallback((index, e) => handleChange(index, e, type), [type, handleChange]);
 
   return (
-    <Section variant="secondary" header={_upperFirst(type)} style={{ paddingBottom: 24 }} status={AddMappingButton} tooltip={tooltipContent}>
+    <Section
+      variant="secondary"
+      header={_upperFirst(type)}
+      style={{ paddingBottom: 24 }}
+      status={AddMappingButton}
+      tooltip={tooltipContent}
+    >
       {fields.map((field, index) => (
         <FieldContainer key={index}>
           <Input placeholder={`Add ${type}`} value={field} onChange={(e) => onChange(index, e)} />

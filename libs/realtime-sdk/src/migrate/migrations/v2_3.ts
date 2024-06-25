@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { SLOT_REGEXP } from '@voiceflow/common';
 
-import { Transform } from './types';
+import type { Transform } from './types';
 
 /**
  * this migration sanitizes the intents to remove all slots that no longer exist

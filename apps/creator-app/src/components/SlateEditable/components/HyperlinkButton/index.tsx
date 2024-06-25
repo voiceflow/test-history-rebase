@@ -1,4 +1,5 @@
-import { Input, Popper, preventDefault, SvgIconTypes, useToggle, withHandler } from '@voiceflow/ui';
+import type { SvgIconTypes } from '@voiceflow/ui';
+import { Input, Popper, preventDefault, useToggle, withHandler } from '@voiceflow/ui';
 import React from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 

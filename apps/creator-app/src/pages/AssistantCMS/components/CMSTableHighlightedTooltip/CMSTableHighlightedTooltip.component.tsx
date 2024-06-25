@@ -8,7 +8,15 @@ export const CMSTableHighlightedTooltip = ({ label, search, caption }: ICMSTable
     <Tooltip.Overflow
       referenceElement={({ ref, onOpen, onClose }) => {
         const labelNode = (
-          <Table.Cell.Text.Highlighted as="span" ref={ref} onMouseEnter={onOpen} onMouseLeave={onClose} label={label} search={search} overflow />
+          <Table.Cell.Text.Highlighted
+            as="span"
+            ref={ref}
+            onMouseEnter={onOpen}
+            onMouseLeave={onClose}
+            label={label}
+            search={search}
+            overflow
+          />
         );
 
         return caption == null ? (

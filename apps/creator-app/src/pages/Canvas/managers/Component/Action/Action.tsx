@@ -1,5 +1,5 @@
 import { BaseModels } from '@voiceflow/base-types';
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Canvas, Popper, swallowEvent, TippyTooltip } from '@voiceflow/ui';
 import React from 'react';
 
@@ -8,7 +8,7 @@ import { useDispatch } from '@/hooks';
 import { FlowMapByDiagramIDContext } from '@/pages/Canvas/contexts';
 
 import Step from '../../../components/Step';
-import { ConnectedAction } from '../../types';
+import type { ConnectedAction } from '../../types';
 import { NODE_CONFIG } from '../ComponentManager.constants';
 import ActionPreview from './ActionPreview';
 
@@ -50,7 +50,11 @@ const Action: ConnectedAction<Realtime.NodeData.Component, Realtime.NodeData.Com
             </TippyTooltip>
           }
           port={<Step.ActionPort portID={ports.out.builtIn[BaseModels.PortType.NEXT]} />}
-          label={<Canvas.Action.Label secondary={isEmpty}>{isEmpty ? 'Select component' : data.name || diagram.name}</Canvas.Action.Label>}
+          label={
+            <Canvas.Action.Label secondary={isEmpty}>
+              {isEmpty ? 'Select component' : data.name || diagram.name}
+            </Canvas.Action.Label>
+          }
           nodeID={data.nodeID}
           active={isOpened || isActive}
           onClick={swallowEvent(onToggle)}

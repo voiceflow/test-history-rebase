@@ -18,8 +18,17 @@ export const CMSKnowledgeBaseHeader: React.FC = () => {
       searchPlaceholder="Search data sources"
       rightActions={
         <>
-          <Header.Button.IconSecondary iconName="Settings" onClick={() => settingsModal.openVoid()} testID={tid(HEADER_TEST_ID, 'settings')} />
-          <Header.Button.Secondary iconName="PlayS" label="Preview" onClick={() => previewModal.openVoid()} testID={tid(HEADER_TEST_ID, 'preview')} />
+          <Header.Button.IconSecondary
+            iconName="Settings"
+            onClick={() => settingsModal.openVoid()}
+            testID={tid(HEADER_TEST_ID, 'settings')}
+          />
+          <Header.Button.Secondary
+            iconName="PlayS"
+            label="Preview"
+            onClick={() => previewModal.openVoid()}
+            testID={tid(HEADER_TEST_ID, 'preview')}
+          />
 
           <CMSKnowledgeBaseAddDataSourceButton testID={tid(HEADER_TEST_ID, 'add-source')} />
         </>

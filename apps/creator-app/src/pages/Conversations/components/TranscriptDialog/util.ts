@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import timezone from 'dayjs/plugin/timezone';
 
-import { Message } from '@/pages/Prototype/types';
+import type { Message } from '@/pages/Prototype/types';
 
 dayjs.extend(timezone);
 dayjs.extend(advancedFormat);

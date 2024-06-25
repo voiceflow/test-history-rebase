@@ -1,4 +1,4 @@
-import * as Realtime from '@voiceflow/realtime-sdk';
+import type * as Realtime from '@voiceflow/realtime-sdk';
 import { stopImmediatePropagation } from '@voiceflow/ui';
 import { Box, Editor, Scroll } from '@voiceflow/ui-next';
 import React from 'react';
@@ -7,7 +7,7 @@ import { ResponseEditForm } from '@/components/Response/ResponseEditForm/Respons
 import { useEditor } from '@/pages/Canvas/components/EditorV3/EditorV3.hook';
 import { EditorV3HeaderActions } from '@/pages/Canvas/components/EditorV3/EditorV3HeaderActions.component';
 import { ResponseMapFirstVariantByResponseIDContext } from '@/pages/Canvas/contexts/ReduxContexts';
-import { NodeEditorV2 } from '@/pages/Canvas/managers/types';
+import type { NodeEditorV2 } from '@/pages/Canvas/managers/types';
 
 import { ResponseCreateForm } from './ResponseCreateForm/ResponseCreateForm.component';
 import { editorStyles } from './ResponseEditor.css';

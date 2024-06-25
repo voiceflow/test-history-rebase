@@ -18,7 +18,12 @@ const LocalesSelect: React.FC<LocalesSelectProps> = ({ type, locales, platform, 
   const projectConfig = Platform.Config.getTypeConfig({ type, platform });
 
   const preferredOptions = React.useMemo(
-    () => Utils.array.unique([...projectConfig.project.locale.preferredLocales, createDividerMenuItemOption(), ...projectConfig.project.locale.list]),
+    () =>
+      Utils.array.unique([
+        ...projectConfig.project.locale.preferredLocales,
+        createDividerMenuItemOption(),
+        ...projectConfig.project.locale.list,
+      ]),
     [projectConfig]
   );
 

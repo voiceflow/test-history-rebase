@@ -1,5 +1,5 @@
 import React from 'react';
-import { RenderPlaceholderProps } from 'slate-react';
+import type { RenderPlaceholderProps } from 'slate-react';
 
 import { styled } from '@/hocs/styled';
 
@@ -13,6 +13,8 @@ export const PlaceholderText = styled.span`
   font-style: normal;
 `;
 
-const Placeholder: React.FC<RenderPlaceholderProps> = ({ attributes, children }) => <PlaceholderText {...attributes}>{children}</PlaceholderText>;
+const Placeholder: React.FC<RenderPlaceholderProps> = ({ attributes, children }) => (
+  <PlaceholderText {...attributes}>{children}</PlaceholderText>
+);
 
 export default Placeholder;

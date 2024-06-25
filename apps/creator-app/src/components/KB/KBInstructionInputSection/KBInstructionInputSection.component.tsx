@@ -5,7 +5,7 @@ import { SectionHeaderTitleWithLearnTooltip } from '@/components/Section/Section
 import { useLinkedState } from '@/hooks/state.hook';
 import { onOpenURLInANewTabFactory } from '@/utils/window';
 
-import { IKBInstructionInputSection } from './KBInstructionInputSection.interface';
+import type { IKBInstructionInputSection } from './KBInstructionInputSection.interface';
 
 export const KBInstructionInputSection: React.FC<IKBInstructionInputSection> = ({
   value: propValue,
@@ -23,7 +23,11 @@ export const KBInstructionInputSection: React.FC<IKBInstructionInputSection> = (
         variant="active"
         contentProps={{ pr: 24 }}
         title={(className) => (
-          <SectionHeaderTitleWithLearnTooltip title="Instructions" className={className} onLearnClick={onOpenURLInANewTabFactory(learnMoreURL)}>
+          <SectionHeaderTitleWithLearnTooltip
+            title="Instructions"
+            className={className}
+            onLearnClick={onOpenURLInANewTabFactory(learnMoreURL)}
+          >
             This field is optional. You can use it to add custom instructions to your prompt.
           </SectionHeaderTitleWithLearnTooltip>
         )}

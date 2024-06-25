@@ -1,9 +1,9 @@
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 import { SectionV2 } from '@voiceflow/ui';
 import React from 'react';
 
 import Prompt from '@/components/Prompt';
-import { PromptRef } from '@/components/Prompt/types';
+import type { PromptRef } from '@/components/Prompt/types';
 import { useAutoScrollNodeIntoView } from '@/hooks';
 
 interface ListItemProps {
@@ -17,7 +17,10 @@ interface ListItemProps {
 }
 
 const ListItem = React.forwardRef<PromptRef, ListItemProps>(({ onRemove, ...props }, ref) => {
-  const [scrollRef] = useAutoScrollNodeIntoView<HTMLDivElement>({ options: { block: 'end' }, condition: props.autoFocus });
+  const [scrollRef] = useAutoScrollNodeIntoView<HTMLDivElement>({
+    options: { block: 'end' },
+    condition: props.autoFocus,
+  });
 
   return (
     <SectionV2.ListItem ref={scrollRef} action={<SectionV2.RemoveButton onClick={onRemove} disabled={!onRemove} />}>

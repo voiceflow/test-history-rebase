@@ -1,4 +1,4 @@
-import { BarChartColor } from './types';
+import type { BarChartColor } from './types';
 
 export const COLORS: Array<BarChartColor> = [
   { primary: '#5b9fd7', light: '#c9dcee', lighter: '#e6eff7' },

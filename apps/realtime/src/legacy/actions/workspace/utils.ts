@@ -1,5 +1,5 @@
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { ActionAccessor, BaseContextData, Context, Resender } from '@voiceflow/socket-utils';
+import type { ActionAccessor, BaseContextData, Context, Resender } from '@voiceflow/socket-utils';
 import type { Action } from 'typescript-fsa';
 
 import { AbstractActionControl } from '@/legacy/actions/utils';
@@ -13,7 +13,11 @@ export interface WorkspaceContextData extends BaseContextData {
 export const accessWorkspaces = <P extends WorkspacePayload, D extends WorkspaceContextData>(
   self: AbstractActionControl<P, D>
 ): ActionAccessor<P, D> =>
-  async function (this: AbstractActionControl<P, D>, ctx: Context<WorkspaceContextData>, action: Action<WorkspacePayload>): Promise<boolean> {
+  async function (
+    this: AbstractActionControl<P, D>,
+    ctx: Context<WorkspaceContextData>,
+    action: Action<WorkspacePayload>
+  ): Promise<boolean> {
     const workspaceIDs = Realtime.workspace.getTargetedWorkspaces(action);
     if (!workspaceIDs) return false;
 
@@ -21,7 +25,11 @@ export const accessWorkspaces = <P extends WorkspacePayload, D extends Workspace
 
     const { creatorID } = ctx.data;
 
-    return (await Promise.all(workspaceIDs.map((workspaceID) => self.services.workspace.access.canRead(creatorID, workspaceID)))).every(Boolean);
+    return (
+      await Promise.all(
+        workspaceIDs.map((workspaceID) => self.services.workspace.access.canRead(creatorID, workspaceID))
+      )
+    ).every(Boolean);
     // eslint-disable-next-line no-extra-bind
   }.bind(self);
 
@@ -44,7 +52,7 @@ export const resendWorkspaceChannels: Resender<WorkspacePayload, WorkspaceContex
 
 export abstract class AbstractWorkspaceChannelControl<
   P extends WorkspacePayload,
-  D extends WorkspaceContextData = WorkspaceContextData
+  D extends WorkspaceContextData = WorkspaceContextData,
 > extends AbstractActionControl<P, D> {
   protected access: ActionAccessor<P, D> = accessWorkspaces(this);
 

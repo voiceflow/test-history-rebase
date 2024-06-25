@@ -1,5 +1,12 @@
-import { Nullish } from '@voiceflow/common';
-import { BaseSelectProps, GetOptionKey, GetOptionLabel, GetOptionValue, Primitive, UIOnlyMenuItemOption } from '@voiceflow/ui';
+import type { Nullish } from '@voiceflow/common';
+import type {
+  BaseSelectProps,
+  GetOptionKey,
+  GetOptionLabel,
+  GetOptionValue,
+  Primitive,
+  UIOnlyMenuItemOption,
+} from '@voiceflow/ui';
 
 interface GenericProps<Option> {
   getOptionKey: GetOptionKey<Option>;
@@ -14,7 +21,9 @@ interface BaseTagSelectProps<Option> extends BaseSelectProps {
   selectAllLabel?: string;
 }
 
-export interface PrimitiveTagSelectProps<Option extends Primitive> extends BaseTagSelectProps<Option>, Partial<GenericProps<Option>> {
+export interface PrimitiveTagSelectProps<Option extends Primitive>
+  extends BaseTagSelectProps<Option>,
+    Partial<GenericProps<Option>> {
   getOptionLabel?: GetOptionLabel<Option>;
 }
 

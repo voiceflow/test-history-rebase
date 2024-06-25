@@ -3,8 +3,8 @@ import React from 'react';
 import { PublishContext } from '@/contexts/PublishContext';
 import * as Router from '@/ducks/router';
 import { useDispatch } from '@/hooks';
-import { NLPTrainJob } from '@/models';
-import { StageComponentProps } from '@/platforms/types';
+import type { NLPTrainJob } from '@/models';
+import type { StageComponentProps } from '@/platforms/types';
 
 import { ConfigurationRequiredStage, PublishedStage } from './components';
 

@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { AnyRecord } from '@voiceflow/common';
+import type { AnyRecord } from '@voiceflow/common';
 import type { SvgIconTypes } from '@voiceflow/ui';
 
 export interface Icon {

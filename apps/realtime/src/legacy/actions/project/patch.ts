@@ -1,11 +1,12 @@
 import { Utils } from '@voiceflow/common';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
-import { Context } from '@voiceflow/socket-utils';
+import type { Context } from '@voiceflow/socket-utils';
 import type { Action } from 'typescript-fsa';
 
 import { AbstractWorkspaceChannelControl } from '@/legacy/actions/workspace/utils';
 
-type PatchProjectPayload = Realtime.BaseWorkspacePayload & Realtime.actionUtils.CRUDValuePayload<Partial<Realtime.AnyProject>>;
+type PatchProjectPayload = Realtime.BaseWorkspacePayload &
+  Realtime.actionUtils.CRUDValuePayload<Partial<Realtime.AnyProject>>;
 
 class PatchProject extends AbstractWorkspaceChannelControl<PatchProjectPayload> {
   protected actionCreator = Realtime.project.crud.patch;

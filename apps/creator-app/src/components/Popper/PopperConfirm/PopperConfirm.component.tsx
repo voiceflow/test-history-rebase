@@ -3,9 +3,9 @@ import { tid } from '@voiceflow/style';
 import { Box, Button, Popper, Surface, Text } from '@voiceflow/ui-next';
 import React from 'react';
 
-import { IPopperConfirm } from './PopperConfirm.interface';
+import type { IPopperConfirm } from './PopperConfirm.interface';
 
-export const PopperConfirm = <Modifiers extends unknown>({
+export const PopperConfirm = <Modifiers,>({
   testID,
   onCancel,
   children = 'This action can’t be undone, please confirm you’d like to continue.',

@@ -1,5 +1,5 @@
 import { ResponseType } from '@voiceflow/dtos';
-import { Actions } from '@voiceflow/sdk-logux-designer';
+import type { Actions } from '@voiceflow/sdk-logux-designer';
 import { useHistory } from 'react-router-dom';
 
 import { Designer } from '@/ducks';

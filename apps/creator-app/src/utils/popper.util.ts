@@ -1,7 +1,9 @@
 /* eslint-disable no-param-reassign */
 import type { PopperModifier } from '@voiceflow/ui-next/build/cjs/components/Utility/Popper/Popper.interface';
 
-export const popperPaddingModifierFactory = (options: { padding: number }): PopperModifier<'padding', { padding: number }> => ({
+export const popperPaddingModifierFactory = (options: {
+  padding: number;
+}): PopperModifier<'padding', { padding: number }> => ({
   name: 'padding',
   phase: 'beforeWrite',
   enabled: true,

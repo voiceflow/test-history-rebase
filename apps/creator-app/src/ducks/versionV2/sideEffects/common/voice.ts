@@ -1,6 +1,6 @@
-import * as Platform from '@voiceflow/platform-config';
+import type * as Platform from '@voiceflow/platform-config';
 
-import { Thunk } from '@/store/types';
+import type { Thunk } from '@/store/types';
 
 import { platformFactory } from '../utils';
 

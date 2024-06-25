@@ -16,7 +16,6 @@ export const MONGO_ENTITIES = Object.values(MetadataStorage.getMetadata()).flatM
 
 export const createMongoConfig = (env: EnvironmentVariables): Options => ({
   ...mongoConfig,
-  type: 'mongo',
   dbName: env.MONGO_DB,
   clientUrl: env.MONGO_URI,
 

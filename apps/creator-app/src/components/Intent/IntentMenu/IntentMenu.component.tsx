@@ -19,10 +19,13 @@ export const IntentMenu: React.FC<IIntentMenu> = ({
   onSelect: onSelectProp,
   viewOnly,
   excludeIDs,
+  excludeNone = true,
 }) => {
   const TEST_ID = 'intent-menu';
 
-  const storeIntents = useSelector(Designer.Intent.selectors.allWithoutNone);
+  const storeIntents = useSelector(
+    excludeNone ? Designer.Intent.selectors.allWithoutNone : Designer.Intent.selectors.allWithFormattedBuiltInNames
+  );
   const intentEditModal = useIntentEditModal();
   const intentCreateModal = useIntentCreateModal();
 

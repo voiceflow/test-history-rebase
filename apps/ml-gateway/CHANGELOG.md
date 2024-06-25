@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.104.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.103.4...@voiceflow/ml-gateway@1.104.0) (2024-06-25)
+
+### Features
+
+* add gemini pro to ml gateway (ML-947) ([#8410](https://github.com/voiceflow/creator-app/issues/8410)) ([4d1f916](https://github.com/voiceflow/creator-app/commit/4d1f9162a87a222bc595b18e7aae47053caa1acc))
+
 ## [1.103.4](https://github.com/voiceflow/creator-app/compare/@voiceflow/ml-gateway@1.103.3...@voiceflow/ml-gateway@1.103.4) (2024-06-25)
 
 **Note:** Version bump only for package @voiceflow/ml-gateway

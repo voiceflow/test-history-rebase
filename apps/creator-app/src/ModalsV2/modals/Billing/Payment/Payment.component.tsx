@@ -1,7 +1,7 @@
 import { PlanName } from '@voiceflow/dtos';
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { Modal, Switch, System, useAsyncMountUnmount } from '@voiceflow/ui';
-import { useSetAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai/react';
 import React from 'react';
 
 import { DEFAULT_PERIOD } from '@/constants';
@@ -13,6 +13,7 @@ import { useSelector } from '@/hooks';
 import { useFeature } from '@/hooks/feature.hook';
 
 import manager from '../../../manager';
+import { DEFAULT_SEATS } from '../billing.constants';
 import { BillingStep } from './BillingStep/BillingStep.component';
 import { usePaymentSteps } from './hooks';
 import { Step } from './Payment.constants';
@@ -30,7 +31,8 @@ export const Payment = manager.create<PaymentModalProps>('Payment', () => (modal
   const { activeStep, onBack, onReset } = usePaymentSteps();
   const { plans } = usePlans();
   const setPeriod = useSetAtom(atoms.selectedPeriodAtom);
-  const setPlan = useSetAtom(atoms.selectedPlanIDAtom);
+  const [planID, setPlan] = useAtom(atoms.selectedPlanIDAtom);
+  const setSeats = useSetAtom(atoms.editorSeatsAtom);
 
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
   const teamsPlanSelfServeIsEnabled = useFeature(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
@@ -42,6 +44,7 @@ export const Payment = manager.create<PaymentModalProps>('Payment', () => (modal
 
   useAsyncMountUnmount(async () => {
     setPeriod(DEFAULT_PERIOD);
+    setSeats(DEFAULT_SEATS[planID]);
 
     if (teamsPlanSelfServeIsEnabled) {
       const defaultNextPlan =

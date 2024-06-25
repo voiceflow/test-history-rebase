@@ -176,7 +176,7 @@ export class BillingSubscriptionService {
     }
 
     const billingPeriod = data.planItemPriceID.split('-').at(-1);
-    const seats = data.seats ?? 1;
+    const newTotalSeats = data.seats ?? 1;
 
     const seatsAddonItemPriceID = getAdditionalSeatAddonPriceID(billingPeriod);
 
@@ -188,7 +188,7 @@ export class BillingSubscriptionService {
     // base seats are seats from plan + seats from overrides;
     const baseSeats = totalSeats - addonSeats;
 
-    const changeOption = this.getChangeOption(totalSeats, seats);
+    const changeOption = this.getChangeOption(totalSeats, newTotalSeats);
 
     try {
       await this.billingClient.subscriptionsPrivate.checkout(subscription.id, {
@@ -197,11 +197,12 @@ export class BillingSubscriptionService {
             itemPriceID: data.itemPriceID ?? data.planItemPriceID,
             quantity: 1,
           },
-          ...(seats > baseSeats
+          // adding extra seats or had addons and is changing the total seats
+          ...(newTotalSeats > baseSeats || (addonSeats > 0 && newTotalSeats !== totalSeats)
             ? [
                 {
                   itemPriceID: seatsAddonItemPriceID,
-                  quantity: seats - baseSeats,
+                  quantity: Math.min(newTotalSeats - baseSeats, 0),
                 },
               ]
             : []),

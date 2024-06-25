@@ -1,16 +1,21 @@
-import { BillingPeriodUnit } from '@voiceflow/dtos';
+import { BillingPeriodUnit, PlanName } from '@voiceflow/dtos';
 import { FeatureFlag } from '@voiceflow/realtime-sdk';
 import { Box, Button, Modal, SectionV2, Text } from '@voiceflow/ui';
+import { useAtom } from 'jotai/react';
 import pluralize from 'pluralize';
 import React from 'react';
 
 import RadioGroup from '@/components/RadioGroup';
+import { TakenSeatsMessage } from '@/components/Workspace';
+import { editorSeatsAtom } from '@/contexts/PaymentContext/Plans/Plans.atoms';
 import * as Organization from '@/ducks/organization';
 import * as Workspace from '@/ducks/workspaceV2';
 import { useSelector } from '@/hooks';
 import { useFeature } from '@/hooks/feature.hook';
 import * as currency from '@/utils/currency';
 
+import { MAX_SEATS } from '../../billing.constants';
+import SeatsInput from '../../SeatsInput';
 import { usePaymentSteps, usePricing } from '../hooks';
 
 interface BillingStepProps {
@@ -19,14 +24,27 @@ interface BillingStepProps {
 
 export const BillingStep: React.FC<BillingStepProps> = ({ isLoading }) => {
   const teamsPlanSelfServeIsEnabled = useFeature(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
+  const configurableSeatsIsEnabled = useFeature(FeatureFlag.CHARGEBEE_CONFIGURABLE_SEATS);
   const usedViewerSeats = useSelector(Workspace.active.members.usedViewerSeatsSelector);
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
   const { onBack, onNext } = usePaymentSteps();
   const { selectedPlan, selectedPeriod, selectedPlanPrice, hasCard, onChangePeriod } = usePricing();
 
+  const selectedPlanID = selectedPlan?.id ?? PlanName.STARTER;
+
+  const [atomEditorSeats, setAtomEditorSeats] = useAtom(editorSeatsAtom);
+  const [seats, setSeats] = React.useState(atomEditorSeats);
+
   const amount = selectedPlanPrice?.amount ?? 0;
   const planSeats = selectedPlan?.seats ?? 1;
   const pricesByPeriodUnit = selectedPlan?.pricesByPeriodUnit ?? {};
+
+  const onChangeSeats = (seats: number) => {
+    setSeats(seats);
+    setAtomEditorSeats(Math.min(seats, maxSeats));
+  };
+
+  const maxSeats = Math.max(MAX_SEATS[selectedPlanID], subscription?.editorSeats ?? 1);
 
   const getRadioOptionLabel = (id: 'month' | 'year', unit: string) => {
     return (
@@ -34,7 +52,7 @@ export const BillingStep: React.FC<BillingStepProps> = ({ isLoading }) => {
         Paid {unit}{' '}
         <Text color="#62778C">
           - {currency.formatUSD(pricesByPeriodUnit?.[id]?.monthlyAmount ?? 0, { noDecimal: true, unit: 'cent' })}{' '}
-          {teamsPlanSelfServeIsEnabled ? '/m' : 'per Editor/m'}, paid {unit}
+          {teamsPlanSelfServeIsEnabled && !configurableSeatsIsEnabled ? '/m' : 'per Editor/m'}, paid {unit}
         </Text>
       </>
     );
@@ -46,6 +64,8 @@ export const BillingStep: React.FC<BillingStepProps> = ({ isLoading }) => {
       ? [{ id: BillingPeriodUnit.MONTH, label: getRadioOptionLabel(BillingPeriodUnit.MONTH, 'monthly') }]
       : []),
   ];
+
+  const perSeatsBilling = !teamsPlanSelfServeIsEnabled || configurableSeatsIsEnabled;
 
   return (
     <>
@@ -69,7 +89,20 @@ export const BillingStep: React.FC<BillingStepProps> = ({ isLoading }) => {
           <Box.FlexAlignStart gap={4} column fullWidth>
             <SectionV2.Title bold>Summary</SectionV2.Title>
 
-            {teamsPlanSelfServeIsEnabled ? (
+            {perSeatsBilling ? (
+              <div>
+                {seats > maxSeats ? (
+                  <TakenSeatsMessage seats={maxSeats} error small />
+                ) : (
+                  <SectionV2.Description>
+                    {currency.formatUSD(amount, { noDecimal: true, unit: 'cent' })}
+                    <Text color="#62778C" paddingLeft="3px">
+                      per Editor, per {selectedPeriod === BillingPeriodUnit.YEAR ? 'year' : 'month'}
+                    </Text>
+                  </SectionV2.Description>
+                )}
+              </div>
+            ) : (
               <Box.FlexApart fullWidth>
                 <SectionV2.Description>
                   <Text color="#62778C" paddingLeft="3px">
@@ -79,31 +112,28 @@ export const BillingStep: React.FC<BillingStepProps> = ({ isLoading }) => {
                 </SectionV2.Description>
                 <SectionV2.Description>{currency.formatUSD(amount, { unit: 'cent' })}</SectionV2.Description>
               </Box.FlexApart>
-            ) : (
-              <div>
-                <SectionV2.Description>
-                  {currency.formatUSD(amount, { noDecimal: true, unit: 'cent' })}
-                  <Text color="#62778C" paddingLeft="3px">
-                    per Editor, per {selectedPeriod === BillingPeriodUnit.YEAR ? 'year' : 'month'}
-                  </Text>
-                </SectionV2.Description>
-              </div>
             )}
           </Box.FlexAlignStart>
+
+          {configurableSeatsIsEnabled && (
+            <SeatsInput min={1} value={seats} error={seats > maxSeats} onChange={onChangeSeats} />
+          )}
         </Box.FlexApart>
       </SectionV2.SimpleSection>
 
       <SectionV2.Divider inset />
 
-      {!teamsPlanSelfServeIsEnabled && (
+      {perSeatsBilling && (
         <>
           <SectionV2.SimpleSection minHeight={50} headerProps={{ topUnit: 2, bottomUnit: 2 }}>
             <Box.FlexApart fullWidth>
               <SectionV2.Description>
-                {planSeats} Editor {pluralize('seats', planSeats)}
+                {atomEditorSeats} Editor {pluralize('seats', atomEditorSeats)}
               </SectionV2.Description>
 
-              <SectionV2.Description>{currency.formatUSD(amount, { unit: 'cent' })}</SectionV2.Description>
+              <SectionV2.Description>
+                {currency.formatUSD(amount * atomEditorSeats, { unit: 'cent' })}
+              </SectionV2.Description>
             </Box.FlexApart>
           </SectionV2.SimpleSection>
 
@@ -132,7 +162,7 @@ export const BillingStep: React.FC<BillingStepProps> = ({ isLoading }) => {
           <SectionV2.Title bold>Total</SectionV2.Title>
 
           <SectionV2.Title fill={false} bold>
-            {currency.formatUSD(amount, { noDecimal: true, unit: 'cent' })}
+            {currency.formatUSD(perSeatsBilling ? amount * atomEditorSeats : amount, { noDecimal: true, unit: 'cent' })}
           </SectionV2.Title>
         </Box.FlexApart>
       </SectionV2.SimpleSection>
@@ -146,7 +176,7 @@ export const BillingStep: React.FC<BillingStepProps> = ({ isLoading }) => {
           width={hasCard ? 144 : 194}
           onClick={() => onNext()}
           variant={Button.Variant.PRIMARY}
-          disabled={isLoading}
+          disabled={isLoading || seats > maxSeats}
           isLoading={isLoading}
           squareRadius
         >

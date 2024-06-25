@@ -7,7 +7,6 @@ export * as Identity from './identity';
 export * from './legacy/entity-to-legacy-slot.adapter';
 export * from './legacy/intent-to-legacy-intent/intent-to-legacy-intent.adapter';
 export * from './legacy/variable-to-legacy-variable.adapter';
-export { default as productAdapter } from './product';
 export { default as projectAdapter } from './project';
 export { default as projectListAdapter } from './projectList';
 export { slotAdapter, slotSmartAdapter } from './slot';

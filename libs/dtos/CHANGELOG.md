@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.102.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.102.0...@voiceflow/dtos@1.102.1) (2024-06-25)
+
+### Bug Fixes
+
+* minor comment (ENG-000) ([#8404](https://github.com/voiceflow/creator-app/issues/8404)) ([c298ef7](https://github.com/voiceflow/creator-app/commit/c298ef7aa765a8b6c9b0b42a7c05ee90e38de268))
+* run linter across entire codebase (COR-2420) ([#8385](https://github.com/voiceflow/creator-app/issues/8385)) ([8fca85c](https://github.com/voiceflow/creator-app/commit/8fca85c8134d6ace1dee6753b766efc9cfb8eb06))
+
 # [1.102.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.101.4...@voiceflow/dtos@1.102.0) (2024-06-24)
 
 ### Features

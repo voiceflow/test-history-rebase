@@ -26,8 +26,8 @@ export interface CreateData {
   folderID: string | null;
   variants: AnyResponseVariantCreate[];
   messages?: ResponseMessageCreate[];
+  draft?: boolean | null;
   type?: ResponseType;
-  draft?: boolean;
 }
 
 export interface PatchData {

@@ -4,13 +4,7 @@ import type { AlexaNode } from '@voiceflow/alexa-types';
 import type { BaseButton, BaseModels, BaseNode } from '@voiceflow/base-types';
 import type { ChatNode } from '@voiceflow/chat-types';
 import type { EmptyObject, Nullable } from '@voiceflow/common';
-import type {
-  FunctionNodeData,
-  MessageNodeData,
-  ResponseNodeData,
-  StartNodeData,
-  TriggerNodeData,
-} from '@voiceflow/dtos';
+import type { FunctionNodeData, MessageNodeData, StartNodeData, TriggerNodeData } from '@voiceflow/dtos';
 import type * as Platform from '@voiceflow/platform-config/backend';
 import type { VoiceNode } from '@voiceflow/voice-types';
 import type { VoiceflowNode } from '@voiceflow/voiceflow-types';
@@ -520,8 +514,6 @@ export namespace NodeData {
 
   export type Trigger = DTONodeData<TriggerNodeData>;
 
-  export type Response = DTONodeData<ResponseNodeData>;
-
   export type Message = DTONodeData<MessageNodeData>;
 }
 
@@ -532,7 +524,7 @@ export interface NodeDataMap {
   [BlockType.COMMENT]: unknown;
   [BlockType.ACTIONS]: NodeData.Actions;
 
-  [BlockType.RESPONSE]: NodeData.Response;
+  [BlockType.MESSAGE]: NodeData.Message;
   [BlockType.TEXT]: NodeData.Text;
   [BlockType.SPEAK]: NodeData.Speak;
   [BlockType.AI_RESPONSE]: NodeData.AIResponse;

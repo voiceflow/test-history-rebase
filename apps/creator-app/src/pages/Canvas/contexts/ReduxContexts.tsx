@@ -53,6 +53,12 @@ export const {
 } = createSelectorContext(Designer.Response.selectors.mapFirstVariantByResponseID);
 
 export const {
+  Context: ResponseMapFirstMessageByResponseIDContext,
+  Provider: ResponseMapFirstMessageByResponseIDProvider,
+  Consumer: ResponseMapFirstMessageByResponseIDConsumer,
+} = createSelectorContext(Designer.Response.selectors.mapFirstMessageByResponseID);
+
+export const {
   Context: FunctionMapContext,
   Provider: FunctionMapProvider,
   Consumer: FunctionMapConsumer,
@@ -158,16 +164,18 @@ export const ReduxContextsProviders: React.FC<React.PropsWithChildren> = ({ chil
                               <ActionsRouteMatchProvider>
                                 <CustomBlockMapProvider>
                                   <ResponseMapFirstVariantByResponseIDProvider>
-                                    <FlowMapByDiagramIDProvider>
-                                      <FunctionMapProvider>
-                                        <FunctionPathMapProvider>
-                                          <ActiveDiagramNormalizedEntitiesAndVariablesProvider>
-                                            {/* comment to have a children on a new line */}
-                                            {children}
-                                          </ActiveDiagramNormalizedEntitiesAndVariablesProvider>
-                                        </FunctionPathMapProvider>
-                                      </FunctionMapProvider>
-                                    </FlowMapByDiagramIDProvider>
+                                    <ResponseMapFirstMessageByResponseIDProvider>
+                                      <FlowMapByDiagramIDProvider>
+                                        <FunctionMapProvider>
+                                          <FunctionPathMapProvider>
+                                            <ActiveDiagramNormalizedEntitiesAndVariablesProvider>
+                                              {/* comment to have a children on a new line */}
+                                              {children}
+                                            </ActiveDiagramNormalizedEntitiesAndVariablesProvider>
+                                          </FunctionPathMapProvider>
+                                        </FunctionMapProvider>
+                                      </FlowMapByDiagramIDProvider>
+                                    </ResponseMapFirstMessageByResponseIDProvider>
                                   </ResponseMapFirstVariantByResponseIDProvider>
                                 </CustomBlockMapProvider>
                               </ActionsRouteMatchProvider>

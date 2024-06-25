@@ -19,7 +19,7 @@ export const useCanvasNodeFilter = () => {
     if (!aiPlaygroundEnabled && [BlockType.AI_RESPONSE, BlockType.AI_SET].includes(node.type)) return false;
     if (node.type === BlockType.INTENT || node.type === BlockType.TRIGGER) return false;
     if (!cmsFunctions && node.type === BlockType.FUNCTION) return false;
-    if (!cmsResponses && node.type === BlockType.RESPONSE) return false;
+    if (!cmsResponses && node.type === BlockType.MESSAGE) return false;
 
     return true;
   });

@@ -33,11 +33,11 @@ import InvalidPlatformManager from './InvalidPlatform';
 import MarkupImageManager from './MarkupImage';
 import MarkupTextManager from './MarkupText';
 import MarkupVideoManager from './MarkupVideo';
+import MessageManager from './MessageManager/Message.manager';
 import PermissionManager from './Permission';
 import PromptManager from './Prompt';
 import RandomManagerV2 from './RandomV2';
 import ReminderManager from './Reminder';
-import ResponseManager from './ResponseManager/Response.manager';
 import { SetV2Manager } from './SetV2Manager/SetV2.manager';
 import SpeakManager from './Speak';
 import { StartManager } from './Start/Start.manager';
@@ -97,7 +97,7 @@ export const MANAGERS_BY_TYPE = {
   [BlockType.CUSTOM_BLOCK_POINTER]: CustomBlockPointerManager,
   [BlockType.FUNCTION]: FunctionManager,
   [BlockType.TRIGGER]: TriggerManager,
-  [BlockType.RESPONSE]: ResponseManager,
+  [BlockType.MESSAGE]: MessageManager,
 };
 
 export const MANAGERS_BY_FEATURE: Partial<Record<BlockType, Realtime.FeatureFlag>> = {

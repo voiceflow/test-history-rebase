@@ -32,10 +32,6 @@
       "login-with-amazon-sdk-browser"
     ]
   },
-  "include": [
-    "src/**/*",
-    "typings/**/*",
-    "src/pages/Canvas/managers/ResponseManager/ResponseStep/ResponseStepPlaceholder.component.tsx"
-  ],
+  "include": ["src/**/*", "typings/**/*"],
   "exclude": ["node_modules/**/*", "build/**/*"]
 }

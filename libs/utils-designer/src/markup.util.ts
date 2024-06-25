@@ -1,7 +1,9 @@
+import { BaseText } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import type { Entity, Markup, MarkupSpan, Variable } from '@voiceflow/dtos';
 import type { MultiAdapter } from 'bidirectional-adapter';
 import { createMultiAdapter } from 'bidirectional-adapter';
+import { Text } from 'slate';
 import { match } from 'ts-pattern';
 
 export type MarkupItem = Markup[number];
@@ -221,3 +223,140 @@ export const markupToString: MultiAdapter<Markup, string, [MarkupToStringFromOpt
       return [span];
     }
   );
+
+const isEmptyState = (nodes: BaseText.SlateTextValue): boolean =>
+  nodes.every((element) =>
+    Text.isText(element) ? !element.text.trim() : (element as any).type !== 'variable' && isEmptyState(element.children)
+  );
+
+export const markupToSlate = createMultiAdapter<
+  Markup,
+  BaseText.SlateTextValue,
+  [
+    {
+      iteration?: number;
+      entitiesMapByID: Partial<Record<string, Entity>>;
+      variablesMapByID: Partial<Record<string, Variable>>;
+    },
+  ]
+>(
+  (markup, { iteration = 0, entitiesMapByID, variablesMapByID }): BaseText.SlateTextValue => {
+    if (!markup?.length) return iteration === 0 ? [{ children: [{ text: '' }] }] : [{ text: '' }];
+
+    if (markup.length === 1 && typeof markup[0] === 'string')
+      return iteration === 0 ? [{ children: [{ text: markup[0] }] }] : [{ text: markup[0] }];
+
+    return markup.reduce<BaseText.SlateTextValue>(
+      (acc, item) => [
+        ...acc,
+        match(item)
+          .when(isMarkupString, (item): Text => ({ text: item }))
+          .when(
+            isMarkupEntity,
+            ({ entityID }): BaseText.VariableElement => ({
+              id: entityID,
+              type: BaseText.ElementType.VARIABLE,
+              name: entitiesMapByID[entityID]?.name ?? 'unknown',
+              isSlot: true,
+              children: [{ text: '' }],
+            })
+          )
+          .when(
+            isMarkupVariable,
+            ({ variableID }): BaseText.VariableElement => ({
+              id: variableID,
+              type: BaseText.ElementType.VARIABLE,
+              name: variablesMapByID[variableID]?.name ?? 'unknown',
+              isSlot: false,
+              children: [{ text: '' }],
+            })
+          )
+          .when(isMarkupSpan, (span) =>
+            match(span)
+              .when(
+                isMarkupSpanText,
+                ({ text: [text], attributes: { __type, ...attrs } }): BaseText.Text => ({ ...attrs, text })
+              )
+              .when(
+                isMarkupSpanLink,
+                ({ text, attributes: { url } }): BaseText.LinkElement => ({
+                  url,
+                  type: BaseText.ElementType.LINK,
+                  children: markupToSlate.fromDB(text, { iteration: iteration + 1, entitiesMapByID, variablesMapByID }),
+                })
+              )
+              .otherwise(
+                ({ text, attributes: { __type, ...attrs } = {} }): BaseText.Element => ({
+                  ...attrs,
+                  children: markupToSlate.fromDB(text, { iteration: iteration + 1, entitiesMapByID, variablesMapByID }),
+                })
+              )
+          )
+
+          .exhaustive(),
+      ],
+      []
+    );
+  },
+
+  (slate) => {
+    if (isEmptyState(slate)) return markupFactory();
+
+    return slate.reduce<Markup>(
+      (acc, item) => [
+        ...acc,
+        match(item)
+          .when(
+            (value): value is BaseText.LinkElement => !Text.isText(value) && value.type === BaseText.ElementType.LINK,
+            (item): MarkupSpanLink => {
+              const { url = '', children } = item;
+
+              return { text: markupToSlate.toDB(children), attributes: { __type: 'link', url } };
+            }
+          )
+          .when(
+            (value): value is BaseText.VariableElement =>
+              !Text.isText(value) && value.type === BaseText.ElementType.VARIABLE,
+            (item): { variableID: string } | { entityID: string } => {
+              const { id, name } = item;
+
+              const isSlot = item.isSlot ?? id !== name;
+
+              return isSlot ? { entityID: id } : { variableID: id };
+            }
+          )
+          .when(
+            (value): value is BaseText.Text => Text.isText(value),
+            (item): string | MarkupSpanText => {
+              const { text, color, italic, underline, fontWeight, fontFamily, strikeThrough, backgroundColor } = item;
+
+              if (!color && !italic && !underline && !fontWeight && !fontFamily && !strikeThrough && !backgroundColor) {
+                return text;
+              }
+
+              return {
+                text: [text],
+                attributes: {
+                  __type: 'text',
+                  ...(color && { color }),
+                  ...(italic && { italic }),
+                  ...(underline && { underline }),
+                  ...(fontWeight && { fontWeight }),
+                  ...(fontFamily && { fontFamily }),
+                  ...(strikeThrough && { strikeThrough }),
+                  ...(backgroundColor && { backgroundColor }),
+                },
+              };
+            }
+          )
+          .otherwise(
+            ({ type: _, children, textAlign }): MarkupSpan => ({
+              text: markupToSlate.toDB(children),
+              ...(textAlign && { attributes: { textAlign } }),
+            })
+          ),
+      ],
+      []
+    );
+  }
+);

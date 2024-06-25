@@ -10935,7 +10935,7 @@ __metadata:
     "@voiceflow/exception": 1.5.3
     "@voiceflow/google-dfes-types": 2.17.9
     "@voiceflow/google-types": 2.21.9
-    "@voiceflow/icons": 1.20.0
+    "@voiceflow/icons": 1.22.0
     "@voiceflow/internal": 3.2.3
     "@voiceflow/platform-config": "workspace:*"
     "@voiceflow/react-chat": 1.51.3
@@ -11262,15 +11262,6 @@ __metadata:
   dependencies:
     husky: 9.0.11
   checksum: 8da8c2e0b8b7d82c47066f628e11dfd727fed5aafc936c7dbbdc4c5ecf5935375b12f8905e28d2de3eaccaefb258361e0bee4deb0d78a5055b9139736d5d8409
-  languageName: node
-  linkType: hard
-
-"@voiceflow/icons@npm:1.20.0":
-  version: 1.20.0
-  resolution: "@voiceflow/icons@npm:1.20.0"
-  peerDependencies:
-    react: ^18
-  checksum: 82e829ec62db83d41cffdc8c5e505e2e3cf9376ab4d9f62ed7cdc2842fd74c154fa6d3c621bf3cea287a790c254367a6d102e66c3cbb5320ff8654b56ff290a0
   languageName: node
   linkType: hard
 

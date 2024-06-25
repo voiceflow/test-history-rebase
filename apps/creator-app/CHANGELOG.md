@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1600.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1599.1...@voiceflow/creator-app@1.1600.0) (2024-06-25)
+
+### Features
+
+* add step and editor (COR-000) ([#8397](https://github.com/voiceflow/creator-app/issues/8397)) ([fca7083](https://github.com/voiceflow/creator-app/commit/fca7083e6e4d6aa104274d7eaea950b32945cadf))
+
 ## [1.1599.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1599.0...@voiceflow/creator-app@1.1599.1) (2024-06-25)
 
 ### Bug Fixes

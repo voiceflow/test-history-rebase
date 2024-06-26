@@ -11,7 +11,7 @@ export const SetV3EditorRoot: React.FC = () => {
   const editor = useEditor<Realtime.NodeData.SetV2>();
 
   return (
-    <Editor title="Set variables" readOnly headerActions={<EditorV3HeaderActions />}>
+    <Editor title={'Set variable'} readOnly headerActions={<EditorV3HeaderActions />}>
       <SetV3EditorForm editor={editor} />
     </Editor>
   );

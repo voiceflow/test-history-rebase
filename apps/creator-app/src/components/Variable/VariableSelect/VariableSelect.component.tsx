@@ -10,7 +10,7 @@ import type { IVariableSelect } from './VariableSelect.interface';
 
 export const VariableSelect: React.FC<IVariableSelect> = ({
   onSelect,
-  label,
+  label = 'variable',
   error,
   variableID,
   prefixIcon,
@@ -30,8 +30,9 @@ export const VariableSelect: React.FC<IVariableSelect> = ({
   return (
     <Dropdown
       value={variable?.name ?? null}
-      error={error}
-      label={label || 'variable'}
+      error={!!error}
+      errorMessage={error}
+      label={label}
       placeholder="Select variable"
       prefixIconName={prefixIcon || (variable && editSelected ? 'EditS' : undefined)}
       onPrefixIconClick={() => variable && editSelected && variableEditModal.openVoid({ variableID: variable.id })}

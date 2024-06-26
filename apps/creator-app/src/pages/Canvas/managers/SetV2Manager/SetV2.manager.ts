@@ -5,7 +5,8 @@ import * as Documentation from '@/config/documentation';
 import type { NodeManagerConfigV3 } from '../types';
 import { Action, ActionEditor, Editor, Step } from './components';
 import { SETV2_NODE_CONFIG } from './SetV2Manager.constant';
-import { SetV3ActionEditor } from './SetV3ActionEditor.component';
+import { SetV3Action } from './SetV3Action/SetV3Action.component';
+import { SetV3ActionEditor } from './SetV3Action/SetV3ActionEditor.component';
 import { SetV3Editor } from './SetV3Editor/SetV3.editor';
 import { SetV3Step } from './SetV3Step/SetV3.step';
 
@@ -27,5 +28,6 @@ export const SetV2Manager: NodeManagerConfigV3<Realtime.NodeData.SetV2, Realtime
   featureFlagOverrides: {
     step: SetV3Step,
     actionEditor: SetV3ActionEditor,
+    action: SetV3Action,
   },
 };

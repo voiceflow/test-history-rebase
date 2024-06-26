@@ -7,6 +7,7 @@ import { Designer } from '@/ducks';
 import { useVariableCreateModal, useVariableEditModal } from '@/hooks/modal.hook';
 import { useDeferredSearch } from '@/hooks/search.hook';
 import { useSelector } from '@/hooks/store.hook';
+import { stopPropagation } from '@/utils/handler.util';
 
 import { VariableMenuEmpty } from '../VariableMenuEmpty/VariableMenuEmpty.component';
 import type { IVariableMenu } from './VariableMenu.interface';
@@ -104,7 +105,7 @@ export const VariableMenu: React.FC<IVariableMenu> = ({
                 key={virtualRow.index}
                 ref={virtualizer.measureElement}
                 label={variable.name}
-                onClick={() => onSelect(variable)}
+                onClick={stopPropagation(() => onSelect(variable))}
                 data-index={virtualRow.index}
                 searchValue={search.deferredValue}
                 suffixButton={{ iconName: 'EditS', onClick: () => onEdit(variable) }}

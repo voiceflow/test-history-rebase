@@ -2,9 +2,10 @@ import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box } from '@voiceflow/ui';
 import React from 'react';
 
-import { Diagram } from '@/ducks';
+import { Designer, Diagram } from '@/ducks';
 import { useSelector } from '@/hooks';
 
+import { expressionToString } from '../../SetV3.util';
 import { expressionOverflow, setText, variableContainer } from './SetV3StepItem.css';
 
 export const SetV3StepItem: React.FC<{ item: Realtime.NodeData.SetExpressionV2; withPort?: boolean }> = ({
@@ -14,7 +15,13 @@ export const SetV3StepItem: React.FC<{ item: Realtime.NodeData.SetExpressionV2; 
   const { variable: variableID, expression, label } = item;
 
   const variablesMap = useSelector(Diagram.active.entitiesAndVariablesMapSelector);
+  const variablesMapByName = useSelector(Designer.Variable.selectors.mapByName);
   const variable = variableID ? variablesMap[variableID] : null;
+
+  const stringExpression = React.useMemo(
+    () => expressionToString(String(expression), variablesMapByName),
+    [expression, variablesMapByName]
+  );
 
   if (label) return <>{label}</>;
 
@@ -56,22 +63,14 @@ export const SetV3StepItem: React.FC<{ item: Realtime.NodeData.SetExpressionV2; 
   };
 
   const getExpressionContent = (to?: boolean) => {
-    if (!expression) {
+    if (!expression || !stringExpression) {
       return null;
     }
 
-    if (String(expression).length > 60) {
-      return (
-        <div style={{ display: 'inline' }}>
-          {to ? <div className={setText}> to </div> : ''}
-          {String(expression)}
-        </div>
-      );
-    }
     return (
       <div style={{ display: 'inline' }}>
         {to ? <div className={setText}> to </div> : ''}
-        {String(expression)}
+        {stringExpression}
       </div>
     );
   };

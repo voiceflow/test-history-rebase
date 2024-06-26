@@ -170,7 +170,7 @@ import { WorkspaceModule } from './workspace/workspace.module';
 
         subprotocol: Realtime.Subprotocol.CURRENT_VERSION,
 
-        supports: '>= 1.7',
+        supports: '>= 1.8',
 
         timeout: 90000,
       }),

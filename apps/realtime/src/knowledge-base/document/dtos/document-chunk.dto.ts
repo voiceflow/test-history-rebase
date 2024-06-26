@@ -8,6 +8,7 @@ export const KBDocumentInsertChunkDTO = z.object({
     next: z.string().optional().nullable(),
     position: z.number().optional(),
     tags: z.array(z.string()).optional().nullable(),
+    metadata: z.record(z.any()).optional(),
   }),
   embedding: z.array(z.number()),
 });

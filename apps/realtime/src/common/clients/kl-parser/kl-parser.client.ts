@@ -67,7 +67,8 @@ export class KlParserClient {
     projectID: string,
     document: Omit<VersionKnowledgeBaseDocument, 'documentID' | 'updatedAt'> & { documentID: string; updatedAt: Date },
     workspaceID: string,
-    settings: Pick<KnowledgeBaseSettings, 'chunkStrategy' | 'embeddingModel'>
+    settings: Pick<KnowledgeBaseSettings, 'chunkStrategy' | 'embeddingModel'>,
+    metadata?: object // no strict structure of metadata field
   ) {
     return this.client
       .post('parse', {
@@ -77,6 +78,7 @@ export class KlParserClient {
           workspaceID,
           bucket: this.options.bucket,
           settings,
+          metadata,
         },
       })
       .catch(() => null);

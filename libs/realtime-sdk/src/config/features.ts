@@ -63,6 +63,8 @@ export enum FeatureFlag {
 
   KB_EMBEDDING_MODEL_SETTING = 'kb_embedding_model_setting',
 
+  KB_JSON_METADATA_UPLOAD = 'kb_json_metadata_upload',
+
   // functions
   FUNCTION_LISTEN = 'function_listen',
 

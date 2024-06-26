@@ -25,3 +25,5 @@ export const KB_SETTINGS_NEW_EMBEDDING_MODEL = {
   model: 'text-embedding-3-large',
   size: 1024,
 };
+
+export const MAX_METADATA_SIZE = 10 * 1024; // 10 KB in bytes

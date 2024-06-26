@@ -1,4 +1,5 @@
 import { KBDocumentDataDTO, KBDocumentStatus, KBDocumentUrlDataDTO, KnowledgeBaseDocumentDTO } from '@voiceflow/dtos';
+import { MAX_METADATA_SIZE } from '@voiceflow/realtime-sdk/backend';
 import { z } from 'zod';
 
 export const KBDocumentUrlDataOptionalNameDTO = KBDocumentUrlDataDTO.extend({
@@ -15,7 +16,22 @@ export const DocumentCreateOneURLRequest = z.object({
 export type DocumentCreateOneURLRequest = z.infer<typeof DocumentCreateOneURLRequest>;
 
 export const DocumentCreateOnePublicRequestBody = z.object({
-  data: KBDocumentUrlDataOptionalNameDTO,
+  data: KBDocumentUrlDataOptionalNameDTO.extend({
+    metadata: z
+      .record(z.any())
+      .optional()
+      .refine(
+        (value) => {
+          if (value === undefined) return true; // If metadata is not provided, skip the validation
+
+          const metadataString = JSON.stringify(value);
+          return Buffer.byteLength(metadataString, 'utf8') <= MAX_METADATA_SIZE;
+        },
+        {
+          message: 'The request metadata body field must be less than 40 KB.',
+        }
+      ),
+  }),
 });
 
 export type DocumentCreateOnePublicRequestBody = z.infer<typeof DocumentCreateOnePublicRequestBody>;

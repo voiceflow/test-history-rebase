@@ -35,6 +35,17 @@ export default defineConfig({
   },
 })((config) => ({
   ...config,
+  server: {
+    ...config.server,
+    ...(process.env.VITE_DISABLE_HTTP2
+      ? {
+          proxy: {
+            'https://localhost:3000': 'https://localhost:3000',
+          },
+        }
+      : {}),
+  },
+
   plugins: [...(config.plugins ?? []), vanillaExtractPlugin()],
 
   optimizeDeps: {

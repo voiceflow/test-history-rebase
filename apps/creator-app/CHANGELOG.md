@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1604.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1604.0...@voiceflow/creator-app@1.1604.1) (2024-06-26)
+
+### Bug Fixes
+
+* revert funtion path pr again [bugfix] (CT-000) ([#8427](https://github.com/voiceflow/creator-app/issues/8427)) ([f5b27dd](https://github.com/voiceflow/creator-app/commit/f5b27dd27f527572b575e6d107d1a62f3fb3766d))
+
 # [1.1604.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1603.0...@voiceflow/creator-app@1.1604.0) (2024-06-26)
 
 ### Features

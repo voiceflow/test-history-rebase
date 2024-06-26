@@ -1,11 +1,11 @@
 import { BaseNode } from '@voiceflow/base-types';
 import { Utils } from '@voiceflow/common';
 import type * as Realtime from '@voiceflow/realtime-sdk';
-import { Box, Divider, Scroll, SortableList, SquareButton, Text } from '@voiceflow/ui-next';
-import { Tokens } from '@voiceflow/ui-next/styles';
+import { Box, Divider, Scroll, Section, SortableList } from '@voiceflow/ui-next';
 import React from 'react';
 
 import type { NodeEditorV2Props } from '@/pages/Canvas/managers/types';
+import { stopPropagation } from '@/utils/handler.util';
 
 import { SetV3EditorItem } from './SetV3EditorItem/SetV3EditorItem.component';
 
@@ -69,18 +69,16 @@ export const SetV3EditorForm: React.FC<ISetV3EditorForm> = ({ editor }) => {
 
   return (
     <Scroll>
-      <Box direction="column" width="100%" maxHeight="calc(100vh - 60px - 56px * 2)" pb={sets.length === 0 ? 0 : 11}>
-        <Box align="center" justify="space-between" width="100%" pr={16} pl={24} height="58px" gap={16}>
-          <Text
-            weight="semiBold"
-            color={
-              sets.length === 0 ? Tokens.colors.neutralDark.neutralsDark200 : Tokens.colors.neutralDark.neutralsDark900
-            }
-          >
-            Variables to set
-          </Text>
-          <SquareButton size="medium" iconName="Plus" onClick={() => onSetAdd()} />
-        </Box>
+      <Section.Header.Container
+        pt={11}
+        pb={sets.length === 0 ? 11 : 0}
+        title={'Variables to set'}
+        variant={sets.length === 0 ? 'basic' : 'active'}
+        onHeaderClick={sets.length === 0 ? () => onSetAdd() : undefined}
+      >
+        <Section.Header.Button onClick={stopPropagation(() => onSetAdd())} iconName="Plus" />
+      </Section.Header.Container>
+      <Box pb={sets.length === 0 ? 0 : 11} direction="column">
         <SortableList
           items={sets}
           getItemKey={(item) => item.id}

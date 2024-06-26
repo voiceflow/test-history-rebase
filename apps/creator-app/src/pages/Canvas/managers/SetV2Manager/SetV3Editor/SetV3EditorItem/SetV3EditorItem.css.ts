@@ -1,5 +1,23 @@
-import { style } from '@voiceflow/style';
+import { recipe } from '@voiceflow/style';
 
-export const editorButtonStyle = style({
-  textAlign: 'start',
+export const editorButtonStyle = recipe({
+  base: {
+    cursor: 'pointer',
+    textAlign: 'start',
+  },
+
+  variants: {
+    isDragging: {
+      true: {
+        cursor: 'grabbing !important',
+
+        '&:hover': {
+          backgroundColor: '#fff !important',
+        },
+        '&:active': {
+          backgroundColor: '#fff !important',
+        },
+      },
+    },
+  },
 });

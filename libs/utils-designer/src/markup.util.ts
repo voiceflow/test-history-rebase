@@ -9,6 +9,7 @@ import { match } from 'ts-pattern';
 export type MarkupItem = Markup[number];
 
 export const ENTITY_OR_VARIABLE_TEXT_REGEXP = /{(\w*)}/g;
+export const EXPRESSION_VARIABLE_TEXT_REGEXP = /{{\[(\w*)]\.(\w*)}}/g;
 
 export interface MarkupSpanText extends Omit<MarkupSpan, 'text'> {
   text: [string];
@@ -164,16 +165,98 @@ export const markupToString: MultiAdapter<Markup, string, [MarkupToStringFromOpt
                 ? ''
                 : `{${entitiesMapByID[entityID]?.name ?? entityID}}`
             )
-            .when(isMarkupVariable, ({ variableID }) =>
-              !variablesMapByID[variableID] && ignoreMissingVariables
-                ? ''
-                : `{${variablesMapByID[variableID]?.name ?? variableID}}`
-            )
+            .when(isMarkupVariable, ({ variableID }) => {
+              if (!variablesMapByID[variableID] && ignoreMissingVariables) {
+                return '';
+              }
+              return `{${variablesMapByID[variableID]?.name ?? variableID}}`;
+            })
             .exhaustive(),
         ''
       ),
     (text, { entitiesMapByName, variablesMapByName }) => {
       const matches = [...text.matchAll(ENTITY_OR_VARIABLE_TEXT_REGEXP)];
+
+      if (!matches.length) return [{ text: [text] }];
+
+      const span: MarkupSpan = {
+        text: [],
+      };
+
+      let prevMatch: RegExpMatchArray | null = null;
+
+      for (const match of matches) {
+        const entity = entitiesMapByName[match[1]];
+        const variable = variablesMapByName[match[1]];
+
+        let substring: string;
+
+        if (!prevMatch) {
+          substring = text.substring(0, match.index);
+        } else {
+          substring = text.substring(prevMatch.index! + prevMatch[0].length, match.index);
+        }
+
+        if (substring) {
+          span.text.push(substring);
+        }
+
+        if (entity) {
+          span.text.push({ entityID: entity.id });
+        } else if (variable) {
+          span.text.push({ variableID: variable.id });
+        } else {
+          span.text.push(match[0]);
+        }
+
+        prevMatch = match;
+      }
+
+      if (!prevMatch) {
+        return [span];
+      }
+
+      const substring = text.substring(prevMatch.index! + prevMatch[0].length, text.length);
+
+      if (substring) {
+        span.text.push(substring);
+      }
+
+      return [span];
+    }
+  );
+
+export const markupToExpression: MultiAdapter<Markup, string, [MarkupToStringFromOptions], [MarkupToStringToOptions]> =
+  createMultiAdapter<Markup, string, [MarkupToStringFromOptions], [MarkupToStringToOptions]>(
+    (
+      markup,
+      { entitiesMapByID, variablesMapByID, ignoreMissingEntities, ignoreMissingVariables } = {
+        entitiesMapByID: {},
+        variablesMapByID: {},
+      }
+    ) =>
+      markup.reduce<string>(
+        (acc, item) =>
+          acc +
+          match(item)
+            .when(isMarkupSpan, ({ text }) => markupToExpression.fromDB(text, { entitiesMapByID, variablesMapByID }))
+            .when(isMarkupString, (item) => item)
+            .when(isMarkupEntity, ({ entityID }) =>
+              !entitiesMapByID[entityID] && ignoreMissingEntities
+                ? ''
+                : `{${entitiesMapByID[entityID]?.name ?? entityID}}`
+            )
+            .when(isMarkupVariable, ({ variableID }) => {
+              if (!variablesMapByID[variableID] && ignoreMissingVariables) {
+                return '';
+              }
+              return `{{[${variablesMapByID[variableID]?.name ?? variableID}].${variableID}}}`;
+            })
+            .exhaustive(),
+        ''
+      ),
+    (text, { entitiesMapByName, variablesMapByName }) => {
+      const matches = [...text.matchAll(EXPRESSION_VARIABLE_TEXT_REGEXP)];
 
       if (!matches.length) return [{ text: [text] }];
 

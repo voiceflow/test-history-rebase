@@ -1,14 +1,17 @@
+import { useDndContext } from '@dnd-kit/core';
 import type { Markup } from '@voiceflow/dtos';
 import type * as Realtime from '@voiceflow/realtime-sdk';
 import { Box, EditorButton, Popper, useConst, usePopperContext } from '@voiceflow/ui-next';
-import { markupToString } from '@voiceflow/utils-designer';
-import { useAtomValue } from 'jotai';
+import { markupToExpression } from '@voiceflow/utils-designer';
 import React from 'react';
 
-import { variablesMapByIDAtom } from '@/atoms/variable.atom';
 import { CMSFormListItem } from '@/components/CMS/CMSForm/CMSFormListItem/CMSFormListItem.component';
 import { useExpressionValidator } from '@/components/ConditionsBuilder/hooks';
+import { Designer } from '@/ducks';
+import { useSelector } from '@/hooks';
+import { stopPropagation } from '@/utils/handler.util';
 
+import { expressionToString } from '../../SetV3.util';
 import { editorButtonStyle } from './SetV3EditorItem.css';
 import { SetV3EditorItemContextMenu } from './SetV3EditorItemContextMenu.component';
 import { SetV3EditorItemSubEditor } from './SetV3EditorItemSubEditor/SetV3EditorItemSubEditor.component';
@@ -34,7 +37,9 @@ export const SetV3EditorItem: React.FC<ISetV3EditorItem> = ({
   onSubEditorClose,
   onSetAnother,
 }) => {
-  const variablesMap = useAtomValue(variablesMapByIDAtom);
+  const variablesMap = useSelector(Designer.Variable.selectors.map);
+  const variablesMapByName = useSelector(Designer.Variable.selectors.mapByName);
+
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
   const [label, setLabel] = React.useState<string>(item.label || '');
 
@@ -42,15 +47,18 @@ export const SetV3EditorItem: React.FC<ISetV3EditorItem> = ({
   const expressionValidator = useExpressionValidator();
 
   const popperContext = usePopperContext();
+  const dndContext = useDndContext();
+
   const modifiers = useConst([
     { name: 'preventOverflow', options: { boundary: popperContext.portalNode, padding: 16 } },
+    { name: 'offset', options: { offset: [0, 1] } },
   ]);
 
   const getEditorButtonLabel = () => {
-    if (item.label || label) return item.label || label;
+    if (item.label) return '';
 
     if (item.variable && item.expression) {
-      return item.variable;
+      return variablesMap[item.variable].name;
     }
 
     if (item.variable) {
@@ -61,7 +69,10 @@ export const SetV3EditorItem: React.FC<ISetV3EditorItem> = ({
   };
 
   const updateExpression = (item: Realtime.NodeData.SetExpressionV2) => (value: Markup) => {
-    const expression = markupToString.fromDB(value, { variablesMapByID: variablesMap, entitiesMapByID: {} });
+    const expression = markupToExpression.fromDB(value, {
+      variablesMapByID: variablesMap,
+      entitiesMapByID: {},
+    });
 
     if (!expression.trim() || !expressionValidator.validate(expression)) return;
 
@@ -74,7 +85,12 @@ export const SetV3EditorItem: React.FC<ISetV3EditorItem> = ({
 
   const updateLabel = () => {
     setIsEditing(false);
-    onChange(item.id, { ...item, label });
+    if (label && !!label.trim()) {
+      onChange(item.id, { ...item, label: label.trim() });
+    } else {
+      onChange(item.id, { ...item, label: '' });
+      setLabel('');
+    }
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -91,15 +107,15 @@ export const SetV3EditorItem: React.FC<ISetV3EditorItem> = ({
     if (isJustAdded) return '';
 
     if (!item.variable && !item.expression) {
-      return 'Variable and value are missing.';
+      return 'Variable and value are missing';
     }
 
     if (!item.variable) {
-      return 'Variable is missing.';
+      return 'Variable is missing';
     }
 
     if (!item.expression) {
-      return 'Value is missing.';
+      return 'Value is missing';
     }
 
     if (expressionValidator.error) {
@@ -119,30 +135,41 @@ export const SetV3EditorItem: React.FC<ISetV3EditorItem> = ({
       onClose={() => onSubEditorClose(item.id)}
       isOpen={isJustAdded}
       referenceElement={({ ref: popperRef, isOpen, onOpen }) => (
-        <Box ref={popperRef} width="100%">
+        <Box ref={popperRef} width="100%" pl={12}>
           <SetV3EditorItemContextMenu
             onDuplicate={onDuplicate ? () => onDuplicate?.(item.id) : undefined}
             onRename={() => onStartRename()}
             onRemove={() => onRemove(item.id)}
-            referenceElement={({ ref: contextMenuPopperRef, onContextMenu }) => (
-              <Box ref={contextMenuPopperRef} width="100%" pr={16} pl={12}>
-                <CMSFormListItem width="100%" pr={0} onRemove={() => onRemove(item.id)} onContextMenu={onContextMenu}>
+            referenceElement={({ ref: contextMenuPopperRef, onContextMenu, isOpen: isContextMenuOpen }) => (
+              <Box ref={contextMenuPopperRef} width="100%">
+                <CMSFormListItem
+                  width="100%"
+                  align="center"
+                  gap={4}
+                  onRemove={() => onRemove(item.id)}
+                  onContextMenu={onContextMenu}
+                >
                   <EditorButton
                     fullWidth
                     prefixIconName="Set"
-                    buttonClassName={editorButtonStyle}
+                    buttonClassName={editorButtonStyle({ isDragging: !!dndContext?.active })}
                     isWarning={!!error}
                     warningTooltipContent={error}
                     displayedLabel={label}
                     isEditing={isEditing}
                     label={getEditorButtonLabel()}
-                    secondLabel={item.label || label ? '' : String(item.expression)}
+                    secondLabel={
+                      item.label ? undefined : expressionToString(String(item.expression), variablesMapByName)
+                    }
                     onClick={isEditing ? undefined : onOpen}
-                    isActive={isOpen || isEditing}
-                    isEmpty={!item.variable && !item.expression && !item.label && !label}
+                    isActive={isOpen || isEditing || isContextMenuOpen}
+                    isEmpty={!item.variable && !item.expression && !item.label}
+                    inputPlaceholder="Add label"
                     onEdit={setLabel}
                     onInputBlur={updateLabel}
                     onInputKeyDown={handleKeyDown}
+                    warningTooltipMaxWidth={130}
+                    onPointerDown={isEditing ? stopPropagation() : undefined}
                   />
                 </CMSFormListItem>
               </Box>
@@ -151,14 +178,15 @@ export const SetV3EditorItem: React.FC<ISetV3EditorItem> = ({
         </Box>
       )}
     >
-      {() => (
+      {({ update }) => (
         <SetV3EditorItemSubEditor
           item={item}
           isJustAdded={isJustAdded}
           onUpdateExpression={updateExpression(item)}
           onUpdateVariable={updateVariable(item)}
-          onSetAnother={isJustAdded ? onSetAnother : undefined}
+          onSetAnother={onSetAnother}
           expressionValidator={expressionValidator}
+          update={update}
         />
       )}
     </Popper>

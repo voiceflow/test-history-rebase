@@ -6,7 +6,7 @@ export interface IVariableSelect extends Pick<IVariableMenu, 'onSelect' | 'exclu
   menuProps?: Omit<IVariableMenu, 'onSelect' | 'excludeVariableIDs'>;
   variableID?: string | null;
   label?: string;
-  error?: boolean;
+  error?: string;
   prefixIcon?: IconName;
   editSelected?: boolean;
 }

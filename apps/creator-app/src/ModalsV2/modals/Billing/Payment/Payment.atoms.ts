@@ -25,4 +25,4 @@ export const selectedPeriodAmountAtom = atom((get) => get(selectedPlanPriceAtom)
 
 export const paymentIntentAtom = atom<PaymentIntent | null>(null);
 
-export const couponIdsAtom = atom<string[]>([]);
+export const couponIDsAtom = atom<string[]>([]);

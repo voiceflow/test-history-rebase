@@ -60,7 +60,7 @@ export abstract class PostgresORM<
         objectAdapter?: SmartMultiAdapter<any, any>;
       }
     >;
-    onUpdateHandlers: Array<{ field: string; handler: (data: Partial<BaseEntity>) => unknown }>;
+    onUpdateHandlers: Array<{ field: string; handler: (data: Partial<BaseEntity>, em: EntityManager) => unknown }>;
     hasAnyObjectAdapter: boolean;
   }> = {};
 
@@ -212,13 +212,13 @@ export abstract class PostgresORM<
         .filter((prop) => prop.onUpdate)
         .map((prop) => ({
           field: prop.name,
-          handler: prop.onUpdate as unknown as (data: Partial<BaseEntity>) => unknown,
+          handler: prop.onUpdate!,
         }));
     }
 
     this.cache.onUpdateHandlers.forEach(({ field, handler }) => {
       if (data[field] === undefined) {
-        nextData[field] = handler(data as any);
+        nextData[field] = handler(data as any, this.em);
       }
     });
 

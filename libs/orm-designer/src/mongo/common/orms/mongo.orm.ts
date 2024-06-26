@@ -22,7 +22,7 @@ export abstract class MongoORM<BaseEntity extends MongoPKEntity, DiscriminatorEn
 
   private cache: Partial<{
     lazyProperties: string[];
-    onUpdateHandlers: Array<{ field: string; handler: (data: Partial<BaseEntity>) => unknown }>;
+    onUpdateHandlers: Array<{ field: string; handler: (data: Partial<BaseEntity>, em: EntityManager) => unknown }>;
     uniqueProperties: string[];
   }> = {};
 
@@ -89,13 +89,13 @@ export abstract class MongoORM<BaseEntity extends MongoPKEntity, DiscriminatorEn
         .filter((property) => property.onUpdate)
         .map((property) => ({
           field: property.name,
-          handler: property.onUpdate as unknown as (data: Partial<BaseEntity>) => unknown,
+          handler: property.onUpdate!,
         }));
     }
 
     this.cache.onUpdateHandlers.forEach(({ field, handler }) => {
       if (data[field] === undefined) {
-        nextData[field] = handler(data as any);
+        nextData[field] = handler(data as any, this.em);
       }
     });
 

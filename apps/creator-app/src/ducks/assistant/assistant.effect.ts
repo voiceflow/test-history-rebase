@@ -6,6 +6,7 @@ import * as Realtime from '@voiceflow/realtime-sdk';
 import { Actions } from '@voiceflow/sdk-logux-designer';
 
 import { designerClient } from '@/client/designer';
+import { SetCount as KBDocumentSetCount } from '@/ducks/designer/knowledge-base/document/document.action';
 import { initializeVersion } from '@/ducks/versionV2';
 import type { Thunk } from '@/store/types';
 
@@ -92,6 +93,7 @@ export const loadCreator =
 
     // Knowledge Base
     dispatch(Actions.KnowledgeBaseSettings.Replace({ context, data: data.knowledgeBaseSettings }));
+    dispatch(KBDocumentSetCount({ count: data.knowledgeBaseDocumentsCount }));
 
     // custom blocks
     dispatch(

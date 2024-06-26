@@ -8,10 +8,12 @@ import { STATE_KEY } from './document.state';
 
 const root = createSubSelector(kbRoot, STATE_KEY);
 
-export const { hasOneByID, hasAllByIDs, oneByID, getOneByID, allByIDs, getAllByIDs, all, map, count, isEmpty } =
+export const { hasOneByID, hasAllByIDs, oneByID, getOneByID, allByIDs, getAllByIDs, all, map, isEmpty } =
   createDesignerCRUDSelectors(root);
 
 export const { allByFolderID, allByFolderIDs, countByFolderID } = createByFolderIDSelectors(all);
+
+export const count = createSelector(root, (state) => state.count);
 
 export const fetchStatus = createSelector(root, (state) => state.fetchStatus);
 

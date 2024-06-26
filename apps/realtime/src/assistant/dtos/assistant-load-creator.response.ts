@@ -29,6 +29,7 @@ export const AssistantLoadCreatorResponse = z
     projectMembership: z.array(ProjectMembershipDTO),
     referenceResources: z.array(ReferenceResourceDTO).optional(),
     knowledgeBaseSettings: KnowledgeBaseSettingsDTO,
+    knowledgeBaseDocumentsCount: z.number(),
   })
   .merge(AssistantExportCMSResponse)
   .strict();

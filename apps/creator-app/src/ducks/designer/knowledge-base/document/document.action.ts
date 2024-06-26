@@ -84,3 +84,12 @@ export interface SetProcessingIDs {
 }
 
 export const SetProcessingIDs = Utils.protocol.createAction<SetProcessingIDs>(documentAction('SET_PROCESSING_IDS'));
+
+export interface SetCount {
+  count: number;
+}
+
+/**
+ * temp action to optimize cms loading (don't fetch )
+ */
+export const SetCount = Utils.protocol.createAction<SetCount>(documentAction('SET_COUNT'));

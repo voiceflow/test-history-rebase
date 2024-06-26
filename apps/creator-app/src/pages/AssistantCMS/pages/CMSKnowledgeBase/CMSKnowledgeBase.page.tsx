@@ -34,6 +34,7 @@ const CMSKnowledgeBase: React.FC = () => {
 
 export default Utils.functional.compose(
   withCMSPageLoader({
+    loader: Designer.KnowledgeBase.Document.effect.loadAll,
     selector: Designer.KnowledgeBase.Document.selectors.isLoaded,
   }),
 

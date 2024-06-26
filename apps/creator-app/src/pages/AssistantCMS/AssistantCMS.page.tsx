@@ -3,11 +3,9 @@ import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 import { Path } from '@/config/routes';
-import { Designer } from '@/ducks';
 import { lazy } from '@/hocs/lazy.hoc';
 import { withSuspense } from '@/hocs/suspense.hoc';
 import { useFeature } from '@/hooks/feature.hook';
-import { useDispatch } from '@/hooks/store.hook';
 
 import { CMSLayout } from './components/CMSLayout/CMSLayout.component';
 import { CMSPageLoader } from './components/CMSPageLoader.component';
@@ -39,17 +37,9 @@ const AssistantCMSMessage = withSuspense({ loader: <CMSPageLoader /> })(
 const AssistantCMS = () => {
   const { activeCMSRoute } = useCMSRoute();
 
-  const loadKBDocuments = useDispatch(Designer.KnowledgeBase.Document.effect.loadAll);
-
   const isKbEnabled = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
   const isCMSResponsesEnabled = useFeature(Realtime.FeatureFlag.CMS_RESPONSES);
   const isCMSFunctionsEnabled = useFeature(Realtime.FeatureFlag.CMS_FUNCTIONS);
-
-  React.useEffect(() => {
-    if (isKbEnabled) {
-      loadKBDocuments();
-    }
-  }, [isKbEnabled]);
 
   return (
     <CMSLayout>

@@ -79,6 +79,23 @@ export class KnowledgeBaseORM extends ProjectORM {
       : [];
   }
 
+  async allDocumentsCount(projectID: string): Promise<number> {
+    try {
+      const [{ count }] = await this.aggregate<{ count: number }>([
+        {
+          $match: { ...this.idToFilter(projectID), 'knowledgeBase.documents': { $exists: true } },
+        },
+        {
+          $project: { count: { $size: { $objectToArray: '$knowledgeBase.documents' } } },
+        },
+      ]);
+
+      return count;
+    } catch {
+      return 0;
+    }
+  }
+
   async findAllTags(projectID: string): Promise<VersionKnowledgeBaseTag[]> {
     const project = await this.findOneOrFail(projectID, { fields: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH] });
 

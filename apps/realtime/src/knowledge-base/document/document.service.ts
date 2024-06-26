@@ -1101,6 +1101,10 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     return this.orm.getWorkspaceID(assistantID);
   }
 
+  public async allDocumentsCount(assistantID: string) {
+    return this.orm.allDocumentsCount(assistantID);
+  }
+
   private validateInputTableSchema(data: {
     name: string;
     searchableFields: string[];

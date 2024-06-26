@@ -200,4 +200,8 @@ export abstract class MongoORM<BaseEntity extends MongoPKEntity, DiscriminatorEn
       _id: (item as any)._id ?? insertedIds[i],
     })) as ToObject<DiscriminatorEntity>[];
   }
+
+  aggregate<T>(pipeline: any[]): Promise<T[]> {
+    return this.em.aggregate(this.entityName, pipeline);
+  }
 }

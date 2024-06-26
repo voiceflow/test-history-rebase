@@ -36,6 +36,7 @@ import { MutableService } from '@/common';
 import { DiagramService } from '@/diagram/diagram.service';
 import { EnvironmentCMSData } from '@/environment/environment.interface';
 import { EnvironmentService } from '@/environment/environment.service';
+import { KnowledgeBaseDocumentService } from '@/knowledge-base/document/document.service';
 import { KnowledgeBaseSettingsService } from '@/knowledge-base/settings/settings.service';
 import { ProgramService } from '@/program/program.service';
 import { LATEST_PROJECT_VERSION } from '@/project/project.constant';
@@ -114,6 +115,8 @@ export class AssistantService extends MutableService<AssistantORM> {
     private readonly assistantSerializer: AssistantSerializer,
     @Inject(KnowledgeBaseSettingsService)
     private readonly knowledgeBaseSettings: KnowledgeBaseSettingsService,
+    @Inject(KnowledgeBaseDocumentService)
+    private readonly KnowledgeBaseDocument: KnowledgeBaseDocumentService,
     @Inject(LegacyProjectSerializer)
     private readonly legacyProjectSerializer: LegacyProjectSerializer
   ) {
@@ -856,10 +859,14 @@ export class AssistantService extends MutableService<AssistantORM> {
       variableStates: this.variableState.mapToJSON(variableStates),
       projectMembership,
       knowledgeBaseSettings: Realtime.KB_SETTINGS_DEFAULT,
+      knowledgeBaseDocumentsCount: 0,
     };
 
     if (this.unleash.isEnabled(Realtime.FeatureFlag.KNOWLEDGE_BASE, { userID, workspaceID: project.teamID })) {
-      creatorData.knowledgeBaseSettings = await this.knowledgeBaseSettings.findForAssistant(project._id.toJSON());
+      [creatorData.knowledgeBaseSettings, creatorData.knowledgeBaseDocumentsCount] = await Promise.all([
+        this.knowledgeBaseSettings.findForAssistant(project._id.toJSON()),
+        this.KnowledgeBaseDocument.allDocumentsCount(project._id.toJSON()),
+      ]);
     }
 
     if (this.unleash.isEnabled(Realtime.FeatureFlag.REFERENCE_SYSTEM, { userID, workspaceID: project.teamID })) {

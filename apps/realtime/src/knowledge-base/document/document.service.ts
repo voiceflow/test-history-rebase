@@ -23,7 +23,7 @@ import {
 } from '@voiceflow/exception';
 import { UnleashFeatureFlagService } from '@voiceflow/nestjs-common';
 import { KnowledgeBaseORM, ProjectORM, RefreshJobsOrm, VersionKnowledgeBaseDocument } from '@voiceflow/orm-designer';
-import { FeatureFlag } from '@voiceflow/realtime-sdk/backend';
+import { FeatureFlag, MAX_METADATA_SIZE } from '@voiceflow/realtime-sdk/backend';
 import { Identity } from '@voiceflow/sdk-auth';
 import { AuthService } from '@voiceflow/sdk-auth/nestjs';
 import { BillingAuthorizeItemName, BillingClient, BillingResourceType } from '@voiceflow/sdk-billing';
@@ -43,8 +43,8 @@ import { knowledgeBaseDocumentAdapter } from './document.adapter';
 import { KBDocumentInsertChunkDTO } from './dtos/document-chunk.dto';
 import {
   DocumentCreateManyURLsRequest,
+  DocumentCreateOnePublicRequestBody,
   DocumentCreateOnePublicRequestParams,
-  DocumentCreateOneURLRequest,
   DocumentUploadTableRequestData,
   DocumentUploadTableResponse,
 } from './dtos/document-create.dto';
@@ -156,11 +156,30 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     }
   }
 
+  prepareMetadata(metadata?: string | object): object | undefined {
+    if (typeof metadata !== 'string') {
+      return metadata;
+    }
+
+    if (Buffer.byteLength(metadata, 'utf8') > MAX_METADATA_SIZE) {
+      throw new BadRequestException('The request metadata field must be less than 10 KB.');
+    }
+
+    try {
+      return JSON.parse(metadata);
+    } catch (error) {
+      throw new BadRequestException(
+        'The request metadata is poorly formatted. Please ensure the request follows the correct JSON structure.'
+      );
+    }
+  }
+
   async klParserProcessingCall({
     projectID,
     workspaceID,
     document,
     maxChunkSize,
+    metadata,
   }: {
     projectID: string;
     workspaceID: number;
@@ -169,17 +188,24 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
       updatedAt: Date;
     };
     maxChunkSize?: number;
+    metadata?: object; // no strict structure of metadata field
   }) {
     const settings = await this.knowledgeBaseSettingsService.findForAssistant(projectID);
 
-    await this.klParserClient.parse(projectID, document, workspaceID.toString(), {
-      chunkStrategy: {
-        type: BaseModels.Project.ChunkStrategyType.RECURSIVE_TEXT_SPLITTER,
-        size: maxChunkSize ?? settings.chunkStrategy.size,
-        overlap: settings.chunkStrategy.overlap,
+    await this.klParserClient.parse(
+      projectID,
+      document,
+      workspaceID.toString(),
+      {
+        chunkStrategy: {
+          type: BaseModels.Project.ChunkStrategyType.RECURSIVE_TEXT_SPLITTER,
+          size: maxChunkSize ?? settings.chunkStrategy.size,
+          overlap: settings.chunkStrategy.overlap,
+        },
+        embeddingModel: settings.embeddingModel,
       },
-      embeddingModel: settings.embeddingModel,
-    });
+      metadata
+    );
   }
 
   async checkDocsPlanLimit(workspaceID: number, projectID: string, existingDocsCount: number, newDocsCount: number) {
@@ -348,7 +374,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
   }: {
     projectID: string;
     userID: number;
-    data: DocumentCreateOneURLRequest;
+    data: DocumentCreateOnePublicRequestBody;
     existingDocumentID?: string;
     query?: Omit<DocumentCreateOnePublicRequestParams, 'overwrite' | 'maxChunkSize'> & {
       overwrite?: boolean;
@@ -359,15 +385,21 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     const tagsArray = Array.isArray(query.tags) ? query.tags : this.tagService.convertToArray(tags);
 
     let existingDocument: VersionKnowledgeBaseDocument | undefined;
+    let jsonMetadata: object | undefined;
 
     if (existingDocumentID) {
       existingDocument = await this.validateDocumentExists(projectID, existingDocumentID, true);
     }
 
     const project = await this.projectORM.findOneOrFail(projectID);
-    const urlData = data.data as KBDocumentUrlData;
+    const { metadata, ...withoutMetadata } = data.data;
+    const urlData = withoutMetadata as KBDocumentUrlData;
 
     urlData.name = this.strippedURL(urlData.url);
+
+    if (this.unleash.isEnabled(FeatureFlag.KB_JSON_METADATA_UPLOAD, { workspaceID: project.teamID })) {
+      jsonMetadata = metadata;
+    }
 
     const existingDocuments: Omit<VersionKnowledgeBaseDocument, 'updatedAt'>[] = project?.knowledgeBase?.documents
       ? Object.values(project.knowledgeBase.documents)
@@ -420,6 +452,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
       workspaceID: project.teamID,
       document,
       maxChunkSize,
+      metadata: jsonMetadata,
     });
 
     return knowledgeBaseDocumentAdapter.fromDB({
@@ -457,6 +490,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
     canEdit,
     existingDocumentID,
     query = {},
+    metadata,
   }: {
     projectID: string;
     userID: number;
@@ -467,17 +501,22 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
       overwrite?: boolean;
       maxChunkSize?: number;
     };
+    metadata?: string | object; // web-form metadata field
   }): Promise<KnowledgeBaseDocument> {
     const { overwrite = false, maxChunkSize = undefined, tags = undefined } = query;
     const tagsArray = Array.isArray(query.tags) ? query.tags : this.tagService.convertToArray(tags);
-
     let existingDocument: VersionKnowledgeBaseDocument | undefined;
+    let jsonMetadata: object | undefined;
 
     if (existingDocumentID) {
       existingDocument = await this.validateDocumentExists(projectID, existingDocumentID, true);
     }
 
     const project = await this.projectORM.findOneOrFail(projectID);
+
+    if (this.unleash.isEnabled(FeatureFlag.KB_JSON_METADATA_UPLOAD, { workspaceID: project.teamID })) {
+      jsonMetadata = this.prepareMetadata(metadata);
+    }
     const existingDocuments: Omit<VersionKnowledgeBaseDocument, 'updatedAt'>[] = project?.knowledgeBase?.documents
       ? Object.values(project.knowledgeBase.documents)
       : [];
@@ -541,6 +580,7 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
       workspaceID: project.teamID,
       document,
       maxChunkSize,
+      metadata: jsonMetadata,
     });
 
     return knowledgeBaseDocumentAdapter.fromDB({
@@ -684,11 +724,11 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
       const file = await this.file.downloadFile(UploadType.KB_DOCUMENT, `${assistantID}/embeddings/${documentID}.json`);
 
       const rawChunks = file ? z.array(KBDocumentInsertChunkDTO).parse(JSON.parse(await file.transformToString())) : [];
-
       return rawChunks
         ? rawChunks.map(({ id, metadata }) => ({
             chunkID: id,
             content: metadata.content,
+            metadata: metadata.metadata ?? {},
           }))
         : [];
     } catch {
@@ -1113,13 +1153,17 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
   private checkSearchableFields(searchableFields: string[]): void {
     if (!searchableFields || searchableFields.length === 0) {
-      throw new BadRequestException('searchableFields field cannot be empty');
+      throw new BadRequestException(
+        '`searchableFields` field cannot be empty. Please ensure all required fields are included.'
+      );
     }
   }
 
   private checkItems(items: object[], searchableFields: string[]): void {
     if (!items || items.length === 0) {
-      throw new BadRequestException('items field cannot be empty');
+      throw new BadRequestException(
+        'The request body is missing required fields. Please ensure all required fields are included.'
+      );
     }
 
     items.forEach((item) => {
@@ -1132,30 +1176,37 @@ export class KnowledgeBaseDocumentService extends MutableService<KnowledgeBaseOR
 
     searchableFields.forEach((field) => {
       if (!(field in item)) {
-        throw new BadRequestException(`field "${field}" is missing in one or more items`);
+        throw new BadRequestException(
+          `Searchable field "${field}" is missing in one or more items. Please ensure all required fields are included.`
+        );
       }
 
       const value = item[field];
       if (value !== null && value !== '') {
         hasNonNullValue = true; // Set flag to true if non-null value is encountered
-        this.checkPrimitiveType(item[field], field);
+        this.checkPrimitiveType(item[field]);
       }
     });
 
     // Check if all searchableFields are null
     if (!hasNonNullValue) {
-      throw new BadRequestException('At least one field in searchableFields must have a non-null value in each item');
+      throw new BadRequestException(
+        'At least one field in `searchableFields` must have a non-null value in each item.'
+      );
     }
   }
 
-  private checkPrimitiveType(value: any, field: string): void {
+  private checkPrimitiveType(value: any): void {
     if (typeof value !== 'number' && typeof value !== 'string') {
-      throw new BadRequestException(`field "${field}" must be a primitive type (number, string) or null`);
+      throw new BadRequestException(
+        'Complex types are not allowed in searchable fields. Please use a supported data type.'
+      );
     }
   }
 
   async checkKBTableRowsPlanLimit(projectID: string, existingRows: number, newRows: number) {
-    const message = 'maximum number of table rows exceeded';
+    const message =
+      'The number of rows in the uploaded table exceeds the limit for your current plan. Please upgrade your plan to upload tables with more rows.';
 
     try {
       const response = await this.billingClient.authorizationPrivate.authorize({

@@ -1,3 +1,4 @@
+/* eslint-disable max-params */
 import {
   Body,
   Controller,
@@ -93,7 +94,8 @@ export class KnowledgeBaseDocumentApiPublicHTTPController {
     @Principal() principal: Identity & { legacy: { projectID: string }; createdBy: number },
     @Query(new ZodValidationPipe(DocumentCreateOnePublicRequestParams)) query: DocumentCreateOnePublicRequestParams,
     @UploadedFile() file?: MulterFile,
-    @Body() body?: DocumentCreateOnePublicRequestBody
+    @Body() body?: DocumentCreateOnePublicRequestBody,
+    @Body('metadata') metadata?: string
   ): Promise<DocumentCreateOnePublicResponse> {
     let document: KnowledgeBaseDocument | null = null;
 
@@ -113,6 +115,7 @@ export class KnowledgeBaseDocumentApiPublicHTTPController {
         userID: principal.createdBy,
         file,
         query: formattedQuery,
+        metadata,
       });
     }
 
@@ -238,7 +241,6 @@ export class KnowledgeBaseDocumentApiPublicHTTPController {
     return this.service.findManyDocumentsByFilters(principal.legacy.projectID, formattedQuery);
   }
 
-  // eslint-disable-next-line max-params
   @Put(':documentID')
   @ApiConsumes('knowledgeBase')
   @Authorize.Permissions<Request>([Permission.PROJECT_UPDATE], async (request) => ({
@@ -277,7 +279,8 @@ export class KnowledgeBaseDocumentApiPublicHTTPController {
     @Param('documentID') documentID: string,
     @Query(new ZodValidationPipe(DocumentReplaceOnePublicRequestParams)) query: DocumentReplaceOnePublicRequestParams,
     @UploadedFile() file?: MulterFile,
-    @Body() body?: DocumentCreateOnePublicRequestBody
+    @Body() body?: DocumentCreateOnePublicRequestBody,
+    @Body('metadata') metadata?: string
   ): Promise<DocumentCreateOnePublicResponse> {
     let document: KnowledgeBaseDocument | null = null;
 
@@ -298,6 +301,7 @@ export class KnowledgeBaseDocumentApiPublicHTTPController {
         file,
         query: formattedQuery,
         existingDocumentID: documentID,
+        metadata,
       });
     }
 

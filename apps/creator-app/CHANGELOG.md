@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1602.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1601.2...@voiceflow/creator-app@1.1602.0) (2024-06-26)
+
+### Features
+
+* make function paths draggable (COR-2270) ([#8420](https://github.com/voiceflow/creator-app/issues/8420)) ([d1c39bb](https://github.com/voiceflow/creator-app/commit/d1c39bbef5f20a6d9a1885cccdbb8a70ea159282))
+
 ## [1.1601.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1601.1...@voiceflow/creator-app@1.1601.2) (2024-06-25)
 
 ### Reverts

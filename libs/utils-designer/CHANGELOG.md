@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.24.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/utils-designer@1.23.1...@voiceflow/utils-designer@1.24.0) (2024-06-26)
+
+### Features
+
+* setV3 dev-env (COR-2294) ([#8270](https://github.com/voiceflow/creator-app/issues/8270)) ([e6af78f](https://github.com/voiceflow/creator-app/commit/e6af78fd4d03db7abd0b3ef6cb05b9e4b808c4b5))
+
 ## [1.23.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/utils-designer@1.23.0...@voiceflow/utils-designer@1.23.1) (2024-06-26)
 
 **Note:** Version bump only for package @voiceflow/utils-designer

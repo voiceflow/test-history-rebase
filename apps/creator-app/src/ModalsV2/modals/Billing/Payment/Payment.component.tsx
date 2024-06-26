@@ -31,7 +31,7 @@ export const Payment = manager.create<PaymentModalProps>('Payment', () => (modal
   const { plans, fetchPlans } = usePlans(modalProps.coupon);
   const setPeriod = useSetAtom(atoms.selectedPeriodAtom);
   const setPlan = useSetAtom(atoms.selectedPlanIDAtom);
-  const updateCoupons = useSetAtom(atoms.couponIdsAtom);
+  const updateCoupons = useSetAtom(atoms.couponIDsAtom);
   const subscription = useSelector(Organization.chargebeeSubscriptionSelector);
   const teamsPlanSelfServeIsEnabled = useFeature(FeatureFlag.TEAMS_PLAN_SELF_SERVE);
 

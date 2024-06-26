@@ -22,8 +22,10 @@ export const SubscriptionDTO = z.object({
     .nullable(),
 
   plan: PlanNameDTO,
+  planItemPriceID: z.string().nullable(),
   editorSeats: z.number(),
   planAmount: z.number(),
+  additionalSeatsUnitAmount: z.number(),
 
   customerID: z.string(),
 

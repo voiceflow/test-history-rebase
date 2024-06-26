@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PlanName } from '@voiceflow/dtos';
 import { HashedIDService } from '@voiceflow/nestjs-common';
-import { AuthMetaPayload, LoguxService } from '@voiceflow/nestjs-logux';
 import * as Realtime from '@voiceflow/realtime-sdk/backend';
 import { BillingClient } from '@voiceflow/sdk-billing';
 import { SubscriptionsControllerGetSubscription200Subscription } from '@voiceflow/sdk-billing/generated';
@@ -20,8 +19,6 @@ export class BillingSubscriptionService {
   constructor(
     @Inject(BillingClient)
     private readonly billingClient: BillingClient,
-    @Inject(LoguxService)
-    private readonly logux: LoguxService,
     @Inject(UserService)
     private readonly user: UserService,
     @Inject(HashedIDService)
@@ -160,12 +157,7 @@ export class BillingSubscriptionService {
     return isStarter || isProTrial;
   }
 
-  async checkoutAndBroadcast(
-    authPayload: AuthMetaPayload,
-    organizationID: string,
-    workspaceID: string,
-    data: Omit<Actions.OrganizationSubscription.CheckoutRequest, 'context'>
-  ) {
+  async checkout(organizationID: string, data: Actions.OrganizationSubscription.CheckoutRequest) {
     const subscription = await this.findOneByOrganizationID(organizationID);
 
     if (!subscription) {
@@ -176,7 +168,7 @@ export class BillingSubscriptionService {
       await this.billingClient.subscriptionsPrivate.checkout(subscription.id, {
         subscriptionItems: [
           {
-            itemPriceID: data.itemPriceID,
+            itemPriceID: data.itemPriceID ?? data.planItemPriceID,
             quantity: 1,
           },
         ],
@@ -190,7 +182,7 @@ export class BillingSubscriptionService {
         ...(this.shouldResetTerm(subscription) ? { forceTermReset: true } : {}),
         ...(subscription.downgradedFromTrial ? { downgradedFromTrial: false } : {}),
 
-        ...(data.couponIds ? { couponIds: data.couponIds } : {}),
+        ...(data.couponIds || data.couponIDs ? { couponIds: data.couponIds || data.couponIDs } : {}),
       });
     } catch (e) {
       throw new Error('Unable to update subscription');
@@ -199,17 +191,7 @@ export class BillingSubscriptionService {
     // TODO: remove it once we implement event subscriptiona
     await this.waitForSubscriptionUpdate(subscription.id);
 
-    const newSubscription = await this.findOneByOrganizationID(organizationID).then(subscriptionAdapter.fromDB);
-
-    await this.logux.processAs(
-      Actions.OrganizationSubscription.Replace({
-        subscription: newSubscription,
-        context: { organizationID, workspaceID },
-      }),
-      authPayload
-    );
-
-    return newSubscription;
+    return this.findOneByOrganizationID(organizationID).then(subscriptionAdapter.fromDB);
   }
 
   async downgradeTrial(subscriptionID: string) {

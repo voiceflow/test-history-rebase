@@ -33,6 +33,10 @@ export const findPlanItem = (subscriptionItems?: Realtime.Identity.SubscriptionI
   return subscriptionItems?.find((item) => item.itemType === 'plan');
 };
 
+export const findPlanAddons = (subscriptionItems?: Realtime.Identity.SubscriptionItem[] | undefined) => {
+  return subscriptionItems?.filter((item) => item.itemType === 'addon') ?? [];
+};
+
 export const getPlanFromPriceID = (priceID: string | undefined) => {
   const [plan] = priceID?.split('-') ?? [];
 
@@ -119,3 +123,11 @@ export const pollWithProgressiveTimeout = (
 
     poll();
   });
+
+export const AdditionalSeatAddon = {
+  monthly: 'addon-additional-seats-monthly',
+  annual: 'addon-additional-seats-yearly',
+};
+
+export const getAdditionalSeatAddonPriceID = (unit: string | undefined) =>
+  AdditionalSeatAddon[unit?.toLowerCase() as 'monthly' | 'annual'];

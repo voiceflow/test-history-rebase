@@ -1,6 +1,6 @@
 import { Controller, Inject } from '@nestjs/common';
 import { Subscription } from '@voiceflow/dtos';
-import { Action, AuthMeta, AuthMetaPayload, Broadcast, Payload } from '@voiceflow/nestjs-logux';
+import { Action, AuthMeta, AuthMetaPayload, Broadcast, LoguxService, Payload } from '@voiceflow/nestjs-logux';
 import { Permission } from '@voiceflow/sdk-auth';
 import { Authorize } from '@voiceflow/sdk-auth/nestjs';
 import { Actions, Channels } from '@voiceflow/sdk-logux-designer';
@@ -12,7 +12,11 @@ import { BillingSubscriptionService } from './subscription.service';
 @Controller()
 @InjectRequestContext()
 export class BillingSubscriptionLoguxController {
-  constructor(@Inject(BillingSubscriptionService) private readonly service: BillingSubscriptionService) {}
+  constructor(
+    @Inject(BillingSubscriptionService) private readonly service: BillingSubscriptionService,
+    @Inject(LoguxService)
+    private readonly logux: LoguxService
+  ) {}
 
   @Action.Async(Actions.OrganizationSubscription.Checkout)
   @Authorize.Permissions<Actions.Organization.PatchOne>([Permission.WORKSPACE_BILLING_UPDATE], ({ context }) => ({
@@ -29,7 +33,17 @@ export class BillingSubscriptionLoguxController {
   ): Promise<Subscription> {
     const { organizationID, workspaceID } = data.context;
 
-    return this.service.checkoutAndBroadcast(authMeta, organizationID, workspaceID, data);
+    const subscription = await this.service.checkout(organizationID, data);
+
+    await this.logux.processAs(
+      Actions.OrganizationSubscription.Replace({
+        subscription,
+        context: { organizationID, workspaceID },
+      }),
+      authMeta
+    );
+
+    return subscription;
   }
 
   @Action(Actions.OrganizationSubscription.Replace)

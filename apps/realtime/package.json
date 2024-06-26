@@ -79,7 +79,7 @@
     "@voiceflow/schema-types": "1.64.0",
     "@voiceflow/sdk-auth": "2.10.0",
     "@voiceflow/sdk-billing": "1.26.49",
-    "@voiceflow/sdk-identity": "1.22.12",
+    "@voiceflow/sdk-identity": "1.22.31",
     "@voiceflow/sdk-logux-designer": "workspace:*",
     "@voiceflow/sdk-message-queue": "1.7.0",
     "@voiceflow/socket-utils": "workspace:*",

@@ -19,7 +19,7 @@ export const useCheckoutPayment = ({ modalProps }: { modalProps: PaymentModalPro
   const workspace = useSelector(WorkspaceV2.active.workspaceSelector)!;
   const checkout = useDispatch(Organization.subscription.checkout);
   const { selectedPlanPrice } = usePricing();
-  const couponIds = useAtomValue(atoms.couponIdsAtom);
+  const couponIDs = useAtomValue(atoms.couponIDsAtom);
 
   const isTrialExpired = useSelector(WorkspaceV2.active.organizationTrialExpiredSelector);
   const [trackingEvents] = useTrackingEvents();
@@ -47,9 +47,9 @@ export const useCheckoutPayment = ({ modalProps }: { modalProps: PaymentModalPro
       }
 
       await checkout(organization.id, workspace.id, {
-        itemPriceID: selectedPlanPrice.id,
+        planItemPriceID: selectedPlanPrice.id,
         paymentIntent,
-        couponIds,
+        couponIDs,
       });
 
       if (isTrialExpired) {

@@ -1,19 +1,11 @@
-import { Utils } from '@voiceflow/common';
 import { CRUD } from '@voiceflow/sdk-logux-designer';
 
 import type { KnowledgeBaseIntegration } from '@/models/KnowledgeBase.model';
 
+import { type as kbType } from '../knowledge-base.action';
 import { STATE_KEY } from './integration.state';
 
-export const type = Utils.protocol.typeFactory(STATE_KEY);
-
-const integrationAction = CRUD.createCRUD(type(STATE_KEY));
-
-export interface SetIntegrations {
-  integrations: KnowledgeBaseIntegration[];
-}
-
-export const SetIntegrations = Utils.protocol.createAction<SetIntegrations>(type('SET_INTEGRATIONS'));
+const integrationAction = CRUD.createCRUD(kbType(STATE_KEY));
 
 /* DeleteOne */
 

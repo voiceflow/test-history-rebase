@@ -36,6 +36,7 @@ import { MutableService } from '@/common';
 import { DiagramService } from '@/diagram/diagram.service';
 import { EnvironmentCMSData } from '@/environment/environment.interface';
 import { EnvironmentService } from '@/environment/environment.service';
+import { KnowledgeBaseSettingsService } from '@/knowledge-base/settings/settings.service';
 import { ProgramService } from '@/program/program.service';
 import { LATEST_PROJECT_VERSION } from '@/project/project.constant';
 import { ProjectSerializer } from '@/project/project.serializer';
@@ -111,6 +112,8 @@ export class AssistantService extends MutableService<AssistantORM> {
     private readonly projectSerializer: ProjectSerializer,
     @Inject(AssistantSerializer)
     private readonly assistantSerializer: AssistantSerializer,
+    @Inject(KnowledgeBaseSettingsService)
+    private readonly knowledgeBaseSettings: KnowledgeBaseSettingsService,
     @Inject(LegacyProjectSerializer)
     private readonly legacyProjectSerializer: LegacyProjectSerializer
   ) {
@@ -852,7 +855,12 @@ export class AssistantService extends MutableService<AssistantORM> {
       diagrams: this.diagram.mapToJSON(diagrams),
       variableStates: this.variableState.mapToJSON(variableStates),
       projectMembership,
+      knowledgeBaseSettings: Realtime.KB_SETTINGS_DEFAULT,
     };
+
+    if (this.unleash.isEnabled(Realtime.FeatureFlag.KNOWLEDGE_BASE, { userID, workspaceID: project.teamID })) {
+      creatorData.knowledgeBaseSettings = await this.knowledgeBaseSettings.findForAssistant(project._id.toJSON());
+    }
 
     if (this.unleash.isEnabled(Realtime.FeatureFlag.REFERENCE_SYSTEM, { userID, workspaceID: project.teamID })) {
       const { references, referenceResources } = await this.reference.buildForCreator(creatorData);

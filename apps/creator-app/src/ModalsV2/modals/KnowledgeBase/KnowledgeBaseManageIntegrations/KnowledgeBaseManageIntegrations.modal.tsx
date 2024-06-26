@@ -12,8 +12,8 @@ import { KBImportIntegrationWaiting } from '../KnowledgeBaseImport/KBImportInteg
 import { KBIntegration } from './KBIntegration/KBIntegration.component';
 import { modalStyles } from './KnowledgeBaseManageIntegrations.css';
 
-export const KBManageIntegrations = manager.create(
-  'KBManageIntegrations',
+export const KBManageIntegrationsModal = manager.create(
+  'KBManageIntegrationsModal',
   () =>
     ({ api, type, opened, hidden, animated, closePrevented }) => {
       const [screen, setScreen] = React.useState<'integrations' | 'reconnect'>('integrations');

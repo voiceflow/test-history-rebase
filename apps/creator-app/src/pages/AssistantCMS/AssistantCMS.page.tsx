@@ -39,7 +39,6 @@ const AssistantCMSMessage = withSuspense({ loader: <CMSPageLoader /> })(
 const AssistantCMS = () => {
   const { activeCMSRoute } = useCMSRoute();
 
-  const loadKBSettings = useDispatch(Designer.KnowledgeBase.effect.loadSettings);
   const loadKBDocuments = useDispatch(Designer.KnowledgeBase.Document.effect.loadAll);
 
   const isKbEnabled = useFeature(Realtime.FeatureFlag.KNOWLEDGE_BASE);
@@ -48,7 +47,6 @@ const AssistantCMS = () => {
 
   React.useEffect(() => {
     if (isKbEnabled) {
-      loadKBSettings();
       loadKBDocuments();
     }
   }, [isKbEnabled]);

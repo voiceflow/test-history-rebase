@@ -45,21 +45,30 @@ export class KnowledgeBaseSettingsService extends MutableService<KnowledgeBaseOR
     });
   }
 
-  private normalizeSettings(settings: KnowledgeBaseSettings): KnowledgeBaseSettings {
-    let normalizedSettings = settings;
+  private normalizeSettings<T extends Partial<KnowledgeBaseSettings>>(settings: T): T {
+    let normalizedSettings: T = settings;
 
-    if (normalizedSettings.summarization.maxTokens) {
-      normalizedSettings = {
-        ...normalizedSettings,
-        summarization: {
-          ...normalizedSettings.summarization,
+    if (normalizedSettings.summarization) {
+      let { summarization } = normalizedSettings;
+
+      if (summarization.maxTokens) {
+        summarization = {
+          ...summarization,
           // maxTokens can't be higher than the model limit
-          maxTokens: Math.min(
-            normalizedSettings.summarization.maxTokens,
-            AI_MODEL_PARAMS[normalizedSettings.summarization.model].maxTokens
-          ),
-        },
-      };
+          maxTokens: Math.min(summarization.maxTokens, AI_MODEL_PARAMS[summarization.model].maxTokens),
+        };
+      }
+
+      const modelConfig = AI_MODEL_PARAMS[summarization.model];
+
+      if (modelConfig.deprecated) {
+        summarization = {
+          ...summarization,
+          model: KB_SETTINGS_DEFAULT.summarization.model,
+        };
+      }
+
+      normalizedSettings = { ...normalizedSettings, summarization };
     }
 
     return normalizedSettings;
@@ -77,6 +86,8 @@ export class KnowledgeBaseSettingsService extends MutableService<KnowledgeBaseOR
 
   private async updateCacheForAssistant(assistantID: string, settings: KnowledgeBaseSettings) {
     await this.settingsCache.set({ assistantID }, JSON.stringify(settings));
+
+    return settings;
   }
 
   private async findCacheForEnvironment(environmentID: string): Promise<KnowledgeBaseSettings | undefined> {
@@ -91,18 +102,6 @@ export class KnowledgeBaseSettingsService extends MutableService<KnowledgeBaseOR
 
   private async updateCacheForEnvironment(environmentID: string, settings: KnowledgeBaseSettings) {
     await this.environmentSettingsCache.set({ environmentID }, JSON.stringify(settings));
-  }
-
-  private async findForAssistantOnly(assistantID: string): Promise<KnowledgeBaseSettings> {
-    let settings = await this.orm.findSettings(assistantID);
-
-    if (settings) {
-      await this.updateCacheForAssistant(assistantID, settings);
-    } else {
-      await this.updateForAssistant(assistantID, KB_SETTINGS_DEFAULT);
-
-      settings = KB_SETTINGS_DEFAULT;
-    }
 
     return settings;
   }
@@ -114,27 +113,52 @@ export class KnowledgeBaseSettingsService extends MutableService<KnowledgeBaseOR
       return this.findForEnvironment(devVersion);
     }
 
-    const cachedSettings = await this.findCacheForAssistant(assistantID);
+    let settings = await this.findCacheForAssistant(assistantID);
+    let normalizedSettings = settings ? this.normalizeSettings(settings) : settings;
 
-    if (cachedSettings) {
-      return cachedSettings;
+    // return cached settings if they are already normalized
+    if (settings && normalizedSettings === settings) {
+      return normalizedSettings;
     }
 
-    return this.findForAssistantOnly(assistantID);
+    settings = await this.orm.findSettings(assistantID);
+
+    if (settings) {
+      normalizedSettings = this.normalizeSettings(settings);
+
+      // update cache if settings are normalized
+      if (settings === normalizedSettings) {
+        return this.updateCacheForAssistant(assistantID, normalizedSettings);
+      }
+
+      // update assistant level settings with normalized settings
+      return this.updateForAssistant(assistantID, normalizedSettings);
+    }
+
+    // apply default settings if none are available
+    return this.updateForAssistant(assistantID, KB_SETTINGS_DEFAULT);
   }
 
-  async updateForAssistant(assistantID: string, settings: KnowledgeBaseSettings): Promise<void> {
-    const normalizedSettings = this.normalizeSettings(settings);
+  async updateForAssistant(assistantID: string, patch: Partial<KnowledgeBaseSettings>) {
+    const { devVersion, workspaceID } = await this.projectORM.getVersionAndWorkspaceID(assistantID);
 
-    await this.orm.updateSettings(assistantID, normalizedSettings);
-    await this.updateCacheForAssistant(assistantID, normalizedSettings);
+    if (devVersion && this.unleash.isEnabled(FeatureFlag.VERSIONED_KB_SETTINGS, { workspaceID })) {
+      return this.updateForEnvironment(devVersion, patch);
+    }
+
+    const settings = await this.orm.updateSettings(assistantID, this.normalizeSettings(patch));
+
+    return this.updateCacheForAssistant(assistantID, settings);
   }
 
   async findForEnvironment(environmentID: string): Promise<KnowledgeBaseSettings> {
-    const cachedSettings = await this.findCacheForEnvironment(environmentID);
+    const settings = await this.findCacheForEnvironment(environmentID);
 
-    if (cachedSettings) {
-      return cachedSettings;
+    let normalizedSettings = settings ? this.normalizeSettings(settings) : settings;
+
+    // return cached settings if they are already normalized
+    if (settings && normalizedSettings === settings) {
+      return normalizedSettings;
     }
 
     const { projectID, knowledgeBase } = await this.versionORM.findOneOrFail(environmentID, {
@@ -142,31 +166,31 @@ export class KnowledgeBaseSettingsService extends MutableService<KnowledgeBaseOR
     });
 
     if (knowledgeBase?.settings) {
-      await this.updateCacheForEnvironment(environmentID, knowledgeBase.settings);
+      normalizedSettings = this.normalizeSettings(knowledgeBase.settings);
 
-      return knowledgeBase.settings;
+      // update cache if settings are normalized
+      if (knowledgeBase.settings === normalizedSettings) {
+        return this.updateCacheForEnvironment(environmentID, normalizedSettings);
+      }
+
+      // update version level settings with normalized settings
+      return this.updateForEnvironment(environmentID, normalizedSettings);
     }
 
     const projectSettings = await this.orm.findSettings(projectID.toJSON());
 
     if (projectSettings) {
       // copy data from project level to version level if version level is empty
-      await this.updateForEnvironment(environmentID, projectSettings);
-
-      return projectSettings;
+      return this.updateForEnvironment(environmentID, projectSettings);
     }
 
     // apply default settings if none are available
-    await this.updateForEnvironment(environmentID, KB_SETTINGS_DEFAULT);
-
-    return KB_SETTINGS_DEFAULT;
+    return this.updateForEnvironment(environmentID, KB_SETTINGS_DEFAULT);
   }
 
-  async updateForEnvironment(environmentID: string, settings: KnowledgeBaseSettings) {
-    const normalizedSettings = this.normalizeSettings(settings);
+  async updateForEnvironment(environmentID: string, patch: Partial<KnowledgeBaseSettings>) {
+    const settings = await this.versionORM.updateKnowledgeBaseSettings(environmentID, this.normalizeSettings(patch));
 
-    await this.versionORM.updateKnowledgeBaseSettings(environmentID, normalizedSettings);
-
-    await this.updateCacheForEnvironment(environmentID, normalizedSettings);
+    return this.updateCacheForEnvironment(environmentID, settings);
   }
 }

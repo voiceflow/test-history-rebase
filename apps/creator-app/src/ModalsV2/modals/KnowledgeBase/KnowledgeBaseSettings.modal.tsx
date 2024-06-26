@@ -1,4 +1,5 @@
-import type { BaseModels, BaseUtils } from '@voiceflow/base-types';
+import type { KnowledgeBaseSettings } from '@voiceflow/dtos';
+import { KB_SETTINGS_DEFAULT } from '@voiceflow/realtime-sdk';
 import { tid } from '@voiceflow/style';
 import { Box, notify, Scroll } from '@voiceflow/ui-next';
 import React, { useState } from 'react';
@@ -12,43 +13,36 @@ import { Modal } from '@/components/Modal';
 import { AI_MODEL_CONFIG_MAP } from '@/config/ai-model';
 import { CMS_KNOWLEDGE_BASE_LEARN_MORE } from '@/constants/link.constant';
 import { Designer } from '@/ducks';
-import { useAsyncEffect } from '@/hooks';
 import { useDispatch, useSelector } from '@/hooks/store.hook';
 import { useTrackingEvents } from '@/hooks/tracking';
 
-import manager from '../../../manager';
-import { SETTINGS_TEST_ID } from '../KnowledgeBase.constant';
-import { DEFAULT_SETTINGS } from './KnowledgeBaseSettings.constant';
+import manager from '../../manager';
 
-export const KnowledgeBaseSettings = manager.create(
-  'KnowledgeBaseSettingsV2',
+export const KnowledgeBaseSettingsModal = manager.create(
+  'KnowledgeBaseSettingsModel',
   () =>
     ({ api, type, opened, hidden, closePrevented, animated }) => {
-      const storeSettings = useSelector(Designer.KnowledgeBase.selectors.settings);
+      const SETTINGS_TEST_ID = tid('knowledge-base', 'settings');
 
-      const getSettings = useDispatch(Designer.KnowledgeBase.effect.getSettings);
-      const patchSettings = useDispatch(Designer.KnowledgeBase.effect.patchSettings);
+      const storeSettings = useSelector(Designer.KnowledgeBase.Settings.selectors.root);
+
+      const patchSettings = useDispatch(Designer.KnowledgeBase.Settings.effect.patch);
 
       const [settings, setSettings] = useState(storeSettings);
 
       const [trackingEvents] = useTrackingEvents();
 
-      const onPatch = <K extends keyof BaseModels.Project.KnowledgeBaseSettings>(
-        key: K,
-        patch: Partial<BaseModels.Project.KnowledgeBaseSettings[K]>
-      ) => {
+      const onPatch = <K extends keyof KnowledgeBaseSettings>(key: K, patch: Partial<KnowledgeBaseSettings[K]>) => {
         setSettings((prev) => prev && { ...prev, [key]: { ...prev[key], ...patch } });
       };
 
       const onSubmit = async () => {
-        if (!settings) return;
-
         try {
           api.preventClose();
 
           await patchSettings(settings);
 
-          const model = settings.summarization.model ?? DEFAULT_SETTINGS.summarization.model;
+          const { model } = settings.summarization;
 
           if (settings.summarization.temperature !== storeSettings?.summarization.temperature) {
             trackingEvents.trackAiKnowledgeBaseSettingsModified({ Mod_Type: 'Temperature', LLM_Updated: model });
@@ -66,10 +60,6 @@ export const KnowledgeBaseSettings = manager.create(
             trackingEvents.trackAiKnowledgeBaseSettingsModified({ Mod_Type: 'Persona', LLM_Updated: model });
           }
 
-          // if (settings.summarization.instruction !== storeSettings?.summarization.instruction) {
-          //   trackingEvents.trackAiKnowledgeBaseSettingsModified({ Mod_Type: 'Instruction', LLM_Updated: model });
-          // }
-
           notify.short.success('Saved');
 
           api.enableClose();
@@ -82,28 +72,12 @@ export const KnowledgeBaseSettings = manager.create(
       };
 
       const onResetToDefault = async () => {
-        setSettings(DEFAULT_SETTINGS);
+        setSettings(KB_SETTINGS_DEFAULT);
 
         notify.short.success('Restored to default');
       };
 
-      useAsyncEffect(async () => {
-        try {
-          if (!storeSettings) setSettings(await getSettings());
-        } catch {
-          const systemMessageID = notify.long.warning(
-            'An error was encountered while fetching Knowledge Base settings',
-            {
-              pauseOnHover: true,
-              autoClose: false,
-              actionButtonProps: { label: 'Reload', onClick: () => window.location.reload() },
-              secondaryButtonProps: { label: 'Dismiss', onClick: () => notify.long.dismiss(systemMessageID) },
-            }
-          );
-        }
-      }, []);
-
-      const model = settings?.summarization.model ?? DEFAULT_SETTINGS.summarization.model;
+      const { model } = settings.summarization;
 
       return (
         <Modal.Container
@@ -127,13 +101,12 @@ export const KnowledgeBaseSettings = manager.create(
               <AIModelSelectSection
                 value={model}
                 testID={tid(SETTINGS_TEST_ID, 'model')}
-                disabled={!settings}
                 learnMoreURL={CMS_KNOWLEDGE_BASE_LEARN_MORE}
-                onValueChange={(model) => onPatch('summarization', { model: model as BaseUtils.ai.GPT_MODEL })}
+                onValueChange={(model) => onPatch('summarization', { model })}
               />
 
               <AITemperatureSliderSection
-                value={settings?.summarization.temperature ?? DEFAULT_SETTINGS.summarization.temperature}
+                value={settings.summarization.temperature}
                 testID={tid(SETTINGS_TEST_ID, 'temperature')}
                 disabled={!settings}
                 learnMoreURL={CMS_KNOWLEDGE_BASE_LEARN_MORE}
@@ -142,7 +115,7 @@ export const KnowledgeBaseSettings = manager.create(
 
               <AIMaxTokensSliderSection
                 model={model}
-                value={settings?.summarization.maxTokens ?? DEFAULT_SETTINGS.summarization.maxTokens}
+                value={settings.summarization.maxTokens ?? KB_SETTINGS_DEFAULT.summarization.maxTokens}
                 testID={tid(SETTINGS_TEST_ID, 'tokens')}
                 disabled={!settings}
                 learnMoreURL={CMS_KNOWLEDGE_BASE_LEARN_MORE}
@@ -150,7 +123,7 @@ export const KnowledgeBaseSettings = manager.create(
               />
 
               <KBChunkLimitSliderSection
-                value={settings?.search.limit ?? DEFAULT_SETTINGS.search.limit}
+                value={settings.search.limit}
                 testID={tid(SETTINGS_TEST_ID, 'chunk-limit')}
                 disabled={!settings}
                 learnMoreURL={CMS_KNOWLEDGE_BASE_LEARN_MORE}
@@ -159,7 +132,7 @@ export const KnowledgeBaseSettings = manager.create(
 
               {AI_MODEL_CONFIG_MAP[model].hasSystemPrompt && (
                 <KBSystemInputSection
-                  value={settings?.summarization.system ?? DEFAULT_SETTINGS.summarization.system}
+                  value={settings.summarization.system}
                   testID={tid(SETTINGS_TEST_ID, 'system-prompt')}
                   disabled={!settings}
                   learnMoreURL={CMS_KNOWLEDGE_BASE_LEARN_MORE}

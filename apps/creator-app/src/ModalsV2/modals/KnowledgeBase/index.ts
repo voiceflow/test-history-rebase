@@ -1,4 +1,4 @@
 export * as Import from './KnowledgeBaseImport';
-export { KBManageIntegrations as ManageIntegrations } from './KnowledgeBaseManageIntegrations/KnowledgeBaseManageIntegrations.modal';
-export { KnowledgeBasePreviewQuestion as PreviewQuestion } from './KnowledgeBasePreviewQuestion/KnowledgeBasePreviewQuestion.modal';
-export { KnowledgeBaseSettings as Settings } from './KnowledgeBaseSettings/KnowledgeBaseSettings.modal';
+export { KBManageIntegrationsModal as ManageIntegrations } from './KnowledgeBaseManageIntegrations/KnowledgeBaseManageIntegrations.modal';
+export { KnowledgeBasePreviewQuestionModal as PreviewQuestion } from './KnowledgeBasePreviewQuestion/KnowledgeBasePreviewQuestion.modal';
+export { KnowledgeBaseSettingsModal as Settings } from './KnowledgeBaseSettings.modal';

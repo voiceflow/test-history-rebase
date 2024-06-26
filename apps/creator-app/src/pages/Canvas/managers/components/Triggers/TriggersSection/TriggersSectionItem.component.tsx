@@ -135,7 +135,10 @@ export const TriggersSectionItem: React.FC<ITriggersSectionItem> = ({
                   onHeaderClick={() => onSettingsChange(trigger.id, { local: !trigger.settings.local })}
                 >
                   {popper}
-                  <Toggle value={!trigger.settings.local} />
+                  <Toggle
+                    value={!trigger.settings.local}
+                    onValueChange={() => onSettingsChange(trigger.id, { local: !trigger.settings.local })}
+                  />
                 </Section.Header.Container>
               )}
             >

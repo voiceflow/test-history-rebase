@@ -3,7 +3,6 @@ export * from './adapters/mongo-object-json.adapter';
 export * as Atomic from './atomic';
 export * from './entities/mongo.entity';
 export * from './entities/mongo-object.entity';
-export * from './mongo.utils';
 export * from './orms/mongo.orm';
 export * from './orms/mongo-atomic.orm';
 export * from './orms/mongo-atomic-sub-resource.orm';

@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, PrimaryKey, PrimaryKeyType, Property } from '@mikro-orm/core';
+import { Entity, ManyToOne, PrimaryKey, PrimaryKeyProp, Property } from '@mikro-orm/core';
 import type { ReferenceMetadata } from '@voiceflow/dtos';
 
 import { Environment, PostgresAbstractEntity } from '@/postgres/common';
@@ -16,7 +16,7 @@ export class ReferenceEntity extends PostgresAbstractEntity {
 
   @ManyToOne(() => ReferenceResourceEntity, {
     name: 'resource_id',
-    onDelete: 'cascade',
+    deleteRule: 'cascade',
     fieldNames: ['environment_id', 'resource_id'],
   })
   resource!: Ref<ReferenceResourceEntity>;
@@ -26,10 +26,10 @@ export class ReferenceEntity extends PostgresAbstractEntity {
 
   @ManyToOne(() => ReferenceResourceEntity, {
     name: 'referrer_resource_id',
-    onDelete: 'cascade',
+    deleteRule: 'cascade',
     fieldNames: ['environment_id', 'referrer_resource_id'],
   })
   referrerResource!: Ref<ReferenceResourceEntity>;
 
-  [PrimaryKeyType]?: { environmentID: string; id: string };
+  [PrimaryKeyProp]?: { environmentID: string; id: string };
 }

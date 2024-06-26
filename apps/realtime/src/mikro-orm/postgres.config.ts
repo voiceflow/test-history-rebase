@@ -16,7 +16,6 @@ export const POSTGRES_ENTITIES = Object.values(MetadataStorage.getMetadata()).fl
 
 export const createPostgresConfig = (env: EnvironmentVariables): Options => ({
   ...postgresConfig,
-  type: 'postgresql',
   host: env.POSTGRES_HOST,
   port: env.POSTGRES_PORT,
   dbName: env.POSTGRES_DATABASE,
@@ -29,8 +28,8 @@ export const createPostgresConfig = (env: EnvironmentVariables): Options => ({
     max: 300,
   },
 
-  cache: {
-    ...postgresConfig.cache,
+  metadataCache: {
+    ...postgresConfig.metadataCache,
     adapter: CacheAdapter,
   },
 });

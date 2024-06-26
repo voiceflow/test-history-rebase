@@ -1,6 +1,6 @@
 import type { Primary } from '@mikro-orm/core';
 import { Utils } from '@voiceflow/common';
-import type { Filter } from 'mongodb-mikro';
+import type { Filter } from 'mongodb';
 
 import type { MutableORM } from '@/common';
 import type { CreateData, PatchData, ToObject } from '@/types';

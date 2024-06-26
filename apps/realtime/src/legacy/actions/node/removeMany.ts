@@ -18,7 +18,7 @@ class RemoveManyNodes extends AbstractVersionDiagramAccessActionControl<Realtime
         workspaceID: payload.workspaceID,
       })
     ) {
-      await this.services.requestContext.createAsync(async () => {
+      await this.services.requestContext.create(async () => {
         await this.services.reference.deleteManyWithSubResourcesByDiagramNodeIDsAndBroadcast(
           { nodeIDs: payload.nodes.map((node) => node.stepID ?? node.parentNodeID), diagramID: payload.diagramID },
           {

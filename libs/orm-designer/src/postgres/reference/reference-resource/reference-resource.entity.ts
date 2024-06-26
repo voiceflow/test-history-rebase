@@ -1,4 +1,4 @@
-import { Entity, Enum, PrimaryKey, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { Entity, Enum, PrimaryKey, PrimaryKeyProp, Property, Unique } from '@mikro-orm/core';
 import { type ReferenceResourceMetadata, ReferenceResourceType } from '@voiceflow/dtos';
 
 import type { AssistantEntity } from '@/main';
@@ -29,5 +29,5 @@ export class ReferenceResourceEntity extends PostgresAbstractEntity<'diagramID' 
   @Property()
   resourceID!: string;
 
-  [PrimaryKeyType]?: { environmentID: string; id: string };
+  [PrimaryKeyProp]?: { environmentID: string; id: string };
 }

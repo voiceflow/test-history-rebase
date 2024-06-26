@@ -8,7 +8,7 @@ export default defineConfig({
   entities: ['./build/mongo/**/*.entity.js'],
   entitiesTs: ['./src/mongo/**/*.entity.ts'],
 
-  cache: {
+  metadataCache: {
     enabled: true,
     options: {
       cacheDir: path.resolve(__dirname, '../../.mikro-orm'),

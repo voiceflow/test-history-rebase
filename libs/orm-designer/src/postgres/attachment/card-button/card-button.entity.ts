@@ -1,4 +1,4 @@
-import { Entity, Index, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { Entity, Index, ManyToOne, PrimaryKeyProp, Property, Unique } from '@mikro-orm/core';
 import type { Markup } from '@voiceflow/dtos';
 
 import { MarkupType } from '@/common';
@@ -14,7 +14,7 @@ import { CardAttachmentEntity } from '../card-attachment/card-attachment.entity'
 export class CardButtonEntity extends PostgresCMSObjectEntity {
   @ManyToOne(() => CardAttachmentEntity, {
     name: 'card_id',
-    onDelete: 'cascade',
+    deleteRule: 'cascade',
     fieldNames: ['card_id', 'environment_id'],
   })
   card!: Ref<CardAttachmentEntity>;
@@ -28,5 +28,5 @@ export class CardButtonEntity extends PostgresCMSObjectEntity {
   @Environment()
   environmentID!: string;
 
-  [PrimaryKeyType]?: CMSCompositePK;
+  [PrimaryKeyProp]?: CMSCompositePK;
 }

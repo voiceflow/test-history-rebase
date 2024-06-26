@@ -26,7 +26,7 @@ export abstract class AbstractDiagramActionControl<
 
   protected setCMSUpdatedBy = async (ctx: Context<BaseContextData>, payload: P): Promise<void> => {
     try {
-      await this.services.requestContext.createAsync(() =>
+      await this.services.requestContext.create(() =>
         Promise.all([
           this.services.flow.updateOneByDiagramIDAndBroadcast(
             payload.diagramID,

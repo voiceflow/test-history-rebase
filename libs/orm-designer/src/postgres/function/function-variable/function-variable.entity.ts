@@ -1,4 +1,4 @@
-import { Entity, Enum, Index, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { Entity, Enum, Index, ManyToOne, PrimaryKeyProp, Property, Unique } from '@mikro-orm/core';
 import { FunctionVariableKind } from '@voiceflow/dtos';
 
 import type { AssistantEntity } from '@/postgres/assistant';
@@ -22,7 +22,7 @@ export class FunctionVariableEntity extends PostgresCMSObjectEntity<'description
 
   @ManyToOne(() => FunctionEntity, {
     name: 'function_id',
-    onDelete: 'cascade',
+    deleteRule: 'cascade',
     fieldNames: ['function_id', 'environment_id'],
   })
   function!: Ref<FunctionEntity>;
@@ -36,5 +36,5 @@ export class FunctionVariableEntity extends PostgresCMSObjectEntity<'description
   @Environment()
   environmentID!: string;
 
-  [PrimaryKeyType]?: CMSCompositePK;
+  [PrimaryKeyProp]?: CMSCompositePK;
 }

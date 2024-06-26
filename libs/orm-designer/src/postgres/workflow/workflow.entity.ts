@@ -22,7 +22,7 @@ export class WorkflowEntity extends PostgresCMSTabularEntity<'status' | 'assigne
   @ManyToOne(() => UserStubEntity, {
     name: 'assignee_id',
     default: null,
-    onDelete: 'set default',
+    deleteRule: 'set default',
     nullable: true,
   })
   assignee!: Ref<UserStubEntity> | null;

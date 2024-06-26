@@ -1,4 +1,4 @@
-import { Entity, Enum, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { Entity, Enum, PrimaryKeyProp, Property, Unique } from '@mikro-orm/core';
 import type { Markup } from '@voiceflow/dtos';
 import { MediaDatatype } from '@voiceflow/dtos';
 
@@ -28,5 +28,5 @@ export class MediaAttachmentEntity extends PostgresCMSObjectEntity {
   @Environment()
   environmentID!: string;
 
-  [PrimaryKeyType]?: CMSCompositePK;
+  [PrimaryKeyProp]?: CMSCompositePK;
 }

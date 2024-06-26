@@ -1,4 +1,4 @@
-import fs from 'node:fs/promises';
+import fs from 'node:fs';
 import path from 'node:path';
 
 import { NullCacheAdapter } from '@mikro-orm/core';
@@ -8,8 +8,8 @@ export class CacheAdapter extends NullCacheAdapter {
     super();
   }
 
-  async get(name: string): Promise<any> {
-    const result = JSON.parse(await fs.readFile(path.resolve(this.options.cacheDir, `${name}.json`), 'utf-8'));
+  get(name: string): any {
+    const result = JSON.parse(fs.readFileSync(path.resolve(this.options.cacheDir, `${name}.json`), 'utf-8'));
 
     return result.data;
   }

@@ -25,7 +25,7 @@ class UpdateManyNodeData extends AbstractVersionDiagramAccessActionControl<Realt
         workspaceID: payload.workspaceID,
       })
     ) {
-      await this.services.requestContext.createAsync(async () => {
+      await this.services.requestContext.create(async () => {
         await this.services.reference.deleteManyWithSubResourcesByDiagramNodeIDsAndBroadcast(
           { nodeIDs: nodes.map((node) => node.nodeID), diagramID: payload.diagramID },
           {

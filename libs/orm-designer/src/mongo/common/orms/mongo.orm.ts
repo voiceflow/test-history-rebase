@@ -3,7 +3,7 @@ import { type EntityManager, ObjectId } from '@mikro-orm/mongodb';
 import { getEntityManagerToken } from '@mikro-orm/nestjs';
 import { Inject, Injectable, Module } from '@nestjs/common';
 import type { SmartMultiAdapter } from 'bidirectional-adapter';
-import type { Filter, MatchKeysAndValues } from 'mongodb-mikro';
+import type { Filter, MatchKeysAndValues } from 'mongodb';
 
 import { DatabaseTarget } from '@/common/enums/database-target.enum';
 import type { ORM } from '@/common/interfaces/orm.interface';
@@ -22,7 +22,7 @@ export abstract class MongoORM<BaseEntity extends MongoPKEntity, DiscriminatorEn
 
   private cache: Partial<{
     lazyProperties: string[];
-    onUpdateHandlers: Array<{ field: string; handler: (data: Partial<BaseEntity>) => unknown }>;
+    onUpdateHandlers: Array<{ field: string; handler: (data: Partial<BaseEntity>, em: EntityManager) => unknown }>;
     uniqueProperties: string[];
   }> = {};
 
@@ -95,7 +95,7 @@ export abstract class MongoORM<BaseEntity extends MongoPKEntity, DiscriminatorEn
 
     this.cache.onUpdateHandlers.forEach(({ field, handler }) => {
       if (data[field] === undefined) {
-        nextData[field] = handler(data as any);
+        nextData[field] = handler(data as any, this.em);
       }
     });
 

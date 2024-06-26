@@ -4,7 +4,7 @@ import {
   Enum,
   Index,
   ManyToOne,
-  PrimaryKeyType,
+  PrimaryKeyProp,
   Property,
 } from '@mikro-orm/core';
 import { Language } from '@voiceflow/dtos';
@@ -29,7 +29,7 @@ export class EntityVariantEntity extends PostgresCMSObjectEntity {
 
   @ManyToOne(() => EntityEntity, {
     name: 'entity_id',
-    onDelete: 'cascade',
+    deleteRule: 'cascade',
     fieldNames: ['entity_id', 'environment_id'],
   })
   entity!: Ref<EntityEntity>;
@@ -40,5 +40,5 @@ export class EntityVariantEntity extends PostgresCMSObjectEntity {
   @Environment()
   environmentID!: string;
 
-  [PrimaryKeyType]?: CMSCompositePK;
+  [PrimaryKeyProp]?: CMSCompositePK;
 }

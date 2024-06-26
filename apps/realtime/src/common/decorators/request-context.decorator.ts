@@ -34,7 +34,7 @@ export const UseRequestContext = (): MethodDecorator =>
         throw new Error('Request context ORMs not found, please use InjectRequestContext decorator to inject ORMs');
       }
 
-      return RequestContext.createAsync([mongoEM, postgresEM], async () => originalMethod.apply(this, args));
+      return RequestContext.create([mongoEM, postgresEM], async () => originalMethod.apply(this, args));
     };
 
     return descriptor;

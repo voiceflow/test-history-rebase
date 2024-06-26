@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { Entity, ManyToOne, PrimaryKeyProp, Property, Unique } from '@mikro-orm/core';
 
 import type { AssistantEntity } from '@/postgres/assistant';
 import { Assistant, CreatedAt, Environment, PostgresCMSObjectEntity } from '@/postgres/common';
@@ -20,7 +20,7 @@ export class FunctionPathEntity extends PostgresCMSObjectEntity {
 
   @ManyToOne(() => FunctionEntity, {
     name: 'function_id',
-    onDelete: 'cascade',
+    deleteRule: 'cascade',
     fieldNames: ['function_id', 'environment_id'],
   })
   function!: Ref<FunctionEntity>;
@@ -31,5 +31,5 @@ export class FunctionPathEntity extends PostgresCMSObjectEntity {
   @Environment()
   environmentID!: string;
 
-  [PrimaryKeyType]?: CMSCompositePK;
+  [PrimaryKeyProp]?: CMSCompositePK;
 }

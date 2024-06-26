@@ -11,7 +11,7 @@ export class AssistantEntity extends PostgresCMSObjectEntity {
   @Property()
   name!: string;
 
-  @ManyToOne(() => WorkspaceStubEntity, { name: 'workspace_id', onDelete: 'cascade' })
+  @ManyToOne(() => WorkspaceStubEntity, { name: 'workspace_id', deleteRule: 'cascade' })
   workspace!: Ref<WorkspaceStubEntity>;
 
   @Property({ name: 'active_environment_id', type: 'varchar', length: 24 })

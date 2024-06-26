@@ -19,7 +19,7 @@ export class IntegrationOauthTokenEntity extends PostgresEntity<'refreshToken' |
   @Property({ type: 'jsonb', nullable: true, default: null })
   meta!: Record<string, unknown> | null;
 
-  @OneToOne(() => UserStubEntity, { name: 'creator_id', onDelete: 'set null', default: null, nullable: true })
+  @OneToOne(() => UserStubEntity, { name: 'creator_id', deleteRule: 'set null', default: null, nullable: true })
   creator!: Ref<UserStubEntity> | null;
 
   @CreatedAt({ type: 'timestamptz' })

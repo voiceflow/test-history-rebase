@@ -54,7 +54,7 @@ class IsolateSteps extends AbstractVersionDiagramAccessActionControl<Realtime.no
         workspaceID: payload.workspaceID,
       })
     ) {
-      await this.services.requestContext.createAsync(async () => {
+      await this.services.requestContext.create(async () => {
         await this.services.reference.createManyWithSubResourcesForDiagramNodesAndBroadcast(
           { nodes: [parentNode], diagramID: payload.diagramID },
           {

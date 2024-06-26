@@ -47,7 +47,7 @@ class VersionChannel extends AbstractChannelControl<Realtime.Channels.VersionCha
     const [projectMembers, dbCreator, { threads, threadComments }] = await Promise.all([
       this.services.identity.private.findAllProjectMembersForProject(projectID),
       this.services.project.getCreator(creatorID, projectID, versionID),
-      this.services.requestContext.createAsync(() => this.services.thread.findAllWithCommentsByAssistant(projectID)),
+      this.services.requestContext.create(() => this.services.thread.findAllWithCommentsByAssistant(projectID)),
     ]);
 
     const templateDiagram = dbCreator.version.templateDiagramID

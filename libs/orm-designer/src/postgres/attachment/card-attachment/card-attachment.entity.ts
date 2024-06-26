@@ -1,4 +1,4 @@
-import { ArrayType, Entity, Index, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { ArrayType, Entity, Index, ManyToOne, PrimaryKeyProp, Property, Unique } from '@mikro-orm/core';
 import type { Markup } from '@voiceflow/dtos';
 
 import { MarkupType } from '@/common';
@@ -18,7 +18,7 @@ export class CardAttachmentEntity extends PostgresCMSObjectEntity<'media'> {
   @ManyToOne(() => MediaAttachmentEntity, {
     name: 'media_id',
     default: null,
-    onDelete: 'set default',
+    deleteRule: 'set default',
     nullable: true,
     fieldNames: ['media_id', 'environment_id'],
   })
@@ -36,5 +36,5 @@ export class CardAttachmentEntity extends PostgresCMSObjectEntity<'media'> {
   @Environment()
   environmentID!: string;
 
-  [PrimaryKeyType]?: CMSCompositePK;
+  [PrimaryKeyProp]?: CMSCompositePK;
 }

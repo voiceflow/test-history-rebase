@@ -1,4 +1,4 @@
-import { Entity, Enum, ManyToOne, PrimaryKeyType, Unique } from '@mikro-orm/core';
+import { Entity, Enum, ManyToOne, PrimaryKeyProp, Unique } from '@mikro-orm/core';
 import { AttachmentType } from '@voiceflow/dtos';
 
 import type { AssistantEntity } from '@/postgres/assistant';
@@ -22,7 +22,7 @@ export class BaseResponseAttachmentEntity extends PostgresCMSCreatableEntity {
 
   @ManyToOne(() => BaseResponseVariantEntity, {
     name: 'variant_id',
-    onDelete: 'cascade',
+    deleteRule: 'cascade',
     fieldNames: ['variant_id', 'environment_id'],
   })
   variant!: Ref<BaseResponseVariantEntity>;
@@ -33,7 +33,7 @@ export class BaseResponseAttachmentEntity extends PostgresCMSCreatableEntity {
   @Environment()
   environmentID!: string;
 
-  [PrimaryKeyType]?: CMSCompositePK;
+  [PrimaryKeyProp]?: CMSCompositePK;
 }
 
 @Entity({
@@ -45,7 +45,7 @@ export class ResponseCardAttachmentEntity extends BaseResponseAttachmentEntity {
 
   @ManyToOne(() => CardAttachmentEntity, {
     name: 'card_id',
-    onDelete: 'cascade',
+    deleteRule: 'cascade',
     fieldNames: ['card_id', 'environment_id'],
   })
   card!: Ref<CardAttachmentEntity>;
@@ -60,7 +60,7 @@ export class ResponseMediaAttachmentEntity extends BaseResponseAttachmentEntity 
 
   @ManyToOne(() => MediaAttachmentEntity, {
     name: 'media_id',
-    onDelete: 'cascade',
+    deleteRule: 'cascade',
     fieldNames: ['media_id', 'environment_id'],
   })
   media!: Ref<MediaAttachmentEntity>;

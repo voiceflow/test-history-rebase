@@ -1,4 +1,4 @@
-import { Entity, Index, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { Entity, Index, ManyToOne, PrimaryKeyProp, Property, Unique } from '@mikro-orm/core';
 import type { Markup } from '@voiceflow/dtos';
 
 import { MarkupType } from '@/common';
@@ -18,7 +18,7 @@ export class EventMappingEntity extends PostgresCMSObjectEntity<'variable'> {
 
   @ManyToOne(() => EventEntity, {
     name: 'event_id',
-    onDelete: 'cascade',
+    deleteRule: 'cascade',
     fieldNames: ['event_id', 'environment_id'],
   })
   event!: Ref<EventEntity>;
@@ -26,7 +26,7 @@ export class EventMappingEntity extends PostgresCMSObjectEntity<'variable'> {
   @ManyToOne(() => VariableEntity, {
     name: 'variable_id',
     default: null,
-    onDelete: 'set default',
+    deleteRule: 'set default',
     nullable: true,
     fieldNames: ['variable_id', 'environment_id'],
   })
@@ -38,5 +38,5 @@ export class EventMappingEntity extends PostgresCMSObjectEntity<'variable'> {
   @Environment()
   environmentID!: string;
 
-  [PrimaryKeyType]?: CMSCompositePK;
+  [PrimaryKeyProp]?: CMSCompositePK;
 }

@@ -1,4 +1,4 @@
-import { Entity, Enum, Index, ManyToOne, PrimaryKeyType, Property, Unique } from '@mikro-orm/core';
+import { Entity, Enum, Index, ManyToOne, PrimaryKeyProp, Property, Unique } from '@mikro-orm/core';
 import { FolderScope } from '@voiceflow/dtos';
 
 import type { CMSCompositePK, Ref } from '@/types';
@@ -21,7 +21,7 @@ export class FolderEntity extends PostgresCMSObjectEntity<'parent'> {
   @ManyToOne(() => FolderEntity, {
     name: 'parent_id',
     default: null,
-    onDelete: 'cascade',
+    deleteRule: 'cascade',
     nullable: true,
     fieldNames: ['parent_id', 'environment_id'],
   })
@@ -33,5 +33,5 @@ export class FolderEntity extends PostgresCMSObjectEntity<'parent'> {
   @Environment()
   environmentID!: string;
 
-  [PrimaryKeyType]?: CMSCompositePK;
+  [PrimaryKeyProp]?: CMSCompositePK;
 }

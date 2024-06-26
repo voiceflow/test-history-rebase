@@ -1,4 +1,3 @@
-import type { GenerateContentRequest } from '@google-cloud/vertexai';
 import { VertexAI } from '@google-cloud/vertexai';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import type { AIMessage, AIParams } from '@voiceflow/dtos';
@@ -11,6 +10,7 @@ import { concatMap, from, map } from 'rxjs';
 import { LLMModel } from '../llm-model.abstract';
 import type { CompletionOutput, CompletionStreamOutput } from '../llm-model.dto';
 import type { GoogleConfig } from './google.interface';
+import { formatRequest } from './google.util';
 
 @Injectable()
 export abstract class GoogleAIModel extends LLMModel {
@@ -46,14 +46,7 @@ export abstract class GoogleAIModel extends LLMModel {
       generationConfig: { maxOutputTokens: params.maxTokens, temperature: params.temperature },
     });
 
-    const request: GenerateContentRequest = {
-      contents: messages.map((item) => ({
-        role: item.role,
-        parts: [{ text: item.content }],
-      })),
-      systemInstruction: params.system || undefined,
-    };
-
+    const request = formatRequest(messages, params);
     const result = await model.generateContent(request).catch((error: unknown) => {
       this.logger.warn({ error, messages, params }, `${this.modelRef} completion`);
       return null;
@@ -85,13 +78,7 @@ export abstract class GoogleAIModel extends LLMModel {
       generationConfig: { maxOutputTokens: params.maxTokens, temperature: params.temperature },
     });
 
-    const request: GenerateContentRequest = {
-      contents: messages.map((item) => ({
-        role: item.role,
-        parts: [{ text: item.content }],
-      })),
-      systemInstruction: params.system || undefined,
-    };
+    const request = formatRequest(messages, params);
 
     return from(model.generateContentStream(request)).pipe(
       concatMap((streamingResult) => from(streamingResult.response)),

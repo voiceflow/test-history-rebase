@@ -24,6 +24,9 @@ export enum Version {
 
   /** workflows migration */
   V1_7_0 = '1.7.0',
+
+  /** setV3 migration */
+  V1_8_0 = '1.8.0',
 }
 
-export const CURRENT_VERSION = Version.V1_7_0;
+export const CURRENT_VERSION = Version.V1_8_0;

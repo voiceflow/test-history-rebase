@@ -5,4 +5,5 @@ import type { IResponseMessageInput } from '../ResponseMessageInput/ResponseMess
 export interface IResponseMessage extends Omit<IResponseMessageInput, 'children' | 'toolbar'> {
   removeButton?: React.ReactNode;
   onChangeVariantType: (type: ResponseVariantType) => void;
+  canDrag?: boolean;
 }

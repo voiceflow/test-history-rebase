@@ -38,6 +38,7 @@ export const useResponseMessageEditForm = ({
   const patchMessage = useDispatch(Designer.Response.ResponseMessage.effect.patchOne);
   const createManyTextMessages = useDispatch(Designer.Response.ResponseMessage.effect.createMany);
   const patchResponse = useDispatch(Designer.Response.effect.patchOne);
+  const patchDiscriminator = useDispatch(Designer.Response.ResponseDiscriminator.effect.patchOne);
   const getResponseByID = useSelector(Designer.Response.selectors.getOneByID);
 
   const aiFeaturesEnabled = useIsAIFeaturesEnabled();
@@ -80,6 +81,12 @@ export const useResponseMessageEditForm = ({
     return patchMessage(messageID, data);
   };
 
+  const onReorderMessages = async (newOrder: string[]) => {
+    if (!discriminatorID) return;
+
+    await patchDiscriminator(discriminatorID, { variantOrder: newOrder });
+  };
+
   return {
     rootMessage,
     otherMessages,
@@ -87,6 +94,7 @@ export const useResponseMessageEditForm = ({
     onAddMessage,
     onDeleteMessage: deleteMessage,
     onUpdateMessage,
+    onReorderMessages,
 
     aiGenerate: {
       isEnabled: aiFeaturesEnabled,

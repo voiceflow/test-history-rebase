@@ -8,6 +8,7 @@ export interface IResponseMessageForm {
   onAddMessage: () => Promise<undefined | ResponseMessage>;
   onDeleteMessage: (messageID: string) => void;
   onUpdateMessage: (id: string, patch: Actions.ResponseMessage.PatchData) => void;
+  onReorderMessages: (newOrder: string[]) => void;
 
   aiGenerate: {
     isEnabled: boolean;

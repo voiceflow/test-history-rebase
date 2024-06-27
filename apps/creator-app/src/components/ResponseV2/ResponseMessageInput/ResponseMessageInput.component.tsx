@@ -25,18 +25,20 @@ export const ResponseMessageInput = forwardRef<SlateEditorRef, IResponseMessageI
   );
 
   return (
-    <MarkupInputWithVariables
-      {...props}
-      ref={ref}
-      header={toolbar}
-      plugins={[SlateEditor.PluginType.LINK]}
-      placeholder={placeholder}
-      pluginOptions={pluginsOptions}
-      editableContainer={({ editable }) => (
-        <FocusIndicator.Container pl={24} overflow="hidden">
-          {editable}
-        </FocusIndicator.Container>
-      )}
-    />
+    <>
+      <MarkupInputWithVariables
+        {...props}
+        ref={ref}
+        header={toolbar}
+        plugins={[SlateEditor.PluginType.LINK]}
+        placeholder={placeholder}
+        pluginOptions={pluginsOptions}
+        editableContainer={({ editable }) => (
+          <FocusIndicator.Container pl={24} overflow="hidden">
+            {editable}
+          </FocusIndicator.Container>
+        )}
+      />
+    </>
   );
 });

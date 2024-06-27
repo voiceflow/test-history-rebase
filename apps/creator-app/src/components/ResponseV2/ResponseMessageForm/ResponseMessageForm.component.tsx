@@ -1,6 +1,7 @@
 import { Utils } from '@voiceflow/common';
-import { Box, Divider, Section } from '@voiceflow/ui-next';
-import React, { Fragment, useMemo } from 'react';
+import type { ResponseMessage } from '@voiceflow/dtos';
+import { Box, Divider, Section, SortableList } from '@voiceflow/ui-next';
+import React, { useMemo } from 'react';
 
 import { AIGenerateResponseVariantButton } from '@/components/AI/AIGenerateResponseVariantButton/AIGenerateResponseVariantButton.component';
 import { CMSFormListButtonRemove } from '@/components/CMS/CMSForm/CMSFormListButtonRemove/CMSFormListButtonRemove.component';
@@ -9,7 +10,8 @@ import { useInputAutoFocusKey } from '@/hooks/input.hook';
 import { useIsListEmpty } from '@/hooks/list.hook';
 import { isResponseMessageEmpty } from '@/utils/response.util';
 
-import { ResponseMessage } from '../ResponseMessage/ResponseMessage.component';
+// import { MessageCondition } from '../MessageCondition/MessageCondition.component';
+import { ResponseMessage as ResponseMessageInput } from '../ResponseMessage/ResponseMessage.component';
 import type { IResponseMessageForm } from './ResponseMessageForm.interface';
 
 export const ResponseMessageForm: React.FC<IResponseMessageForm> = ({
@@ -19,6 +21,7 @@ export const ResponseMessageForm: React.FC<IResponseMessageForm> = ({
   onAddMessage,
   onDeleteMessage,
   onUpdateMessage,
+  onReorderMessages,
 }) => {
   const allMessages = useMemo(() => (rootMessage ? [rootMessage, ...otherMessages] : []), [rootMessage, otherMessages]);
 
@@ -26,7 +29,7 @@ export const ResponseMessageForm: React.FC<IResponseMessageForm> = ({
 
   const listEmpty = useIsListEmpty(allMessages, (message) => isResponseMessageEmpty(message));
 
-  const hasMessages = otherMessages.length;
+  const hasMessages = !!otherMessages.length;
 
   const handleAddMessage = async () => {
     const newMessage = await onAddMessage();
@@ -40,22 +43,22 @@ export const ResponseMessageForm: React.FC<IResponseMessageForm> = ({
 
   return (
     <>
-      <Box pt={11} pr={24} pb={18} direction="column">
-        <ResponseMessage
-          autoFocusIfEmpty={!hasMessages}
-          onValueEmpty={listEmpty.container(0)}
-          value={rootMessage.text}
+      <Box pt={11} pr={24} pb={15} direction="column">
+        <ResponseMessageInput
           onValueChange={(text) => onUpdateMessage(rootMessage.id, { text })}
+          onValueEmpty={listEmpty.container(0)}
           onChangeVariantType={() => null}
+          autoFocusIfEmpty={!hasMessages}
+          value={rootMessage.text}
         />
       </Box>
 
       <Divider />
 
       <Section.Header.Container
-        pt={11}
-        pb={hasMessages ? 0 : 11}
-        variant="active"
+        pt={7}
+        pb={hasMessages ? 0 : 7}
+        variant={hasMessages ? 'active' : 'basic'}
         title={(className) => (
           <SectionHeaderTitleWithLearnTooltip
             title="Messages"
@@ -73,49 +76,60 @@ export const ResponseMessageForm: React.FC<IResponseMessageForm> = ({
           </SectionHeaderTitleWithLearnTooltip>
         )}
       >
-        {!hasMessages && (
+        {!hasMessages && !listEmpty.value && (
           <Section.Header.Button
             onClick={() => aiGenerateMessage.onGenerate({ quantity: 3 })}
-            iconName="Generate"
-            disabled={aiGenerateMessage.isFetching}
             isLoading={aiGenerateMessage.isFetching}
+            disabled={aiGenerateMessage.isFetching}
+            iconName="Generate"
           />
         )}
 
         <Section.Header.Button iconName="Plus" onClick={handleAddMessage} disabled={aiGenerateMessage.isFetching} />
       </Section.Header.Container>
 
-      {!hasMessages ? (
-        <Divider />
-      ) : (
-        <>
-          {otherMessages.map((message, index) => (
-            <Fragment key={message.id}>
-              <Box pt={index === 0 ? 0 : 12} pb={20} pr={24} direction="column">
-                <ResponseMessage
-                  autoFocus={autofocus.key === message.id}
-                  onValueEmpty={listEmpty.container(index + 1)}
-                  removeButton={<CMSFormListButtonRemove onClick={() => onDeleteMessage(message.id)} />}
-                  autoFocusIfEmpty={!hasMessages}
-                  value={message.text}
-                  onValueChange={(text) => onUpdateMessage(message.id, { text })}
+      {!hasMessages && <Divider />}
+
+      <SortableList
+        items={otherMessages}
+        getItemKey={(path) => path.id}
+        onItemsReorder={(item: ResponseMessage[]) => onReorderMessages([rootMessage.id, ...item.map((a) => a.id)])}
+        renderItem={({ ref, item, dragContainerProps }) => {
+          const index = otherMessages.findIndex((message) => message.id === item.id);
+          const isFirst = index === 0;
+
+          return (
+            <div key={item.id} ref={ref} {...dragContainerProps}>
+              {!isFirst && <Divider fullWidth={false} />}
+
+              <Box pt={!isFirst ? 12 : 0} pb={12} pr={28} direction="column">
+                <ResponseMessageInput
+                  removeButton={<CMSFormListButtonRemove onClick={() => onDeleteMessage(item.id)} />}
+                  onValueChange={(text) => onUpdateMessage(item.id, { text })}
+                  onValueEmpty={listEmpty.container(index)}
+                  autoFocus={autofocus.key === item.id}
                   onChangeVariantType={() => null}
+                  autoFocusIfEmpty={!hasMessages}
+                  value={item.text}
+                  canDrag
                 />
+
+                {/* <MessageCondition /> */}
               </Box>
+            </div>
+          );
+        }}
+      />
 
-              {otherMessages.length !== index + 1 && <Divider />}
-            </Fragment>
-          ))}
-
-          {aiGenerateMessage.isEnabled && (
-            <Box px={16} pb={16}>
-              <AIGenerateResponseVariantButton
-                isLoading={aiGenerateMessage.isFetching}
-                onGenerate={aiGenerateMessage.onGenerate}
-                hasExtraContext={!listEmpty.value}
-              />
-            </Box>
-          )}
+      {hasMessages && aiGenerateMessage.isEnabled && (
+        <>
+          <Box px={16} pt={8} pb={10}>
+            <AIGenerateResponseVariantButton
+              isLoading={aiGenerateMessage.isFetching}
+              onGenerate={aiGenerateMessage.onGenerate}
+              hasExtraContext={!listEmpty.value}
+            />
+          </Box>
 
           <Divider />
         </>

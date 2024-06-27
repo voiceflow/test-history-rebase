@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.417.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.416.1...@voiceflow/realtime@1.417.0) (2024-06-27)
+
+### Features
+
+* kb documents upload add metadata field (COR-2389)(COR-2390) ([#8340](https://github.com/voiceflow/creator-app/issues/8340)) ([d694b43](https://github.com/voiceflow/creator-app/commit/d694b438913fd26943be6519d71a881f533af2ad))
+
 ## [1.416.1](https://github.com/voiceflow/creator-app/compare/@voiceflow/realtime@1.416.0...@voiceflow/realtime@1.416.1) (2024-06-26)
 
 **Note:** Version bump only for package @voiceflow/realtime

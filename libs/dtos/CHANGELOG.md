@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.104.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.103.0...@voiceflow/dtos@1.104.0) (2024-06-27)
+
+### Features
+
+* kb documents upload add metadata field (COR-2389)(COR-2390) ([#8340](https://github.com/voiceflow/creator-app/issues/8340)) ([d694b43](https://github.com/voiceflow/creator-app/commit/d694b438913fd26943be6519d71a881f533af2ad))
+
 # [1.103.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/dtos@1.102.1...@voiceflow/dtos@1.103.0) (2024-06-26)
 
 ### Features

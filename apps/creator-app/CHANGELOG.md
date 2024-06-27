@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1605.0](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1604.2...@voiceflow/creator-app@1.1605.0) (2024-06-27)
+
+### Features
+
+* implement reorder (COR-2444) ([#8426](https://github.com/voiceflow/creator-app/issues/8426)) ([631af3a](https://github.com/voiceflow/creator-app/commit/631af3af5804718fc7a7a782eac16728634d01c7))
+
 ## [1.1604.2](https://github.com/voiceflow/creator-app/compare/@voiceflow/creator-app@1.1604.1...@voiceflow/creator-app@1.1604.2) (2024-06-27)
 
 **Note:** Version bump only for package @voiceflow/creator-app

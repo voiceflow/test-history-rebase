@@ -59,7 +59,7 @@
     "@voiceflow/sdk-common": "1.12.2"
   },
   "devDependencies": {
-    "@nestjs/common": "9.4.0",
+    "@nestjs/common": "9.4.3",
     "nestjs-zod": "2.2.0",
     "undici": "5.28.4"
   },

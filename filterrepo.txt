@@ -1,0 +1,12 @@
+git filter-repo --commit-callback '
+timestamp_str = commit.author_date
+unix_timestamp_str = timestamp_str.split()[0]
+unix_timestamp = int(unix_timestamp_str)
+
+author_date = datetime.utcfromtimestamp(unix_timestamp)
+
+comparison_date = datetime.strptime("2023-03-01", "%Y-%m-%d")
+if (author_date < comparison_date and commit.old_id > 2):
+    commit.skip()
+
+' --invert-paths --path-glob "packages/*"

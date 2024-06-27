@@ -49,7 +49,7 @@
     "dotenv": "16.0.3"
   },
   "peerDependencies": {
-    "axios": "^0.24"
+    "axios": "^0.24 || ^0.28.0"
   },
   "engines": {
     "node": "20.11"

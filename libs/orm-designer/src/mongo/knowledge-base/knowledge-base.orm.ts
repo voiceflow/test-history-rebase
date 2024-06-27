@@ -27,17 +27,27 @@ export class KnowledgeBaseORM extends ProjectORM {
     return document?.knowledgeBase?.settings;
   }
 
-  async updateSettings(projectID: string, newSettings: KnowledgeBaseSettings): Promise<void> {
-    await this.atomicUpdateOne(projectID, [
-      Atomic.Set(
-        Object.entries(newSettings)
-          .filter(([, value]) => !!value)
-          .map(([key, value]) => ({
-            path: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH, KnowledgeBaseORM.KNOWLEDGE_BASE_SETTINGS_PATH, key],
-            value,
-          }))
-      ),
-    ]);
+  async updateSettings(projectID: string, settings: Partial<KnowledgeBaseSettings>) {
+    const result = await this.findOneAndAtomicUpdate(
+      projectID,
+      [
+        Atomic.Set(
+          Object.entries(settings)
+            .filter(([, value]) => !!value)
+            .map(([key, value]) => ({
+              path: [KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH, KnowledgeBaseORM.KNOWLEDGE_BASE_SETTINGS_PATH, key],
+              value,
+            }))
+        ),
+      ],
+      { projection: this.projection([KnowledgeBaseORM.KNOWLEDGE_BASE_DATA_PATH]) }
+    );
+
+    if (!result?.knowledgeBase?.settings) {
+      throw new Error('Failed to update settings');
+    }
+
+    return result.knowledgeBase.settings;
   }
 
   async findOneTag(projectID: string, tagID: string): Promise<VersionKnowledgeBaseTag | undefined> {

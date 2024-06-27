@@ -1,6 +1,7 @@
 import {
   AssistantDTO,
   DiagramDTO,
+  KnowledgeBaseSettingsDTO,
   ProjectDTO,
   ReferenceDTO,
   ReferenceResourceDTO,
@@ -27,6 +28,7 @@ export const AssistantLoadCreatorResponse = z
     threadComments: z.array(ThreadCommentDTO),
     projectMembership: z.array(ProjectMembershipDTO),
     referenceResources: z.array(ReferenceResourceDTO).optional(),
+    knowledgeBaseSettings: KnowledgeBaseSettingsDTO,
   })
   .merge(AssistantExportCMSResponse)
   .strict();

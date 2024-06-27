@@ -90,6 +90,9 @@ export const loadCreator =
       })
     );
 
+    // Knowledge Base
+    dispatch(Actions.KnowledgeBaseSettings.Replace({ context, data: data.knowledgeBaseSettings }));
+
     // custom blocks
     dispatch(
       Realtime.customBlock.crud.replace({

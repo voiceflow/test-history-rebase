@@ -5,6 +5,7 @@ import { BackupModule } from '@/backup/backup.module';
 import { CacheModule } from '@/cache/cache.module';
 import { DiagramModule } from '@/diagram/diagram.module';
 import { EnvironmentModule } from '@/environment/environment.module';
+import { KnowledgeBaseSettingsModule } from '@/knowledge-base/settings/settings.module';
 import { OrganizationModule } from '@/organization/organization.module';
 import { ProgramModule } from '@/program/program.module';
 import { ProjectModule } from '@/project/project.module';
@@ -38,6 +39,7 @@ import { AssistantViewerService } from './assistant-viewer.service';
     OrganizationModule,
     VariableStateModule,
     PrototypeProgramModule,
+    KnowledgeBaseSettingsModule,
   ],
   exports: [AssistantService, AssistantSerializer],
   providers: [

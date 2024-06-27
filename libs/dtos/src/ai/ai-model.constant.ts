@@ -7,16 +7,21 @@ export const DEFAULT_AI_MODEL_PAID_PLAN = AIModel.GPT_4_TURBO;
 // AIModelParams are meant to be shared by both creator-app and ml-gateway
 export interface AIModelParam {
   maxTokens: number;
+  /**
+   * deprecated modals are not shown in the UI and replaced with the default model when fetching the model
+   */
+  deprecated: boolean;
   hasSystemPrompt: boolean;
 }
 
-export const DEFAULT_AI_MODEL_PARAM: AIModelParam = {
+export const DEFAULT_AI_MODEL_PARAM = {
   maxTokens: 2000,
+  deprecated: false,
   hasSystemPrompt: true,
-};
+} satisfies AIModelParam;
 
 // the typing forces us to always have a param for each model
-export const AI_MODEL_PARAMS: Record<AIModel, AIModelParam> = {
+export const AI_MODEL_PARAMS = {
   // Google
   [AIModel.GEMINI_PRO_1_5]: {
     ...DEFAULT_AI_MODEL_PARAM,
@@ -30,6 +35,7 @@ export const AI_MODEL_PARAMS: Record<AIModel, AIModelParam> = {
   // OpenAI
   [AIModel.DaVinci_003]: {
     ...DEFAULT_AI_MODEL_PARAM,
+    deprecated: true,
     hasSystemPrompt: false,
   },
   [AIModel.GPT_3_5_TURBO]: DEFAULT_AI_MODEL_PARAM,
@@ -67,4 +73,4 @@ export const AI_MODEL_PARAMS: Record<AIModel, AIModelParam> = {
     ...DEFAULT_AI_MODEL_PARAM,
     maxTokens: 500,
   },
-};
+} satisfies Record<AIModel, AIModelParam>;

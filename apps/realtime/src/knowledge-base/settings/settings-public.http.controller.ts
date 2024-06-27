@@ -42,15 +42,15 @@ export class KnowledgeBaseSettingsPublicHTTPController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Update knowledge base settings ' })
   @ApiParam({ name: 'assistantID', type: 'string' })
-  @ZodApiBody({ schema: KnowledgeBaseSettingsDTO })
+  @ZodApiBody({ schema: KnowledgeBaseSettingsDTO.partial() })
   @ZodApiResponse({
     status: HttpStatus.OK,
     description: 'Update the users knowledge base settings for the agent',
   })
   async updateOne(
     @Param('assistantID') assistantID: string,
-    @Body(new ZodValidationPipe(KnowledgeBaseSettingsDTO)) newSettings: KnowledgeBaseSettings
+    @Body(new ZodValidationPipe(KnowledgeBaseSettingsDTO.partial())) patch: Partial<KnowledgeBaseSettings>
   ): Promise<void> {
-    return this.service.updateForAssistant(assistantID, newSettings);
+    await this.service.updateForAssistant(assistantID, patch);
   }
 }

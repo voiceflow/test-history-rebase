@@ -19,6 +19,7 @@ export * as FunctionVariable from './function/function-variable/function-variabl
 export * as Intent from './intent/intent.action';
 export * as RequiredEntity from './intent/required-entity/required-entity.action';
 export * as Utterance from './intent/utterance/utterance.action';
+export * as KnowledgeBaseSettings from './knowledge-base/knowledge-base-settings/knowledge-base-settings.action';
 export * as Organization from './organization/organization.action';
 export * as OrganizationMember from './organization/organization-member/organization-member.action';
 export * as OrganizationSubscription from './organization/organization-subscription/organization-subscription.action';

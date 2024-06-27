@@ -3,6 +3,7 @@ import { KnowledgeBaseORM, ProjectORM, VersionORM } from '@voiceflow/orm-designe
 
 import { CacheService } from '@/cache/cache.service';
 
+import { KnowledgeBaseSettingsLoguxController } from './settings.logux.controller';
 import { KnowledgeBaseSettingsService } from './settings.service';
 import { KnowledgeBaseSettingsPrivateHTTPController } from './settings-private.http.controller';
 import { KnowledgeBaseSettingsPublicHTTPController } from './settings-public.http.controller';
@@ -13,9 +14,10 @@ import { KnowledgeBaseVersionSettingsPublicHTTPController } from './version-sett
   exports: [KnowledgeBaseSettingsService],
   providers: [KnowledgeBaseORM, ProjectORM, VersionORM, KnowledgeBaseSettingsService, CacheService],
   controllers: [
+    KnowledgeBaseSettingsLoguxController,
     KnowledgeBaseSettingsPublicHTTPController,
-    KnowledgeBaseVersionSettingsPublicHTTPController,
     KnowledgeBaseSettingsPrivateHTTPController,
+    KnowledgeBaseVersionSettingsPublicHTTPController,
   ],
 })
 export class KnowledgeBaseSettingsModule {}

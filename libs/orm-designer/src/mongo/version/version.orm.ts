@@ -21,14 +21,24 @@ export class VersionORM extends MongoAtomicORM<VersionEntity> {
     return document?.knowledgeBase?.settings;
   }
 
-  async updateKnowledgeBaseSettings(versionID: string, newSettings: KnowledgeBaseSettings) {
-    await this.atomicUpdateOne(versionID, [
-      Atomic.Set(
-        Object.entries(newSettings)
-          .filter(([, value]) => !!value)
-          .map(([key, value]) => ({ path: ['knowledgeBase', 'settings', key], value }))
-      ),
-    ]);
+  async updateKnowledgeBaseSettings(versionID: string, newSettings: Partial<KnowledgeBaseSettings>) {
+    const result = await this.findOneAndAtomicUpdate(
+      versionID,
+      [
+        Atomic.Set(
+          Object.entries(newSettings)
+            .filter(([, value]) => !!value)
+            .map(([key, value]) => ({ path: ['knowledgeBase', 'settings', key], value }))
+        ),
+      ],
+      { projection: this.projection(['knowledgeBase']) }
+    );
+
+    if (!result?.knowledgeBase?.settings) {
+      throw new Error('Failed to update settings');
+    }
+
+    return result.knowledgeBase.settings;
   }
 
   async updateOneSettings(id: Primary<VersionEntity>, update: Partial<VersionSettings>) {

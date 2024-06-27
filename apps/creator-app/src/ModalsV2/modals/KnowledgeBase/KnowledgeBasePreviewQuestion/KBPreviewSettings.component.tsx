@@ -1,4 +1,5 @@
-import type { BaseModels, BaseUtils } from '@voiceflow/base-types';
+import type { KnowledgeBaseSettings } from '@voiceflow/dtos';
+import { KB_SETTINGS_DEFAULT } from '@voiceflow/realtime-sdk';
 import { tid } from '@voiceflow/style';
 import type { BaseProps } from '@voiceflow/ui-next';
 import { Box } from '@voiceflow/ui-next';
@@ -14,71 +15,75 @@ import { PopperOverridesDivider } from '@/components/Popper/PopperOverridesDivid
 import { AI_MODEL_CONFIG_MAP } from '@/config/ai-model';
 import { CMS_KNOWLEDGE_BASE_LEARN_MORE } from '@/constants/link.constant';
 
-import { SETTINGS_TEST_ID } from '../KnowledgeBase.constant';
-import { DEFAULT_SETTINGS } from '../KnowledgeBaseSettings/KnowledgeBaseSettings.constant';
-
-type SummarizationSettings = BaseModels.Project.KnowledgeBaseSettings['summarization'];
+type SummarizationSettings = KnowledgeBaseSettings['summarization'];
 
 export interface IPreviewSettings extends BaseProps {
-  settings: SummarizationSettings;
-  initialSettings: SummarizationSettings;
-  onSettingsChange: (value: SummarizationSettings) => void;
+  instruction: string;
+  summarization: SummarizationSettings;
+  onInstructionChange: (value: string) => void;
+  initialSummarization: SummarizationSettings;
+  onSummarizationChange: (value: SummarizationSettings) => void;
 }
 
 export const KBPreviewSettings: React.FC<IPreviewSettings> = ({
   testID,
-  settings,
-  initialSettings,
-  onSettingsChange,
+  instruction,
+  summarization,
+  onInstructionChange,
+  initialSummarization,
+  onSummarizationChange,
 }) => {
-  const onPatch = (value: Partial<SummarizationSettings>) => onSettingsChange({ ...settings, ...value });
+  const SETTINGS_TEST_ID = tid('knowledge-base', 'settings');
 
-  const model = settings.model ?? DEFAULT_SETTINGS.summarization.model;
+  const onSummarizationPatch =
+    <Key extends keyof SummarizationSettings>(key: Key) =>
+    (value: SummarizationSettings[Key]) =>
+      onSummarizationChange({ ...summarization, [key]: value });
 
   return (
     <PopperModalSettings testID={tid(testID, 'menu')}>
       <PopperOverridesDivider
-        value={settings}
-        initialValues={initialSettings}
-        onReset={() => onSettingsChange(initialSettings)}
+        value={summarization}
+        onReset={() => onSummarizationChange(initialSummarization)}
+        initialValues={initialSummarization}
       />
 
       <Box direction="column" gap={12} pb={24}>
         <AIModelSelectSection
-          value={model}
+          value={summarization.model}
           testID={tid(SETTINGS_TEST_ID, 'model')}
           learnMoreURL={CMS_KNOWLEDGE_BASE_LEARN_MORE}
-          onValueChange={(model) => onPatch({ model: model as BaseUtils.ai.GPT_MODEL })}
+          onValueChange={onSummarizationPatch('model')}
         />
 
         <AITemperatureSliderSection
-          value={settings.temperature ?? DEFAULT_SETTINGS.summarization.temperature}
+          value={summarization.temperature}
           testID={tid(SETTINGS_TEST_ID, 'temperature')}
           learnMoreURL={CMS_KNOWLEDGE_BASE_LEARN_MORE}
-          onValueChange={(temperature) => onPatch({ temperature })}
+          onValueChange={onSummarizationPatch('temperature')}
         />
 
         <AIMaxTokensSliderSection
-          model={model}
-          value={settings.maxTokens ?? DEFAULT_SETTINGS.summarization.maxTokens}
+          model={summarization.model}
+          value={summarization.maxTokens ?? KB_SETTINGS_DEFAULT.summarization.maxTokens}
           testID={tid(SETTINGS_TEST_ID, 'tokens')}
           learnMoreURL={CMS_KNOWLEDGE_BASE_LEARN_MORE}
-          onValueChange={(maxTokens) => onPatch({ maxTokens })}
+          onValueChange={onSummarizationPatch('maxTokens')}
         />
 
         <KBInstructionInputSection
-          value={settings.instruction ?? DEFAULT_SETTINGS.summarization.instruction}
+          value={instruction}
           testID={tid(SETTINGS_TEST_ID, 'instructions')}
           learnMoreURL={CMS_KNOWLEDGE_BASE_LEARN_MORE}
-          onValueChange={(instruction) => onPatch({ instruction })}
+          onValueChange={onInstructionChange}
         />
 
-        {AI_MODEL_CONFIG_MAP[model].hasSystemPrompt && (
+        {AI_MODEL_CONFIG_MAP[summarization.model].hasSystemPrompt && (
           <KBSystemInputSection
-            value={settings.system ?? DEFAULT_SETTINGS.summarization.system}
+            value={summarization.system}
             testID={tid(SETTINGS_TEST_ID, 'system-prompt')}
             learnMoreURL={CMS_KNOWLEDGE_BASE_LEARN_MORE}
-            onValueChange={(system) => onPatch({ system })}
+            onValueChange={onSummarizationPatch('system')}
           />
         )}
       </Box>

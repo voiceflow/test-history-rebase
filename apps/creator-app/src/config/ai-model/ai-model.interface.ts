@@ -7,7 +7,9 @@ export interface AIModelConfig extends AIModelParam {
   info: string;
   icon: IconName;
   hidden?: boolean;
-  advanced?: boolean; // if the model requires upgrading to a higher plan
+  /**
+   * if the model requires upgrading to a higher plan
+   */
+  advanced?: boolean;
   disabled?: boolean;
-  deprecated?: boolean;
 }

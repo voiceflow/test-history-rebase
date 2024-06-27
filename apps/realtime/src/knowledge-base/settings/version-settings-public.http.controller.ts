@@ -42,15 +42,15 @@ export class KnowledgeBaseVersionSettingsPublicHTTPController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Update version knowledge base settings' })
   @ApiParam({ name: 'environmentID', type: 'string' })
-  @ZodApiBody({ schema: KnowledgeBaseSettingsDTO })
+  @ZodApiBody({ schema: KnowledgeBaseSettingsDTO.partial() })
   @ZodApiResponse({
     status: HttpStatus.OK,
     description: 'Update the users versioned knowledge base settings',
   })
   async updateOne(
     @Param('environmentID') environmentID: string,
-    @Body(new ZodValidationPipe(KnowledgeBaseSettingsDTO)) newSettings: KnowledgeBaseSettings
+    @Body(new ZodValidationPipe(KnowledgeBaseSettingsDTO.partial())) settings: Partial<KnowledgeBaseSettings>
   ): Promise<void> {
-    return this.service.updateForEnvironment(environmentID, newSettings);
+    await this.service.updateForEnvironment(environmentID, settings);
   }
 }

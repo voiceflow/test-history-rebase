@@ -16,13 +16,17 @@ import { useSelector } from '@/hooks/store.hook';
 import { useTrackingEvents } from '@/hooks/tracking';
 
 import manager from '../../../manager';
-import { DEFAULT_SETTINGS } from '../KnowledgeBaseSettings/KnowledgeBaseSettings.constant';
 import { KBPreviewQuestionResponse } from './KBPreviewQuestionResponse.component';
 import { KBPreviewSettings } from './KBPreviewSettings.component';
 import { textareaStyles } from './KnowledgeBasePreviewQuestion.css';
 
-export const KnowledgeBasePreviewQuestion = manager.create(
-  'KnowledgeBasePreviewQuestion',
+interface Response {
+  output: string;
+  chunks?: { source: { name: string }; content: string }[];
+}
+
+export const KnowledgeBasePreviewQuestionModal = manager.create(
+  'KnowledgeBasePreviewQuestionModal',
   () =>
     ({ api, type, opened, hidden, animated, closePrevented }) => {
       const TEST_ID = 'knowledge-base-preview-modal';
@@ -36,20 +40,15 @@ export const KnowledgeBasePreviewQuestion = manager.create(
       const versionID = useSelector(Session.activeVersionIDSelector)!;
       const workspaceID = useSelector(Session.activeWorkspaceIDSelector)!;
       const getOneByName = useSelector(Designer.KnowledgeBase.Document.selectors.getOneByName);
-      const storeSettings = useSelector(Designer.KnowledgeBase.selectors.settings);
+      const storeSettings = useSelector(Designer.KnowledgeBase.Settings.selectors.root);
 
-      const [initialSettings] = React.useState(storeSettings ?? DEFAULT_SETTINGS);
-      const [settings, setSettings] = useEnvironmentSessionStorageState(
-        'kb-preview-settings',
-        storeSettings ?? DEFAULT_SETTINGS
-      );
       const [question, setQuestion] = React.useState<string>('');
-      const [response, setResponse] = React.useState<{
-        output: string;
-        chunks?: { source: { name: string }; content: string }[];
-      } | null>(null);
+      const [response, setResponse] = React.useState<Response | null>(null);
       const [hasResponse, setHasResponse] = React.useState(false);
       const [questionError, setQuestionError] = React.useState<string>('');
+
+      const [settings, setSettings] = useEnvironmentSessionStorageState('kb-preview-settings', storeSettings);
+      const [instruction, setInstruction] = useEnvironmentSessionStorageState('kb-preview-instruction', '');
       const [previousQuestion, setPreviousQuestion] = useEnvironmentSessionStorageState('kb-preview-last-question', '');
 
       const displayableSources = React.useMemo(
@@ -68,57 +67,60 @@ export const KnowledgeBasePreviewQuestion = manager.create(
 
       const onSend = async () => {
         const currentQuestion = question;
+
         if (currentQuestion.trim() === '') {
           setQuestionError('Question is required.');
           return;
         }
+
         api.preventClose();
 
         setPreviousQuestion(currentQuestion);
 
-        const response = await client.testAPIClient
-          .knowledgeBase(workspaceID, {
+        try {
+          const response = await client.testAPIClient.knowledgeBase(workspaceID, {
+            settings: settings?.summarization,
+            question: currentQuestion,
             projectID,
             versionID,
-            question,
-            settings: settings?.summarization,
-            instruction: settings?.summarization?.instruction,
-          })
-          .catch((error) => {
-            if (error?.response?.status === 429) {
-              notify.short.error('Too many requests, please wait and try again', { isClosable: false });
-            } else if (error?.response?.status === 402) {
-              notify.short.error(
-                <>
-                  Out of tokens.{' '}
-                  <Link variant="secondary" href={REQUEST_MORE_TOKENS_LINK} label="Request more tokens." />
-                </>,
-                { isClosable: false }
-              );
-            } else {
-              notify.short.error('Unable to reach knowledge base.', { isClosable: false });
-            }
+            instruction,
           });
 
-        if (!response?.output) {
-          setHasResponse(false);
-          setResponse({
-            ...response,
-            output: `${currentQuestion}\n---\n${BaseUtils.ai.KNOWLEDGE_BASE_NOT_FOUND} No answer found — context may be insufficient or data may not exist.`,
-          });
+          api.enableClose();
 
-          trackingEvents.trackAiKnowledgeQuestionPreviewed({ Success: 'No' });
-        } else {
-          setHasResponse(true);
-          setResponse(response);
+          setQuestion('');
+          setQuestionError('');
+          triggerRefocus();
 
-          trackingEvents.trackAiKnowledgeQuestionPreviewed({ Success: 'Yes' });
+          if (!response?.output) {
+            setHasResponse(false);
+
+            setResponse({
+              ...response,
+              output: `${currentQuestion}\n---\n${BaseUtils.ai.KNOWLEDGE_BASE_NOT_FOUND} No answer found — context may be insufficient or data may not exist.`,
+            });
+
+            trackingEvents.trackAiKnowledgeQuestionPreviewed({ Success: 'No' });
+          } else {
+            setHasResponse(true);
+            setResponse(response);
+
+            trackingEvents.trackAiKnowledgeQuestionPreviewed({ Success: 'Yes' });
+          }
+        } catch (error: any) {
+          if (error?.response?.status === 429) {
+            notify.short.error('Too many requests, please wait and try again', { isClosable: false });
+          } else if (error?.response?.status === 402) {
+            notify.short.error(
+              <>
+                Out of tokens. <Link variant="secondary" href={REQUEST_MORE_TOKENS_LINK} label="Request more tokens." />
+              </>,
+              { isClosable: false }
+            );
+          } else {
+            notify.short.error('Unable to reach knowledge base.', { isClosable: false });
+          }
         }
-
-        setQuestion('');
-        setQuestionError('');
-        api.enableClose();
-        triggerRefocus();
       };
 
       const onSetPreviousQuestion = () => {
@@ -152,9 +154,11 @@ export const KnowledgeBasePreviewQuestion = manager.create(
               secondaryButton={
                 <KBPreviewSettings
                   testID={tid(TEST_ID, 'settings')}
-                  settings={settings.summarization ?? DEFAULT_SETTINGS.summarization}
-                  initialSettings={initialSettings.summarization ?? DEFAULT_SETTINGS.summarization}
-                  onSettingsChange={(summarization) => setSettings({ ...settings, summarization })}
+                  instruction={instruction}
+                  summarization={settings.summarization}
+                  onInstructionChange={setInstruction}
+                  initialSummarization={storeSettings.summarization}
+                  onSummarizationChange={(summarization) => setSettings({ ...settings, summarization })}
                 />
               }
             />
@@ -202,23 +206,23 @@ export const KnowledgeBasePreviewQuestion = manager.create(
 
               <Modal.Footer.Button
                 label="Send"
+                testID={tid(TEST_ID, 'send')}
                 variant="primary"
                 onClick={onSend}
                 disabled={closePrevented}
                 isLoading={closePrevented}
-                testID={tid(TEST_ID, 'send')}
               />
             </Modal.Footer>
           </>
 
           {response && (
             <KBPreviewQuestionResponse
+              testID={tid(TEST_ID, 'response')}
               loading={closePrevented}
               sources={displayableSources}
               response={response?.output}
               hasResponse={hasResponse}
               onSourceClick={handleSourceClick}
-              testID={tid(TEST_ID, 'response')}
             />
           )}
         </Modal.Container>

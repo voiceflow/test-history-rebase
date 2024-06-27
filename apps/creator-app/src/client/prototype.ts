@@ -1,5 +1,5 @@
 import type { BaseUtils } from '@voiceflow/base-types';
-import type { BaseRequest, RequestConfig } from '@voiceflow/dtos';
+import type { AIParams, BaseRequest, RequestConfig } from '@voiceflow/dtos';
 import axios from 'axios';
 
 import { GENERAL_RUNTIME_ENDPOINT } from '@/config';
@@ -41,7 +41,7 @@ export const testAPIClient = Object.assign(runtimeClient, {
       versionID?: string;
       question: string;
       instruction?: string;
-      settings?: Partial<BaseUtils.ai.AIModelParams>;
+      settings?: AIParams;
     }
   ) => runtimeClient.post(`/test/${workspaceID}/knowledge-base`, params).then(({ data }) => data),
 });
